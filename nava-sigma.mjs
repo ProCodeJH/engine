@@ -3704,9 +3704,19 @@ try {
 // object content or values. Reveals memory hotspots (big data structures,
 // WebGL textures, image buffers) that inform clone sizing decisions.
 try {
+  // HeapProfiler.getSamplingProfile requires prior startSampling call.
+  // Without it, returns { profile: null } or errors. Start -> wait -> stop.
   await cdp.send("HeapProfiler.enable").catch(() => {});
-  const sampling = await cdp.send("HeapProfiler.getSamplingProfile").catch(() => null);
-  if (sampling?.profile) {
+  await cdp.send("HeapProfiler.startSampling", { samplingInterval: 32768 }).catch(() => {});
+  // Exercise the page a bit to generate allocation samples
+  await page.evaluate(async () => {
+    for (let y = 0; y < document.body.scrollHeight; y += 600) {
+      window.scrollTo(0, y); await new Promise(r => setTimeout(r, 60));
+    }
+    window.scrollTo(0, 0);
+  }).catch(() => {});
+  const sampling = await cdp.send("HeapProfiler.stopSampling").catch(err => ({ _err: err.message }));
+  if (sampling?.profile?.head) {
     const flat = [];
     const walk = (n, depth = 0) => {
       if (!n || depth > 20) return;
@@ -3725,6 +3735,9 @@ try {
       totalSelfSize: flat.reduce((s, n) => s + n.selfSize, 0),
     };
     console.log(`  heap samples: ${flat.length} nodes, total=${(extracted.heapSamples.totalSelfSize / 1024).toFixed(1)}KB, top=${flat[0]?.selfSize || 0}B`);
+  } else {
+    const reason = sampling?._err || "no sampling profile returned";
+    console.log(`  heap samples: unavailable (${reason.slice(0, 50)})`);
   }
 } catch (e) { console.log(`  heap samples: ${e.message.slice(0, 60)}`); }
 
@@ -3735,7 +3748,23 @@ try {
 // capabilities. Useful for knowing whether the source site leans on
 // GPU-accelerated effects that the clone output must also support.
 try {
-  const sysFull = await cdp.send("SystemInfo.getInfo").catch(() => null);
+  // SystemInfo.getInfo is a browser-level domain; needs browser-target CDP
+  // session. page.target().createCDPSession() gives a page-target session
+  // which returns { } for unsupported domains. Try browser target instead.
+  let sysFull = null;
+  try {
+    const browserTarget = browser.target();
+    if (browserTarget) {
+      const browserCdp = await browser.target().createCDPSession().catch(() => null);
+      if (browserCdp) {
+        sysFull = await browserCdp.send("SystemInfo.getInfo").catch(err => ({ _err: err.message }));
+      }
+    }
+  } catch {}
+  // Fallback to page-level session (may still return structured info on some Chromes)
+  if (!sysFull || sysFull._err) {
+    sysFull = await cdp.send("SystemInfo.getInfo").catch(err => ({ _err: err.message }));
+  }
   if (sysFull?.gpu) {
     extracted.systemInfoFull = {
       gpuVendor: sysFull.gpu?.devices?.[0]?.vendorString || null,
@@ -3754,6 +3783,9 @@ try {
     };
     const feats = Object.keys(extracted.systemInfoFull.featureStatus);
     console.log(`  system info full: feats=${feats.length} videoDec=${extracted.systemInfoFull.videoDecoding.length} videoEnc=${extracted.systemInfoFull.videoEncoding.length}`);
+  } else {
+    const reason = sysFull?._err || "no gpu data in response";
+    console.log(`  system info full: unavailable (${reason.slice(0, 50)})`);
   }
 } catch (e) { console.log(`  system info full: ${e.message.slice(0, 60)}`); }
 
