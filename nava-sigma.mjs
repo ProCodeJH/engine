@@ -3504,6 +3504,114 @@ try {
   console.log(`  3rd-party categorized: ${thirdPartyCategorized.totalMatched} services [${groupCounts}]`);
 } catch (e) { console.log(`  3rd-party categorized: ${e.message.slice(0, 60)}`); }
 
+// ─── v67 — Form validation rules + input types inventory ────────────
+// Catalogs every form + input on the page with its validation
+// constraints (required/pattern/min/max/step/autocomplete). Emit uses
+// this to regenerate working forms with the same validation surface,
+// not just visual forms that silently accept anything.
+try {
+  const formSurface = await page.evaluate(() => {
+    const forms = [...document.querySelectorAll("form")].slice(0, 20).map(f => ({
+      action: f.getAttribute("action") || "",
+      method: (f.method || "get").toLowerCase(),
+      novalidate: f.noValidate,
+      enctype: f.enctype || "application/x-www-form-urlencoded",
+      autocomplete: f.getAttribute("autocomplete") || "",
+      inputCount: f.querySelectorAll("input, textarea, select").length,
+    }));
+    const inputs = [...document.querySelectorAll("input, textarea, select")].slice(0, 60).map(el => {
+      const r = el.getBoundingClientRect();
+      return {
+        tag: el.tagName.toLowerCase(),
+        type: el.type || "",
+        name: el.name || "",
+        required: el.required || false,
+        pattern: el.getAttribute("pattern") || null,
+        min: el.getAttribute("min") || null,
+        max: el.getAttribute("max") || null,
+        step: el.getAttribute("step") || null,
+        minLength: el.getAttribute("minlength") || null,
+        maxLength: el.getAttribute("maxlength") || null,
+        placeholder: el.getAttribute("placeholder") ? "(has placeholder)" : null,
+        autocomplete: el.getAttribute("autocomplete") || "",
+        visible: r.width > 5 && r.height > 5,
+      };
+    });
+    const typeCounts = {};
+    for (const i of inputs) typeCounts[i.type] = (typeCounts[i.type] || 0) + 1;
+    return { forms, inputs, typeCounts, totalInputs: inputs.length };
+  });
+  extracted.formSurface = formSurface;
+  const typeSummary = Object.entries(formSurface.typeCounts).map(([t, c]) => `${t}=${c}`).slice(0, 8).join(" ");
+  console.log(`  forms: ${formSurface.forms.length} forms, ${formSurface.totalInputs} inputs [${typeSummary}]`);
+} catch (e) { console.log(`  forms: ${e.message.slice(0, 60)}`); }
+
+// ─── v67 — Viewport meta parse + scroll snap + CSS Houdini ────────────
+try {
+  const layoutMeta = await page.evaluate(() => {
+    // Parse <meta name="viewport"> content
+    const vpContent = document.querySelector('meta[name="viewport"]')?.getAttribute("content") || "";
+    const viewport = {};
+    for (const pair of vpContent.split(",").map(s => s.trim()).filter(Boolean)) {
+      const [k, v] = pair.split("=").map(s => s.trim());
+      if (k) viewport[k] = v || true;
+    }
+
+    // Scroll snap — count containers using scroll-snap-type
+    let snapContainers = 0;
+    let snapChildren = 0;
+    const snapTypes = new Set();
+    for (const sh of document.styleSheets) {
+      try {
+        for (const rule of sh.cssRules || []) {
+          const txt = (() => { try { return rule.cssText || ""; } catch { return ""; } })();
+          const snapMatch = txt.match(/scroll-snap-type:\s*([^;}]+)/);
+          if (snapMatch) {
+            snapContainers++;
+            snapTypes.add(snapMatch[1].trim());
+          }
+          if (/scroll-snap-align:\s*(start|center|end)/.test(txt)) snapChildren++;
+        }
+      } catch {}
+    }
+
+    // CSS Houdini paint worklets
+    const houdini = {
+      paintWorkletAvailable: typeof CSS !== "undefined" && "paintWorklet" in CSS,
+      animationWorkletAvailable: typeof CSS !== "undefined" && "animationWorklet" in CSS,
+      layoutWorkletAvailable: typeof CSS !== "undefined" && "layoutWorklet" in CSS,
+      registeredPaints: (() => {
+        // Count CSS properties using paint()
+        let cnt = 0;
+        for (const sh of document.styleSheets) {
+          try {
+            for (const r of sh.cssRules || []) {
+              if (/paint\([\w-]+/.test(r.cssText || "")) cnt++;
+            }
+          } catch {}
+        }
+        return cnt;
+      })(),
+    };
+
+    // theme-color + color-scheme
+    const themeColor = document.querySelector('meta[name="theme-color"]')?.getAttribute("content") || null;
+    const colorScheme = document.querySelector('meta[name="color-scheme"]')?.getAttribute("content")
+                     || getComputedStyle(document.documentElement).colorScheme || null;
+
+    return {
+      viewport,
+      viewportRaw: vpContent,
+      scrollSnap: { containers: snapContainers, children: snapChildren, types: [...snapTypes] },
+      houdini,
+      themeColor,
+      colorScheme,
+    };
+  });
+  extracted.layoutMeta = layoutMeta;
+  console.log(`  layout meta: viewport=[${Object.keys(layoutMeta.viewport).join(",")}] snap=${layoutMeta.scrollSnap.containers}c/${layoutMeta.scrollSnap.children}i houdini-paints=${layoutMeta.houdini.registeredPaints} themeColor=${layoutMeta.themeColor || "-"}`);
+} catch (e) { console.log(`  layout meta: ${e.message.slice(0, 60)}`); }
+
 // ─── v67 — WCAG AA/AAA contrast ratio audit ──────────────────────────
 // Samples visible text elements, computes effective foreground/background
 // pair, calculates WCAG 2.x relative-luminance contrast ratio. Reports
