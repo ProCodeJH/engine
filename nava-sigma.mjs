@@ -7064,6 +7064,39 @@ Replace \`{{…}}\` tokens throughout \`src/\` with your own copy, images and br
 - \`tailwind.config.ts\` — extracted color palette
 
 Detected sections: ${extracted.sections.map(s => s.role).filter(r => r !== "block").join(", ")}
+${(() => {
+  // Upgrade F — README-level summary of third-party integrations, build
+  // tool, a11y/perf posture. Helps the human developer decide what to
+  // re-install (analytics, chat, CMP) and where to focus refactoring.
+  const cat = extracted.thirdPartyCategorized?.byCategory || {};
+  const detected = Object.keys(cat).filter(k => cat[k]?.length > 0);
+  const lines = [];
+  if (detected.length > 0) {
+    lines.push("\n## Detected integrations (from source)");
+    lines.push("Install equivalents or your own:");
+    for (const group of detected) {
+      const services = cat[group].map(s => s.service.split(":")[1] || s.service).join(", ");
+      lines.push(`- **${group}**: ${services}`);
+    }
+  }
+  if (extracted.networkDeep?.buildTool) {
+    lines.push(`\n## Build tool fingerprint\n- Source used: \`${extracted.networkDeep.buildTool}\``);
+  }
+  if (extracted.contrastAudit) {
+    const aa = Math.round(extracted.contrastAudit.aaPassRatio * 100);
+    const aaa = Math.round(extracted.contrastAudit.aaaPassRatio * 100);
+    lines.push(`\n## Accessibility snapshot (source)\n- WCAG AA: ${aa}% / AAA: ${aaa}%`);
+    if (aa < 80) lines.push(`- ⚠ Low AA compliance on source. Use \`text-brand-contrast\` for safer pairings in clone.`);
+  }
+  if (extracted.layoutPrimitives) {
+    const lp = extracted.layoutPrimitives;
+    lines.push(`\n## Layout posture (source)\n- Flex containers: ${lp.flex.total} (rows ${lp.flex.rows} / cols ${lp.flex.cols})\n- Grid containers: ${lp.grid.count}\n- Sticky elements: ${lp.position.sticky}`);
+  }
+  if (extracted.webglInfo) {
+    lines.push(`\n## WebGL capabilities (source)\n- Version: ${extracted.webglInfo.version}\n- Extensions available: ${extracted.webglInfo.extensions.length}\n- Max texture size: ${extracted.webglInfo.maxTexSize}`);
+  }
+  return lines.join("\n");
+})()}
 `);
 
 // ─── Σ.5.5 Token → original-text post-replace (dev mode) ─────────────
