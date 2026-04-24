@@ -5039,7 +5039,12 @@ const remotePatternsJson = [...sourceHostSet].map(h => `{ protocol: "https", hos
 
 fs.writeFileSync(path.join(projDir, "next.config.ts"),
 `import type { NextConfig } from "next";
-const config: NextConfig = { images: { remotePatterns: [${remotePatternsJson}] } };
+const config: NextConfig = {
+  images: {
+    remotePatterns: [${remotePatternsJson}],
+    formats: ["image/avif", "image/webp"],
+  },
+};
 export default config;
 `);
 fs.writeFileSync(path.join(projDir, "tsconfig.json"), JSON.stringify({
