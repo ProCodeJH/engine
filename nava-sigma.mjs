@@ -69,7 +69,18 @@ NAVA Sigma v0.1 — Clean-Room Regeneration
 
 // ─── Σ.0 RECON ─────────────────────────────────────────────────────
 console.log(`[Σ.0] RECON ${el()}`);
-const browser = await puppeteer.launch({ headless: "new" });
+const browser = await puppeteer.launch({
+  headless: "new",
+  protocolTimeout: 300000,
+  args: [
+    "--disable-dev-shm-usage",
+    "--no-sandbox",
+    "--disable-blink-features=AutomationControlled",
+    "--disable-features=site-per-process,TranslateUI",
+    "--disable-background-timer-throttling",
+    "--disable-renderer-backgrounding",
+  ],
+});
 const page = await browser.newPage();
 await page.setViewport({ width: 1920, height: 1080 });
 // Canvas text intercept — injected BEFORE any page script so we catch
@@ -2042,6 +2053,18 @@ if (routeSet.length > 0) {
     } catch (e) {
       console.log(`    ${route}: scan failed (${e.message.slice(0, 60)})`);
     }
+  }
+  // CRITICAL: Return to root so subsequent evaluate() calls run against
+  // the main page state, not the last (possibly broken) route. Without
+  // this, all downstream CDP ops run on whatever route happened to load
+  // last — and if that route had a JS timeout (e.g. Framer lazy page),
+  // the CDP session stays in a bad state and everything downstream fails
+  // with `Runtime.callFunctionOn timed out`.
+  try {
+    await page.goto(url, { waitUntil: "networkidle2", timeout: 30000 });
+    await new Promise(r => setTimeout(r, 800));
+  } catch (e) {
+    console.log(`    root restore: failed (${e.message.slice(0, 60)})`);
   }
 }
 
