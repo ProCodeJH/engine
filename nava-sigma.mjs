@@ -3513,9 +3513,12 @@ try {
 // (3) Font metrics: canvas measureText for actual cap-height, x-height,
 //     ascent, descent per detected font — informs CSS font-size mapping.
 try {
-  const orch = await page.evaluate(() => {
-    // Animation orchestration — group captured Element.animate calls
-    const anims = window.__CAPTURED_ANIMATIONS__ || [];
+  // Pull previously-captured animations from extracted store — the
+  // monkey-patch window.__CAPTURED_ANIMATIONS__ gets cleared on each
+  // page navigation during multi-page scan. extracted.animations is
+  // the merged list saved in the motion stage before route changes.
+  const animsSnapshot = (extracted.animations || []).slice(0, 500);
+  const orch = await page.evaluate((anims) => {
     const bySection = {};  // key: rounded y in 200px buckets
     for (const a of anims) {
       const bucket = Math.floor(a.y / 200) * 200;
@@ -3603,7 +3606,7 @@ try {
       inp,
       fontMetrics,
     };
-  });
+  }, animsSnapshot);
   extracted.animationOrchestration = orch.orchestration;
   extracted.inp = orch.inp;
   extracted.fontMetrics = orch.fontMetrics;
