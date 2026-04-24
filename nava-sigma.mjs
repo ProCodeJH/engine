@@ -3847,6 +3847,7 @@ try {
     const reason = sampling?._err || "no sampling profile returned";
     console.log(`  heap samples: unavailable (${reason.slice(0, 50)})`);
   }
+  await cdp.send("HeapProfiler.disable").catch(() => {});
 } catch (e) { console.log(`  heap samples: ${e.message.slice(0, 60)}`); }
 
 // ─── v67 — SystemInfo FULL (GPU feature status + video/image decoders) ─
@@ -3859,16 +3860,21 @@ try {
   // SystemInfo.getInfo is a browser-level domain; needs browser-target CDP
   // session. page.target().createCDPSession() gives a page-target session
   // which returns { } for unsupported domains. Try browser target instead.
+  // CRITICAL: detach the extra CDP session after use. Leaving it open keeps
+  // a socket handle that blocks browser.close() → engine hangs forever.
   let sysFull = null;
+  let browserCdp = null;
   try {
     const browserTarget = browser.target();
     if (browserTarget) {
-      const browserCdp = await browser.target().createCDPSession().catch(() => null);
+      browserCdp = await browser.target().createCDPSession().catch(() => null);
       if (browserCdp) {
         sysFull = await browserCdp.send("SystemInfo.getInfo").catch(err => ({ _err: err.message }));
       }
     }
   } catch {}
+  // Always detach the browser-level session regardless of outcome.
+  if (browserCdp) { try { await browserCdp.detach(); } catch {} }
   // Fallback to page-level session (may still return structured info on some Chromes)
   if (!sysFull || sysFull._err) {
     sysFull = await cdp.send("SystemInfo.getInfo").catch(err => ({ _err: err.message }));
