@@ -3416,6 +3416,44 @@ try {
   console.log(`  cookies: ${extracted.cookieMetadata.count} (names only, values skipped for privacy)`);
 } catch (e) {}
 
+// ─── v67 — WebGL extensions + texture formats enumeration ─────────────
+// Beyond shader source capture, we also enumerate which WebGL extensions
+// the page's canvas context supports (e.g. EXT_color_buffer_float for
+// HDR rendering, WEBGL_compressed_texture_s3tc for BC texture support).
+// This shapes whether the clone can recreate the visual effect.
+try {
+  const webglInfo = await page.evaluate(() => {
+    const canvases = [...document.querySelectorAll("canvas")];
+    for (const c of canvases) {
+      let gl = null;
+      try { gl = c.getContext("webgl2"); } catch {}
+      if (!gl) try { gl = c.getContext("webgl"); } catch {}
+      if (!gl) try { gl = c.getContext("experimental-webgl"); } catch {}
+      if (!gl) continue;
+      const dbg = gl.getExtension("WEBGL_debug_renderer_info");
+      return {
+        version: gl.getParameter(gl.VERSION),
+        shadingLanguage: gl.getParameter(gl.SHADING_LANGUAGE_VERSION),
+        vendor: dbg ? gl.getParameter(dbg.UNMASKED_VENDOR_WEBGL) : gl.getParameter(gl.VENDOR),
+        renderer: dbg ? gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER),
+        maxTexSize: gl.getParameter(gl.MAX_TEXTURE_SIZE),
+        maxCubeMapSize: gl.getParameter(gl.MAX_CUBE_MAP_TEXTURE_SIZE),
+        maxRenderbufferSize: gl.getParameter(gl.MAX_RENDERBUFFER_SIZE),
+        maxVertexAttribs: gl.getParameter(gl.MAX_VERTEX_ATTRIBS),
+        maxVaryingVectors: gl.getParameter(gl.MAX_VARYING_VECTORS),
+        extensions: gl.getSupportedExtensions() || [],
+      };
+    }
+    return null;
+  });
+  if (webglInfo) {
+    extracted.webglInfo = webglInfo;
+    console.log(`  webgl info: ${webglInfo.version} / ${webglInfo.extensions.length} exts / tex=${webglInfo.maxTexSize}`);
+  } else {
+    console.log(`  webgl info: no WebGL canvas found`);
+  }
+} catch (e) { console.log(`  webgl info: ${e.message.slice(0, 60)}`); }
+
 // ─── v67 — Input gesture replay (hover delta capture) ────────────────
 // Static CSS scan catches :hover rules but misses JS-driven hover states
 // (Framer/Wix hide hover effects behind attribute toggles rather than
