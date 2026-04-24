@@ -7279,6 +7279,25 @@ ${(() => {
   if (extracted.webglInfo) {
     lines.push(`\n## WebGL capabilities (source)\n- Version: ${extracted.webglInfo.version}\n- Extensions available: ${extracted.webglInfo.extensions.length}\n- Max texture size: ${extracted.webglInfo.maxTexSize}`);
   }
+  if (extracted.a11yEditorialRum?.editorial && extracted.a11yEditorialRum.editorial.wordCount > 0) {
+    const ed = extracted.a11yEditorialRum.editorial;
+    lines.push(`\n## Editorial posture (source)\n- Word count: ${ed.wordCount}\n- Reading time: ${ed.readingTimeMinutes} min (at 220 wpm)`);
+    if (ed.articles > 0) lines.push(`- \\<article\\> tags: ${ed.articles}`);
+    if (ed.timeTags > 0) lines.push(`- \\<time datetime\\> tags: ${ed.timeTags}`);
+    if (ed.authors > 0) lines.push(`- Author markers: ${ed.authors}`);
+    if (ed.ogType) lines.push(`- og:type: \`${ed.ogType}\``);
+    if (ed.twitterCard) lines.push(`- twitter:card: \`${ed.twitterCard}\``);
+  }
+  if (extracted.a11yEditorialRum?.rum && extracted.a11yEditorialRum.rum.length > 0) {
+    lines.push(`\n## Real-user monitoring (source)\n- Detected services: ${extracted.a11yEditorialRum.rum.join(", ")}\n- Replace with your own error / session-replay / perf monitor before production.`);
+  }
+  if (extracted.networkDeep?.reactive) {
+    const r = extracted.networkDeep.reactive;
+    const detected = Object.entries(r).filter(([, v]) => v && v !== null).map(([k]) => k);
+    if (detected.length > 0) {
+      lines.push(`\n## Framework runtime (source)\n- Detected: ${detected.join(", ")}`);
+    }
+  }
   return lines.join("\n");
 })()}
 `);
