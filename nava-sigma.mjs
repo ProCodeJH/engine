@@ -3504,6 +3504,147 @@ try {
   console.log(`  3rd-party categorized: ${thirdPartyCategorized.totalMatched} services [${groupCounts}]`);
 } catch (e) { console.log(`  3rd-party categorized: ${e.message.slice(0, 60)}`); }
 
+// ─── v67 — Animation orchestration timeline + INP + Font metrics ─────
+// Three signals that feed emit:
+// (1) Animation orchestration: groups Element.animate() calls by section,
+//     sorts by start-delay, extracts sequence patterns (stagger/cascade).
+// (2) INP metrics: the third Core Web Vital. Per-interaction latency
+//     (click / keypress / pointerdown). Signals responsiveness.
+// (3) Font metrics: canvas measureText for actual cap-height, x-height,
+//     ascent, descent per detected font — informs CSS font-size mapping.
+try {
+  const orch = await page.evaluate(() => {
+    // Animation orchestration — group captured Element.animate calls
+    const anims = window.__CAPTURED_ANIMATIONS__ || [];
+    const bySection = {};  // key: rounded y in 200px buckets
+    for (const a of anims) {
+      const bucket = Math.floor(a.y / 200) * 200;
+      if (!bySection[bucket]) bySection[bucket] = [];
+      bySection[bucket].push(a);
+    }
+    // Detect stagger: same tag + same duration, increasing delay
+    const staggerSeqs = [];
+    for (const [bucket, items] of Object.entries(bySection)) {
+      const byTag = {};
+      for (const a of items) {
+        const key = a.tag;
+        if (!byTag[key]) byTag[key] = [];
+        byTag[key].push(a);
+      }
+      for (const [tag, group] of Object.entries(byTag)) {
+        if (group.length < 3) continue;
+        const durations = [...new Set(group.map(g => g.duration))];
+        if (durations.length <= 2 && durations[0] && durations[0] > 100) {
+          staggerSeqs.push({
+            bucket: +bucket, tag,
+            count: group.length,
+            duration: durations[0],
+            variance: durations.length,
+          });
+        }
+      }
+    }
+
+    // INP — Interaction to Next Paint
+    const eventEntries = performance.getEntriesByType("event") || [];
+    const interactions = {};
+    for (const e of eventEntries) {
+      const id = e.interactionId;
+      if (!id || id === 0) continue;
+      if (!interactions[id]) interactions[id] = { duration: 0, events: 0 };
+      if (e.duration > interactions[id].duration) interactions[id].duration = e.duration;
+      interactions[id].events++;
+    }
+    const durations = Object.values(interactions).map(i => i.duration).sort((a, b) => b - a);
+    const inp = {
+      interactionCount: durations.length,
+      p50: durations[Math.floor(durations.length / 2)] || 0,
+      p75: durations[Math.floor(durations.length * 0.25)] || 0,
+      p98: durations[Math.floor(durations.length * 0.02)] || 0,
+      max: durations[0] || 0,
+    };
+
+    // Font metrics via canvas
+    const measureFont = (family) => {
+      const c = document.createElement("canvas");
+      c.width = 1000; c.height = 200;
+      const ctx = c.getContext("2d");
+      if (!ctx) return null;
+      const testSize = 100;
+      ctx.font = `${testSize}px ${family}`;
+      const m = ctx.measureText("Mxg");
+      return {
+        family,
+        ascent: Math.round((m.actualBoundingBoxAscent || 0) * 100) / 100,
+        descent: Math.round((m.actualBoundingBoxDescent || 0) * 100) / 100,
+        fontAscent: Math.round((m.fontBoundingBoxAscent || 0) * 100) / 100,
+        fontDescent: Math.round((m.fontBoundingBoxDescent || 0) * 100) / 100,
+        width: Math.round(m.width * 100) / 100,
+      };
+    };
+    const fontMetrics = [];
+    const families = [...new Set([...document.querySelectorAll("*")]
+      .map(el => getComputedStyle(el).fontFamily.split(",")[0].trim().replace(/['"]/g, "")))]
+      .filter(f => f && f.length < 60)
+      .slice(0, 8);
+    for (const f of families) {
+      try {
+        const m = measureFont(f);
+        if (m) fontMetrics.push(m);
+      } catch {}
+    }
+
+    return {
+      orchestration: {
+        totalAnimations: anims.length,
+        bucketsCount: Object.keys(bySection).length,
+        staggerSequences: staggerSeqs.slice(0, 10),
+      },
+      inp,
+      fontMetrics,
+    };
+  });
+  extracted.animationOrchestration = orch.orchestration;
+  extracted.inp = orch.inp;
+  extracted.fontMetrics = orch.fontMetrics;
+  console.log(`  orchestration: ${orch.orchestration.totalAnimations} anims across ${orch.orchestration.bucketsCount} buckets, ${orch.orchestration.staggerSequences.length} stagger seqs`);
+  console.log(`  INP: ${orch.inp.interactionCount} interactions, p75=${orch.inp.p75}ms p98=${orch.inp.p98}ms max=${orch.inp.max}ms`);
+  console.log(`  font metrics: ${orch.fontMetrics.length} families measured`);
+} catch (e) { console.log(`  orchestration/INP/font metrics: ${e.message.slice(0, 60)}`); }
+
+// Media capabilities — HDR / dynamic range / spatial audio
+try {
+  const mediaCaps = await page.evaluate(async () => {
+    const out = {
+      hdr: null, dynamicRange: null, colorGamut: null, spatialAudio: null,
+      audioCodecs: [], videoCodecs: [],
+    };
+    try {
+      out.hdr = matchMedia("(dynamic-range: high)").matches;
+      out.dynamicRange = matchMedia("(dynamic-range: standard)").matches ? "standard" :
+                         matchMedia("(dynamic-range: high)").matches ? "high" : null;
+      out.colorGamut = matchMedia("(color-gamut: rec2020)").matches ? "rec2020" :
+                       matchMedia("(color-gamut: p3)").matches ? "p3" :
+                       matchMedia("(color-gamut: srgb)").matches ? "srgb" : null;
+    } catch {}
+    try {
+      if (navigator.mediaCapabilities) {
+        for (const codec of ["audio/mp4; codecs=mp4a.40.2", "audio/webm; codecs=opus", "audio/ogg; codecs=vorbis"]) {
+          const r = await navigator.mediaCapabilities.decodingInfo({ type: "file", audio: { contentType: codec, channels: "2", bitrate: 128000, samplerate: 48000 } }).catch(() => null);
+          if (r?.supported) out.audioCodecs.push(codec);
+        }
+        for (const codec of ["video/mp4; codecs=avc1.64001E", "video/webm; codecs=vp9", "video/webm; codecs=av01.0.05M.08"]) {
+          const r = await navigator.mediaCapabilities.decodingInfo({ type: "file", video: { contentType: codec, width: 1920, height: 1080, bitrate: 5000000, framerate: 30 } }).catch(() => null);
+          if (r?.supported) out.videoCodecs.push(codec);
+        }
+      }
+    } catch {}
+    return out;
+  });
+  extracted.mediaCapabilities = mediaCaps;
+  console.log(`  media caps: hdr=${mediaCaps.hdr} range=${mediaCaps.dynamicRange} gamut=${mediaCaps.colorGamut} audio=[${mediaCaps.audioCodecs.length}] video=[${mediaCaps.videoCodecs.length}]`);
+} catch (e) { console.log(`  media caps: ${e.message.slice(0, 60)}`); }
+
 // ─── v67 — Form validation rules + input types inventory ────────────
 // Catalogs every form + input on the page with its validation
 // constraints (required/pattern/min/max/step/autocomplete). Emit uses
