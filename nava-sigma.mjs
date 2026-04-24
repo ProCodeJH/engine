@@ -3504,6 +3504,136 @@ try {
   console.log(`  3rd-party categorized: ${thirdPartyCategorized.totalMatched} services [${groupCounts}]`);
 } catch (e) { console.log(`  3rd-party categorized: ${e.message.slice(0, 60)}`); }
 
+// ─── v67 — Schema.org parsed + Chart libraries + Heading hierarchy ─────
+// Three audits feeding emit + SEO completeness:
+// (1) Schema.org JSON-LD parsed deeply — beyond @type list, extract
+//     name/url/description/breadcrumbs for Organization/Article/Product/
+//     FAQPage/LocalBusiness types. Emit can regenerate matching schema.
+// (2) Chart/dataviz library signatures (Chart.js/Recharts/D3/Visx/
+//     Plotly/ECharts/ApexCharts).
+// (3) Heading hierarchy audit: h1 count (should be 1), heading level
+//     gap detection (h1 → h3 jump = malformed), alt-missing image count.
+try {
+  const seoAudit = await page.evaluate(() => {
+    const out = {
+      schemaParsed: [],
+      chartLibs: [],
+      headingAudit: { h1Count: 0, h2Count: 0, h3Count: 0, hierarchyGaps: 0, headingTree: [] },
+      imageAudit: { total: 0, withAlt: 0, withEmptyAlt: 0, decorativeOk: 0, missingAlt: 0 },
+      links: { sameOrigin: 0, external: 0, mailto: 0, tel: 0, hash: 0, noopener: 0, missingNoopener: 0 },
+    };
+
+    // Parse all JSON-LD blocks deeply
+    for (const sc of document.querySelectorAll('script[type="application/ld+json"]')) {
+      try {
+        const data = JSON.parse(sc.textContent || "{}");
+        const items = Array.isArray(data) ? data : (data["@graph"] || [data]);
+        for (const item of items) {
+          if (!item || typeof item !== "object") continue;
+          const t = item["@type"];
+          out.schemaParsed.push({
+            type: Array.isArray(t) ? t.join(",") : (t || ""),
+            name: item.name || item.headline || null,
+            url: item.url || null,
+            description: (item.description || "").slice(0, 200) || null,
+            image: item.image?.url || item.image || null,
+            sameAs: item.sameAs || null,
+            address: item.address?.addressLocality || item.address?.streetAddress || null,
+            telephone: item.telephone ? "(present)" : null,
+            email: item.email ? "(present)" : null,
+            datePublished: item.datePublished || null,
+            author: item.author?.name || item.author || null,
+          });
+        }
+      } catch {}
+    }
+
+    // Chart/dataviz detection
+    const chartSigs = {
+      chartjs: !!window.Chart || [...document.scripts].some(s => /chart\.js|chart\.min\.js/i.test(s.src || "")),
+      d3: !!window.d3 || [...document.scripts].some(s => /d3(\.min)?\.js|d3-/i.test(s.src || "")),
+      recharts: [...document.scripts].some(s => /recharts/i.test(s.src || "")) ||
+                !!document.querySelector(".recharts-wrapper"),
+      visx: [...document.scripts].some(s => /@visx/i.test(s.src || "")),
+      plotly: !!window.Plotly || [...document.scripts].some(s => /plotly/i.test(s.src || "")),
+      echarts: !!window.echarts || [...document.scripts].some(s => /echarts/i.test(s.src || "")),
+      apexcharts: !!window.ApexCharts || [...document.scripts].some(s => /apexcharts/i.test(s.src || "")),
+      highcharts: !!window.Highcharts || [...document.scripts].some(s => /highcharts/i.test(s.src || "")),
+      nivo: [...document.scripts].some(s => /@nivo/i.test(s.src || "")),
+      mermaid: !!window.mermaid || !!document.querySelector(".mermaid"),
+      vegaLite: [...document.scripts].some(s => /vega-lite/i.test(s.src || "")),
+    };
+    out.chartLibs = Object.entries(chartSigs).filter(([, v]) => v).map(([k]) => k);
+
+    // Heading hierarchy audit
+    const headings = [...document.querySelectorAll("h1, h2, h3, h4, h5, h6")].map(h => ({
+      level: parseInt(h.tagName[1]),
+      text: (h.textContent || "").trim().slice(0, 80),
+      y: Math.round(h.getBoundingClientRect().top + window.scrollY),
+    })).sort((a, b) => a.y - b.y);
+    out.headingAudit.h1Count = headings.filter(h => h.level === 1).length;
+    out.headingAudit.h2Count = headings.filter(h => h.level === 2).length;
+    out.headingAudit.h3Count = headings.filter(h => h.level === 3).length;
+    out.headingAudit.headingTree = headings.slice(0, 25);
+    let gaps = 0;
+    for (let i = 1; i < headings.length; i++) {
+      if (headings[i].level - headings[i - 1].level > 1) gaps++;
+    }
+    out.headingAudit.hierarchyGaps = gaps;
+
+    // Image alt-text audit
+    const imgs = [...document.querySelectorAll("img")];
+    out.imageAudit.total = imgs.length;
+    for (const img of imgs) {
+      const alt = img.getAttribute("alt");
+      if (alt === null) {
+        out.imageAudit.missingAlt++;
+      } else if (alt === "") {
+        out.imageAudit.withEmptyAlt++;
+        // empty alt is correct for decorative images — check if it has role="presentation" or aria-hidden
+        if (img.getAttribute("role") === "presentation" || img.getAttribute("aria-hidden") === "true") {
+          out.imageAudit.decorativeOk++;
+        }
+      } else {
+        out.imageAudit.withAlt++;
+      }
+    }
+
+    // Link audit (same-origin / external / noopener compliance)
+    const origin = location.origin;
+    for (const a of document.querySelectorAll("a[href]")) {
+      const href = a.getAttribute("href") || "";
+      if (href.startsWith("mailto:")) out.links.mailto++;
+      else if (href.startsWith("tel:")) out.links.tel++;
+      else if (href.startsWith("#")) out.links.hash++;
+      else if (href.startsWith("http")) {
+        const isExternal = !href.startsWith(origin);
+        if (isExternal) {
+          out.links.external++;
+          // target=_blank without rel=noopener is a security/perf risk
+          if (a.target === "_blank") {
+            const rel = (a.getAttribute("rel") || "").split(/\s+/);
+            if (rel.includes("noopener")) out.links.noopener++;
+            else out.links.missingNoopener++;
+          }
+        } else {
+          out.links.sameOrigin++;
+        }
+      } else {
+        out.links.sameOrigin++;
+      }
+    }
+
+    return out;
+  });
+  extracted.seoAudit = seoAudit;
+  console.log(`  schema parsed: ${seoAudit.schemaParsed.length} entries [${seoAudit.schemaParsed.map(s => s.type).slice(0, 5).join(",")}]`);
+  console.log(`  chart libs: ${seoAudit.chartLibs.length > 0 ? seoAudit.chartLibs.join(",") : "(none)"}`);
+  console.log(`  heading audit: h1=${seoAudit.headingAudit.h1Count} h2=${seoAudit.headingAudit.h2Count} h3=${seoAudit.headingAudit.h3Count} gaps=${seoAudit.headingAudit.hierarchyGaps}`);
+  console.log(`  image audit: ${seoAudit.imageAudit.total} imgs, ${seoAudit.imageAudit.withAlt} alt-text / ${seoAudit.imageAudit.withEmptyAlt} empty / ${seoAudit.imageAudit.missingAlt} MISSING`);
+  console.log(`  link audit: same=${seoAudit.links.sameOrigin} ext=${seoAudit.links.external} (missing-noopener=${seoAudit.links.missingNoopener})`);
+} catch (e) { console.log(`  seo audit: ${e.message.slice(0, 60)}`); }
+
 // ─── v67 — Network Deep + Source maps + Build tool signatures (block 10) ─
 // Three captures combined:
 // (1) Network Deep — per-resource transferSize/encodedBodySize/decodedBodySize
