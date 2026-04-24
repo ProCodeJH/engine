@@ -4823,6 +4823,18 @@ const colorRoles = (() => {
 const primaryColor = colorRoles.primary;
 const accentColor = colorRoles.accent;
 const textColor = colorRoles.text;
+// Upgrade G — site-measured stagger value. More captured animations means
+// the source has a denser cascade, so we tighten the stagger interval.
+// Sparse animations use a relaxed rhythm. Used by every emitter's
+// staggerChildren prop so the cascade pace matches source density.
+const sigmaStaggerValue = (() => {
+  const totalAnims = extracted.animationOrchestration?.totalAnimations || 0;
+  const staggerCount = extracted.animationOrchestration?.staggerSequences?.length || 0;
+  if (totalAnims > 100 || staggerCount >= 3) return 0.03;  // Webflow-style dense cascade
+  if (totalAnims > 30 || staggerCount >= 2) return 0.05;
+  if (totalAnims > 5 || staggerCount >= 1) return 0.07;
+  return 0.08;  // relaxed default
+})();
 // Upgrade C — contrast-safe text color derived from primary luminance.
 // When the site's measured WCAG AA pass ratio is < 0.8 (v67 Block 5),
 // emit a guaranteed 4.5:1 text color users can opt into via
@@ -5702,8 +5714,8 @@ const emitHero = (section, idx) => {
   // Parallax mode still applies scroll-driven y/opacity/scale via style,
   // while variants drive the initial cascade of hierarchy tokens.
   const innerMotionStyle = useParallax
-    ? `style={{ y, opacity, scale }} initial="hidden" animate="visible" variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08, delayChildren: 0.2 } } }}`
-    : `initial="hidden" animate="visible" variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08, delayChildren: 0.2 } } }}`;
+    ? `style={{ y, opacity, scale }} initial="hidden" animate="visible" variants={{ hidden: {}, visible: { transition: { staggerChildren: ${sigmaStaggerValue}, delayChildren: 0.2 } } }}`
+    : `initial="hidden" animate="visible" variants={{ hidden: {}, visible: { transition: { staggerChildren: ${sigmaStaggerValue}, delayChildren: 0.2 } } }}`;
   const tpl = `"use client";
 ${imports}
 
@@ -6011,7 +6023,7 @@ ${useSectionParallax ? `  const ref = useRef<HTMLElement>(null);
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.1 }}
-        variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.04, delayChildren: 0.1 } } }}
+        variants={{ hidden: {}, visible: { transition: { staggerChildren: ${sigmaStaggerValue}, delayChildren: 0.1 } } }}
         className="${proseUseSpatial ? "relative w-full" : "max-w-3xl mx-auto prose prose-invert"}"
         style={{${proseUseSpatial ? ` height: "${Math.max(section.h - 80, 400)}px"` : ` `}}}
       >
@@ -6272,7 +6284,7 @@ ${useSectionParallax ? `  const ref = useRef<HTMLElement>(null);
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
-        variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.06, delayChildren: 0.1 } } }}
+        variants={{ hidden: {}, visible: { transition: { staggerChildren: ${sigmaStaggerValue}, delayChildren: 0.1 } } }}
         style={{ gap: "${layoutGap}px"${useSectionParallax ? `, y: contentY` : ``}${spatialHeight} }}
         className="${innerMaxWidth} mx-auto ${innerFlexClass} z-10"
       >
