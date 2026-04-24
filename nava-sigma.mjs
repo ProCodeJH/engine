@@ -5148,6 +5148,12 @@ const modernCssBlock = [
   ...(extracted.modernCSS?.container || []),
   ...(extracted.modernCSS?.scope || []),
   ...(extracted.modernCSS?.scrollTimeline || []),
+  // v68 — timelineCSS from dedicated scroll/view timeline capture
+  // (line 2600 area). Previously captured but never emitted. Now the
+  // regenerated site can drive native scroll-linked animations directly
+  // from the source's original CSS, without any JS fallback.
+  ...(extracted.timelineCSS?.scrollTimelineRules || []),
+  ...(extracted.timelineCSS?.viewTimelineRules || []),
   extracted.adoptedStyleSheets || "",
 ].filter(Boolean).join("\n\n");
 
