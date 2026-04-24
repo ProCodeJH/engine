@@ -3416,6 +3416,91 @@ try {
   console.log(`  cookies: ${extracted.cookieMetadata.count} (names only, values skipped for privacy)`);
 } catch (e) {}
 
+// ─── v67 — WCAG AA/AAA contrast ratio audit ──────────────────────────
+// Samples visible text elements, computes effective foreground/background
+// pair, calculates WCAG 2.x relative-luminance contrast ratio. Reports
+// pass/fail for AA (4.5:1 normal, 3:1 large) and AAA (7:1 normal, 4.5:1
+// large). Large = >=24px or >=19px bold.
+try {
+  const contrastAudit = await page.evaluate(() => {
+    const parseRgb = (s) => {
+      const m = (s || "").match(/rgba?\(\s*(\d+)[,\s]+(\d+)[,\s]+(\d+)/);
+      return m ? [+m[1], +m[2], +m[3]] : null;
+    };
+    const alpha = (s) => {
+      const m = (s || "").match(/rgba?\([^)]*\/?\s*([\d.]+)\s*\)?$/);
+      return m ? +m[1] : 1;
+    };
+    const luminance = ([r, g, b]) => {
+      const rs = [r, g, b].map(c => {
+        const v = c / 255;
+        return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+      });
+      return 0.2126 * rs[0] + 0.7152 * rs[1] + 0.0722 * rs[2];
+    };
+    const ratio = (fg, bg) => {
+      const l1 = luminance(fg), l2 = luminance(bg);
+      const lighter = Math.max(l1, l2), darker = Math.min(l1, l2);
+      return (lighter + 0.05) / (darker + 0.05);
+    };
+    // Walk up the tree to find first opaque background.
+    const resolveBg = (el) => {
+      let cur = el;
+      while (cur && cur !== document.documentElement) {
+        const cs = getComputedStyle(cur);
+        const bg = parseRgb(cs.backgroundColor);
+        const a = alpha(cs.backgroundColor);
+        if (bg && a > 0.5) return bg;
+        cur = cur.parentElement;
+      }
+      return [255, 255, 255];  // fallback to white
+    };
+    const samples = [];
+    const textEls = [...document.querySelectorAll("h1, h2, h3, h4, h5, h6, p, span, a, li, td, button")]
+      .filter(el => {
+        const t = (el.textContent || "").trim();
+        if (t.length < 3 || t.length > 400) return false;
+        const r = el.getBoundingClientRect();
+        return r.width >= 20 && r.height >= 10;
+      });
+    for (const el of textEls.slice(0, 80)) {
+      const cs = getComputedStyle(el);
+      const fg = parseRgb(cs.color);
+      if (!fg) continue;
+      const bg = resolveBg(el);
+      const r = ratio(fg, bg);
+      const px = parseFloat(cs.fontSize) || 16;
+      const weight = parseInt(cs.fontWeight) || 400;
+      const isLarge = px >= 24 || (px >= 19 && weight >= 700);
+      const aaMin = isLarge ? 3.0 : 4.5;
+      const aaaMin = isLarge ? 4.5 : 7.0;
+      samples.push({
+        tag: el.tagName.toLowerCase(),
+        fg, bg,
+        ratio: +r.toFixed(2),
+        size: px,
+        weight,
+        isLarge,
+        passesAA: r >= aaMin,
+        passesAAA: r >= aaaMin,
+      });
+    }
+    const total = samples.length;
+    const aaPasses = samples.filter(s => s.passesAA).length;
+    const aaaPasses = samples.filter(s => s.passesAAA).length;
+    // Worst 5 offenders
+    samples.sort((a, b) => a.ratio - b.ratio);
+    return {
+      totalSamples: total,
+      aaPassRatio: total > 0 ? +(aaPasses / total).toFixed(3) : 0,
+      aaaPassRatio: total > 0 ? +(aaaPasses / total).toFixed(3) : 0,
+      worstOffenders: samples.slice(0, 5),
+    };
+  });
+  extracted.contrastAudit = contrastAudit;
+  console.log(`  WCAG contrast: ${contrastAudit.totalSamples} samples, AA=${(contrastAudit.aaPassRatio * 100).toFixed(1)}% AAA=${(contrastAudit.aaaPassRatio * 100).toFixed(1)}%`);
+} catch (e) { console.log(`  WCAG contrast: ${e.message.slice(0, 60)}`); }
+
 // ─── v67 — WebGL extensions + texture formats enumeration ─────────────
 // Beyond shader source capture, we also enumerate which WebGL extensions
 // the page's canvas context supports (e.g. EXT_color_buffer_float for
