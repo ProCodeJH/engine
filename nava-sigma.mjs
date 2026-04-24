@@ -320,6 +320,7 @@ globalThis.__sigma = {
 const here = path.dirname(fileURLToPath(import.meta.url));
 await import(pathToFileURL(path.join(here, "sigma", "scan.mjs")).href);
 await import(pathToFileURL(path.join(here, "sigma", "motion.mjs")).href);
+await import(pathToFileURL(path.join(here, "sigma", "cdp-deep.mjs")).href);
 await import(pathToFileURL(path.join(here, "sigma", "emit.mjs")).href);
 
 await browser.close();
