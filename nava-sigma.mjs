@@ -5801,9 +5801,11 @@ ${useSectionParallax ? `  const ref = useRef<HTMLElement>(null);
         <motion.h2 className="font-heading font-bold mb-12 text-center" style={{ fontSize: "clamp(${Math.round(typeScale.h1 * 0.6)}px, 5vw, ${typeScale.h1}px)", lineHeight: 1.1${useSectionParallax ? `, y: headY, opacity: headOpacity` : ``} }}>{"{{GALLERY_TITLE}}"}</motion.h2>
         ${isTicker ? `<motion.div className="flex" animate=${motion.animate} transition=${motion.transition}>
 ${cards}
-        </motion.div>` : `<div className="grid grid-cols-1 ${gridClass}" style={{ gap: "${layoutGap}px" }}>
+        </motion.div>` : (extracted.layoutMeta?.scrollSnap?.containers > 0 ? `<div className="grid grid-cols-1 ${gridClass} snap-x snap-mandatory overflow-x-auto" style={{ gap: "${layoutGap}px", scrollSnapType: "x mandatory" }}>
 ${cards}
-        </div>`}
+        </div>` : `<div className="grid grid-cols-1 ${gridClass}" style={{ gap: "${layoutGap}px" }}>
+${cards}
+        </div>`)}
       </div>
     </section>
   );
