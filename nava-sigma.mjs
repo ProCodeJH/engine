@@ -3887,7 +3887,20 @@ try {
   }
 } catch (e) { console.log(`  system info full: ${e.message.slice(0, 60)}`); }
 
-await browser.close();
+// browser.close() can hang indefinitely after v67's HeapProfiler +
+// Input.dispatchMouseEvent + SystemInfo interactions leave stale CDP
+// state. Race it against a 15s timeout; on timeout, SIGKILL the Chrome
+// process directly so emit can proceed.
+try {
+  await Promise.race([
+    browser.close(),
+    new Promise((_, rej) => setTimeout(() => rej(new Error("close-timeout-15s")), 15000)),
+  ]);
+} catch (e) {
+  console.log(`  browser.close: ${e.message} — forcing SIGKILL`);
+  try { browser.process()?.kill("SIGKILL"); } catch {}
+  try { await browser.disconnect(); } catch {}
+}
 
 // Write raw extracted scan for debugging / offline regeneration
 extracted.platform = { name: platformMatch.name, confidence: platformMatch.confidence };
