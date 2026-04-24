@@ -3416,6 +3416,77 @@ try {
   console.log(`  cookies: ${extracted.cookieMetadata.count} (names only, values skipped for privacy)`);
 } catch (e) {}
 
+// ─── v67 — Input gesture replay (hover delta capture) ────────────────
+// Static CSS scan catches :hover rules but misses JS-driven hover states
+// (Framer/Wix hide hover effects behind attribute toggles rather than
+// CSS). We synthesize mouseMoved events on each visible CTA/card center,
+// wait 200ms for the site's JS to respond, then capture computed style
+// delta. Emit can inject the hover variant as a framer-motion whileHover.
+try {
+  const hoverTargets = await page.evaluate(() => {
+    const targets = [];
+    const selectors = [
+      "button", "a[href]", "[role='button']",
+      "[class*='card']", "[class*='Card']",
+      "[data-card]", "[class*='link']",
+      "nav a", "main a",
+    ];
+    const seen = new Set();
+    for (const sel of selectors) {
+      for (const el of document.querySelectorAll(sel)) {
+        if (seen.has(el)) continue;
+        seen.add(el);
+        const r = el.getBoundingClientRect();
+        if (r.width < 40 || r.height < 20) continue;
+        if (r.top < 0 || r.top > window.innerHeight - 20) continue;
+        const cs = getComputedStyle(el);
+        targets.push({
+          tag: el.tagName.toLowerCase(),
+          x: Math.round(r.left + r.width / 2),
+          y: Math.round(r.top + r.height / 2),
+          baseTransform: cs.transform,
+          baseOpacity: cs.opacity,
+          baseBg: cs.backgroundColor,
+          baseColor: cs.color,
+          baseShadow: cs.boxShadow,
+        });
+        if (targets.length >= 12) return targets;
+      }
+    }
+    return targets;
+  });
+  const hoverDeltas = [];
+  for (const t of hoverTargets) {
+    try {
+      await cdp.send("Input.dispatchMouseEvent", { type: "mouseMoved", x: t.x, y: t.y });
+      await new Promise(r => setTimeout(r, 220));
+      const after = await page.evaluate((x, y) => {
+        const el = document.elementFromPoint(x, y);
+        if (!el) return null;
+        const cs = getComputedStyle(el);
+        return {
+          transform: cs.transform, opacity: cs.opacity,
+          background: cs.backgroundColor, color: cs.color,
+          boxShadow: cs.boxShadow,
+        };
+      }, t.x, t.y);
+      if (!after) continue;
+      const changed = {};
+      if (after.transform !== t.baseTransform) changed.transform = { from: t.baseTransform, to: after.transform };
+      if (after.opacity !== t.baseOpacity) changed.opacity = { from: t.baseOpacity, to: after.opacity };
+      if (after.background !== t.baseBg) changed.background = { from: t.baseBg, to: after.background };
+      if (after.color !== t.baseColor) changed.color = { from: t.baseColor, to: after.color };
+      if (after.boxShadow !== t.baseShadow) changed.boxShadow = { from: t.baseShadow, to: after.boxShadow };
+      if (Object.keys(changed).length > 0) {
+        hoverDeltas.push({ tag: t.tag, x: t.x, y: t.y, changed });
+      }
+    } catch {}
+  }
+  await cdp.send("Input.dispatchMouseEvent", { type: "mouseMoved", x: 0, y: 0 }).catch(() => {});
+  extracted.hoverDeltas = hoverDeltas;
+  console.log(`  hover replay: ${hoverTargets.length} targets probed, ${hoverDeltas.length} with live JS-driven delta`);
+} catch (e) { console.log(`  hover replay: ${e.message.slice(0, 60)}`); }
+
 // ─── v67 — HeapProfiler sampling profile (top self-size by function) ──
 // Sampling profile gives a statistical picture of which functions retain
 // the most heap. Only constructor/function names + size — no actual
