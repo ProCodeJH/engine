@@ -3504,6 +3504,105 @@ try {
   console.log(`  3rd-party categorized: ${thirdPartyCategorized.totalMatched} services [${groupCounts}]`);
 } catch (e) { console.log(`  3rd-party categorized: ${e.message.slice(0, 60)}`); }
 
+// ─── v67 — Storage quota + Permissions + IndexedDB + WebAssembly ─────
+// Four runtime-introspection captures that reveal how the site uses
+// browser-persistent state:
+try {
+  const runtime = await page.evaluate(async () => {
+    const out = {
+      storageEstimate: null,
+      permissions: {},
+      indexedDB: [],
+      wasmModules: [],
+      serviceWorker: null,
+      cacheStorage: [],
+    };
+
+    // Storage estimate — total / used bytes, per-type breakdown
+    try {
+      if (navigator.storage && navigator.storage.estimate) {
+        const est = await navigator.storage.estimate();
+        out.storageEstimate = {
+          quota: est.quota || 0,
+          usage: est.usage || 0,
+          usageDetails: est.usageDetails || {},
+        };
+      }
+    } catch {}
+
+    // Permissions API status for common permissions
+    const permNames = [
+      "geolocation", "notifications", "camera", "microphone",
+      "persistent-storage", "midi", "clipboard-read", "clipboard-write",
+      "accelerometer", "gyroscope", "magnetometer",
+    ];
+    if (navigator.permissions && navigator.permissions.query) {
+      for (const name of permNames) {
+        try {
+          const st = await navigator.permissions.query({ name });
+          out.permissions[name] = st.state;
+        } catch { /* unsupported name */ }
+      }
+    }
+
+    // IndexedDB database enumeration (Chrome 71+)
+    try {
+      if (indexedDB.databases) {
+        const dbs = await indexedDB.databases();
+        out.indexedDB = dbs.map(d => ({ name: d.name, version: d.version }));
+      }
+    } catch {}
+
+    // Service Worker registration + CacheStorage entries
+    try {
+      if (navigator.serviceWorker) {
+        const reg = await navigator.serviceWorker.getRegistration();
+        if (reg) {
+          out.serviceWorker = {
+            scope: reg.scope,
+            active: !!reg.active,
+            state: reg.active?.state || null,
+            scriptURL: reg.active?.scriptURL || null,
+            updateViaCache: reg.updateViaCache,
+          };
+        }
+      }
+      if (caches && caches.keys) {
+        const names = await caches.keys();
+        for (const name of names.slice(0, 8)) {
+          try {
+            const c = await caches.open(name);
+            const keys = await c.keys();
+            out.cacheStorage.push({ name, entries: keys.length });
+          } catch {}
+        }
+      }
+    } catch {}
+
+    // WebAssembly module detection
+    try {
+      if (window.WebAssembly) {
+        out.wasmAvailable = true;
+        // Check for common WASM-backed libraries
+        out.wasmLibraries = {
+          rive: typeof window.Rive !== "undefined" || !![...document.scripts].find(s => /rive-js|@rive-app/.test(s.src || "")),
+          pdfjs: typeof window.pdfjsLib !== "undefined",
+          ffmpeg: !![...document.scripts].find(s => /ffmpeg/.test(s.src || "")),
+          blurhash: typeof window.blurhash !== "undefined",
+          opencv: typeof window.cv !== "undefined",
+        };
+      }
+    } catch {}
+
+    return out;
+  });
+  extracted.runtimeIntrospect = runtime;
+  const permSet = Object.entries(runtime.permissions).map(([k, v]) => `${k}=${v}`).slice(0, 5).join(" ");
+  console.log(`  storage: quota=${((runtime.storageEstimate?.quota || 0) / 1024 / 1024).toFixed(0)}MB used=${((runtime.storageEstimate?.usage || 0) / 1024).toFixed(1)}KB`);
+  console.log(`  permissions: [${permSet}] ...`);
+  console.log(`  idb: ${runtime.indexedDB.length} dbs  sw: ${runtime.serviceWorker ? "registered" : "none"}  cache: ${runtime.cacheStorage.length} stores  wasm: ${runtime.wasmAvailable ? Object.entries(runtime.wasmLibraries || {}).filter(([, v]) => v).map(([k]) => k).join(",") || "present" : "none"}`);
+} catch (e) { console.log(`  runtime introspect: ${e.message.slice(0, 60)}`); }
+
 // ─── v67 — Animation orchestration timeline + INP + Font metrics ─────
 // Three signals that feed emit:
 // (1) Animation orchestration: groups Element.animate() calls by section,
