@@ -4991,7 +4991,16 @@ fs.writeFileSync(path.join(projDir, "tsconfig.json"), JSON.stringify({
 fs.writeFileSync(path.join(projDir, "postcss.config.mjs"),
 `export default { plugins: { "@tailwindcss/postcss": {} } };\n`);
 
-// Tailwind config with extracted design tokens
+// Tailwind config with extracted design tokens. Spacing scale comes from
+// v67 Block 13 layout primitives — the site's observed gap/padding values
+// become named Tailwind tokens (sigma-gap, sigma-pad-section, etc).
+const topGapEntry = Object.entries(extracted.layoutPrimitives?.gapPx || {}).sort((a, b) => b[1] - a[1])[0];
+const topPadEntry = Object.entries(extracted.layoutPrimitives?.paddingPx || {}).sort((a, b) => b[1] - a[1])[0];
+const sigmaGapPx = topGapEntry ? parseInt(topGapEntry[0]) : 16;
+const sigmaPadPx = topPadEntry ? parseInt(topPadEntry[0]) : 24;
+// Detect site's dominant grid column count (Block 13 histogram)
+const topGridColsEntry = Object.entries(extracted.layoutPrimitives?.grid?.columnsHistogram || {}).sort((a, b) => b[1] - a[1])[0];
+const sigmaGridCols = topGridColsEntry ? parseInt(topGridColsEntry[0]) : 3;
 const tailwindConfig = `import type { Config } from "tailwindcss";
 const config: Config = {
   content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
@@ -5007,6 +5016,17 @@ const config: Config = {
           "muted-2": "${colorRoles.muted2}",
           text: "${textColor}",
         },
+      },
+      spacing: {
+        // Sigma-measured spacing — derived from the source's most-frequent
+        // gap/padding values (v67 Block 13). Components can use gap-sigma,
+        // p-sigma, py-sigma-section for consistency with source rhythm.
+        "sigma": "${sigmaGapPx}px",
+        "sigma-section": "${sigmaPadPx}px",
+      },
+      gridTemplateColumns: {
+        // Site's dominant grid column count — e.g. awwwards=12, wix=1
+        "sigma": "repeat(${sigmaGridCols}, minmax(0, 1fr))",
       },
       fontFamily: {
         heading: ["var(--font-heading)", "ui-sans-serif", "system-ui"],
