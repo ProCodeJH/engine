@@ -3504,6 +3504,112 @@ try {
   console.log(`  3rd-party categorized: ${thirdPartyCategorized.totalMatched} services [${groupCounts}]`);
 } catch (e) { console.log(`  3rd-party categorized: ${e.message.slice(0, 60)}`); }
 
+// ─── v67 — Security runtime audit (block 12) ─────────────────────────
+// Beyond static security headers (already captured in securityHeaders),
+// this examines runtime DOM for active security postures:
+// - Mixed content: http resource refs on https page
+// - SRI: rel=stylesheet / script with integrity= attribute
+// - iframe sandbox: tightness of sandbox= attribute per iframe
+// - target=_blank rel=noopener compliance (already partial in Block 11)
+// - autoplay / allow attributes on iframes (Permissions Policy delegation)
+// - inline event handlers (onclick=) — CSP unsafe-inline indicator
+try {
+  const securityRuntime = await page.evaluate(() => {
+    const isHttps = location.protocol === "https:";
+    const out = {
+      pageProtocol: location.protocol,
+      mixedContent: { scripts: 0, links: 0, images: 0, iframes: 0, examples: [] },
+      sri: { scripts: 0, scriptsTotal: 0, styles: 0, stylesTotal: 0, missingScripts: 0, missingStyles: 0 },
+      iframes: { total: 0, sandboxed: 0, sandboxModes: {}, allow: [], srcdoc: 0 },
+      inlineHandlers: { count: 0, types: {} },
+      cspMetaTag: null,
+      crossOriginAttrs: { script: 0, link: 0, img: 0 },
+      formAction: { http: 0, https: 0 },
+    };
+
+    // Mixed content
+    const collectMixed = (els, attr, kind) => {
+      for (const el of els) {
+        const u = el.getAttribute(attr) || "";
+        if (u.startsWith("http://") && isHttps) {
+          out.mixedContent[kind]++;
+          if (out.mixedContent.examples.length < 6) out.mixedContent.examples.push({ kind, url: u.slice(0, 80) });
+        }
+      }
+    };
+    collectMixed(document.querySelectorAll("script[src]"), "src", "scripts");
+    collectMixed(document.querySelectorAll("link[href]"), "href", "links");
+    collectMixed(document.querySelectorAll("img[src]"), "src", "images");
+    collectMixed(document.querySelectorAll("iframe[src]"), "src", "iframes");
+
+    // SRI
+    const externalScripts = [...document.querySelectorAll("script[src]")].filter(s => {
+      try { const u = new URL(s.src); return u.origin !== location.origin; } catch { return false; }
+    });
+    out.sri.scriptsTotal = externalScripts.length;
+    for (const s of externalScripts) {
+      if (s.getAttribute("integrity")) out.sri.scripts++;
+      else out.sri.missingScripts++;
+    }
+    const externalStyles = [...document.querySelectorAll('link[rel="stylesheet"][href]')].filter(s => {
+      try { const u = new URL(s.href); return u.origin !== location.origin; } catch { return false; }
+    });
+    out.sri.stylesTotal = externalStyles.length;
+    for (const s of externalStyles) {
+      if (s.getAttribute("integrity")) out.sri.styles++;
+      else out.sri.missingStyles++;
+    }
+
+    // iframe sandbox + allow analysis
+    const iframes = [...document.querySelectorAll("iframe")];
+    out.iframes.total = iframes.length;
+    for (const f of iframes) {
+      if (f.getAttribute("srcdoc")) out.iframes.srcdoc++;
+      const sandbox = f.getAttribute("sandbox");
+      if (sandbox !== null) {
+        out.iframes.sandboxed++;
+        const tokens = sandbox.split(/\s+/).filter(Boolean).sort().join(" ") || "(empty=most-strict)";
+        out.iframes.sandboxModes[tokens] = (out.iframes.sandboxModes[tokens] || 0) + 1;
+      }
+      const allow = f.getAttribute("allow");
+      if (allow) out.iframes.allow.push(allow.slice(0, 80));
+    }
+
+    // Inline event handlers (CSP unsafe-inline indicator)
+    const handlerAttrs = ["onclick", "onload", "onerror", "onsubmit", "onchange", "onmouseenter", "onmouseleave", "onkeydown", "onkeyup", "onfocus", "onblur"];
+    for (const h of handlerAttrs) {
+      const found = document.querySelectorAll(`[${h}]`).length;
+      if (found > 0) {
+        out.inlineHandlers.count += found;
+        out.inlineHandlers.types[h] = found;
+      }
+    }
+
+    // CSP via meta tag (header already in securityHeaders)
+    const cspMeta = document.querySelector('meta[http-equiv="Content-Security-Policy"]')?.getAttribute("content");
+    if (cspMeta) out.cspMetaTag = cspMeta.slice(0, 300);
+
+    // Cross-origin attribute compliance
+    for (const el of document.querySelectorAll("script[crossorigin]")) out.crossOriginAttrs.script++;
+    for (const el of document.querySelectorAll("link[crossorigin]")) out.crossOriginAttrs.link++;
+    for (const el of document.querySelectorAll("img[crossorigin]")) out.crossOriginAttrs.img++;
+
+    // Form action protocol
+    for (const f of document.querySelectorAll("form")) {
+      const a = f.getAttribute("action") || "";
+      if (a.startsWith("http://")) out.formAction.http++;
+      else out.formAction.https++;  // including relative + absolute https
+    }
+
+    return out;
+  });
+  extracted.securityRuntime = securityRuntime;
+  const mixed = Object.entries(securityRuntime.mixedContent).filter(([k]) => k !== "examples").map(([k, v]) => `${k}=${v}`).join(" ");
+  console.log(`  security runtime: protocol=${securityRuntime.pageProtocol} mixed=[${mixed}] iframes=${securityRuntime.iframes.total}/${securityRuntime.iframes.sandboxed} sandboxed`);
+  console.log(`  SRI compliance: scripts=${securityRuntime.sri.scripts}/${securityRuntime.sri.scriptsTotal} styles=${securityRuntime.sri.styles}/${securityRuntime.sri.stylesTotal} (missing=${securityRuntime.sri.missingScripts + securityRuntime.sri.missingStyles})`);
+  console.log(`  inline handlers: ${securityRuntime.inlineHandlers.count} attrs (CSP unsafe-inline indicator)`);
+} catch (e) { console.log(`  security runtime: ${e.message.slice(0, 60)}`); }
+
 // ─── v67 — Schema.org parsed + Chart libraries + Heading hierarchy ─────
 // Three audits feeding emit + SEO completeness:
 // (1) Schema.org JSON-LD parsed deeply — beyond @type list, extract
