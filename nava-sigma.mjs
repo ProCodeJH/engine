@@ -5989,17 +5989,45 @@ const emitForm = (formSchema, idx) => {
   const name = `ContactForm${idx}`;
   if (emittedComponents.has(name)) return name;
   emittedComponents.add(name);
+  // v67 form surface pulls the real validation attrs from the source.
+  // Walk both schema.inputs (rich metadata) and v67 formSurface.inputs
+  // (per-input validation) — join by type+name, fall back to index.
+  const v67Inputs = extracted.formSurface?.inputs || [];
+  const lookupV67 = (f, i) => {
+    // Prefer exact match on type+name
+    const byNT = v67Inputs.find(x => x.type === f.type && x.name && x.name === f.name);
+    if (byNT) return byNT;
+    // Fallback: positional match (skipping hidden inputs)
+    const visibleAt = v67Inputs.filter(x => x.visible);
+    return visibleAt[i] || null;
+  };
+  const buildValidationAttrs = (v67) => {
+    if (!v67) return "";
+    const attrs = [];
+    if (v67.name) attrs.push(`name=${JSON.stringify(v67.name)}`);
+    if (v67.required) attrs.push("required");
+    if (v67.pattern) attrs.push(`pattern=${JSON.stringify(v67.pattern)}`);
+    if (v67.min !== null && v67.min !== undefined) attrs.push(`min=${JSON.stringify(String(v67.min))}`);
+    if (v67.max !== null && v67.max !== undefined) attrs.push(`max=${JSON.stringify(String(v67.max))}`);
+    if (v67.step !== null && v67.step !== undefined) attrs.push(`step=${JSON.stringify(String(v67.step))}`);
+    if (v67.minLength !== null && v67.minLength !== undefined) attrs.push(`minLength={${v67.minLength}}`);
+    if (v67.maxLength !== null && v67.maxLength !== undefined) attrs.push(`maxLength={${v67.maxLength}}`);
+    if (v67.autocomplete) attrs.push(`autoComplete=${JSON.stringify(v67.autocomplete)}`);
+    return attrs.length ? " " + attrs.join(" ") : "";
+  };
   const inputs = (formSchema.inputs || []).map((f, i) => {
     // Use original placeholder/label text when available in dev mode
     const originalPlaceholder = f.placeholder || f.label || f.name || "";
     const ph = (USE_ORIGINAL_TEXT && originalPlaceholder)
       ? escapeJsxText(originalPlaceholder).replace(/"/g, "&quot;")
       : `{{FORM_FIELD_${i}}}`;
+    const v67 = lookupV67(f, i);
+    const vAttrs = buildValidationAttrs(v67);
     if (f.tag === "textarea") {
-      return `        <textarea placeholder="${ph}" className="w-full px-4 py-3 rounded-lg border border-white/20 bg-white/5 min-h-[120px]" />`;
+      return `        <textarea placeholder="${ph}"${vAttrs} className="w-full px-4 py-3 rounded-lg border border-white/20 bg-white/5 min-h-[120px]" />`;
     }
-    const inputType = ["email", "tel", "url", "number", "password"].includes(f.type) ? f.type : "text";
-    return `        <input type="${inputType}" placeholder="${ph}" className="w-full px-4 py-3 rounded-lg border border-white/20 bg-white/5" />`;
+    const inputType = ["email", "tel", "url", "number", "password", "date", "datetime-local", "time", "month", "week", "color", "range", "search"].includes(f.type) ? f.type : "text";
+    return `        <input type="${inputType}" placeholder="${ph}"${vAttrs} className="w-full px-4 py-3 rounded-lg border border-white/20 bg-white/5" />`;
   }).join("\n");
   const submit = formSchema.hasSubmit !== false;
   // Form title/submit text — use real value if captured
