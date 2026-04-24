@@ -3839,9 +3839,11 @@ try {
 try {
   // Pull previously-captured animations from extracted store — the
   // monkey-patch window.__CAPTURED_ANIMATIONS__ gets cleared on each
-  // page navigation during multi-page scan. extracted.animations is
-  // the merged list saved in the motion stage before route changes.
-  const animsSnapshot = (extracted.animations || []).slice(0, 500);
+  // page navigation during multi-page scan. The motion stage saves
+  // these as extracted.motions (NOT extracted.animations — that field
+  // doesn't exist; checked via grep). Each motion has y/duration/etc
+  // matching what orchestration needs.
+  const animsSnapshot = (extracted.motions || []).slice(0, 500);
   const orch = await page.evaluate((anims) => {
     const bySection = {};  // key: rounded y in 200px buckets
     for (const a of anims) {
