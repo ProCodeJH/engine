@@ -3504,6 +3504,102 @@ try {
   console.log(`  3rd-party categorized: ${thirdPartyCategorized.totalMatched} services [${groupCounts}]`);
 } catch (e) { console.log(`  3rd-party categorized: ${e.message.slice(0, 60)}`); }
 
+// ─── v67 — Layout primitives analysis (block 13) ─────────────────────
+// Statistical breakdown of how the source uses CSS layout. Drives emit's
+// Tailwind class selection (grid-cols-N, flex-row vs flex-col, gap-N
+// scale derivation) and informs whether each section should be a flex
+// container vs grid container in the regenerated component.
+try {
+  const layoutPrimitives = await page.evaluate(() => {
+    const out = {
+      flex: { rows: 0, cols: 0, wrap: 0, total: 0, justifyContent: {}, alignItems: {} },
+      grid: { count: 0, columnsHistogram: {}, rowsHistogram: {}, gapValues: {}, namedAreas: 0 },
+      position: { static: 0, relative: 0, absolute: 0, fixed: 0, sticky: 0 },
+      display: {},
+      gapPx: {},
+      paddingPx: {},
+      marginAuto: 0,
+      maxWidthClamp: 0,
+      vwUnits: 0,
+      vhUnits: 0,
+      remUnits: 0,
+      emUnits: 0,
+      pxUnits: 0,
+      overflowHidden: 0,
+      transforms3d: 0,
+      filterUsage: 0,
+    };
+    const pxBucket = (v) => {
+      const n = parseFloat(v);
+      if (!Number.isFinite(n) || n <= 0) return null;
+      // Round to nearest 4 to detect 4/8/16 spacing token systems
+      return String(Math.round(n / 4) * 4);
+    };
+    let bigSample = 0;
+    for (const el of document.querySelectorAll("*")) {
+      bigSample++;
+      if (bigSample > 4000) break;
+      const cs = getComputedStyle(el);
+      out.display[cs.display] = (out.display[cs.display] || 0) + 1;
+
+      out.position[cs.position] = (out.position[cs.position] || 0) + 1;
+
+      if (cs.display === "flex" || cs.display === "inline-flex") {
+        out.flex.total++;
+        if (cs.flexDirection === "row" || cs.flexDirection === "row-reverse") out.flex.rows++;
+        if (cs.flexDirection === "column" || cs.flexDirection === "column-reverse") out.flex.cols++;
+        if (cs.flexWrap !== "nowrap") out.flex.wrap++;
+        out.flex.justifyContent[cs.justifyContent] = (out.flex.justifyContent[cs.justifyContent] || 0) + 1;
+        out.flex.alignItems[cs.alignItems] = (out.flex.alignItems[cs.alignItems] || 0) + 1;
+      }
+
+      if (cs.display === "grid" || cs.display === "inline-grid") {
+        out.grid.count++;
+        const cols = (cs.gridTemplateColumns || "").split(/\s+/).filter(Boolean).length;
+        const rows = (cs.gridTemplateRows || "").split(/\s+/).filter(Boolean).length;
+        if (cols >= 1 && cols <= 24) out.grid.columnsHistogram[cols] = (out.grid.columnsHistogram[cols] || 0) + 1;
+        if (rows >= 1 && rows <= 24) out.grid.rowsHistogram[rows] = (out.grid.rowsHistogram[rows] || 0) + 1;
+        const gap = pxBucket(cs.gap);
+        if (gap) out.grid.gapValues[gap] = (out.grid.gapValues[gap] || 0) + 1;
+        if (cs.gridTemplateAreas && cs.gridTemplateAreas !== "none") out.grid.namedAreas++;
+      }
+
+      const gap = pxBucket(cs.gap);
+      if (gap) out.gapPx[gap] = (out.gapPx[gap] || 0) + 1;
+      const pad = pxBucket(cs.padding);
+      if (pad) out.paddingPx[pad] = (out.paddingPx[pad] || 0) + 1;
+      if (cs.marginLeft === "auto" && cs.marginRight === "auto") out.marginAuto++;
+      if (cs.maxWidth && cs.maxWidth !== "none") out.maxWidthClamp++;
+      if (cs.overflow === "hidden" || cs.overflowX === "hidden" || cs.overflowY === "hidden") out.overflowHidden++;
+      if (cs.transform && /matrix3d|rotate3d|translate3d|scale3d|perspective/.test(cs.transform)) out.transforms3d++;
+      if (cs.filter && cs.filter !== "none") out.filterUsage++;
+    }
+
+    // Unit usage scan via stylesheets
+    for (const sh of document.styleSheets) {
+      try {
+        for (const r of sh.cssRules || []) {
+          const t = r.cssText || "";
+          if (/\d+vw\b/.test(t)) out.vwUnits++;
+          if (/\d+vh\b/.test(t)) out.vhUnits++;
+          if (/\d+rem\b/.test(t)) out.remUnits++;
+          if (/\d+em\b/.test(t)) out.emUnits++;
+        }
+      } catch {}
+    }
+    return out;
+  });
+  extracted.layoutPrimitives = layoutPrimitives;
+  // Derive insights for the emit stage
+  const topGap = Object.entries(layoutPrimitives.gapPx).sort((a, b) => b[1] - a[1])[0];
+  const topPad = Object.entries(layoutPrimitives.paddingPx).sort((a, b) => b[1] - a[1])[0];
+  const topGridCols = Object.entries(layoutPrimitives.grid.columnsHistogram).sort((a, b) => b[1] - a[1])[0];
+  console.log(`  layout primitives: flex=${layoutPrimitives.flex.total} (rows ${layoutPrimitives.flex.rows}/cols ${layoutPrimitives.flex.cols}/wrap ${layoutPrimitives.flex.wrap})  grid=${layoutPrimitives.grid.count}${topGridCols ? ` (top cols=${topGridCols[0]})` : ""}`);
+  console.log(`  position: static=${layoutPrimitives.position.static} rel=${layoutPrimitives.position.relative} abs=${layoutPrimitives.position.absolute} fixed=${layoutPrimitives.position.fixed} sticky=${layoutPrimitives.position.sticky}`);
+  console.log(`  spacing tokens: top-gap=${topGap?.[0] || "-"}px (×${topGap?.[1] || 0}) top-pad=${topPad?.[0] || "-"}px (×${topPad?.[1] || 0})  units: vw=${layoutPrimitives.vwUnits} vh=${layoutPrimitives.vhUnits} rem=${layoutPrimitives.remUnits} em=${layoutPrimitives.emUnits}`);
+  console.log(`  effects: 3d-transforms=${layoutPrimitives.transforms3d} filter=${layoutPrimitives.filterUsage} overflow-hidden=${layoutPrimitives.overflowHidden} margin-auto=${layoutPrimitives.marginAuto}`);
+} catch (e) { console.log(`  layout primitives: ${e.message.slice(0, 60)}`); }
+
 // ─── v67 — Security runtime audit (block 12) ─────────────────────────
 // Beyond static security headers (already captured in securityHeaders),
 // this examines runtime DOM for active security postures:
