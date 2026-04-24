@@ -3857,28 +3857,12 @@ try {
 // capabilities. Useful for knowing whether the source site leans on
 // GPU-accelerated effects that the clone output must also support.
 try {
-  // SystemInfo.getInfo is a browser-level domain; needs browser-target CDP
-  // session. page.target().createCDPSession() gives a page-target session
-  // which returns { } for unsupported domains. Try browser target instead.
-  // CRITICAL: detach the extra CDP session after use. Leaving it open keeps
-  // a socket handle that blocks browser.close() → engine hangs forever.
-  let sysFull = null;
-  let browserCdp = null;
-  try {
-    const browserTarget = browser.target();
-    if (browserTarget) {
-      browserCdp = await browser.target().createCDPSession().catch(() => null);
-      if (browserCdp) {
-        sysFull = await browserCdp.send("SystemInfo.getInfo").catch(err => ({ _err: err.message }));
-      }
-    }
-  } catch {}
-  // Always detach the browser-level session regardless of outcome.
-  if (browserCdp) { try { await browserCdp.detach(); } catch {} }
-  // Fallback to page-level session (may still return structured info on some Chromes)
-  if (!sysFull || sysFull._err) {
-    sysFull = await cdp.send("SystemInfo.getInfo").catch(err => ({ _err: err.message }));
-  }
+  // SystemInfo.getInfo is a browser-level domain. Attempting to create a
+  // browser-target CDP session (v67 7a/7b) caused persistent socket leaks
+  // that blocked browser.close() for 12+ minutes. Reverting to page-level
+  // send — if it returns `_err`, we log "unavailable" and continue. GPU
+  // feature status absence is not critical to engine output.
+  const sysFull = await cdp.send("SystemInfo.getInfo").catch(err => ({ _err: err.message }));
   if (sysFull?.gpu) {
     extracted.systemInfoFull = {
       gpuVendor: sysFull.gpu?.devices?.[0]?.vendorString || null,
