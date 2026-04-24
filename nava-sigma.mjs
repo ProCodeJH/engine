@@ -3504,6 +3504,101 @@ try {
   console.log(`  3rd-party categorized: ${thirdPartyCategorized.totalMatched} services [${groupCounts}]`);
 } catch (e) { console.log(`  3rd-party categorized: ${e.message.slice(0, 60)}`); }
 
+// ─── v67 — Network Deep + Source maps + Build tool signatures (block 10) ─
+// Three captures combined:
+// (1) Network Deep — per-resource transferSize/encodedBodySize/decodedBodySize
+//     gives cache hit ratio + average compression. Server-Timing headers
+//     (already in responseHeaders[]) parsed for backend timing breakdown.
+// (2) Source maps — sourceMappingURL discovery. Header AND inline comment
+//     scan. For owner-controlled sites, .map files reveal original source
+//     file paths (React/Vue/Svelte component names + dirs).
+// (3) Build tool detection — chunk URL patterns identify webpack/vite/
+//     turbopack/Next.js/Astro/Nuxt/Remix/Gatsby.
+try {
+  const networkDeep = await page.evaluate(() => {
+    const out = {
+      resourceTiming: { total: 0, cached: 0, totalTransfer: 0, totalEncoded: 0, totalDecoded: 0, avgCompression: 0 },
+      byInitiator: {},
+      slowestResources: [],
+      sourceMaps: [],
+      buildTool: null,
+      buildSignals: {},
+    };
+    const entries = performance.getEntriesByType("resource");
+    let totalTransfer = 0, totalEncoded = 0, totalDecoded = 0;
+    const slow = [];
+    for (const e of entries) {
+      out.resourceTiming.total++;
+      // transferSize=0 + decodedBodySize>0 = served from cache
+      if (e.transferSize === 0 && e.decodedBodySize > 0) out.resourceTiming.cached++;
+      totalTransfer += e.transferSize || 0;
+      totalEncoded += e.encodedBodySize || 0;
+      totalDecoded += e.decodedBodySize || 0;
+      const init = e.initiatorType || "other";
+      out.byInitiator[init] = (out.byInitiator[init] || 0) + 1;
+      slow.push({ url: e.name.slice(0, 80), duration: Math.round(e.duration), transfer: e.transferSize, decoded: e.decodedBodySize, type: init });
+      // detect sourceMappingURL hint via name pattern
+      if (/\.map(\?|$)/i.test(e.name)) {
+        out.sourceMaps.push({ url: e.name, size: e.transferSize });
+      }
+    }
+    out.resourceTiming.totalTransfer = totalTransfer;
+    out.resourceTiming.totalEncoded = totalEncoded;
+    out.resourceTiming.totalDecoded = totalDecoded;
+    out.resourceTiming.avgCompression = totalDecoded > 0 ? +(1 - totalEncoded / totalDecoded).toFixed(3) : 0;
+    out.resourceTiming.cacheHitRatio = entries.length > 0 ? +(out.resourceTiming.cached / entries.length).toFixed(3) : 0;
+    slow.sort((a, b) => b.duration - a.duration);
+    out.slowestResources = slow.slice(0, 8);
+
+    // Inline sourceMappingURL comments in script src
+    const scriptUrls = [...document.scripts].map(s => s.src).filter(Boolean);
+    out.scriptCount = scriptUrls.length;
+
+    // Build tool signatures
+    const sigs = {
+      next: scriptUrls.some(s => /\/_next\/static\//.test(s)),
+      gatsby: scriptUrls.some(s => /webpack-runtime|gatsby-chunk/.test(s)),
+      nuxt: scriptUrls.some(s => /\/_nuxt\//.test(s)),
+      astro: scriptUrls.some(s => /\/_astro\//.test(s)) || !!document.querySelector("astro-island"),
+      remix: scriptUrls.some(s => /\/build\/_assets\//.test(s)),
+      svelteKit: scriptUrls.some(s => /\/_app\/immutable\//.test(s)),
+      vite: scriptUrls.some(s => /\?v=[a-f0-9]{8}/.test(s)) || scriptUrls.some(s => /\/@vite\//.test(s)),
+      webpack: scriptUrls.some(s => /\.\w+\.chunk\.js/.test(s)),
+      turbopack: scriptUrls.some(s => /\.json\.gz/.test(s)),
+      hugo: !!document.querySelector('meta[name="generator"][content*="Hugo"]'),
+      jekyll: !!document.querySelector('meta[name="generator"][content*="Jekyll"]'),
+      framerHosted: scriptUrls.some(s => /framerusercontent\.com/.test(s)),
+      webflowHosted: scriptUrls.some(s => /webflow\.com/.test(s)),
+      wixHosted: scriptUrls.some(s => /parastorage\.com/.test(s)),
+    };
+    out.buildSignals = sigs;
+    out.buildTool = Object.entries(sigs).find(([k, v]) => v)?.[0] || null;
+
+    // Reactive framework state runtime detection
+    out.reactive = {
+      reactDevtools: !!window.__REACT_DEVTOOLS_GLOBAL_HOOK__,
+      reactFiberRoot: typeof document.getElementById("__next")?._reactRootContainer !== "undefined",
+      reactDOMContainer: !!document.querySelector("[data-reactroot]"),
+      vueDevtools: !!window.__VUE__,
+      vueDevtoolsHook: !!window.__VUE_DEVTOOLS_GLOBAL_HOOK__,
+      svelte: !!document.querySelector("[class^='s-']") && [...document.scripts].some(s => /svelte/.test(s.src || "")),
+      angularNg: !!document.querySelector("[ng-version]"),
+      angularNgVersion: document.querySelector("[ng-version]")?.getAttribute("ng-version") || null,
+      preact: !!window.preact,
+      solid: typeof window._$HY !== "undefined",
+      qwik: typeof window.qwikevents !== "undefined" || !!document.querySelector("[q\\:container]"),
+    };
+
+    return out;
+  });
+  extracted.networkDeep = networkDeep;
+  console.log(`  network deep: ${networkDeep.resourceTiming.total} resources, cache=${(networkDeep.resourceTiming.cacheHitRatio * 100).toFixed(0)}% compression=${(networkDeep.resourceTiming.avgCompression * 100).toFixed(0)}% transfer=${(networkDeep.resourceTiming.totalTransfer / 1024).toFixed(0)}KB`);
+  console.log(`  source maps: ${networkDeep.sourceMaps.length} .map files referenced`);
+  console.log(`  build tool: ${networkDeep.buildTool || "(unknown)"} [${Object.entries(networkDeep.buildSignals).filter(([, v]) => v).map(([k]) => k).join(",")}]`);
+  const reactiveDetected = Object.entries(networkDeep.reactive).filter(([, v]) => v && v !== null).map(([k]) => k);
+  console.log(`  reactive: ${reactiveDetected.length > 0 ? reactiveDetected.join(",") : "(no SPA framework runtime detected)"}`);
+} catch (e) { console.log(`  network deep: ${e.message.slice(0, 60)}`); }
+
 // ─── v67 — Storage quota + Permissions + IndexedDB + WebAssembly ─────
 // Four runtime-introspection captures that reveal how the site uses
 // browser-persistent state:
