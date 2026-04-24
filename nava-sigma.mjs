@@ -3416,6 +3416,94 @@ try {
   console.log(`  cookies: ${extracted.cookieMetadata.count} (names only, values skipped for privacy)`);
 } catch (e) {}
 
+// ─── v67 — Third-party service categorization ────────────────────────
+// Existing thirdPartyScripts is raw URL list. Classify each into a
+// functional category so emit knows WHICH integrations to plan for
+// (analytics/chat/CMP/payment/AB-test/tagmgr/CDN) rather than treating
+// them as opaque.
+try {
+  const thirdPartyCategorized = await page.evaluate(() => {
+    const patterns = {
+      "analytics:google": /google-analytics\.com|googletagmanager\.com|gtag\/|ga\.js|analytics\.js/i,
+      "analytics:adobe": /omniture|adobedtm\.com|demdex\.net/i,
+      "analytics:hotjar": /hotjar\.com|hj\.js/i,
+      "analytics:mixpanel": /mxpnl\.com|mixpanel\.com/i,
+      "analytics:segment": /segment\.(io|com)|cdn\.segment/i,
+      "analytics:amplitude": /amplitude\.com|amplitude\.js/i,
+      "analytics:plausible": /plausible\.io/i,
+      "analytics:meta-pixel": /connect\.facebook\.net|fbevents\.js/i,
+      "analytics:naver": /wcslog\.js|wcs\.naver\.net/i,
+      "analytics:kakao": /t1\.daumcdn\.net\/kas/i,
+      "tagmgr:gtm": /googletagmanager\.com\/gtm/i,
+      "tagmgr:tealium": /tealium\.com|utag\.js/i,
+      "chat:intercom": /intercomcdn|intercom\.io/i,
+      "chat:zendesk": /zendesk\.com|zdassets/i,
+      "chat:drift": /drift\.com|driftt/i,
+      "chat:tawk": /tawk\.to/i,
+      "chat:channel-talk": /channeltalk|channel\.io/i,
+      "chat:crisp": /crisp\.chat/i,
+      "cmp:onetrust": /cookielaw\.org|onetrust/i,
+      "cmp:didomi": /didomi\.io/i,
+      "cmp:cookiebot": /cookiebot\.com/i,
+      "ab:optimizely": /optimizely\.com|optmnstr/i,
+      "ab:vwo": /visualwebsiteoptimizer|vwo\.com/i,
+      "ab:launchdarkly": /launchdarkly\.com/i,
+      "ab:convert": /convert\.com\.cdn/i,
+      "payment:stripe": /js\.stripe\.com/i,
+      "payment:paypal": /paypal\.com\/sdk/i,
+      "payment:toss": /js\.tosspayments\.com/i,
+      "payment:kakao-pay": /kakaopay\.com/i,
+      "cdn:cloudflare": /cdnjs\.cloudflare\.com|cloudflare\.com\//i,
+      "cdn:jsdelivr": /cdn\.jsdelivr\.net/i,
+      "cdn:unpkg": /unpkg\.com/i,
+      "fonts:google": /fonts\.googleapis\.com|fonts\.gstatic/i,
+      "fonts:typekit": /use\.typekit\.net|p\.typekit\.net/i,
+      "fonts:fontawesome": /use\.fontawesome|fontawesome\.com/i,
+      "map:google": /maps\.googleapis\.com|maps\.google\.com/i,
+      "map:naver": /openapi\.map\.naver/i,
+      "map:kakao": /dapi\.kakao\.com/i,
+      "video:youtube": /youtube\.com\/iframe_api|youtube\.com\/embed/i,
+      "video:vimeo": /player\.vimeo\.com/i,
+      "social:facebook": /connect\.facebook\.net\/.*\/sdk\.js/i,
+      "social:twitter": /platform\.twitter\.com/i,
+      "social:instagram": /instagram\.com\/embed\.js/i,
+      "runtime:react": /react(-dom)?[@.]/i,
+      "runtime:vue": /vue[@.]/i,
+      "runtime:jquery": /jquery[@.]/i,
+      "runtime:lodash": /lodash/i,
+      "runtime:gsap": /gsap|scrolltrigger/i,
+      "runtime:swiper": /swiper/i,
+      "runtime:splide": /splide/i,
+      "runtime:lenis": /lenis/i,
+      "framework:framer": /framerusercontent\.com|framer-motion/i,
+      "framework:webflow": /webflow\.com|webflow\.io/i,
+      "framework:wix": /parastorage\.com|wix\.com\//i,
+    };
+    const scripts = [...document.scripts].map(s => s.src).filter(Boolean);
+    const links = [...document.querySelectorAll('link[href]')].map(l => l.href);
+    const allUrls = [...scripts, ...links];
+    const matches = {};
+    for (const url of allUrls) {
+      for (const [cat, re] of Object.entries(patterns)) {
+        if (re.test(url)) {
+          if (!matches[cat]) matches[cat] = [];
+          if (matches[cat].length < 3) matches[cat].push(url);
+        }
+      }
+    }
+    const byCategory = {};
+    for (const [key, urls] of Object.entries(matches)) {
+      const [group] = key.split(":");
+      if (!byCategory[group]) byCategory[group] = [];
+      byCategory[group].push({ service: key, samples: urls });
+    }
+    return { matches, byCategory, totalMatched: Object.keys(matches).length };
+  });
+  extracted.thirdPartyCategorized = thirdPartyCategorized;
+  const groupCounts = Object.entries(thirdPartyCategorized.byCategory).map(([g, items]) => `${g}=${items.length}`).join(" ");
+  console.log(`  3rd-party categorized: ${thirdPartyCategorized.totalMatched} services [${groupCounts}]`);
+} catch (e) { console.log(`  3rd-party categorized: ${e.message.slice(0, 60)}`); }
+
 // ─── v67 — WCAG AA/AAA contrast ratio audit ──────────────────────────
 // Samples visible text elements, computes effective foreground/background
 // pair, calculates WCAG 2.x relative-luminance contrast ratio. Reports
