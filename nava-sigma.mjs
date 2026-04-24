@@ -3504,6 +3504,147 @@ try {
   console.log(`  3rd-party categorized: ${thirdPartyCategorized.totalMatched} services [${groupCounts}]`);
 } catch (e) { console.log(`  3rd-party categorized: ${e.message.slice(0, 60)}`); }
 
+// ─── v67 — A11y deeper + Editorial + RUM detection (block 14) ────────
+// Three audits feeding emit + audit phases:
+// (1) A11y deeper: tabindex distribution, aria-live regions, skip links,
+//     focus-visible support, label associations, ARIA role frequency.
+// (2) Editorial pattern: <article> structure, word count, reading time,
+//     time tag presence, author meta, byline detection.
+// (3) RUM detection: error-tracking + session-replay + perf monitoring
+//     services (Sentry/DataDog/NewRelic/FullStory/Microsoft Clarity/
+//     LogRocket/Bugsnag/Honeybadger).
+try {
+  const a11yEditorialRum = await page.evaluate(() => {
+    const out = {
+      a11y: {
+        tabindexExplicit: 0, tabindexNegative: 0, tabindexZero: 0, tabindexPositive: 0,
+        ariaLive: { polite: 0, assertive: 0, off: 0 },
+        skipLinks: 0,
+        focusVisibleSupport: false,
+        landmarks: { main: 0, nav: 0, header: 0, footer: 0, aside: 0, search: 0, banner: 0, complementary: 0 },
+        formLabels: { withLabel: 0, withAriaLabel: 0, missing: 0, total: 0 },
+        roleFrequency: {},
+        ariaDescribedby: 0,
+        ariaLabelledby: 0,
+        langAttr: document.documentElement.getAttribute("lang") || null,
+        dirAttr: document.documentElement.getAttribute("dir") || "ltr",
+      },
+      editorial: {
+        articles: 0, sections: 0,
+        wordCount: 0, readingTimeMinutes: 0,
+        timeTags: 0, authors: 0, datePublished: null,
+        ogType: null, twitterCard: null,
+        breadcrumbs: 0,
+      },
+      rum: [],
+    };
+
+    // tabindex distribution
+    for (const el of document.querySelectorAll("[tabindex]")) {
+      const v = parseInt(el.getAttribute("tabindex") || "0");
+      out.a11y.tabindexExplicit++;
+      if (v < 0) out.a11y.tabindexNegative++;
+      else if (v === 0) out.a11y.tabindexZero++;
+      else out.a11y.tabindexPositive++;
+    }
+    // aria-live
+    for (const el of document.querySelectorAll("[aria-live]")) {
+      const v = el.getAttribute("aria-live");
+      if (out.a11y.ariaLive[v] !== undefined) out.a11y.ariaLive[v]++;
+    }
+    // Skip links — common patterns
+    out.a11y.skipLinks = [...document.querySelectorAll('a[href^="#main"], a[href^="#content"], a[href^="#skip"], a[class*="skip"]')].length;
+    // focus-visible support detection (CSS rule + class fallback)
+    try {
+      for (const sh of document.styleSheets) {
+        for (const r of sh.cssRules || []) {
+          if (/:focus-visible/.test(r.cssText || "")) { out.a11y.focusVisibleSupport = true; break; }
+        }
+        if (out.a11y.focusVisibleSupport) break;
+      }
+    } catch {}
+    // Landmarks
+    out.a11y.landmarks.main = document.querySelectorAll("main, [role='main']").length;
+    out.a11y.landmarks.nav = document.querySelectorAll("nav, [role='navigation']").length;
+    out.a11y.landmarks.header = document.querySelectorAll("header, [role='banner']").length;
+    out.a11y.landmarks.footer = document.querySelectorAll("footer, [role='contentinfo']").length;
+    out.a11y.landmarks.aside = document.querySelectorAll("aside, [role='complementary']").length;
+    out.a11y.landmarks.search = document.querySelectorAll("[role='search']").length;
+    // Form label associations
+    const inputs = [...document.querySelectorAll("input:not([type='hidden']), textarea, select")];
+    out.a11y.formLabels.total = inputs.length;
+    for (const inp of inputs) {
+      if (inp.getAttribute("aria-label")) { out.a11y.formLabels.withAriaLabel++; continue; }
+      const id = inp.id;
+      if (id && document.querySelector(`label[for="${id}"]`)) { out.a11y.formLabels.withLabel++; continue; }
+      // wrapping label?
+      let p = inp.parentElement;
+      let wrapped = false;
+      while (p && p !== document.body) {
+        if (p.tagName === "LABEL") { wrapped = true; break; }
+        p = p.parentElement;
+      }
+      if (wrapped) out.a11y.formLabels.withLabel++;
+      else out.a11y.formLabels.missing++;
+    }
+    // Role frequency
+    for (const el of document.querySelectorAll("[role]")) {
+      const r = el.getAttribute("role");
+      out.a11y.roleFrequency[r] = (out.a11y.roleFrequency[r] || 0) + 1;
+    }
+    out.a11y.ariaDescribedby = document.querySelectorAll("[aria-describedby]").length;
+    out.a11y.ariaLabelledby = document.querySelectorAll("[aria-labelledby]").length;
+
+    // Editorial
+    out.editorial.articles = document.querySelectorAll("article").length;
+    out.editorial.sections = document.querySelectorAll("section").length;
+    const articleText = (document.querySelector("article")?.textContent
+                       || document.querySelector("main")?.textContent
+                       || document.body.textContent || "").trim();
+    const words = articleText.split(/\s+/).filter(w => w.length > 0).length;
+    out.editorial.wordCount = words;
+    out.editorial.readingTimeMinutes = Math.round(words / 220);  // typical reading speed
+    out.editorial.timeTags = document.querySelectorAll("time[datetime]").length;
+    out.editorial.authors = document.querySelectorAll('[rel="author"], [itemprop="author"]').length;
+    out.editorial.ogType = document.querySelector('meta[property="og:type"]')?.getAttribute("content") || null;
+    out.editorial.twitterCard = document.querySelector('meta[name="twitter:card"]')?.getAttribute("content") || null;
+    out.editorial.breadcrumbs = document.querySelectorAll('[aria-label*="breadcrumb" i], nav[class*="breadcrumb"], ol[class*="breadcrumb"]').length;
+
+    // RUM detection
+    const rumPatterns = {
+      sentry: /sentry-cdn\.com|sentry\.io|@sentry/i,
+      datadog: /datadoghq-browser|datadoghq\.com/i,
+      newrelic: /newrelic\.com|nr-data\.net/i,
+      fullstory: /fullstory\.com|fs\.js/i,
+      "microsoft-clarity": /clarity\.ms/i,
+      logrocket: /logrocket\.com|lr-in\.com/i,
+      bugsnag: /bugsnag\.com|bs-cdn\.net/i,
+      honeybadger: /honeybadger\.io/i,
+      raygun: /raygun\.io|raygun4js/i,
+      rollbar: /rollbar\.com/i,
+      "speed-curve": /speedcurve\.com/i,
+      "google-rum": /firebase-performance|gtag\.js.*config.*'GTM/i,
+    };
+    const allUrls = [...document.scripts].map(s => s.src).filter(Boolean);
+    for (const [name, re] of Object.entries(rumPatterns)) {
+      if (allUrls.some(u => re.test(u))) out.rum.push(name);
+    }
+    // Also check window globals
+    if (window.Sentry) out.rum.push("sentry-runtime");
+    if (window.DD_RUM) out.rum.push("datadog-runtime");
+    if (window.newrelic) out.rum.push("newrelic-runtime");
+    out.rum = [...new Set(out.rum)];
+
+    return out;
+  });
+  extracted.a11yEditorialRum = a11yEditorialRum;
+  console.log(`  a11y deeper: tabindex=${a11yEditorialRum.a11y.tabindexExplicit} (neg ${a11yEditorialRum.a11y.tabindexNegative} / pos ${a11yEditorialRum.a11y.tabindexPositive})  aria-live=${Object.values(a11yEditorialRum.a11y.ariaLive).reduce((s, n) => s + n, 0)}  skip-links=${a11yEditorialRum.a11y.skipLinks}  :focus-visible=${a11yEditorialRum.a11y.focusVisibleSupport}`);
+  console.log(`  landmarks: main=${a11yEditorialRum.a11y.landmarks.main} nav=${a11yEditorialRum.a11y.landmarks.nav} header=${a11yEditorialRum.a11y.landmarks.header} footer=${a11yEditorialRum.a11y.landmarks.footer} aside=${a11yEditorialRum.a11y.landmarks.aside}`);
+  console.log(`  form labels: ${a11yEditorialRum.a11y.formLabels.withLabel}/${a11yEditorialRum.a11y.formLabels.total} <label>, ${a11yEditorialRum.a11y.formLabels.withAriaLabel} aria-label, ${a11yEditorialRum.a11y.formLabels.missing} MISSING`);
+  console.log(`  editorial: words=${a11yEditorialRum.editorial.wordCount} reading=${a11yEditorialRum.editorial.readingTimeMinutes}min articles=${a11yEditorialRum.editorial.articles} time-tags=${a11yEditorialRum.editorial.timeTags} ogType=${a11yEditorialRum.editorial.ogType || "-"} twitter=${a11yEditorialRum.editorial.twitterCard || "-"}`);
+  console.log(`  RUM: ${a11yEditorialRum.rum.length > 0 ? a11yEditorialRum.rum.join(",") : "(none detected)"}`);
+} catch (e) { console.log(`  a11y/editorial/rum: ${e.message.slice(0, 60)}`); }
+
 // ─── v67 — Layout primitives analysis (block 13) ─────────────────────
 // Statistical breakdown of how the source uses CSS layout. Drives emit's
 // Tailwind class selection (grid-cols-N, flex-row vs flex-col, gap-N
