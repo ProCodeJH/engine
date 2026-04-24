@@ -6491,7 +6491,37 @@ ${(extracted.linkHints || []).slice(0, 20).map(l => {
   if (l.crossOrigin !== null && l.crossOrigin !== undefined) attrs.push(l.crossOrigin ? `crossOrigin="${l.crossOrigin}"` : `crossOrigin=""`);
   return `        <link ${attrs.join(" ")} />`;
 }).join("\n")}
-${(extracted.jsonLdTypes || []).length > 0 ? `        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context":"https://schema.org","@type":"WebSite","name":"Site","url":"https://example.com"}) }} />` : ""}
+${(() => {
+  // Upgrade E — emit structured JSON-LD derived from v67 Block 11 schemaParsed.
+  // Source site's structured metadata (name/url/description/image/sameAs/
+  // address/telephone/email/datePublished/author) is preserved via token
+  // placeholders. Falls back to hardcoded WebSite scaffold when only
+  // @type names (jsonLdTypes) are available but no fields.
+  const parsed = extracted.schemaParsed || [];
+  if (parsed.length > 0) {
+    return parsed.map((s, i) => {
+      const obj = {
+        "@context": "https://schema.org",
+        "@type": s.type || "WebSite",
+        name: s.name ? (USE_ORIGINAL_TEXT ? s.name : "{{SCHEMA_NAME}}") : "{{BRAND_NAME}}",
+      };
+      if (s.url) obj.url = USE_ORIGINAL_TEXT ? s.url : "{{SITE_URL}}";
+      if (s.description) obj.description = USE_ORIGINAL_TEXT ? s.description : "{{PAGE_DESCRIPTION}}";
+      if (s.image) obj.image = s.image;
+      if (s.sameAs && Array.isArray(s.sameAs)) obj.sameAs = s.sameAs;
+      if (s.address) obj.address = { "@type": "PostalAddress", addressLocality: USE_ORIGINAL_TEXT ? s.address : "{{ADDRESS_LOCALITY}}" };
+      if (s.telephone) obj.telephone = USE_ORIGINAL_TEXT ? s.telephone : "{{TELEPHONE}}";
+      if (s.email) obj.email = USE_ORIGINAL_TEXT ? s.email : "{{EMAIL}}";
+      if (s.datePublished) obj.datePublished = s.datePublished;
+      if (s.author) obj.author = { "@type": "Person", name: USE_ORIGINAL_TEXT ? s.author : "{{AUTHOR}}" };
+      return `        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: ${JSON.stringify(JSON.stringify(obj))} }} />`;
+    }).join("\n");
+  }
+  if ((extracted.jsonLdTypes || []).length > 0) {
+    return `        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context":"https://schema.org","@type":"${extracted.jsonLdTypes[0] || "WebSite"}","name":"{{BRAND_NAME}}","url":"{{SITE_URL}}"}) }} />`;
+  }
+  return "";
+})()}
       </head>
       <body className="antialiased min-h-screen">{children}</body>
     </html>
