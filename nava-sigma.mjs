@@ -3416,6 +3416,35 @@ try {
   console.log(`  cookies: ${extracted.cookieMetadata.count} (names only, values skipped for privacy)`);
 } catch (e) {}
 
+// ─── v67 — SystemInfo FULL (GPU feature status + video/image decoders) ─
+// Earlier `systemInfo` captured only GPU vendor/device strings. This
+// expands it with the complete featureStatus map (webgl/webgl2/gpu/
+// video_decode/etc.) + video decode/encode profiles + image decoding
+// capabilities. Useful for knowing whether the source site leans on
+// GPU-accelerated effects that the clone output must also support.
+try {
+  const sysFull = await cdp.send("SystemInfo.getInfo").catch(() => null);
+  if (sysFull?.gpu) {
+    extracted.systemInfoFull = {
+      gpuVendor: sysFull.gpu?.devices?.[0]?.vendorString || null,
+      gpuDevice: sysFull.gpu?.devices?.[0]?.deviceString || null,
+      driverBugWorkarounds: (sysFull.gpu?.driverBugWorkarounds || []).length,
+      featureStatus: sysFull.gpu?.featureStatus || {},
+      auxAttributes: Object.keys(sysFull.gpu?.auxAttributes || {}).slice(0, 30),
+      videoDecoding: (sysFull.videoDecoding || []).map(v => ({
+        profile: v.profile, maxResolution: v.maxResolution,
+        maxFramerateNumerator: v.maxFramerateNumerator,
+      })),
+      videoEncoding: (sysFull.videoEncoding || []).map(v => ({
+        profile: v.profile, maxResolution: v.maxResolution,
+      })),
+      imageDecoding: sysFull.imageDecoding || [],
+    };
+    const feats = Object.keys(extracted.systemInfoFull.featureStatus);
+    console.log(`  system info full: feats=${feats.length} videoDec=${extracted.systemInfoFull.videoDecoding.length} videoEnc=${extracted.systemInfoFull.videoEncoding.length}`);
+  }
+} catch (e) { console.log(`  system info full: ${e.message.slice(0, 60)}`); }
+
 await browser.close();
 
 // Write raw extracted scan for debugging / offline regeneration
