@@ -3416,6 +3416,36 @@ try {
   console.log(`  cookies: ${extracted.cookieMetadata.count} (names only, values skipped for privacy)`);
 } catch (e) {}
 
+// ─── v67 — HeapProfiler sampling profile (top self-size by function) ──
+// Sampling profile gives a statistical picture of which functions retain
+// the most heap. Only constructor/function names + size — no actual
+// object content or values. Reveals memory hotspots (big data structures,
+// WebGL textures, image buffers) that inform clone sizing decisions.
+try {
+  await cdp.send("HeapProfiler.enable").catch(() => {});
+  const sampling = await cdp.send("HeapProfiler.getSamplingProfile").catch(() => null);
+  if (sampling?.profile) {
+    const flat = [];
+    const walk = (n, depth = 0) => {
+      if (!n || depth > 20) return;
+      flat.push({
+        functionName: (n.callFrame?.functionName || "(anonymous)").slice(0, 80),
+        url: (n.callFrame?.url || "").slice(0, 80),
+        selfSize: n.selfSize || 0,
+      });
+      for (const c of (n.children || [])) walk(c, depth + 1);
+    };
+    walk(sampling.profile.head);
+    flat.sort((a, b) => b.selfSize - a.selfSize);
+    extracted.heapSamples = {
+      totalNodes: flat.length,
+      top20: flat.slice(0, 20),
+      totalSelfSize: flat.reduce((s, n) => s + n.selfSize, 0),
+    };
+    console.log(`  heap samples: ${flat.length} nodes, total=${(extracted.heapSamples.totalSelfSize / 1024).toFixed(1)}KB, top=${flat[0]?.selfSize || 0}B`);
+  }
+} catch (e) { console.log(`  heap samples: ${e.message.slice(0, 60)}`); }
+
 // ─── v67 — SystemInfo FULL (GPU feature status + video/image decoders) ─
 // Earlier `systemInfo` captured only GPU vendor/device strings. This
 // expands it with the complete featureStatus map (webgl/webgl2/gpu/
