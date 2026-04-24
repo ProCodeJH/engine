@@ -4616,6 +4616,43 @@ try {
   }
   await cdp.send("Input.dispatchMouseEvent", { type: "mouseMoved", x: 0, y: 0 }).catch(() => {});
   extracted.hoverDeltas = hoverDeltas;
+  // Upgrade D — when the original CSS-based hoverSignature was empty
+  // (common on sites that drive hover entirely through JS), synthesize it
+  // from the dominant JS-driven delta pattern. This makes buildHoverExpr
+  // (used by renderDOMTree) produce meaningful whileHover variants on
+  // Framer-style sites where static CSS :hover rules don't capture the
+  // real behavior.
+  const sigAlreadyFilled = extracted.hoverSignature && (
+    extracted.hoverSignature.y !== null ||
+    extracted.hoverSignature.scale !== null ||
+    extracted.hoverSignature.opacity !== null
+  );
+  if (!sigAlreadyFilled && hoverDeltas.length > 0) {
+    // Parse each delta's transform string for scale/translateY
+    let scaleSum = 0, scaleCount = 0, yTranslateSum = 0, yTranslateCount = 0;
+    let opacitySum = 0, opacityCount = 0;
+    for (const d of hoverDeltas) {
+      const t = d.changed?.transform?.to || "";
+      const scaleM = t.match(/scale\(\s*([\d.]+)\s*\)/) || t.match(/matrix\([^)]+\)/);
+      if (scaleM && scaleM[1]) { scaleSum += parseFloat(scaleM[1]); scaleCount++; }
+      const yM = t.match(/translateY\(\s*(-?[\d.]+)px\s*\)/) || t.match(/translate3d\([^,]+,\s*(-?[\d.]+)px/);
+      if (yM && yM[1]) { yTranslateSum += parseFloat(yM[1]); yTranslateCount++; }
+      const oTo = parseFloat(d.changed?.opacity?.to);
+      if (!isNaN(oTo)) { opacitySum += oTo; opacityCount++; }
+    }
+    const synthSig = {
+      scale: scaleCount > 0 ? +(scaleSum / scaleCount).toFixed(3) : null,
+      y: yTranslateCount > 0 ? Math.round(yTranslateSum / yTranslateCount) : null,
+      opacity: opacityCount > 0 ? +(opacitySum / opacityCount).toFixed(2) : null,
+      color: null,
+      source: "js-delta-synthesis",
+    };
+    // Only replace if synthesized signal is non-trivial
+    if (synthSig.scale || synthSig.y || (synthSig.opacity !== null && synthSig.opacity !== 1)) {
+      extracted.hoverSignature = synthSig;
+      console.log(`  hover sig synthesized from JS deltas: scale=${synthSig.scale} y=${synthSig.y} opacity=${synthSig.opacity}`);
+    }
+  }
   console.log(`  hover replay: ${hoverTargets.length} targets probed, ${hoverDeltas.length} with live JS-driven delta`);
 } catch (e) { console.log(`  hover replay: ${e.message.slice(0, 60)}`); }
 
