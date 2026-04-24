@@ -6337,7 +6337,12 @@ const emitFooter = () => {
 const emitNav = () => {
   if (emittedComponents.has("Nav")) return "Nav";
   emittedComponents.add("Nav");
-  const isSticky = (extracted.scrollSignals?.stickyElements || 0) >= 3;
+  // v69 — sticky judgment now combines scroll-signal stickies with the
+  // v67 Block 13 layoutPrimitives.position.sticky count. Either signal
+  // above its threshold trips sticky navigation emit.
+  const scrollSigSticky = extracted.scrollSignals?.stickyElements || 0;
+  const layoutSticky = extracted.layoutPrimitives?.position?.sticky || 0;
+  const isSticky = scrollSigSticky >= 3 || layoutSticky >= 5;
   // Logo intelligence: dev mode hotlinks source img logo (visual match);
   // clean mode emits abstract SVG placeholder at source's captured size.
   const srcLogo = extracted.logo;
@@ -6555,12 +6560,20 @@ ${(() => {
 }
 `);
 
+// v69 — 3D perspective injection when source used heavy 3D transforms.
+// Block 13 layoutPrimitives.transforms3d counts elements using matrix3d/
+// rotate3d/translate3d/perspective in computed style. When high, emit
+// perspective on <main> so child tilt/rotate effects render correctly.
+const transforms3dCount = extracted.layoutPrimitives?.transforms3d || 0;
+const mainPerspective = transforms3dCount >= 20
+  ? ` style={{ perspective: "1400px", transformStyle: "preserve-3d" }}`
+  : "";
 fs.writeFileSync(path.join(appDir, "page.tsx"),
 `${componentImports.join("\n")}
 
 export default function Home() {
   return (
-    <main>
+    <main${mainPerspective}>
       ${pageSections.join("\n      ")}
     </main>
   );
