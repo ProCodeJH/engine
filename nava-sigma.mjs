@@ -6468,7 +6468,8 @@ const htmlLang = (seo.lang || "en").slice(0, 5);
 
 fs.writeFileSync(path.join(appDir, "layout.tsx"),
 `import type { Metadata } from "next";
-import "./globals.css";
+import "./globals.css";${extracted.motionHints?.hasLenis ? `
+import SmoothScroll from "@/components/SmoothScroll";` : ""}
 
 export const metadata: Metadata = {
   title: "{{PAGE_TITLE}}",
@@ -6537,7 +6538,7 @@ ${(() => {
   return "";
 })()}
       </head>
-      <body className="antialiased min-h-screen">{children}</body>
+      <body className="antialiased min-h-screen">${extracted.motionHints?.hasLenis ? `<SmoothScroll>{children}</SmoothScroll>` : `{children}`}</body>
     </html>
   );
 }
@@ -7052,6 +7053,40 @@ ${cleanPassed ? "✅ PASSED — 코드/CSS/구조 전부 저작권 청정 (이�
 `;
   fs.writeFileSync(path.join(projDir, "NOTICE-DEV.md"), devNotice);
   console.log(`\n  ⚠️  DEV MODE — 원본 이미지 hotlink 포함. NOTICE-DEV.md 확인.`);
+}
+
+// Upgrade K — emit SmoothScroll.tsx when source used Lenis for smooth
+// scrolling. Wraps children so page feels the same scroll inertia as
+// source. Only emitted when motionHints.hasLenis is true; otherwise
+// layout.tsx doesn't import it.
+if (extracted.motionHints?.hasLenis) {
+  const smoothScrollTpl = `"use client";
+import { ReactNode, useEffect, useRef } from "react";
+import Lenis from "lenis";
+
+export default function SmoothScroll({ children }: { children: ReactNode }) {
+  const rafRef = useRef<number | null>(null);
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+    });
+    const raf = (time: number) => {
+      lenis.raf(time);
+      rafRef.current = requestAnimationFrame(raf);
+    };
+    rafRef.current = requestAnimationFrame(raf);
+    return () => {
+      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+      lenis.destroy();
+    };
+  }, []);
+  return <>{children}</>;
+}
+`;
+  fs.writeFileSync(path.join(compDir, "SmoothScroll.tsx"), smoothScrollTpl);
+  console.log(`  emitted SmoothScroll.tsx (source used Lenis)`);
 }
 
 // Upgrade H — NOTICE-A11Y.md from v67 Block 11 seoAudit + Block 5
