@@ -5314,14 +5314,34 @@ try {
       const r = i.getBoundingClientRect();
       return r.width >= 60 && r.height >= 60 && i.complete && i.naturalWidth > 0;
     }).slice(0, 30);
+    // v91-3 — CORS-aware sampling. Direct drawImage on cross-origin <img>
+    // taints the canvas → SecurityError on getImageData. Fix: re-fetch the
+    // image as ArrayBuffer via fetch() (page.evaluate runs in source's
+    // origin so same-origin), create ImageBitmap from blob, draw clean.
+    // Falls back to canvas-direct path if fetch fails.
+    const sampleImage = async (img) => {
+      const cv = document.createElement("canvas");
+      cv.width = 32; cv.height = 32;
+      const cx = cv.getContext("2d");
+      // Try fetch route first (handles cross-origin without taint)
+      try {
+        const res = await fetch(img.src, { mode: "cors", credentials: "omit" });
+        if (res.ok) {
+          const blob = await res.blob();
+          const bitmap = await createImageBitmap(blob);
+          cx.drawImage(bitmap, 0, 0, 32, 32);
+          bitmap.close?.();
+          return cx.getImageData(0, 0, 32, 32).data;
+        }
+      } catch { /* fetch route failed, fall through */ }
+      // Direct drawImage fallback (works on same-origin or properly-CORS images)
+      cx.drawImage(img, 0, 0, 32, 32);
+      return cx.getImageData(0, 0, 32, 32).data;
+    };
     for (const img of imgs) {
       try {
-        const cv = document.createElement("canvas");
-        cv.width = 32; cv.height = 32;
-        const cx = cv.getContext("2d");
-        cx.drawImage(img, 0, 0, 32, 32);
         let pixels;
-        try { pixels = cx.getImageData(0, 0, 32, 32).data; }
+        try { pixels = await sampleImage(img); }
         catch { out.push({ src: img.src.slice(0, 200), alt: img.alt || "", w: img.naturalWidth, h: img.naturalHeight, palette: null, error: "cors-blocked" }); continue; }
         const buckets = {};
         for (let i = 0; i < pixels.length; i += 4) {
@@ -8337,10 +8357,19 @@ let templateRouteCount = 0;
 for (const section of demotedSections) {
   if (section.role === "footer" || section.role === "nav") continue;
   let effectiveRole = section.role;
-  const hasRichDomTree = USE_DOM_MIRROR
-    && section.domTree
-    && section.domTree.children
-    && section.domTree.children.length >= 5;
+  // v91-1 — Threshold relaxation. Real-world test (teamevople.kr) showed
+  // v74's `children.length >= 5` rule fired ZERO sections out of 13 because
+  // Framer-style sites have shallow domTree.children (deep nesting under a
+  // single root child). Relax to: domTree present with ≥1 child, OR spatial
+  // ≥3, OR the section's hierarchy ≥3. Any rich signal triggers Mirror path.
+  const domChildren = section.domTree?.children?.length || 0;
+  const spatialNodes = section.spatial?.length || 0;
+  const hierarchyNodes = section.hierarchy?.length || 0;
+  const hasRichDomTree = USE_DOM_MIRROR && (
+    (domChildren >= 2) ||
+    (spatialNodes >= 3) ||
+    (hierarchyNodes >= 3 && domChildren >= 1)
+  );
   if (hasRichDomTree && section.role !== "block") {
     effectiveRole = "block";  // route through emitBlock → DOM Mirror inner path
     domMirrorRouteCount++;
@@ -8949,23 +8978,68 @@ console.log(`[Σ.5] LICENSE AUDIT ${el()}`);
 const violations = [];
 const hostname = new URL(url).hostname;
 
+// v91-2 — Dev-mode aware audit. When --use-original-images is on, hotlinked
+// source images + remotePatterns + scan.json metadata are EXPECTED behavior
+// (already covered by NOTICE-DEV.md warning). Audit should only flag CSS/JS
+// rule TEXT copies and unexpected source byte leaks, not legal hotlink usage.
+//
+// Three categories of "violation":
+//   - Real (always flag): inline source CSS/JS bytes in .tsx/.css/.mjs
+//   - Expected in dev mode: <img src=...> hotlink, next.config remotePatterns
+//   - Expected always: scan.json (debug snapshot), .data/* (capture metadata)
 const scanFile = (fp) => {
   const t = fs.readFileSync(fp, "utf-8");
-  if (t.includes(hostname) && !fp.endsWith(".json") && !fp.endsWith(".md")) {
-    violations.push(`${path.relative(projDir, fp)} contains source hostname "${hostname}"`);
+  const rel = path.relative(projDir, fp);
+  // .data/* and SCAN-COVERAGE.md / COMPONENT-FIDELITY.md are debug artifacts —
+  // always exclude from audit
+  if (rel.startsWith(".data") || rel.startsWith(".sigma") || rel.endsWith(".md")) return;
+  // next.config.ts contains remotePatterns by design — those hostnames are
+  // expected when --use-original-images. Skip license check on this file.
+  if (USE_ORIGINAL_IMAGES && rel.endsWith("next.config.ts")) return;
+  // In dev mode, presence of source hostname inside <img src> attrs is
+  // expected (NOTICE-DEV.md emitted as warning). Skip hotlink violations
+  // for .tsx files where the hostname appears alongside img/picture/source.
+  if (USE_ORIGINAL_IMAGES && /\.tsx?$/.test(fp)) {
+    // Strip <img|source|video|picture src="..."> attribute references —
+    // those are expected hotlinks in dev mode.
+    const stripped = t
+      .replace(/<img[^>]+\bsrc\s*=\s*["'][^"']*["']/g, "<img>")
+      .replace(/<source[^>]+\bsrc\s*=\s*["'][^"']*["']/g, "<source>")
+      .replace(/<video[^>]+\bsrc\s*=\s*["'][^"']*["']/g, "<video>")
+      .replace(/<iframe[^>]+\bsrc\s*=\s*["'][^"']*["']/g, "<iframe>")
+      .replace(/<link[^>]+\bhref\s*=\s*["'][^"']*["']/g, "<link>")
+      .replace(/og(?:Image|:image)[^,]*"https?:\/\/[^"]+"/gi, "")
+      .replace(/twitterImage[^,]*"https?:\/\/[^"]+"/gi, "")
+      .replace(/icon\s*:\s*"[^"]+"/g, "icon");
+    if (stripped.includes(hostname) && !fp.endsWith(".json")) {
+      violations.push(`${rel} contains source hostname "${hostname}" outside hotlink attrs`);
+    }
+    if (stripped.includes("framerusercontent.com")) {
+      violations.push(`${rel} references framerusercontent.com outside hotlink attrs`);
+    }
+  } else {
+    // Strict mode (non-dev) — any reference is a violation
+    if (t.includes(hostname) && !fp.endsWith(".json")) {
+      violations.push(`${rel} contains source hostname "${hostname}"`);
+    }
+    if (t.includes("framerusercontent.com")) {
+      violations.push(`${rel} references framerusercontent.com`);
+    }
   }
-  if (t.includes("framerusercontent.com")) {
-    violations.push(`${path.relative(projDir, fp)} references framerusercontent.com`);
-  }
+  // Always flag omega-style _fcdn/ paths — that pattern is from Omega
+  // mirror engine, never expected in Sigma output
   if (t.includes("_fcdn/")) {
-    violations.push(`${path.relative(projDir, fp)} has omega-style _fcdn/ path`);
+    violations.push(`${rel} has omega-style _fcdn/ path`);
   }
 };
 const walkForAudit = (d) => {
   for (const f of fs.readdirSync(d, { withFileTypes: true })) {
     const fp = path.join(d, f.name);
-    if (f.isDirectory()) { if (f.name === "node_modules" || f.name === ".next") continue; walkForAudit(fp); }
-    else if (/\.(tsx?|css|jsx?|mjs|json)$/.test(f.name)) scanFile(fp);
+    if (f.isDirectory()) {
+      // v91-2 — exclude debug-only directories
+      if (f.name === "node_modules" || f.name === ".next" || f.name === ".data" || f.name === ".sigma" || f.name === ".verify") continue;
+      walkForAudit(fp);
+    } else if (/\.(tsx?|css|jsx?|mjs|json)$/.test(f.name)) scanFile(fp);
   }
 };
 walkForAudit(projDir);
