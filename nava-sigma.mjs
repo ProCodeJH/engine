@@ -5505,6 +5505,146 @@ try {
   console.log(`  v80-2 anim-bindings: ${animBindings.bindings.length} elements use CSS animations [${namesSummary}]`);
 } catch (e) { console.log(`  v80-2 anim-bindings: ${e.message.slice(0, 60)}`); }
 
+// ─── v82-1 — WAAPI multi-element timeline orchestration analysis ──────
+// Element.animate captures already include timestamp 't'. Derive sync
+// groups: animations started within ±50ms of each other belong to the
+// same orchestrated sequence (cascade/stagger). Extract sequence pattern
+// (count + duration spread + tag distribution) for emit side to apply
+// staggerChildren correctly. Pure analytic step over captured facts.
+try {
+  const motions = extracted.motions || [];
+  if (motions.length === 0) {
+    extracted.timelineSyncGroups = { groups: [], total: 0 };
+  } else {
+    const sorted = [...motions].sort((a, b) => (a.t || 0) - (b.t || 0));
+    const groups = [];
+    let current = null;
+    const SYNC_WINDOW_MS = 50;
+    for (const m of sorted) {
+      if (!current || (m.t || 0) - current.tEnd > SYNC_WINDOW_MS) {
+        current = { tStart: m.t || 0, tEnd: m.t || 0, members: [] };
+        groups.push(current);
+      }
+      current.tEnd = Math.max(current.tEnd, m.t || 0);
+      current.members.push({
+        tag: m.tag, y: m.y, duration: m.duration, props: m.props,
+      });
+    }
+    const meaningfulGroups = groups.filter(g => g.members.length >= 3);
+    const totalSpread = meaningfulGroups.reduce((s, g) => s + (g.tEnd - g.tStart), 0);
+    extracted.timelineSyncGroups = {
+      groups: meaningfulGroups.slice(0, 20).map(g => ({
+        memberCount: g.members.length,
+        tagsInSync: [...new Set(g.members.map(m => m.tag))],
+        spreadMs: g.tEnd - g.tStart,
+        avgDuration: Math.round(g.members.reduce((s, m) => s + (m.duration || 0), 0) / g.members.length),
+        yRange: { min: Math.min(...g.members.map(m => m.y)), max: Math.max(...g.members.map(m => m.y)) },
+      })),
+      total: meaningfulGroups.length,
+      avgSpread: meaningfulGroups.length > 0 ? Math.round(totalSpread / meaningfulGroups.length) : 0,
+    };
+    console.log(`  v82-1 timeline sync: ${meaningfulGroups.length} sync groups (≥3 members), avg spread ${extracted.timelineSyncGroups.avgSpread}ms`);
+  }
+} catch (e) { console.log(`  v82-1 timeline sync: ${e.message.slice(0, 60)}`); }
+
+// ─── v82-2 — Per-element responsive fingerprint (extends v78-3) ───────
+// v78-3 captured per-tag computed style at each viewport. This block
+// attaches element selector identity (tag + nth-of-type within parent)
+// so emit can distinguish multiple <h2>s on the same page when each
+// has different responsive behavior. Pure facts (DOM position + style)
+// → more granular responsive emit later.
+try {
+  const elementFingerprints = await page.evaluate(() => {
+    const out = [];
+    const selectorOf = (el) => {
+      if (el.id) return `#${el.id}`;
+      const tag = el.tagName.toLowerCase();
+      const parent = el.parentElement;
+      if (!parent) return tag;
+      const sameTagSiblings = [...parent.children].filter(c => c.tagName === el.tagName);
+      const idx = sameTagSiblings.indexOf(el);
+      return sameTagSiblings.length > 1 ? `${tag}:nth-of-type(${idx + 1})` : tag;
+    };
+    const buildPath = (el) => {
+      const parts = [];
+      let cur = el;
+      let depth = 0;
+      while (cur && cur !== document.body && depth < 5) {
+        parts.unshift(selectorOf(cur));
+        cur = cur.parentElement;
+        depth++;
+      }
+      return parts.join(" > ");
+    };
+    const els = [...document.querySelectorAll("h1, h2, h3, p, section, header, footer, main, nav, button, a, img")]
+      .filter(el => {
+        const r = el.getBoundingClientRect();
+        return r.width >= 30 && r.height >= 15;
+      })
+      .slice(0, 80);
+    for (const el of els) {
+      const cs = getComputedStyle(el);
+      const r = el.getBoundingClientRect();
+      out.push({
+        path: buildPath(el),
+        tag: el.tagName.toLowerCase(),
+        bbox: { x: Math.round(r.left), y: Math.round(r.top + window.scrollY), w: Math.round(r.width), h: Math.round(r.height) },
+        fontSize: cs.fontSize,
+        fontWeight: cs.fontWeight,
+        color: cs.color,
+        background: cs.backgroundColor,
+        display: cs.display,
+        position: cs.position,
+        padding: cs.padding,
+        margin: cs.margin,
+      });
+    }
+    return out;
+  });
+  extracted.elementFingerprints = elementFingerprints;
+  const uniquePaths = new Set(elementFingerprints.map(e => e.path));
+  console.log(`  v82-2 element fingerprints: ${elementFingerprints.length} elements with ${uniquePaths.size} unique selector paths`);
+} catch (e) { console.log(`  v82-2 element fingerprints: ${e.message.slice(0, 60)}`); }
+
+// ─── v82-3 — Smart preload hints derivation ───────────────────────────
+// Walks captured fontFaces (license-clean only after v78-1) + top images.
+// Builds a list of <link rel="preload"> targets for above-fold critical
+// resources. Emit will inject these into layout.tsx <head> for fastest
+// first-paint. Pure facts (URLs of files we already plan to load).
+try {
+  const preloadTargets = [];
+  // Top fonts (license-clean only — v78-1 already filtered)
+  for (const f of (extracted.fontFaces || []).slice(0, 4)) {
+    if (f.localPath) {
+      preloadTargets.push({
+        href: f.localPath,
+        as: "font",
+        type: f.format === "woff2" ? "font/woff2" : f.format === "woff" ? "font/woff" : "font/ttf",
+        crossOrigin: "anonymous",
+      });
+    }
+  }
+  // Top above-fold images (sections with top < 1080)
+  const aboveFoldImages = [];
+  for (const s of (extracted.sections || [])) {
+    if (s.top > 1080) continue;
+    for (const img of (s.images || []).slice(0, 2)) {
+      if (img.src && img.w >= 200) aboveFoldImages.push(img);
+    }
+    if (aboveFoldImages.length >= 3) break;
+  }
+  for (const img of aboveFoldImages.slice(0, 3)) {
+    preloadTargets.push({
+      href: img.src,
+      as: "image",
+      // Add fetchpriority hint for the FIRST hero image
+      fetchpriority: aboveFoldImages.indexOf(img) === 0 ? "high" : undefined,
+    });
+  }
+  extracted.smartPreload = { targets: preloadTargets };
+  console.log(`  v82-3 preload hints: ${preloadTargets.length} resources (${preloadTargets.filter(p => p.as === "font").length} fonts, ${preloadTargets.filter(p => p.as === "image").length} images)`);
+} catch (e) { console.log(`  v82-3 preload hints: ${e.message.slice(0, 60)}`); }
+
 // browser.close() can hang indefinitely after v67's HeapProfiler +
 // Input.dispatchMouseEvent + SystemInfo interactions leave stale CDP
 // state. Race it against a 15s timeout; on timeout, SIGKILL the Chrome
@@ -7732,6 +7872,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=${hdFont}:wght@400;600;700;900&family=${bdFont}:wght@400;500;600&display=swap" />
 ${extracted.criticalCss?.text ? `        {/* v81-2 — Critical CSS inline (used rules from CSS Coverage) */}
         <style dangerouslySetInnerHTML={{ __html: ${JSON.stringify(extracted.criticalCss.text.replace(/\s+/g, " ").trim())} }} />` : ""}
+${(extracted.smartPreload?.targets || []).map(p => {
+  const attrs = [`rel="preload"`, `href=${JSON.stringify(p.href)}`, `as=${JSON.stringify(p.as)}`];
+  if (p.type) attrs.push(`type=${JSON.stringify(p.type)}`);
+  if (p.crossOrigin) attrs.push(`crossOrigin=${JSON.stringify(p.crossOrigin)}`);
+  if (p.fetchpriority) attrs.push(`fetchPriority=${JSON.stringify(p.fetchpriority)}`);
+  return `        <link ${attrs.join(" ")} />`;
+}).join("\n")}
 ${(extracted.linkHints || []).slice(0, 20).map(l => {
   const attrs = [`rel="${l.rel}"`, `href="${(l.href || "").replace(/"/g, "&quot;")}"`];
   if (l.as) attrs.push(`as="${l.as}"`);
