@@ -5007,8 +5007,23 @@ try {
       const bd = (cs.backdropFilter || cs.webkitBackdropFilter || "").trim();
       if (bd && bd !== "none") backdrops[bd] = (backdrops[bd] || 0) + 1;
     }
+    // v94-1 — Balance-validated truncation. Pre-v94: slice(0, 200) cut
+    // multi-shadow rgba() chains mid-paren → invalid CSS in :root vars.
+    // Real-world: --sigma-shadow-2 emitted "rgba(2" with truncated paren,
+    // PostCSS unclosed-bracket error blocked Next.js build.
+    // Now: cap 1000 chars + reject values with unbalanced parens.
+    const safeTruncate = (s) => {
+      if (!s) return "";
+      const trimmed = s.slice(0, 1000);
+      const opens = (trimmed.match(/\(/g) || []).length;
+      const closes = (trimmed.match(/\)/g) || []).length;
+      // If parens unbalanced after truncation, value would break CSS — reject
+      if (opens !== closes) return "";
+      return trimmed;
+    };
     const top = (m, n) => Object.entries(m).sort((a, b) => b[1] - a[1])
-      .slice(0, n).map(([k, c]) => ({ value: k.slice(0, 200), count: c }));
+      .slice(0, n).map(([k, c]) => ({ value: safeTruncate(k), count: c }))
+      .filter(x => x.value);
     return {
       topShadows: top(shadows, 8),
       topFilters: top(filters, 6),
