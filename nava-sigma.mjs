@@ -5867,6 +5867,58 @@ try {
   console.log(`  v85-2 element-rule bindings: ${elementRuleBindings.elementBindings.length} elements with ${elementRuleBindings.totalRules} rules walked`);
 } catch (e) { console.log(`  v85-2 element-rule bindings: ${e.message.slice(0, 60)}`); }
 
+// ─── v87-1 — Modern web APIs surface detection ────────────────────────
+// Captures capability presence + state for WebRTC, WebTransport, Battery,
+// DeviceMemory, NetworkInformation, Storage Quota. Pure capability facts
+// (no actual user data). Emit will preserve same capability gates in
+// clone — "if source uses RTCPeerConnection, clone scaffolds equivalent".
+try {
+  const modernApis = await page.evaluate(async () => {
+    const out = {
+      webRTC: typeof RTCPeerConnection !== "undefined",
+      webTransport: typeof WebTransport !== "undefined",
+      webHID: !!navigator.hid,
+      webSerial: !!navigator.serial,
+      webBluetooth: !!navigator.bluetooth,
+      webMIDI: !!navigator.requestMIDIAccess,
+      pictureInPicture: typeof document.pictureInPictureEnabled !== "undefined" ? document.pictureInPictureEnabled : false,
+      documentPiP: typeof window.documentPictureInPicture !== "undefined",
+      shareAPI: !!navigator.share,
+      paymentRequest: typeof PaymentRequest !== "undefined",
+      webAuthn: !!navigator.credentials?.get,
+      speechRecognition: typeof SpeechRecognition !== "undefined" || typeof webkitSpeechRecognition !== "undefined",
+      speechSynthesis: typeof speechSynthesis !== "undefined",
+      fileSystemAccess: typeof window.showOpenFilePicker !== "undefined",
+      webLocks: !!navigator.locks,
+      broadcastChannel: typeof BroadcastChannel !== "undefined",
+      backgroundSync: !!navigator.serviceWorker?.controller && typeof window.SyncManager !== "undefined",
+    };
+    // Battery + DeviceMemory + NetworkInfo
+    try { const b = await navigator.getBattery?.(); if (b) out.battery = { charging: b.charging, level: b.level }; } catch {}
+    if (navigator.deviceMemory) out.deviceMemory = navigator.deviceMemory;
+    if (navigator.connection) {
+      out.networkInfo = {
+        effectiveType: navigator.connection.effectiveType,
+        downlink: navigator.connection.downlink,
+        rtt: navigator.connection.rtt,
+        saveData: navigator.connection.saveData,
+      };
+    }
+    // userAgentData
+    if (navigator.userAgentData) {
+      out.uaData = {
+        mobile: navigator.userAgentData.mobile,
+        platform: navigator.userAgentData.platform,
+        brands: navigator.userAgentData.brands?.map(b => b.brand) || [],
+      };
+    }
+    return out;
+  });
+  extracted.modernApis = modernApis;
+  const enabled = Object.entries(modernApis).filter(([k, v]) => v === true).map(([k]) => k);
+  console.log(`  v87-1 modern APIs: ${enabled.length} capabilities present (${enabled.slice(0, 6).join(", ")}${enabled.length > 6 ? "..." : ""})`);
+} catch (e) { console.log(`  v87-1 modern APIs: ${e.message.slice(0, 60)}`); }
+
 // browser.close() can hang indefinitely after v67's HeapProfiler +
 // Input.dispatchMouseEvent + SystemInfo interactions leave stale CDP
 // state. Race it against a 15s timeout; on timeout, SIGKILL the Chrome
@@ -8500,16 +8552,30 @@ export default function LottiePlayer({ src, loop = true, autoplay = true, classN
 }
 
 // ─── Service Worker registration script ──────────────────────────────
+// v87-2 — Extends SW registration with prefetch list. Pulls top above-fold
+// images + license-clean fonts and instructs the SW to pre-cache them on
+// install for instant subsequent navigation. Pure URLs — same data as
+// v82-3 preload hints, just fed to runtime cache instead of <link>.
 if (extracted.serviceWorkerBody?.saved) {
+  const prefetchUrls = (extracted.smartPreload?.targets || []).map(t => t.href);
+  const prefetchListJs = JSON.stringify(prefetchUrls);
   fs.writeFileSync(path.join(projDir, "public", "_sw-register.js"),
 `(function(){
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", function() {
-      navigator.serviceWorker.register("/sw.js").catch(function(e){ /* ignore */ });
+      navigator.serviceWorker.register("/sw.js").then(function(reg){
+        // v87-2 — prefetch above-fold critical resources via runtime cache
+        var prefetch = ${prefetchListJs};
+        if (prefetch.length > 0 && "caches" in window) {
+          caches.open("sigma-prefetch-v1").then(function(c){
+            return c.addAll(prefetch.filter(function(u){ return u && u.startsWith("/"); })).catch(function(e){ /* ignore */ });
+          });
+        }
+      }).catch(function(e){ /* ignore */ });
     });
   }
 })();`);
-  console.log(`  sw registration: /sw.js + /_sw-register.js`);
+  console.log(`  sw registration: /sw.js + /_sw-register.js (v87-2 prefetch list: ${prefetchUrls.length} resources)`);
 }
 
 // ─── PWA manifest.json + JSON-LD structured data emit ────────────────
