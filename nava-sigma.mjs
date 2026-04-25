@@ -4737,6 +4737,194 @@ try {
   }
 } catch (e) { console.log(`  system info full: ${e.message.slice(0, 60)}`); }
 
+// ═══════════════════════════════════════════════════════════════════════
+// ─── v75 MEGA-PACK — 5 fidelity-closing capture blocks (E/D/F/C/L) ────
+// Pre-disaster cadence restored. Each block adds a NEW signal class to
+// extracted.* that emit-pipe can consume. North star = capture coverage,
+// not pixel-match %. Blocks chosen for legal cleanness (computed style
+// values are facts, not expression) + concrete emit fidelity contribution.
+// ═══════════════════════════════════════════════════════════════════════
+
+// ─── v75-E — Per-element gradient string capture ──────────────────────
+// computed backgroundImage that matches gradient(...) is pure CSS recipe.
+// Linear/radial/conic gradient stops + colors = facts under Computer
+// Associates v. Altai filtration. Replay verbatim string in clone — recovers
+// depth loss when role templates fall back to solid bg color only.
+try {
+  const grads = await page.evaluate(() => {
+    const out = [];
+    const els = [...document.querySelectorAll("*")].slice(0, 800);
+    const seen = new Set();
+    for (const el of els) {
+      const cs = getComputedStyle(el);
+      const bg = cs.backgroundImage;
+      if (!bg || bg === "none") continue;
+      if (!/gradient\s*\(/.test(bg)) continue;
+      const r = el.getBoundingClientRect();
+      if (r.width < 20 || r.height < 20) continue;
+      const key = bg.slice(0, 200) + "|" + Math.floor((r.top + window.scrollY) / 100);
+      if (seen.has(key)) continue;
+      seen.add(key);
+      out.push({
+        tag: el.tagName.toLowerCase(),
+        gradient: bg.slice(0, 500),
+        x: Math.round(r.left),
+        y: Math.round(r.top + window.scrollY),
+        w: Math.round(r.width),
+        h: Math.round(r.height),
+      });
+      if (out.length >= 60) return out;
+    }
+    return out;
+  });
+  extracted.gradients = grads;
+  console.log(`  v75-E gradients: ${grads.length} unique gradient backgrounds captured`);
+} catch (e) { console.log(`  v75-E gradients: ${e.message.slice(0, 60)}`); }
+
+// ─── v75-D — Pseudo-element computed styles (::before/::after) ────────
+// Many design effects (decorative dividers, tooltip arrows, badge accents,
+// label markers, hover indicators) live entirely in ::before/::after.
+// Currently invisible to DOM walker. Capture content/background/dims;
+// emit as scoped CSS in globals.css preserving decorative pixel surface.
+try {
+  const pseudos = await page.evaluate(() => {
+    const out = { before: [], after: [] };
+    const els = [...document.querySelectorAll("*")].slice(0, 600);
+    for (const el of els) {
+      for (const which of ["::before", "::after"]) {
+        const cs = getComputedStyle(el, which);
+        const content = cs.content;
+        if (!content || content === "none" || content === "normal") continue;
+        const target = which === "::before" ? out.before : out.after;
+        target.push({
+          tag: el.tagName.toLowerCase(),
+          content: content.slice(0, 120),
+          bg: cs.backgroundColor,
+          bgImage: (cs.backgroundImage || "none").slice(0, 200),
+          color: cs.color,
+          width: cs.width,
+          height: cs.height,
+          position: cs.position,
+          top: cs.top,
+          left: cs.left,
+          right: cs.right,
+          bottom: cs.bottom,
+          borderRadius: cs.borderRadius,
+          boxShadow: (cs.boxShadow || "").slice(0, 120),
+          transform: (cs.transform || "").slice(0, 100),
+          opacity: cs.opacity,
+        });
+        if (target.length >= 50) break;
+      }
+    }
+    return out;
+  });
+  extracted.pseudoElements = pseudos;
+  console.log(`  v75-D pseudo: ${pseudos.before.length} ::before, ${pseudos.after.length} ::after`);
+} catch (e) { console.log(`  v75-D pseudo: ${e.message.slice(0, 60)}`); }
+
+// ─── v75-F — Box-shadow / filter / backdrop-filter histogram ──────────
+// Page-wide decoration recipe aggregation. Per-element shadows captured
+// in styleFacts already, but role templates may bypass styleFacts entirely.
+// Histogram lets emit pick top-N representative shadows for hero/cta/cards
+// even on the role-template path. Pure facts — recipes for visual depth.
+try {
+  const decoration = await page.evaluate(() => {
+    const shadows = {}, filters = {}, backdrops = {};
+    const els = [...document.querySelectorAll("*")].slice(0, 1200);
+    for (const el of els) {
+      const cs = getComputedStyle(el);
+      const sh = (cs.boxShadow || "").trim();
+      if (sh && sh !== "none") shadows[sh] = (shadows[sh] || 0) + 1;
+      const fl = (cs.filter || "").trim();
+      if (fl && fl !== "none") filters[fl] = (filters[fl] || 0) + 1;
+      const bd = (cs.backdropFilter || cs.webkitBackdropFilter || "").trim();
+      if (bd && bd !== "none") backdrops[bd] = (backdrops[bd] || 0) + 1;
+    }
+    const top = (m, n) => Object.entries(m).sort((a, b) => b[1] - a[1])
+      .slice(0, n).map(([k, c]) => ({ value: k.slice(0, 200), count: c }));
+    return {
+      topShadows: top(shadows, 8),
+      topFilters: top(filters, 6),
+      topBackdrops: top(backdrops, 6),
+      uniqueShadows: Object.keys(shadows).length,
+      uniqueFilters: Object.keys(filters).length,
+      uniqueBackdrops: Object.keys(backdrops).length,
+    };
+  });
+  extracted.decorationFingerprint = decoration;
+  console.log(`  v75-F decoration: ${decoration.uniqueShadows} shadows, ${decoration.uniqueFilters} filters, ${decoration.uniqueBackdrops} backdrops`);
+} catch (e) { console.log(`  v75-F decoration: ${e.message.slice(0, 60)}`); }
+
+// ─── v75-C — Font license classification ──────────────────────────────
+// Post-capture fact derivation: classify each captured font-family against
+// known free-license whitelists (OFL/Apache 2.0/SIL). Free fonts can be
+// included verbatim @font-face → letterform-perfect. Proprietary/unknown
+// fonts → engine emits closest Google Fonts fallback (existing behavior).
+try {
+  const FREE_FONT_WHITELIST = new Set([
+    "Inter", "Urbanist", "Poppins", "Manrope", "Space Grotesk", "Montserrat",
+    "Playfair Display", "Merriweather", "Lora", "DM Serif Display", "DM Serif Text",
+    "DM Sans", "Work Sans", "Source Sans 3", "Source Sans Pro", "Source Serif Pro",
+    "IBM Plex Sans", "IBM Plex Serif", "IBM Plex Mono", "Fira Sans", "Fira Code",
+    "JetBrains Mono", "Roboto", "Roboto Mono", "Roboto Slab", "Roboto Condensed", "Roboto Flex",
+    "Open Sans", "Nunito", "Nunito Sans", "Raleway", "Karla", "Outfit", "Public Sans",
+    "Plus Jakarta Sans", "Bricolage Grotesque", "Geist", "Geist Mono",
+    "Noto Sans", "Noto Serif", "Noto Sans KR", "Noto Serif KR",
+    "Pretendard", "Spoqa Han Sans Neo",
+    "Charis SIL", "Andika",
+  ]);
+  const classifyFont = (name) => {
+    const clean = (name || "").replace(/['"]/g, "").trim();
+    if (FREE_FONT_WHITELIST.has(clean)) return "free-redistributable";
+    if (/^(system-ui|sans-serif|serif|monospace|cursive|emoji|math|fantasy|ui-)/i.test(clean)) return "system-fallback";
+    return "proprietary-or-unknown";
+  };
+  const fontLicenses = (extracted.fontFaces || []).map(f => ({
+    family: f.family,
+    weight: f.weight,
+    style: f.style,
+    format: f.format,
+    license: classifyFont(f.family),
+    redistributable: classifyFont(f.family) === "free-redistributable",
+  }));
+  const counts = fontLicenses.reduce((a, f) => {
+    a[f.license] = (a[f.license] || 0) + 1; return a;
+  }, {});
+  extracted.fontLicenses = { perFace: fontLicenses, summary: counts };
+  const summary = Object.entries(counts).map(([k, v]) => `${k}=${v}`).join(" ");
+  console.log(`  v75-C font licenses: ${summary || "(no fontFaces)"}`);
+} catch (e) { console.log(`  v75-C font licenses: ${e.message.slice(0, 60)}`); }
+
+// ─── v75-L — Typography micro-decoration capture ──────────────────────
+// letter-spacing, word-spacing, text-shadow histograms. These pixel-level
+// details often distinguish premium designs from generic templates. Pure
+// facts — emit can apply matching values to heading hierarchy in clone.
+try {
+  const typeMicro = await page.evaluate(() => {
+    const ts = {}, ls = {}, ws = {};
+    const els = [...document.querySelectorAll("h1, h2, h3, h4, p, span, a, button, li")].slice(0, 800);
+    for (const el of els) {
+      const cs = getComputedStyle(el);
+      const t = cs.textShadow;
+      if (t && t !== "none") ts[t] = (ts[t] || 0) + 1;
+      const l = cs.letterSpacing;
+      if (l && l !== "normal" && l !== "0px") ls[l] = (ls[l] || 0) + 1;
+      const w = cs.wordSpacing;
+      if (w && w !== "normal" && w !== "0px") ws[w] = (ws[w] || 0) + 1;
+    }
+    const top = (m, n) => Object.entries(m).sort((a, b) => b[1] - a[1])
+      .slice(0, n).map(([k, c]) => ({ value: k.slice(0, 100), count: c }));
+    return {
+      topTextShadows: top(ts, 6),
+      topLetterSpacing: top(ls, 8),
+      topWordSpacing: top(ws, 4),
+    };
+  });
+  extracted.typographyMicro = typeMicro;
+  console.log(`  v75-L type-micro: text-shadow ${typeMicro.topTextShadows.length}, letter-spacing ${typeMicro.topLetterSpacing.length}`);
+} catch (e) { console.log(`  v75-L type-micro: ${e.message.slice(0, 60)}`); }
+
 // browser.close() can hang indefinitely after v67's HeapProfiler +
 // Input.dispatchMouseEvent + SystemInfo interactions leave stale CDP
 // state. Race it against a 15s timeout; on timeout, SIGKILL the Chrome
@@ -5122,7 +5310,22 @@ const bdFont = safeBodyFont.replace(/\s+/g, "+");
 // @font-face declarations — pointing to locally downloaded font binaries.
 // Browser now renders source typography exactly, no fallback serif/sans.
 // font-display:swap keeps first paint fast while font loads.
+// v75-C — license gate: only emit @font-face for OFL/Apache/SIL fonts.
+// Proprietary fonts fall through to Google Fonts <link> (existing layout.tsx
+// behavior) — letterforms diverge but legal status stays clean.
+const fontLicenseLookup = (() => {
+  const m = new Map();
+  for (const f of (extracted.fontLicenses?.perFace || [])) {
+    m.set(`${f.family}|${f.weight}|${f.style}`, f.redistributable);
+  }
+  return m;
+})();
+let fontFacesEmitted = 0, fontFacesSkipped = 0;
 const fontFaceBlock = (extracted.fontFaces || []).map(f => {
+  const key = `${f.family}|${f.weight}|${f.style}`;
+  const redist = fontLicenseLookup.get(key);
+  if (redist === false) { fontFacesSkipped++; return ""; }
+  fontFacesEmitted++;
   const fmt = f.format === "woff2" ? "woff2" : f.format === "woff" ? "woff" : "truetype";
   return `@font-face {
   font-family: "${f.family}";
@@ -5131,7 +5334,8 @@ const fontFaceBlock = (extracted.fontFaces || []).map(f => {
   font-style: ${f.style};
   font-display: swap;
 }`;
-}).join("\n");
+}).filter(Boolean).join("\n");
+console.log(`  v75-C font-face emit: ${fontFacesEmitted} kept (free), ${fontFacesSkipped} skipped (proprietary → Google Fonts fallback)`);
 
 // @keyframes block — verbatim from source CSSOM. Names are scoped to
 // our output so no collision with Tailwind utilities or app-level
@@ -5161,6 +5365,40 @@ const modernCssBlock = [
   extracted.adoptedStyleSheets || "",
 ].filter(isBalancedCss).join("\n\n");
 
+// v75-D — emit captured ::before/::after recipes as drop-in utility classes.
+// We can't reliably match captured pseudos back to specific DOM nodes after
+// our role-template emit, so we surface them as `.sigma-pseudo-before-N` /
+// `.sigma-pseudo-after-N` utility classes the user can apply manually. This
+// preserves the FACT (decorative recipes existed at this scale) without
+// guessing target elements. Captured recipes = pure CSS facts.
+const pseudoCssBlock = (() => {
+  const pe = extracted.pseudoElements;
+  if (!pe || (pe.before.length === 0 && pe.after.length === 0)) return "";
+  const renderRule = (p, kind, idx) => {
+    const props = [];
+    if (p.content) props.push(`content: ${p.content}`);
+    if (p.bg && p.bg !== "rgba(0, 0, 0, 0)" && p.bg !== "transparent") props.push(`background-color: ${p.bg}`);
+    if (p.bgImage && p.bgImage !== "none") props.push(`background-image: ${p.bgImage}`);
+    if (p.color) props.push(`color: ${p.color}`);
+    if (p.width && p.width !== "auto") props.push(`width: ${p.width}`);
+    if (p.height && p.height !== "auto") props.push(`height: ${p.height}`);
+    if (p.position && p.position !== "static") props.push(`position: ${p.position}`);
+    if (p.top && p.top !== "auto") props.push(`top: ${p.top}`);
+    if (p.left && p.left !== "auto") props.push(`left: ${p.left}`);
+    if (p.borderRadius && p.borderRadius !== "0px") props.push(`border-radius: ${p.borderRadius}`);
+    if (p.boxShadow && p.boxShadow !== "none") props.push(`box-shadow: ${p.boxShadow}`);
+    if (p.transform && p.transform !== "none") props.push(`transform: ${p.transform}`);
+    if (p.opacity && p.opacity !== "1") props.push(`opacity: ${p.opacity}`);
+    return `.sigma-pseudo-${kind}-${idx}::${kind} { ${props.join("; ")} }`;
+  };
+  const lines = [
+    "/* v75-D — Captured ::before/::after recipes (drop-in utility classes) */",
+    ...pe.before.slice(0, 20).map((p, i) => renderRule(p, "before", i)),
+    ...pe.after.slice(0, 20).map((p, i) => renderRule(p, "after", i)),
+  ];
+  return lines.join("\n");
+})();
+
 fs.writeFileSync(path.join(appDir, "globals.css"),
 `@import "tailwindcss";
 
@@ -5169,6 +5407,8 @@ ${fontFaceBlock}
 ${keyframesBlock}
 
 ${modernCssBlock}
+
+${pseudoCssBlock}
 
 :root {
   --font-heading: "${safeHeadingFont}", system-ui, sans-serif;
@@ -5179,7 +5419,34 @@ ${modernCssBlock}
   /* Upgrade C — contrast-safe text. WCAG 4.5:1 guaranteed against primary. */
   --brand-contrast: ${contrastSafeText};
   /* Source measured WCAG AA pass ratio: ${contrastAaPct}% */
+  /* v75-F — dominant decoration recipes from page-wide histogram */
+${(() => {
+  const d = extracted.decorationFingerprint;
+  if (!d) return "";
+  const lines = [];
+  if (d.topShadows?.[0]) lines.push(`  --sigma-shadow: ${d.topShadows[0].value};`);
+  if (d.topShadows?.[1]) lines.push(`  --sigma-shadow-2: ${d.topShadows[1].value};`);
+  if (d.topFilters?.[0]) lines.push(`  --sigma-filter: ${d.topFilters[0].value};`);
+  if (d.topBackdrops?.[0]) lines.push(`  --sigma-backdrop: ${d.topBackdrops[0].value};`);
+  return lines.join("\n");
+})()}
+  /* v75-L — dominant typography micro-decoration */
+${(() => {
+  const t = extracted.typographyMicro;
+  if (!t) return "";
+  const lines = [];
+  if (t.topLetterSpacing?.[0]) lines.push(`  --sigma-letter-spacing: ${t.topLetterSpacing[0].value};`);
+  if (t.topTextShadows?.[0]) lines.push(`  --sigma-text-shadow: ${t.topTextShadows[0].value};`);
+  if (t.topWordSpacing?.[0]) lines.push(`  --sigma-word-spacing: ${t.topWordSpacing[0].value};`);
+  return lines.join("\n");
+})()}
 ${Object.entries(extracted.cssVariables || {}).map(([k, v]) => `  ${k}: ${v};`).join("\n")}
+}
+
+/* v75-L — apply dominant typography micro-decoration to headings */
+h1, h2, h3 {
+  letter-spacing: var(--sigma-letter-spacing, normal);
+  text-shadow: var(--sigma-text-shadow, none);
 }
 
 html, body { background: var(--brand-primary); color: var(--brand-text); }
@@ -6242,11 +6509,29 @@ const emitBlock = (section, idx) => {
   const blockImg = USE_ORIGINAL_IMAGES
     ? (section.images || []).find(i => i.w >= 600)
     : null;
+  // v75-E gradient pick: if a captured gradient overlaps this section's
+  // y-range and covers a meaningful width, use it as background. Pure CSS
+  // recipe replay — no source bytes, just the gradient string fact. This
+  // recovers depth in sections where role templates would emit flat bg.
+  const sectionGradient = (() => {
+    const gs = extracted.gradients || [];
+    if (gs.length === 0) return null;
+    const sectionTop = section.top, sectionBottom = section.top + section.h;
+    const candidates = gs.filter(g => {
+      const gTop = g.y, gBottom = g.y + g.h;
+      const overlap = Math.max(0, Math.min(gBottom, sectionBottom) - Math.max(gTop, sectionTop));
+      return overlap >= section.h * 0.4 && g.w >= 1920 * 0.5;
+    });
+    if (candidates.length === 0) return null;
+    return candidates.sort((a, b) => (b.w * b.h) - (a.w * a.h))[0].gradient;
+  })();
   const blockBgStyle = section.screenshotPath
     ? `background: "url('${section.screenshotPath}') top/cover no-repeat", color: "${sFg}"`
     : blockImg
       ? `background: "linear-gradient(${sBg}e0, ${sBg}b0), url('${blockImg.src}') center/cover no-repeat", color: "${sFg}"`
-      : `background: "${sBg}", color: "${sFg}"`;
+      : sectionGradient
+        ? `background: ${JSON.stringify(sectionGradient)}, color: "${sFg}"`
+        : `background: "${sBg}", color: "${sFg}"`;
   // Spatial mode: if source had rich layout (≥3 positioned text nodes),
   // render at EXACT source coordinates. Threshold lowered from 6 based on
   // observation that most block sections capture 2-4 leaves due to Framer's
