@@ -4925,6 +4925,234 @@ try {
   console.log(`  v75-L type-micro: text-shadow ${typeMicro.topTextShadows.length}, letter-spacing ${typeMicro.topLetterSpacing.length}`);
 } catch (e) { console.log(`  v75-L type-micro: ${e.message.slice(0, 60)}`); }
 
+// ═══════════════════════════════════════════════════════════════════════
+// ─── v76 — 6 capture blocks (N/J/K/H/G/M) — coverage continues ────────
+// Pre-disaster 14-block cadence target: v75 shipped 5 (E/D/F/C/L), v76
+// ships 6 (N/J/K/H/G/M), v77 will ship remaining 3 (A/B/I — high-risk
+// canvas monkey-patch + image fetch latency + selector extraction).
+// All blocks pure factual data, copyright-clean.
+// ═══════════════════════════════════════════════════════════════════════
+
+// ─── v76-N — Page-level UI colors (color-scheme + accent + caret) ─────
+// system UI color preferences. accent-color affects native form controls
+// (checkboxes, radios, range sliders, progress bars). color-scheme affects
+// scrollbars + form defaults. caret-color affects text input cursor.
+// Captured at root + body — these elements typically own these props.
+try {
+  const uiColors = await page.evaluate(() => {
+    const root = document.documentElement;
+    const body = document.body;
+    const rootCs = getComputedStyle(root);
+    const bodyCs = getComputedStyle(body);
+    const meta = document.querySelector('meta[name="color-scheme"]')?.getAttribute("content") || null;
+    const themeColor = document.querySelector('meta[name="theme-color"]')?.getAttribute("content") || null;
+    return {
+      colorScheme: rootCs.colorScheme || meta || "normal",
+      accentColor: rootCs.accentColor !== "auto" ? rootCs.accentColor : (bodyCs.accentColor !== "auto" ? bodyCs.accentColor : null),
+      caretColor: rootCs.caretColor !== "auto" ? rootCs.caretColor : null,
+      colorSchemeMeta: meta,
+      themeColor,
+    };
+  });
+  extracted.uiColors = uiColors;
+  console.log(`  v76-N ui-colors: scheme=${uiColors.colorScheme} accent=${uiColors.accentColor || "-"} caret=${uiColors.caretColor || "-"}`);
+} catch (e) { console.log(`  v76-N ui-colors: ${e.message.slice(0, 60)}`); }
+
+// ─── v76-J — Anchor positioning (anchor-name + position-anchor) ───────
+// Modern CSS Anchor Positioning API (Chrome 125+). anchor-name marks an
+// element as anchorable; position-anchor binds another element to it.
+// anchor() function reads anchored coordinates. Few sites use yet but
+// catching now means fluent emit for anchor-using designs (popovers,
+// tooltips, contextual menus).
+try {
+  const anchorFacts = await page.evaluate(() => {
+    const out = { anchorNames: [], positionAnchors: [], anchorFunctions: 0 };
+    const els = [...document.querySelectorAll("*")].slice(0, 1000);
+    for (const el of els) {
+      const cs = getComputedStyle(el);
+      const an = cs.anchorName || cs.getPropertyValue("anchor-name");
+      if (an && an !== "none" && an.trim()) {
+        out.anchorNames.push({ tag: el.tagName.toLowerCase(), anchorName: an.trim().slice(0, 40) });
+      }
+      const pa = cs.positionAnchor || cs.getPropertyValue("position-anchor");
+      if (pa && pa !== "none" && pa !== "auto" && pa.trim()) {
+        out.positionAnchors.push({ tag: el.tagName.toLowerCase(), positionAnchor: pa.trim().slice(0, 40) });
+      }
+    }
+    for (const sh of document.styleSheets) {
+      try {
+        for (const rule of sh.cssRules || []) {
+          if (/\banchor\s*\(/.test(rule.cssText || "")) out.anchorFunctions++;
+        }
+      } catch {}
+    }
+    return out;
+  });
+  extracted.anchorPositioning = anchorFacts;
+  console.log(`  v76-J anchor: ${anchorFacts.anchorNames.length} anchor-names, ${anchorFacts.positionAnchors.length} position-anchors, ${anchorFacts.anchorFunctions} anchor() fn uses`);
+} catch (e) { console.log(`  v76-J anchor: ${e.message.slice(0, 60)}`); }
+
+// ─── v76-K — Transform matrix decomposition ───────────────────────────
+// Computed transform values are matrix() / matrix3d() — opaque without
+// math decomposition. Recover human-readable translate/rotate/scale/skew
+// from 2D matrix(a,b,c,d,tx,ty) using polar decomposition. emit can then
+// reproduce equivalent transforms verbatim. 3D matrices kept raw (full
+// 16-element matrix3d), used directly in emit transform: prop.
+try {
+  const transformDecomp = await page.evaluate(() => {
+    const decompose2D = (m) => {
+      const match = m.match(/matrix\(([^)]+)\)/);
+      if (!match) return null;
+      const [a, b, c, d, tx, ty] = match[1].split(",").map(s => parseFloat(s.trim()));
+      const sx = Math.sqrt(a * a + b * b);
+      const sy = Math.sqrt(c * c + d * d);
+      const rotate = Math.atan2(b, a) * (180 / Math.PI);
+      const skew = Math.atan2(a * c + b * d, a * a + b * b) * (180 / Math.PI);
+      return { sx: +sx.toFixed(3), sy: +sy.toFixed(3), rotate: +rotate.toFixed(2), skew: +skew.toFixed(2), tx: +tx.toFixed(1), ty: +ty.toFixed(1) };
+    };
+    const transforms3d = [];
+    const transforms2d = [];
+    const els = [...document.querySelectorAll("*")].slice(0, 1500);
+    for (const el of els) {
+      const cs = getComputedStyle(el);
+      const t = cs.transform;
+      if (!t || t === "none") continue;
+      if (t.startsWith("matrix3d")) {
+        transforms3d.push({ tag: el.tagName.toLowerCase(), matrix: t.slice(0, 200), origin: cs.transformOrigin });
+      } else if (t.startsWith("matrix")) {
+        const d = decompose2D(t);
+        if (d && (Math.abs(d.rotate) > 0.5 || Math.abs(d.sx - 1) > 0.01 || Math.abs(d.sy - 1) > 0.01 || Math.abs(d.tx) > 1 || Math.abs(d.ty) > 1)) {
+          transforms2d.push({ tag: el.tagName.toLowerCase(), ...d, origin: cs.transformOrigin });
+        }
+      }
+      if (transforms3d.length + transforms2d.length >= 100) break;
+    }
+    return { transforms2d, transforms3d };
+  });
+  extracted.transformDecomposition = transformDecomp;
+  console.log(`  v76-K transforms: ${transformDecomp.transforms2d.length} 2D, ${transformDecomp.transforms3d.length} 3D matrices`);
+} catch (e) { console.log(`  v76-K transforms: ${e.message.slice(0, 60)}`); }
+
+// ─── v76-H — Stacking context map (z-index / isolation / mix-blend) ───
+// Layer overlap behavior — when section A's content sits visually on top
+// of section B even though B is later in DOM. z-index + isolation +
+// mix-blend-mode jointly govern this. Captured per-element with bbox y,
+// sorted by z descending. Emit can replay layering in the clone.
+try {
+  const stacking = await page.evaluate(() => {
+    const layers = [];
+    const els = [...document.querySelectorAll("*")].slice(0, 1500);
+    for (const el of els) {
+      const cs = getComputedStyle(el);
+      const z = cs.zIndex;
+      const iso = cs.isolation;
+      const blend = cs.mixBlendMode;
+      const hasZ = z && z !== "auto" && z !== "0";
+      const hasIso = iso === "isolate";
+      const hasBlend = blend && blend !== "normal";
+      if (hasZ || hasIso || hasBlend) {
+        const r = el.getBoundingClientRect();
+        layers.push({
+          tag: el.tagName.toLowerCase(),
+          zIndex: hasZ ? parseInt(z, 10) : null,
+          isolation: hasIso ? "isolate" : null,
+          mixBlendMode: hasBlend ? blend : null,
+          y: Math.round(r.top + window.scrollY),
+        });
+        if (layers.length >= 80) break;
+      }
+    }
+    layers.sort((a, b) => (b.zIndex || 0) - (a.zIndex || 0));
+    const distinctZ = new Set(layers.map(l => l.zIndex).filter(z => z !== null));
+    const blendModes = {};
+    for (const l of layers) if (l.mixBlendMode) blendModes[l.mixBlendMode] = (blendModes[l.mixBlendMode] || 0) + 1;
+    return { layers, totalDistinctZ: distinctZ.size, blendModes };
+  });
+  extracted.stackingContexts = stacking;
+  console.log(`  v76-H stacking: ${stacking.layers.length} layered els, ${stacking.totalDistinctZ} distinct z, blends: ${Object.keys(stacking.blendModes).join(",") || "-"}`);
+} catch (e) { console.log(`  v76-H stacking: ${e.message.slice(0, 60)}`); }
+
+// ─── v76-G — Custom property dependency graph ─────────────────────────
+// extracted.cssVariables already holds resolved root vars. This block
+// mines `var(--x)` references in those values to reconstruct the
+// dependency graph. Knowing roots/leaves/depth informs emit ordering
+// (declare in dep-order) + lets us flatten unused chains.
+try {
+  const cssVarGraph = (() => {
+    const vars = extracted.cssVariables || {};
+    const refs = {};
+    const refRegex = /var\(\s*(--[\w-]+)/g;
+    for (const [name, value] of Object.entries(vars)) {
+      const deps = [];
+      let m;
+      refRegex.lastIndex = 0;
+      while ((m = refRegex.exec(String(value))) !== null) {
+        if (Object.prototype.hasOwnProperty.call(vars, m[1])) deps.push(m[1]);
+      }
+      refs[name] = deps;
+    }
+    const referenced = new Set();
+    for (const deps of Object.values(refs)) for (const d of deps) referenced.add(d);
+    const roots = Object.keys(vars).filter(k => refs[k]?.length === 0);
+    const leaves = Object.keys(vars).filter(k => !referenced.has(k));
+    const computeDepth = (v, seen = new Set()) => {
+      if (seen.has(v)) return 0;
+      seen.add(v);
+      if (!refs[v] || refs[v].length === 0) return 1;
+      return 1 + Math.max(...refs[v].map(d => computeDepth(d, seen)));
+    };
+    let maxDepth = 0;
+    for (const v of Object.keys(vars)) maxDepth = Math.max(maxDepth, computeDepth(v));
+    return {
+      total: Object.keys(vars).length,
+      withRefs: Object.values(refs).filter(d => d.length > 0).length,
+      roots: roots.length,
+      leaves: leaves.length,
+      maxDepth,
+      refs,
+    };
+  })();
+  extracted.cssVarGraph = cssVarGraph;
+  console.log(`  v76-G css-var-graph: ${cssVarGraph.total} vars, ${cssVarGraph.withRefs} reference others, max depth ${cssVarGraph.maxDepth}`);
+} catch (e) { console.log(`  v76-G css-var-graph: ${e.message.slice(0, 60)}`); }
+
+// ─── v76-M — Border / outline / border-image recipes ──────────────────
+// Page-wide border decoration histogram. Border-radius dominates UI
+// rounded-corner aesthetics; outline carries focus indicators (a11y).
+// All values captured + ranked. Emit gets --sigma-radius CSS var so
+// component templates pick the dominant rounding without hardcoding.
+try {
+  const borders = await page.evaluate(() => {
+    const recipes = {}, radii = {}, outlines = {}, borderImages = {};
+    const els = [...document.querySelectorAll("*")].slice(0, 1200);
+    for (const el of els) {
+      const cs = getComputedStyle(el);
+      const b = cs.border;
+      if (b && !b.startsWith("0px") && b.indexOf("none") === -1 && b !== "0px none rgb(0, 0, 0)") {
+        recipes[b] = (recipes[b] || 0) + 1;
+      }
+      const r = cs.borderRadius;
+      if (r && r !== "0px") radii[r] = (radii[r] || 0) + 1;
+      const o = cs.outline;
+      if (o && !o.startsWith("0px") && o.indexOf("none") === -1) outlines[o] = (outlines[o] || 0) + 1;
+      const bi = cs.borderImage;
+      if (bi && bi !== "none" && !bi.startsWith("none")) borderImages[bi.slice(0, 100)] = (borderImages[bi.slice(0, 100)] || 0) + 1;
+    }
+    const top = (m, n) => Object.entries(m).sort((a, b) => b[1] - a[1])
+      .slice(0, n).map(([k, c]) => ({ value: k.slice(0, 100), count: c }));
+    return {
+      topBorders: top(recipes, 8),
+      topRadii: top(radii, 8),
+      topOutlines: top(outlines, 4),
+      topBorderImages: top(borderImages, 3),
+      uniqueBorders: Object.keys(recipes).length,
+    };
+  });
+  extracted.borderFingerprint = borders;
+  const radiiSummary = borders.topRadii.slice(0, 3).map(r => r.value).join(" / ");
+  console.log(`  v76-M borders: ${borders.uniqueBorders} unique, top radii: ${radiiSummary || "-"}`);
+} catch (e) { console.log(`  v76-M borders: ${e.message.slice(0, 60)}`); }
+
 // browser.close() can hang indefinitely after v67's HeapProfiler +
 // Input.dispatchMouseEvent + SystemInfo interactions leave stale CDP
 // state. Race it against a 15s timeout; on timeout, SIGKILL the Chrome
@@ -5438,6 +5666,27 @@ ${(() => {
   if (t.topLetterSpacing?.[0]) lines.push(`  --sigma-letter-spacing: ${t.topLetterSpacing[0].value};`);
   if (t.topTextShadows?.[0]) lines.push(`  --sigma-text-shadow: ${t.topTextShadows[0].value};`);
   if (t.topWordSpacing?.[0]) lines.push(`  --sigma-word-spacing: ${t.topWordSpacing[0].value};`);
+  return lines.join("\n");
+})()}
+  /* v76-N — page-level UI colors (system controls + caret) */
+${(() => {
+  const u = extracted.uiColors;
+  if (!u) return "";
+  const lines = [];
+  lines.push(`  color-scheme: ${u.colorScheme};`);
+  if (u.accentColor) lines.push(`  accent-color: ${u.accentColor};`);
+  if (u.caretColor) lines.push(`  caret-color: ${u.caretColor};`);
+  return lines.join("\n");
+})()}
+  /* v76-M — dominant border-radius for UI shape consistency */
+${(() => {
+  const b = extracted.borderFingerprint;
+  if (!b) return "";
+  const lines = [];
+  if (b.topRadii?.[0]) lines.push(`  --sigma-radius: ${b.topRadii[0].value};`);
+  if (b.topRadii?.[1]) lines.push(`  --sigma-radius-2: ${b.topRadii[1].value};`);
+  if (b.topBorders?.[0]) lines.push(`  --sigma-border: ${b.topBorders[0].value};`);
+  if (b.topOutlines?.[0]) lines.push(`  --sigma-outline: ${b.topOutlines[0].value};`);
   return lines.join("\n");
 })()}
 ${Object.entries(extracted.cssVariables || {}).map(([k, v]) => `  ${k}: ${v};`).join("\n")}
