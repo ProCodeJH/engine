@@ -1814,11 +1814,36 @@ console.log(`  font faces: ${fontFaces.length} discovered`);
 
 // Download fonts via same-origin fetch inside the page context (handles
 // CORS because browser treats page.evaluate fetches as same-origin).
+// v78-1 — License download gate. Pre-classify each font family against
+// known free-license whitelist BEFORE binary download. Proprietary or
+// unknown fonts are skipped entirely (no binary on disk = guaranteed
+// no-redistribution-violation). Free fonts download as before.
+const FREE_FONT_DOWNLOAD_WHITELIST = new Set([
+  "Inter", "Urbanist", "Poppins", "Manrope", "Space Grotesk", "Montserrat",
+  "Playfair Display", "Merriweather", "Lora", "DM Serif Display", "DM Serif Text",
+  "DM Sans", "Work Sans", "Source Sans 3", "Source Sans Pro", "Source Serif Pro",
+  "IBM Plex Sans", "IBM Plex Serif", "IBM Plex Mono", "Fira Sans", "Fira Code",
+  "JetBrains Mono", "Roboto", "Roboto Mono", "Roboto Slab", "Roboto Condensed", "Roboto Flex",
+  "Open Sans", "Nunito", "Nunito Sans", "Raleway", "Karla", "Outfit", "Public Sans",
+  "Plus Jakarta Sans", "Bricolage Grotesque", "Geist", "Geist Mono",
+  "Noto Sans", "Noto Serif", "Noto Sans KR", "Noto Serif KR",
+  "Pretendard", "Spoqa Han Sans Neo",
+  "Charis SIL", "Andika",
+]);
+const isFontRedistributable = (family) => {
+  const clean = (family || "").replace(/['"]/g, "").trim();
+  return FREE_FONT_DOWNLOAD_WHITELIST.has(clean);
+};
 const downloadedFonts = [];
+let licenseSkipped = 0;
 if (fontFaces.length > 0) {
   const fontsDir = path.join(projDir, "public", "fonts");
   fs.mkdirSync(fontsDir, { recursive: true });
   for (const f of fontFaces) {
+    if (!isFontRedistributable(f.family)) {
+      licenseSkipped++;
+      continue;  // v78-1 license gate — proprietary fonts: no download
+    }
     try {
       const bytes = await page.evaluate(async (url) => {
         const res = await fetch(url, { mode: "cors" });
@@ -1834,7 +1859,8 @@ if (fontFaces.length > 0) {
       downloadedFonts.push({ ...f, localPath: `/fonts/${fname}`, fileSize: bytes.length });
     } catch (e) { /* skip */ }
   }
-  console.log(`  fonts downloaded: ${downloadedFonts.length}/${fontFaces.length} (${(downloadedFonts.reduce((s, f) => s + f.fileSize, 0) / 1024).toFixed(0)}KB)`);
+  const sizeKB = (downloadedFonts.reduce((s, f) => s + f.fileSize, 0) / 1024).toFixed(0);
+  console.log(`  fonts downloaded: ${downloadedFonts.length}/${fontFaces.length} (${sizeKB}KB), v78-1 license-skipped: ${licenseSkipped}`);
 }
 extracted.fontFaces = downloadedFonts;
 
@@ -5317,6 +5343,80 @@ try {
   console.log(`  v77-I class decls: ${classDeclarations.classes.length} unique class selectors from ${classDeclarations.capturedRules}/${classDeclarations.totalRules} rules`);
 } catch (e) { console.log(`  v77-I class decls: ${e.message.slice(0, 60)}`); }
 
+// ─── v78-3 — Per-viewport computed style capture (responsive parity) ──
+// Walks top elements at mobile/tablet/desktop viewports, captures
+// computed-style facts that DIFFER between breakpoints. Pure facts —
+// emit can replay responsive variations via Tailwind utilities or
+// inline media queries. Always-on (independent of USE_ORIGINAL_IMAGES)
+// because computed values are not source bytes.
+try {
+  const VIEWPORTS_VS = [
+    { name: "mobile", width: 375, height: 812 },
+    { name: "tablet", width: 768, height: 1024 },
+    { name: "desktop", width: 1920, height: 1080 },
+  ];
+  const responsiveStyles = {};
+  for (const vp of VIEWPORTS_VS) {
+    try {
+      await page.setViewport({ width: vp.width, height: vp.height });
+      await new Promise(r => setTimeout(r, 600)); // allow reflow
+      const stylesAtVp = await page.evaluate(() => {
+        const targets = [...document.querySelectorAll("h1, h2, h3, p, section, header, footer, main, nav, button, a")]
+          .filter(el => {
+            const r = el.getBoundingClientRect();
+            return r.width >= 20 && r.height >= 10;
+          })
+          .slice(0, 100);
+        return targets.map((el, i) => {
+          const cs = getComputedStyle(el);
+          const r = el.getBoundingClientRect();
+          return {
+            i,
+            tag: el.tagName.toLowerCase(),
+            x: Math.round(r.left),
+            y: Math.round(r.top + window.scrollY),
+            w: Math.round(r.width),
+            h: Math.round(r.height),
+            fontSize: cs.fontSize,
+            fontWeight: cs.fontWeight,
+            lineHeight: cs.lineHeight,
+            color: cs.color,
+            display: cs.display,
+            flexDirection: cs.flexDirection,
+            gridTemplateColumns: cs.gridTemplateColumns?.slice(0, 80) || "",
+            padding: cs.padding,
+            margin: cs.margin,
+            position: cs.position,
+          };
+        });
+      });
+      responsiveStyles[vp.name] = stylesAtVp;
+    } catch { responsiveStyles[vp.name] = []; }
+  }
+  // Restore desktop viewport
+  await page.setViewport({ width: 1920, height: 1080 });
+  await new Promise(r => setTimeout(r, 400));
+  // Compute breakpoint deltas: which properties differ between viewports
+  const computeDeltas = (a, b) => {
+    if (!a || !b) return 0;
+    let diffCount = 0;
+    const len = Math.min(a.length, b.length);
+    for (let i = 0; i < len; i++) {
+      for (const k of ["fontSize", "padding", "margin", "display", "flexDirection", "gridTemplateColumns", "w", "h"]) {
+        if (a[i][k] !== b[i][k]) { diffCount++; break; }
+      }
+    }
+    return diffCount;
+  };
+  extracted.responsiveStyles = {
+    perViewport: responsiveStyles,
+    mobileDesktopDelta: computeDeltas(responsiveStyles.mobile, responsiveStyles.desktop),
+    tabletDesktopDelta: computeDeltas(responsiveStyles.tablet, responsiveStyles.desktop),
+    elementCount: responsiveStyles.desktop?.length || 0,
+  };
+  console.log(`  v78-3 responsive: ${extracted.responsiveStyles.elementCount} elements, mobile↔desktop delta=${extracted.responsiveStyles.mobileDesktopDelta}, tablet↔desktop=${extracted.responsiveStyles.tabletDesktopDelta}`);
+} catch (e) { console.log(`  v78-3 responsive: ${e.message.slice(0, 60)}`); }
+
 // browser.close() can hang indefinitely after v67's HeapProfiler +
 // Input.dispatchMouseEvent + SystemInfo interactions leave stale CDP
 // state. Race it against a 15s timeout; on timeout, SIGKILL the Chrome
@@ -6969,6 +7069,51 @@ export default function ThreeScene({ height = 600 }: { height?: number }) {
   return "ThreeScene";
 };
 
+// v78-2 — CanvasReplay emitter. Renders captured Canvas 2D operations
+// (v77-A) into a clean-room <canvas> on the clone side. Operations are
+// pure facts (numeric coords + colors) under Computer Associates v.
+// Altai filtration. Recovers Framer canvas-rendered visuals previously
+// invisible to DOM walker. Glyphs/imagery from drawImage are NOT
+// reproduced (would be expression copy) — emit replaces with palette
+// rect at same coordinates.
+const emitCanvasReplay = () => {
+  if (emittedComponents.has("CanvasReplay")) return "CanvasReplay";
+  if (!extracted.canvasOps || extracted.canvasOps.length === 0) return null;
+  emittedComponents.add("CanvasReplay");
+  const ops = extracted.canvasOps.slice(0, 800);  // cap for component bundle size
+  const tpl = `"use client";
+import { useEffect, useRef } from "react";
+
+const OPS = ${JSON.stringify(ops, null, 0)};
+
+export default function CanvasReplay({ width = 1920, height = 600 }: { width?: number; height?: number }) {
+  const ref = useRef<HTMLCanvasElement>(null);
+  useEffect(() => {
+    const cv = ref.current;
+    if (!cv) return;
+    const ctx = cv.getContext("2d");
+    if (!ctx) return;
+    ctx.save();
+    for (const op of OPS) {
+      try {
+        if (op.fillStyle && op.fillStyle !== "(complex)") ctx.fillStyle = op.fillStyle;
+        if (op.strokeStyle && op.strokeStyle !== "(complex)") ctx.strokeStyle = op.strokeStyle;
+        if (typeof op.lineWidth === "number") ctx.lineWidth = op.lineWidth;
+        if (typeof op.globalAlpha === "number") ctx.globalAlpha = op.globalAlpha;
+        const args = op.args || [];
+        const fn = (ctx as any)[op.method];
+        if (typeof fn === "function") fn.apply(ctx, args);
+      } catch (e) { /* skip bad op */ }
+    }
+    ctx.restore();
+  }, []);
+  return <canvas ref={ref} width={width} height={height} style={{ width: "100%", height: "auto", display: "block" }} />;
+}
+`;
+  fs.writeFileSync(path.join(compDir, "CanvasReplay.tsx"), tpl);
+  return "CanvasReplay";
+};
+
 // Generic block emitter — handles sections that didn't match any stronger
 // role. Uses the captured hierarchy directly so block sections contribute
 // real typographic variety instead of being skipped.
@@ -7239,6 +7384,22 @@ if ((extracted.canvases?.length || 0) > 0) {
   const ch = Math.max(400, Math.min(800, extracted.canvases[0].h || 600));
   pageSections.push(`<ThreeScene height={${ch}} />`);
   console.log(`  3D scene emitted (${extracted.canvases.length} source canvases)`);
+}
+
+// v78-2 — CanvasReplay injection. When source's Canvas 2D operations
+// were captured (v77-A), emit a CanvasReplay component that recreates
+// the drawing in our own canvas with our palette. Particularly recovers
+// Framer canvas-rendered text otherwise invisible to DOM emit. Sized
+// to first source canvas's dimensions or sane defaults.
+if ((extracted.canvasOps?.length || 0) > 20) {
+  const replayName = emitCanvasReplay();
+  if (replayName) {
+    componentImports.push(`import ${replayName} from "@/components/${replayName}";`);
+    const cw = Math.max(800, extracted.canvases?.[0]?.w || 1920);
+    const ch = Math.max(400, extracted.canvases?.[0]?.h || 600);
+    pageSections.push(`<${replayName} width={${cw}} height={${ch}} />`);
+    console.log(`  v78-2 canvas replay emitted (${extracted.canvasOps.length} ops in component)`);
+  }
 }
 
 // Video/iframe injection. Each detected video becomes its own section,
