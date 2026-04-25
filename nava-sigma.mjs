@@ -691,6 +691,16 @@ const cdp = await page.target().createCDPSession();
 try {
   await cdp.send("Network.enable");
   await cdp.send("Runtime.enable");
+  // v93-1 — CSS Coverage tracking MUST start BEFORE page.goto to capture
+  // CSS rule usage during initial render. Pre-v93 it was started AFTER
+  // navigation (line 756) → tracking window was post-paint, no rule
+  // matches happened, takeCoverageDelta returned empty → critical CSS = 0B.
+  // Now started here so all rules used during page load are tracked.
+  await cdp.send("DOM.enable");
+  await cdp.send("CSS.enable");
+  await cdp.send("CSS.startRuleUsageTracking");
+  await cdp.send("Profiler.enable");
+  await cdp.send("Profiler.startPreciseCoverage", { callCount: false, detailed: false });
 } catch (e) { /* unsupported */ }
 
 // Capture response headers via CDP event
@@ -748,12 +758,9 @@ await page.goto(url, { waitUntil: "networkidle2", timeout: 60000 });
 await new Promise(r => setTimeout(r, 2500));
 
 // Enable remaining CDP domains AFTER navigation (avoid frame-detach race)
+// v93-1 — CSS/DOM/Profiler/RuleUsage moved to pre-goto block (line 690+)
+// for proper Coverage tracking. Only Page/Audits/Security here now.
 try { await cdp.send("Page.enable"); } catch {}
-try { await cdp.send("CSS.enable"); } catch {}
-try { await cdp.send("DOM.enable"); } catch {}
-try { await cdp.send("Profiler.enable"); } catch {}
-try { await cdp.send("Profiler.startPreciseCoverage", { callCount: false, detailed: false }); } catch {}
-try { await cdp.send("CSS.startRuleUsageTracking"); } catch {}
 try { await cdp.send("Audits.enable"); } catch {}
 try { await cdp.send("Security.enable"); } catch {}
 
@@ -1132,12 +1139,18 @@ const extracted = await page.evaluate(() => {
   // copyright-safe filtering. Tree captures structure + computed style
   // facts + tokenized text. Emitter can regenerate JSX 1:1 vs source.
   const captureDOMTree = (el, depth = 0, nodeCount = { n: 0 }) => {
-    if (depth > 6) return null;
-    if (nodeCount.n >= 150) return null;
+    // v93-3 — Framer/Webflow sites use deep wrapper nesting (5-7 levels
+    // of <div> before reaching real content). Pre-v93 depth=6 cut off
+    // before hitting actual children → hero.domTree.children === 0.
+    // Real-world test: teamevople.kr hero section captured 0 children.
+    // depth 6→8 gives 2 more levels for wrapper traversal. threshold
+    // 3→1 catches small visible spans (per-character split text).
+    if (depth > 8) return null;
+    if (nodeCount.n >= 200) return null;
     if (!(el instanceof HTMLElement)) return null;
     if (["SCRIPT", "STYLE", "NOSCRIPT", "IFRAME", "OBJECT"].includes(el.tagName)) return null;
     const r = el.getBoundingClientRect();
-    if (r.width < 3 || r.height < 3) return null;
+    if (r.width < 1 || r.height < 1) return null;
     nodeCount.n++;
     const cs = getComputedStyle(el);
     // Only non-default style properties survive. Keeps JSX lean.
@@ -7154,10 +7167,33 @@ const buildHoverExpr = () => {
 // Recursive DOM tree → JSX string. Each node becomes a JSX element with
 // inline style from styleFacts. Text is tokenized unless --use-original-text.
 // This is the role-template bypass — emit follows source DOM structure.
+// v93-2 — Strip source-URL leakage from styleFacts. When DOM Mirror
+// activates (v92-2), captured computed styles include resolved
+// background-image url(...) pointing to source CDN. In clean-room mode
+// (no --use-original-images) those URLs would leak source hostname into
+// emitted .tsx files. Whitelist gradient/data: URIs (pure recipes/inline)
+// and strip everything else to "none" so license audit stays clean.
+const sanitizeStyleValue = (k, v) => {
+  if (typeof v !== "string") return v;
+  // Properties that may carry url(...) values
+  if (/background|mask|cursor|content/i.test(k)) {
+    // Allow gradients (pure CSS recipe) + data: URIs (inline byte data)
+    if (/gradient\s*\(/i.test(v)) return v.replace(/url\([^)]*\)/g, "none");
+    if (v.includes("url(")) {
+      // In dev mode, source hotlinks are expected — keep
+      if (USE_ORIGINAL_IMAGES) return v;
+      // Clean mode — strip any url() reference
+      return v.replace(/url\([^)]*\)/g, "none");
+    }
+  }
+  return v;
+};
+
 const camelStyle = (obj) => {
   const pairs = [];
   for (const [k, v] of Object.entries(obj || {})) {
-    const val = typeof v === "string" ? v.replace(/"/g, '\\"') : v;
+    const sanitized = sanitizeStyleValue(k, v);
+    const val = typeof sanitized === "string" ? sanitized.replace(/"/g, '\\"') : sanitized;
     pairs.push(`${k}: "${val}"`);
   }
   // Return single-brace object literal — callers wrap in JSX's outer {} to
