@@ -5140,22 +5140,26 @@ const keyframesBlock = (extracted.cssKeyframes || [])
   .map(kf => kf.cssText)
   .join("\n\n");
 
-// Modern CSS block — @layer/@property/@container/@scope + adoptedStyleSheets.
-// These 레이어가 설치되면 원본의 modern CSS architecture 그대로 replay.
+// Modern CSS block — @layer/@property/@container/@scope + adoptedStyleSheets
+// + v68 timelineCSS. v71 adds brace-balance validation: upstream
+// slice(0, 500) truncation can leave rules mid-property, which breaks the
+// entire globals.css PostCSS parse. One unclosed block = 0% build success.
+const isBalancedCss = (t) => {
+  if (!t || typeof t !== "string") return false;
+  const opens = (t.match(/\{/g) || []).length;
+  const closes = (t.match(/\}/g) || []).length;
+  return opens > 0 && opens === closes;
+};
 const modernCssBlock = [
   ...(extracted.modernCSS?.layer || []),
   ...(extracted.modernCSS?.property || []),
   ...(extracted.modernCSS?.container || []),
   ...(extracted.modernCSS?.scope || []),
   ...(extracted.modernCSS?.scrollTimeline || []),
-  // v68 — timelineCSS from dedicated scroll/view timeline capture
-  // (line 2600 area). Previously captured but never emitted. Now the
-  // regenerated site can drive native scroll-linked animations directly
-  // from the source's original CSS, without any JS fallback.
   ...(extracted.timelineCSS?.scrollTimelineRules || []),
   ...(extracted.timelineCSS?.viewTimelineRules || []),
   extracted.adoptedStyleSheets || "",
-].filter(Boolean).join("\n\n");
+].filter(isBalancedCss).join("\n\n");
 
 fs.writeFileSync(path.join(appDir, "globals.css"),
 `@import "tailwindcss";
