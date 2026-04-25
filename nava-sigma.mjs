@@ -7249,6 +7249,22 @@ const secHeight = (section) => {
 // Back-compat alias for older callers still using vh.
 const secVh = (section) => Math.max(50, Math.min(800, secHeight(section).vh));
 
+// v86-3 — Per-section fidelity tier for HTML data attribute. Quick
+// heuristic: how rich was the captured signal set for this section?
+// Low score = role template fallback was needed (clone < source quality).
+// High score = DOM Mirror with full styleFacts replay.
+const sigmaFidelityTier = (section) => {
+  let pts = 0;
+  if (section.domTree?.children?.length) pts += 3;
+  if ((section.spatial?.length || 0) >= 3) pts += 2;
+  if (section.screenshotPath) pts += 1;
+  if ((section.images?.length || 0) > 0) pts += 1;
+  if ((section.motions?.length || 0) > 0) pts += 1;
+  if ((section.hierarchy?.length || 0) > 0) pts += 1;
+  if (section.representative?.heading) pts += 1;
+  return pts >= 8 ? "high" : pts >= 5 ? "medium" : "low";
+};
+
 const emitHero = (section, idx) => {
   const name = `Hero${idx}`;
   if (emittedComponents.has(name)) return name;
@@ -7316,7 +7332,7 @@ ${imports}
 
 export default function ${name}() {${parallaxHook}
   return (
-    <section${sectionAttrs} data-sigma-section="${section.sectionIndex ?? ""}" className="relative flex items-center justify-center overflow-hidden px-6 py-12" style={{ minHeight: "${hPx}px", ${heroBgStyle} }}>
+    <section${sectionAttrs} data-sigma-section="${section.sectionIndex ?? ""}" data-sigma-fidelity="${sigmaFidelityTier(section)}" className="relative flex items-center justify-center overflow-hidden px-6 py-12" style={{ minHeight: "${hPx}px", ${heroBgStyle} }}>
       <motion.div
         ${innerMotionStyle}
         className="max-w-5xl text-center z-10 flex flex-col gap-3 items-center"
@@ -7391,7 +7407,7 @@ ${useSectionParallax ? `  const ref = useRef<HTMLElement>(null);
   const headY = useTransform(scrollYProgress, [0, 1], [60, -40]);
   const headOpacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.3, 1, 1, 0.6]);` : ""}
   return (
-    <section${useSectionParallax ? " ref={ref}" : ""} data-sigma-section="${section.sectionIndex ?? ""}" className="flex flex-col justify-center overflow-hidden relative" style={{ height: "${hPx}px", paddingTop: "0", paddingBottom: "0", overflow: "hidden", paddingLeft: "${layoutPaddingX}px", paddingRight: "${layoutPaddingX}px", background: "${bg}", color: "${sFg}" }}>
+    <section${useSectionParallax ? " ref={ref}" : ""} data-sigma-section="${section.sectionIndex ?? ""}" data-sigma-fidelity="${sigmaFidelityTier(section)}" className="flex flex-col justify-center overflow-hidden relative" style={{ height: "${hPx}px", paddingTop: "0", paddingBottom: "0", overflow: "hidden", paddingLeft: "${layoutPaddingX}px", paddingRight: "${layoutPaddingX}px", background: "${bg}", color: "${sFg}" }}>
       <div className="max-w-7xl mx-auto w-full">
         <motion.h2 className="font-heading font-bold mb-12 text-center" style={{ fontSize: "clamp(${Math.round(typeScale.h1 * 0.6)}px, 5vw, ${typeScale.h1}px)", lineHeight: 1.1${useSectionParallax ? `, y: headY, opacity: headOpacity` : ``} }}>{"{{GALLERY_TITLE}}"}</motion.h2>
         ${isTicker ? `<motion.div className="flex" animate=${motion.animate} transition=${motion.transition}>
@@ -7439,7 +7455,7 @@ ${useSectionParallax ? `  const ref = useRef<HTMLElement>(null);
   const imgY = useTransform(scrollYProgress, [0, 1], [${-Math.max(20, Math.min(120, Math.abs(section.motionSpan?.deltaY || 40) / 2))}, ${Math.max(20, Math.min(120, Math.abs(section.motionSpan?.deltaY || 40) / 2))}]);
   const imgScale = useTransform(scrollYProgress, [0, 0.5, 1], [${(1 - Math.abs(section.motionSpan?.deltaScale || 0.05) / 2).toFixed(3)}, ${(1 + Math.abs(section.motionSpan?.deltaScale || 0.02) / 2).toFixed(3)}, ${(1 - Math.abs(section.motionSpan?.deltaScale || 0.05) / 2).toFixed(3)}]);` : ""}
   return (
-    <section${useSectionParallax ? " ref={ref}" : ""} data-sigma-section="${section.sectionIndex ?? ""}" className="px-6 flex items-center overflow-hidden relative" style={{ height: "${hPx}px", paddingTop: "0", paddingBottom: "0", overflow: "hidden", background: "${bg}", color: "${sFg}" }}>
+    <section${useSectionParallax ? " ref={ref}" : ""} data-sigma-section="${section.sectionIndex ?? ""}" data-sigma-fidelity="${sigmaFidelityTier(section)}" className="px-6 flex items-center overflow-hidden relative" style={{ height: "${hPx}px", paddingTop: "0", paddingBottom: "0", overflow: "hidden", background: "${bg}", color: "${sFg}" }}>
       <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center w-full">
         <motion.div
           ${useSectionParallax ? `style={{ y: textY }}` : `initial={{ opacity: 0, x: -20 }}
@@ -7554,7 +7570,7 @@ import { motion } from "framer-motion";
 
 export default function ${name}() {
   return (
-    <section data-sigma-section="${section.sectionIndex ?? ""}" className="px-6 flex flex-col justify-center overflow-hidden relative" style={{ height: "${hPx}px", paddingTop: "0", paddingBottom: "0", overflow: "hidden", background: "${bg}", color: "${sFg}" }}>
+    <section data-sigma-section="${section.sectionIndex ?? ""}" data-sigma-fidelity="${sigmaFidelityTier(section)}" className="px-6 flex flex-col justify-center overflow-hidden relative" style={{ height: "${hPx}px", paddingTop: "0", paddingBottom: "0", overflow: "hidden", background: "${bg}", color: "${sFg}" }}>
       <div className="max-w-7xl mx-auto w-full">
         <h2 className="font-heading font-bold mb-16 text-center" style={{ fontSize: "clamp(${Math.round(typeScale.h1 * 0.55)}px, 5vw, ${typeScale.h1}px)", lineHeight: 1.1 }}>{"{{SECTION_TITLE}}"}</h2>
         <div className="grid grid-cols-1 ${gridClass} gap-6">
@@ -7610,7 +7626,7 @@ ${useSectionParallax ? `  const ref = useRef<HTMLElement>(null);
   const titleY = useTransform(scrollYProgress, [0, 1], [-20, 30]);
   const bodyY = useTransform(scrollYProgress, [0, 1], [30, -20]);` : ""}
   return (
-    <section${useSectionParallax ? " ref={ref}" : ""} data-sigma-section="${section.sectionIndex ?? ""}" className="px-6 flex flex-col justify-center overflow-hidden relative" style={{ height: "${hPx}px", paddingTop: "0", paddingBottom: "0", overflow: "hidden", background: "${bg}", color: "${sFg}" }}>
+    <section${useSectionParallax ? " ref={ref}" : ""} data-sigma-section="${section.sectionIndex ?? ""}" data-sigma-fidelity="${sigmaFidelityTier(section)}" className="px-6 flex flex-col justify-center overflow-hidden relative" style={{ height: "${hPx}px", paddingTop: "0", paddingBottom: "0", overflow: "hidden", background: "${bg}", color: "${sFg}" }}>
       ${leadImg
         ? `<motion.div className="max-w-4xl mx-auto mb-10 rounded-2xl overflow-hidden" style={{ aspectRatio: "${(leadImg.w / Math.max(1, leadImg.h)).toFixed(3)}"${useSectionParallax ? `, scale: imgScale` : ``} }}>
           <img src="${leadImg.src}" alt="${(leadImg.alt || "").replace(/"/g, "&quot;")}" className="w-full h-full object-cover" loading="lazy" />
@@ -7963,7 +7979,7 @@ ${useSectionParallax ? `  const ref = useRef<HTMLElement>(null);
   const contentY = useTransform(scrollYProgress, [0, 0.5, 1], [50, 0, -50]);
   const bgY = useTransform(scrollYProgress, [0, 1], [${blockImg ? "-30, 30" : "0, 0"}]);` : ""}
   return (
-    <section${useSectionParallax ? " ref={ref}" : ""} data-sigma-section="${section.sectionIndex ?? ""}" className="flex items-center justify-center relative overflow-hidden" style={{ minHeight: "${hPx}px", paddingTop: "4vh", paddingBottom: "4vh", paddingLeft: "${layoutPaddingX}px", paddingRight: "${layoutPaddingX}px", ${blockBgStyle} }}>
+    <section${useSectionParallax ? " ref={ref}" : ""} data-sigma-section="${section.sectionIndex ?? ""}" data-sigma-fidelity="${sigmaFidelityTier(section)}" className="flex items-center justify-center relative overflow-hidden" style={{ minHeight: "${hPx}px", paddingTop: "4vh", paddingBottom: "4vh", paddingLeft: "${layoutPaddingX}px", paddingRight: "${layoutPaddingX}px", ${blockBgStyle} }}>
       <motion.div
         initial="hidden"
         whileInView="visible"
@@ -8791,15 +8807,26 @@ try {
     coverageReport.push({ key: k, kind, size });
   }
   coverageReport.sort((a, b) => b.size - a.size);
+  // v86-2 — Multi-route coverage rollup. When extracted.pages was
+  // populated by multi-page scan, summarize per-route signal density
+  // alongside the root-page report.
+  const pageRoutes = Object.keys(extracted.pages || {}).slice(0, 10);
+  const perRouteSummary = pageRoutes.map(route => {
+    const data = extracted.pages[route] || {};
+    const filledKeys = Object.entries(data)
+      .filter(([k, v]) => v !== null && v !== undefined && (Array.isArray(v) ? v.length > 0 : (typeof v === "object" ? Object.keys(v).length > 0 : true)));
+    return { route, signalCount: filledKeys.length };
+  });
   const reportLines = [
     "# Sigma Capture Coverage Report",
     "",
     `Generated: ${new Date().toISOString()}`,
     `Source: ${url}`,
-    `Engine LOC: ~9100`,
+    `Engine LOC: ~9300`,
     "",
     `## Capture summary`,
-    `- **Total signal classes**: ${coverageReport.length}`,
+    `- **Total signal classes (root)**: ${coverageReport.length}`,
+    `- **Multi-page routes scanned**: ${pageRoutes.length}`,
     `- **Capture-emit symmetry**: pipe complete (v74-v84)`,
     `- **North star metric**: capture coverage (NOT pixel-match %)`,
     "",
@@ -8809,7 +8836,11 @@ try {
     "|---|---|---|",
     ...coverageReport.slice(0, 40).map(c => `| \`${c.key}\` | ${c.kind} | ${c.size} |`),
     "",
-    `## Total: ${coverageReport.length} signal classes captured`,
+    pageRoutes.length > 0 ? "## Per-route capture (multi-page)\n\n| route | signal count |\n|---|---|\n" +
+      perRouteSummary.map(r => `| \`${r.route}\` | ${r.signalCount} |`).join("\n") : "",
+    "",
+    `## Total: ${coverageReport.length} signal classes captured at root` +
+      (pageRoutes.length > 0 ? ` + ${perRouteSummary.reduce((s, r) => s + r.signalCount, 0)} across ${pageRoutes.length} routes` : ""),
     "",
     "Pixel-match measurement is intentionally absent from this report.",
     "Per feedback-sigma-cadence memory: capture coverage is the true KPI",
@@ -8818,8 +8849,78 @@ try {
     "fully-clean output without user assets).",
   ];
   fs.writeFileSync(path.join(projDir, "SCAN-COVERAGE.md"), reportLines.join("\n"));
-  console.log(`  v85-1 coverage report: ${coverageReport.length} signal classes → SCAN-COVERAGE.md`);
+  console.log(`  v85-1 coverage report: ${coverageReport.length} signal classes${pageRoutes.length > 0 ? ` + ${pageRoutes.length} routes` : ""} → SCAN-COVERAGE.md`);
 } catch (e) { console.log(`  v85-1 coverage report: ${e.message.slice(0, 60)}`); }
+
+// ─── v86-1 — Per-component fidelity self-assessment ───────────────────
+// For each emitted Hero/Block/Gallery/Feature component, score what
+// captured signals fed its emit. High score = component had rich source
+// data + DOM Mirror path. Low score = role template fallback. Lets
+// developer identify which sections need user post-edit attention.
+try {
+  const componentFidelity = [];
+  for (let i = 0; i < extracted.sections.length; i++) {
+    const s = extracted.sections[i];
+    const score = {
+      role: s.role,
+      sectionIndex: i,
+      hasDomTree: !!(s.domTree?.children?.length),
+      domTreeDepth: s.domTree?.children?.length || 0,
+      hasSpatial: (s.spatial?.length || 0) >= 3,
+      spatialNodes: s.spatial?.length || 0,
+      hasScreenshot: !!s.screenshotPath,
+      hasImages: (s.images?.length || 0) > 0,
+      imageCount: s.images?.length || 0,
+      hasMotions: (s.motions?.length || 0) > 0,
+      motionCount: s.motions?.length || 0,
+      hasHierarchy: (s.hierarchy?.length || 0) > 0,
+      hasRepresentative: !!s.representative?.heading,
+      heightPx: s.h,
+    };
+    // Composite score 0-10: ranks fidelity carrier presence
+    let pts = 0;
+    if (score.hasDomTree) pts += 3;
+    if (score.hasSpatial) pts += 2;
+    if (score.hasScreenshot) pts += 1;
+    if (score.hasImages) pts += 1;
+    if (score.hasMotions) pts += 1;
+    if (score.hasHierarchy) pts += 1;
+    if (score.hasRepresentative) pts += 1;
+    score.fidelityScore = pts;
+    score.fidelityTier = pts >= 8 ? "high" : pts >= 5 ? "medium" : "low";
+    componentFidelity.push(score);
+  }
+  const tierCounts = { high: 0, medium: 0, low: 0 };
+  for (const c of componentFidelity) tierCounts[c.fidelityTier]++;
+  extracted.componentFidelity = componentFidelity;
+  const fidelityLines = [
+    "# Sigma Component Fidelity Assessment",
+    "",
+    `Generated: ${new Date().toISOString()}`,
+    `Source: ${url}`,
+    "",
+    `## Tier summary`,
+    `- **High fidelity**: ${tierCounts.high} sections (DOM Mirror + rich capture)`,
+    `- **Medium fidelity**: ${tierCounts.medium} sections (partial capture)`,
+    `- **Low fidelity**: ${tierCounts.low} sections (role template fallback)`,
+    "",
+    "## Per-section detail",
+    "",
+    "| idx | role | tier | score | dom | spatial | screenshot | imgs | motions |",
+    "|---|---|---|---|---|---|---|---|---|",
+    ...componentFidelity.map((c, i) =>
+      `| ${i} | ${c.role} | **${c.fidelityTier}** | ${c.fidelityScore}/10 | ${c.hasDomTree ? "✓"+c.domTreeDepth : "—"} | ${c.hasSpatial ? "✓"+c.spatialNodes : "—"} | ${c.hasScreenshot ? "✓" : "—"} | ${c.imageCount} | ${c.motionCount} |`
+    ),
+    "",
+    "## Tier interpretation",
+    "",
+    "- **High**: DOM Mirror replay + rich source signals — output should match source closely",
+    "- **Medium**: Some signals missing — role template applied to remaining gaps",
+    "- **Low**: Sparse capture — role template provides design opinion (may need user edit)",
+  ];
+  fs.writeFileSync(path.join(projDir, "COMPONENT-FIDELITY.md"), fidelityLines.join("\n"));
+  console.log(`  v86-1 component fidelity: high=${tierCounts.high} med=${tierCounts.medium} low=${tierCounts.low} → COMPONENT-FIDELITY.md`);
+} catch (e) { console.log(`  v86-1 component fidelity: ${e.message.slice(0, 60)}`); }
 
 if (USE_ORIGINAL_IMAGES) {
   const devNotice = `# NOTICE — DEV MODE (원본 이미지 포함, 배포 금지)
