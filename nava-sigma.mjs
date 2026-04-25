@@ -5815,7 +5815,7 @@ ${useSectionParallax ? `  const ref = useRef<HTMLElement>(null);
   const headY = useTransform(scrollYProgress, [0, 1], [60, -40]);
   const headOpacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.3, 1, 1, 0.6]);` : ""}
   return (
-    <section${useSectionParallax ? " ref={ref}" : ""} data-sigma-section="${section.sectionIndex ?? ""}" className="flex flex-col justify-center overflow-hidden relative" style={{ minHeight: "${hPx}px", paddingTop: "3vh", paddingBottom: "3vh", paddingLeft: "${layoutPaddingX}px", paddingRight: "${layoutPaddingX}px", background: "${bg}", color: "${sFg}" }}>
+    <section${useSectionParallax ? " ref={ref}" : ""} data-sigma-section="${section.sectionIndex ?? ""}" className="flex flex-col justify-center overflow-hidden relative" style={{ height: "${hPx}px", paddingTop: "0", paddingBottom: "0", overflow: "hidden", paddingLeft: "${layoutPaddingX}px", paddingRight: "${layoutPaddingX}px", background: "${bg}", color: "${sFg}" }}>
       <div className="max-w-7xl mx-auto w-full">
         <motion.h2 className="font-heading font-bold mb-12 text-center" style={{ fontSize: "clamp(${Math.round(typeScale.h1 * 0.6)}px, 5vw, ${typeScale.h1}px)", lineHeight: 1.1${useSectionParallax ? `, y: headY, opacity: headOpacity` : ``} }}>{"{{GALLERY_TITLE}}"}</motion.h2>
         ${isTicker ? `<motion.div className="flex" animate=${motion.animate} transition=${motion.transition}>
@@ -5863,7 +5863,7 @@ ${useSectionParallax ? `  const ref = useRef<HTMLElement>(null);
   const imgY = useTransform(scrollYProgress, [0, 1], [${-Math.max(20, Math.min(120, Math.abs(section.motionSpan?.deltaY || 40) / 2))}, ${Math.max(20, Math.min(120, Math.abs(section.motionSpan?.deltaY || 40) / 2))}]);
   const imgScale = useTransform(scrollYProgress, [0, 0.5, 1], [${(1 - Math.abs(section.motionSpan?.deltaScale || 0.05) / 2).toFixed(3)}, ${(1 + Math.abs(section.motionSpan?.deltaScale || 0.02) / 2).toFixed(3)}, ${(1 - Math.abs(section.motionSpan?.deltaScale || 0.05) / 2).toFixed(3)}]);` : ""}
   return (
-    <section${useSectionParallax ? " ref={ref}" : ""} data-sigma-section="${section.sectionIndex ?? ""}" className="px-6 flex items-center overflow-hidden relative" style={{ minHeight: "${hPx}px", paddingTop: "3vh", paddingBottom: "3vh", background: "${bg}", color: "${sFg}" }}>
+    <section${useSectionParallax ? " ref={ref}" : ""} data-sigma-section="${section.sectionIndex ?? ""}" className="px-6 flex items-center overflow-hidden relative" style={{ height: "${hPx}px", paddingTop: "0", paddingBottom: "0", overflow: "hidden", background: "${bg}", color: "${sFg}" }}>
       <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center w-full">
         <motion.div
           ${useSectionParallax ? `style={{ y: textY }}` : `initial={{ opacity: 0, x: -20 }}
@@ -5904,7 +5904,7 @@ import { motion } from "framer-motion";
 
 export default function ${name}() {
   return (
-    <section className="px-6 flex items-center justify-center" style={{ minHeight: "${hPx}px", paddingTop: "3vh", paddingBottom: "3vh", background: "${colorRoles.accent}", color: "${colorRoles.primary}" }}>
+    <section className="px-6 flex items-center justify-center" style={{ height: "${hPx}px", paddingTop: "0", paddingBottom: "0", overflow: "hidden", background: "${colorRoles.accent}", color: "${colorRoles.primary}" }}>
       <div className="max-w-3xl mx-auto text-center">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
@@ -5978,7 +5978,7 @@ import { motion } from "framer-motion";
 
 export default function ${name}() {
   return (
-    <section data-sigma-section="${section.sectionIndex ?? ""}" className="px-6 flex flex-col justify-center overflow-hidden relative" style={{ minHeight: "${hPx}px", paddingTop: "3vh", paddingBottom: "3vh", background: "${bg}", color: "${sFg}" }}>
+    <section data-sigma-section="${section.sectionIndex ?? ""}" className="px-6 flex flex-col justify-center overflow-hidden relative" style={{ height: "${hPx}px", paddingTop: "0", paddingBottom: "0", overflow: "hidden", background: "${bg}", color: "${sFg}" }}>
       <div className="max-w-7xl mx-auto w-full">
         <h2 className="font-heading font-bold mb-16 text-center" style={{ fontSize: "clamp(${Math.round(typeScale.h1 * 0.55)}px, 5vw, ${typeScale.h1}px)", lineHeight: 1.1 }}>{"{{SECTION_TITLE}}"}</h2>
         <div className="grid grid-cols-1 ${gridClass} gap-6">
@@ -6034,7 +6034,7 @@ ${useSectionParallax ? `  const ref = useRef<HTMLElement>(null);
   const titleY = useTransform(scrollYProgress, [0, 1], [-20, 30]);
   const bodyY = useTransform(scrollYProgress, [0, 1], [30, -20]);` : ""}
   return (
-    <section${useSectionParallax ? " ref={ref}" : ""} data-sigma-section="${section.sectionIndex ?? ""}" className="px-6 flex flex-col justify-center overflow-hidden relative" style={{ minHeight: "${hPx}px", paddingTop: "3vh", paddingBottom: "3vh", background: "${bg}", color: "${sFg}" }}>
+    <section${useSectionParallax ? " ref={ref}" : ""} data-sigma-section="${section.sectionIndex ?? ""}" className="px-6 flex flex-col justify-center overflow-hidden relative" style={{ height: "${hPx}px", paddingTop: "0", paddingBottom: "0", overflow: "hidden", background: "${bg}", color: "${sFg}" }}>
       ${leadImg
         ? `<motion.div className="max-w-4xl mx-auto mb-10 rounded-2xl overflow-hidden" style={{ aspectRatio: "${(leadImg.w / Math.max(1, leadImg.h)).toFixed(3)}"${useSectionParallax ? `, scale: imgScale` : ``} }}>
           <img src="${leadImg.src}" alt="${(leadImg.alt || "").replace(/"/g, "&quot;")}" className="w-full h-full object-cover" loading="lazy" />
