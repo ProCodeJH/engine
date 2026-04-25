@@ -5691,8 +5691,12 @@ const emitHero = (section, idx) => {
   // canvas/webgl-rendered text that HTML DOM scraping can't reach. Pixel-
   // perfect visual fidelity. Clean mode strips these (copyright safe).
   // Very faint overlay (0x0e/0x08) so source pixels stay readable.
+  // v70 — When source screenshot is captured (dev mode), emit the background
+  // without any overlay gradient. Even 0x0e (6%) tint measurably hurts
+  // pixel-match vs source. Only apply overlay when using a captured source
+  // image (hotlink fallback) or when no visual reference exists.
   const heroBgStyle = section.screenshotPath
-    ? `background: "linear-gradient(${sBg}0e, ${sBg}08), url('${section.screenshotPath}') top/cover no-repeat", color: "${sFg}"`
+    ? `background: "url('${section.screenshotPath}') top/cover no-repeat", color: "${sFg}"`
     : heroImg
       ? `background: "linear-gradient(${sBg}cc, ${sBg}99), url('${heroImg.src}') center/cover no-repeat", color: "${sFg}"`
       : `background: "${sBg}", color: "${sFg}"`;
@@ -5789,7 +5793,7 @@ const emitGallery = (section, idx) => {
   const h = hVh;
   const { bg: sBg, fg: sFg } = bgFor(idx);
   const bg = section.screenshotPath
-    ? `linear-gradient(${sBg}0e, ${sBg}08), url('${section.screenshotPath}') top/cover no-repeat`
+    ? `url('${section.screenshotPath}') top/cover no-repeat`
     : sBg;
   // Section-local parallax for Gallery: heading slides up as the section
   // scrolls up. Cards keep their stagger entrance. Ticker path skips
@@ -5838,7 +5842,7 @@ const emitFeature = (section, idx) => {
   // section, our emit overlays on top. Near-transparent gradient keeps
   // original visible. Falls back to solid section color when no capture.
   const bg = section.screenshotPath
-    ? `linear-gradient(${sBg}0e, ${sBg}08), url('${section.screenshotPath}') top/cover no-repeat`
+    ? `url('${section.screenshotPath}') top/cover no-repeat`
     : sBg;
   // Per-section parallax: image column moves opposite direction to text
   // column as section scrolls through viewport. Creates depth illusion
@@ -5963,7 +5967,7 @@ const emitGrid = (section, idx) => {
   const h = hVh;
   const { bg: sBg, fg: sFg } = bgFor(idx);
   const bg = section.screenshotPath
-    ? `linear-gradient(${sBg}0e, ${sBg}08), url('${section.screenshotPath}') top/cover no-repeat`
+    ? `url('${section.screenshotPath}') top/cover no-repeat`
     : sBg;
   const tpl = `"use client";
 import { motion } from "framer-motion";
@@ -6007,7 +6011,7 @@ const emitProse = (section, idx) => {
   // title drifts down; body drifts up — gentle "breathing" reading section.
   const useSectionParallax = section.hasScrollTransforms;
   const bg = section.screenshotPath
-    ? `linear-gradient(${sBg}0e, ${sBg}08), url('${section.screenshotPath}') top/cover no-repeat`
+    ? `url('${section.screenshotPath}') top/cover no-repeat`
     : sBg;
   // Spatial mode: if source had many text leaves (e.g. editorial layout
   // with aside/pull-quote/caption), render at exact source coords.
@@ -6235,7 +6239,7 @@ const emitBlock = (section, idx) => {
     ? (section.images || []).find(i => i.w >= 600)
     : null;
   const blockBgStyle = section.screenshotPath
-    ? `background: "linear-gradient(${sBg}0e, ${sBg}08), url('${section.screenshotPath}') top/cover no-repeat", color: "${sFg}"`
+    ? `background: "url('${section.screenshotPath}') top/cover no-repeat", color: "${sFg}"`
     : blockImg
       ? `background: "linear-gradient(${sBg}e0, ${sBg}b0), url('${blockImg.src}') center/cover no-repeat", color: "${sFg}"`
       : `background: "${sBg}", color: "${sFg}"`;
