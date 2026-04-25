@@ -10,7 +10,7 @@
 //   3. Start "npm run dev" in background on --port (default 3000)
 //   4. Poll /readiness via fetch until 200
 //   5. Take screenshots: clone (localhost:port) + source (URL from
-//      .data/scan.json) at 1920x1080
+//      .sigma/scan.json) at 1920x1080
 //   6. Walk all <section data-sigma-fidelity="..."> in clone DOM,
 //      tally tier counts (high/medium/low) — runtime verification of
 //      what engine reported pre-build
@@ -43,7 +43,7 @@ const el = () => ((Date.now() - T0) / 1000).toFixed(1) + "s";
 console.log(`[sigma-verify] ${projDir} :${port}`);
 
 // ─── Phase 1: Read existing artifacts ───
-const scanJsonPath = path.join(projDir, ".data", "scan.json");
+const scanJsonPath = path.join(projDir, ".sigma", "scan.json");
 const coverageMd = path.join(projDir, "SCAN-COVERAGE.md");
 const fidelityMd = path.join(projDir, "COMPONENT-FIDELITY.md");
 
@@ -153,7 +153,7 @@ if (WITH_PIXELMATCH && sourceShotOk) {
     PNG.bitblt(a, ac, 0, 0, W, H, 0, 0);
     PNG.bitblt(b, bc, 0, 0, W, H, 0, 0);
     const diff = new PNG({ width: W, height: H });
-    const mis = pixelmatch(ac.data, bc.data, diff.data, W, H, { threshold: 0.1, alpha: 0.3 });
+    const mis = pixelmatch(ac.sigma, bc.sigma, diff.sigma, W, H, { threshold: 0.1, alpha: 0.3 });
     fs.writeFileSync(path.join(screenshotDir, "diff.png"), PNG.sync.write(diff));
     pixelMatchPct = ((1 - mis / (W * H)) * 100).toFixed(2);
     console.log(`  pixelmatch (opt-in): ${pixelMatchPct}%`);

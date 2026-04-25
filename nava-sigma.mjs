@@ -1279,13 +1279,23 @@ const extracted = await page.evaluate(() => {
     // emit can replay as inline style, bringing the source's atmosphere
     // to our output without copying any text or imagery.
     const rcs = getComputedStyle(el);
+    // v95-1 — Same balance-validated truncation as v94-1 for per-element
+    // CSS effects. Cap raised 200 → 800 + reject mid-paren cuts so
+    // multi-shadow / complex filter / clip-path values stay intact.
+    const safeCssTrunc = (s) => {
+      if (!s) return null;
+      const t = s.slice(0, 800);
+      const opens = (t.match(/\(/g) || []).length;
+      const closes = (t.match(/\)/g) || []).length;
+      return opens === closes ? t : null;
+    };
     const cssEffects = {
-      filter: rcs.filter && rcs.filter !== "none" ? rcs.filter.slice(0, 200) : null,
-      backdropFilter: rcs.backdropFilter && rcs.backdropFilter !== "none" ? rcs.backdropFilter.slice(0, 200) : null,
-      clipPath: rcs.clipPath && rcs.clipPath !== "none" ? rcs.clipPath.slice(0, 200) : null,
-      maskImage: rcs.maskImage && rcs.maskImage !== "none" ? rcs.maskImage.slice(0, 200) : null,
+      filter: rcs.filter && rcs.filter !== "none" ? safeCssTrunc(rcs.filter) : null,
+      backdropFilter: rcs.backdropFilter && rcs.backdropFilter !== "none" ? safeCssTrunc(rcs.backdropFilter) : null,
+      clipPath: rcs.clipPath && rcs.clipPath !== "none" ? safeCssTrunc(rcs.clipPath) : null,
+      maskImage: rcs.maskImage && rcs.maskImage !== "none" ? safeCssTrunc(rcs.maskImage) : null,
       mixBlendMode: rcs.mixBlendMode && rcs.mixBlendMode !== "normal" ? rcs.mixBlendMode : null,
-      boxShadow: rcs.boxShadow && rcs.boxShadow !== "none" ? rcs.boxShadow.slice(0, 200) : null,
+      boxShadow: rcs.boxShadow && rcs.boxShadow !== "none" ? safeCssTrunc(rcs.boxShadow) : null,
       borderRadius: rcs.borderRadius && rcs.borderRadius !== "0px" ? rcs.borderRadius : null,
       border: rcs.borderTopWidth && parseFloat(rcs.borderTopWidth) > 0 ? `${rcs.borderTopWidth} ${rcs.borderTopStyle} ${rcs.borderTopColor}` : null,
     };
@@ -6148,6 +6158,11 @@ for (const s of extracted.sections) {
 console.log(`  motions: ${extracted.motions?.length || 0} (${extracted.motions?.filter(m => m.iterations < 0).length || 0} infinite), canvases: ${extracted.canvases?.length || 0}`);
 console.log(`  scroll signals: ${extracted.scrollSignals?.stickyElements || 0} sticky, ${extracted.scrollSignals?.transformedNonAnimated || 0} transformed`);
 
+// v95-2 — Persist source URL into scan.json so sigma-verify can re-screenshot
+// the source page for pixel comparison. Pre-v95: extracted.url was never
+// set, sigma-verify fell back to extracted.title which broke pixelmatch.
+extracted.url = url;
+extracted.captureCompletedAt = new Date().toISOString();
 fs.writeFileSync(path.join(dataDir, "scan.json"), JSON.stringify(extracted, null, 2));
 console.log(`  sections detected: ${extracted.sections.map(s => s.role).join(" · ")}`);
 console.log(`  palette: ${extracted.colors.length} colors, fonts: ${extracted.fonts.map(f => f[0]).join(", ")}`);
