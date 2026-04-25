@@ -7628,6 +7628,16 @@ const emitHero = (section, idx) => {
   const innerMotionStyle = useParallax
     ? `style={{ y, opacity, scale }} initial="hidden" animate="visible" variants={{ hidden: {}, visible: { transition: { staggerChildren: ${sigmaStaggerValue}, delayChildren: 0.2 } } }}`
     : `initial="hidden" animate="visible" variants={{ hidden: {}, visible: { transition: { staggerChildren: ${sigmaStaggerValue}, delayChildren: 0.2 } } }}`;
+  // v98-1 — Visual fidelity prioritization. Real-world test (v97) showed
+  // emitting inner text on top of source-screenshot background DROPS pixel
+  // match by 6%p (72.52 → 66.49). When dev mode active AND screenshotPath
+  // captures source pixels, the screenshot already shows source's visible
+  // text/layout — overlaying our re-rendered text creates double-vision.
+  // Hide inner content visually but keep DOM structure for SEO/a11y.
+  const visualPrioritize = USE_ORIGINAL_IMAGES && section.screenshotPath;
+  const innerVisualClass = visualPrioritize
+    ? "max-w-5xl text-center z-10 flex flex-col gap-3 items-center sr-only"
+    : "max-w-5xl text-center z-10 flex flex-col gap-3 items-center";
   const tpl = `"use client";
 ${imports}
 
@@ -7636,7 +7646,7 @@ export default function ${name}() {${parallaxHook}
     <section${sectionAttrs} data-sigma-section="${section.sectionIndex ?? ""}" data-sigma-fidelity="${sigmaFidelityTier(section)}" className="relative flex items-center justify-center overflow-hidden px-6 py-12" style={{ minHeight: "${hPx}px", ${heroBgStyle} }}>
       <motion.div
         ${innerMotionStyle}
-        className="max-w-5xl text-center z-10 flex flex-col gap-3 items-center"
+        className="${innerVisualClass}"
       >
 ${bodyInner}
       </motion.div>
