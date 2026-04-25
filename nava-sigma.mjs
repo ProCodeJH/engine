@@ -46,7 +46,12 @@ const VERBOSE = args.includes("--verbose") || args.includes("-v");
 // replace before deployment. Emits NOTICE-DEV.md instead of NOTICE-CLEAN.md.
 const USE_ORIGINAL_IMAGES = args.includes("--use-original-images") || args.includes("--dev-images");
 const USE_ORIGINAL_TEXT = args.includes("--use-original-text") || args.includes("--dev-text");
-const USE_DOM_MIRROR = args.includes("--use-dom-mirror") || args.includes("--dom-mirror");
+// v92-2 — DOM Mirror is the v74 architectural pivot. Default was false
+// which silently disabled the entire Style Fingerprint Mirror routing
+// for 18 versions (v74-v91). Real-world test caught this — 0 sections
+// via Mirror in every run regardless of section richness. Default true
+// activates the pipe; --no-mirror flag for legacy fallback.
+const USE_DOM_MIRROR = !args.includes("--no-mirror");
 
 if (!url) { console.error("usage: nava-sigma.mjs <url> [--output dir] [--skip-build]"); process.exit(1); }
 
@@ -8357,11 +8362,16 @@ let templateRouteCount = 0;
 for (const section of demotedSections) {
   if (section.role === "footer" || section.role === "nav") continue;
   let effectiveRole = section.role;
-  // v91-1 — Threshold relaxation. Real-world test (teamevople.kr) showed
-  // v74's `children.length >= 5` rule fired ZERO sections out of 13 because
-  // Framer-style sites have shallow domTree.children (deep nesting under a
-  // single root child). Relax to: domTree present with ≥1 child, OR spatial
-  // ≥3, OR the section's hierarchy ≥3. Any rich signal triggers Mirror path.
+  // v92-1 — Routing counter bug fix. The `&& section.role !== "block"`
+  // clause on the if-path meant that block-role sections (which already
+  // emit through emitBlock with DOM Mirror) fell into the else branch
+  // and counted as template routes. Real-world test showed gallery/
+  // feature sections with children=11 spatial=23 still showing 0 mirror
+  // routes — pure counter bug, mirror was running but counter wrong.
+  //
+  // Fix: separate the role override from the count. Mirror count
+  // increments whenever the section qualifies, regardless of role
+  // (block-role sections inherently use Mirror via emitBlock).
   const domChildren = section.domTree?.children?.length || 0;
   const spatialNodes = section.spatial?.length || 0;
   const hierarchyNodes = section.hierarchy?.length || 0;
@@ -8370,8 +8380,8 @@ for (const section of demotedSections) {
     (spatialNodes >= 3) ||
     (hierarchyNodes >= 3 && domChildren >= 1)
   );
-  if (hasRichDomTree && section.role !== "block") {
-    effectiveRole = "block";  // route through emitBlock → DOM Mirror inner path
+  if (hasRichDomTree) {
+    if (section.role !== "block") effectiveRole = "block";
     domMirrorRouteCount++;
   } else {
     templateRouteCount++;
