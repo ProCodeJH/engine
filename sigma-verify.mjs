@@ -163,6 +163,45 @@ if (WITH_PIXELMATCH && sourceShotOk) {
 await browser.close();
 dev.kill();
 
+// ─── Phase 5.5 (v88-2): Baseline diff vs prior scan ───
+// Compare current scan signal classes to a saved baseline if present.
+// .verify/baseline.json stored after first run; subsequent runs diff.
+let baselineDiff = null;
+const baselinePath = path.join(screenshotDir, "baseline.json");
+const currentSignals = {};
+for (const k of Object.keys(scanData)) {
+  const v = scanData[k];
+  if (v === null || v === undefined) continue;
+  let size = 0;
+  if (Array.isArray(v)) size = v.length;
+  else if (typeof v === "object") size = Object.keys(v).length;
+  else if (typeof v === "string") size = v.length;
+  if (size > 0) currentSignals[k] = size;
+}
+if (fs.existsSync(baselinePath)) {
+  try {
+    const baseline = JSON.parse(fs.readFileSync(baselinePath, "utf-8"));
+    const added = [], removed = [], grew = [], shrank = [];
+    const keys = new Set([...Object.keys(baseline.signals || {}), ...Object.keys(currentSignals)]);
+    for (const k of keys) {
+      const before = baseline.signals?.[k] || 0;
+      const after = currentSignals[k] || 0;
+      if (before === 0 && after > 0) added.push({ k, after });
+      else if (before > 0 && after === 0) removed.push({ k, before });
+      else if (after > before * 1.1) grew.push({ k, before, after });
+      else if (before > after * 1.1 && after > 0) shrank.push({ k, before, after });
+    }
+    baselineDiff = { added, removed, grew, shrank, baselineDate: baseline.date };
+    console.log(`  baseline diff: +${added.length} -${removed.length} ↑${grew.length} ↓${shrank.length}`);
+  } catch (e) { console.error(`  baseline diff failed: ${e.message}`); }
+}
+// Save current as new baseline (for next run)
+fs.writeFileSync(baselinePath, JSON.stringify({
+  date: new Date().toISOString(),
+  source: sourceUrl,
+  signals: currentSignals,
+}, null, 2));
+
 // ─── Phase 6: Emit VERIFY-REPORT.md ───
 console.log(`[Phase 6] report ${el()}`);
 const reportLines = [
@@ -180,16 +219,26 @@ const reportLines = [
   `- Total: ${runtimeFidelity.total} sections`,
   "",
   pixelMatchPct ? `## Pixelmatch (--pixelmatch)\n- ${pixelMatchPct}% (clone vs source, viewport 1920x1080)\n` : "",
+  baselineDiff ? `## v88-2 Baseline diff (vs ${baselineDiff.baselineDate})
+
+- **+${baselineDiff.added.length}** new signal classes${baselineDiff.added.length > 0 ? ": " + baselineDiff.added.slice(0, 5).map(a => `\`${a.k}\``).join(", ") : ""}
+- **-${baselineDiff.removed.length}** removed${baselineDiff.removed.length > 0 ? " ⚠ regression: " + baselineDiff.removed.slice(0, 5).map(r => `\`${r.k}\``).join(", ") : ""}
+- **↑${baselineDiff.grew.length}** grew${baselineDiff.grew.length > 0 ? ": " + baselineDiff.grew.slice(0, 3).map(g => `\`${g.k}\` ${g.before}→${g.after}`).join(", ") : ""}
+- **↓${baselineDiff.shrank.length}** shrank${baselineDiff.shrank.length > 0 ? ": " + baselineDiff.shrank.slice(0, 3).map(s => `\`${s.k}\` ${s.before}→${s.after}`).join(", ") : ""}
+` : "## Baseline diff\n- (first run — baseline saved at .verify/baseline.json)",
+  "",
   "## Screenshot artifacts",
   `- \`.verify/clone.png\` — clone first viewport`,
   sourceShotOk ? `- \`.verify/source.png\` — source first viewport` : "",
   pixelMatchPct ? `- \`.verify/diff.png\` — pixelmatch diff visualization` : "",
+  `- \`.verify/baseline.json\` — saved baseline for next regression check`,
   "",
   "## Notes",
   "- Capture coverage (NOT pixel-match) is the engine's true KPI",
   "  per feedback-sigma-cadence. Pixel-match opt-in only.",
   "- Runtime fidelity tier comes from `data-sigma-fidelity` HTML attr",
   "  (v86-3) embedded by engine into each emitted section.",
+  "- v88-2 baseline diff: removed signals = engine regression; grown/added = improvements.",
   "- See SCAN-COVERAGE.md + COMPONENT-FIDELITY.md for capture-side details.",
 ];
 fs.writeFileSync(path.join(projDir, "VERIFY-REPORT.md"), reportLines.filter(Boolean).join("\n"));

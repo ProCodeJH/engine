@@ -5919,6 +5919,54 @@ try {
   console.log(`  v87-1 modern APIs: ${enabled.length} capabilities present (${enabled.slice(0, 6).join(", ")}${enabled.length > 6 ? "..." : ""})`);
 } catch (e) { console.log(`  v87-1 modern APIs: ${e.message.slice(0, 60)}`); }
 
+// ─── v88-3 — Modern color space capture (HSL/OKLCH/color()/relative) ──
+// CSS Color Module Level 4-5: oklch(), color(display-p3 ...), lch(),
+// lab(), color-mix(), light-dark(). Modern color spaces matter for
+// wide-gamut displays (HDR / DCI-P3). Walks stylesheets for usage,
+// emit can preserve same color expressions verbatim. Pure CSS recipes.
+try {
+  const colorSpaces = await page.evaluate(() => {
+    const usage = {
+      oklch: 0, oklab: 0, lch: 0, lab: 0,
+      hsl: 0, hwb: 0,
+      colorFn: 0,            // color(display-p3 ...) etc
+      colorMix: 0,           // color-mix(in oklch, ...)
+      lightDark: 0,          // light-dark(white, black)
+      relative: 0,           // hsl(from var(--c) ...)
+      currentColor: 0,
+    };
+    for (const sh of document.styleSheets) {
+      try {
+        for (const rule of sh.cssRules || []) {
+          const txt = (() => { try { return rule.cssText || ""; } catch { return ""; } })();
+          if (!txt) continue;
+          if (/\boklch\s*\(/i.test(txt)) usage.oklch++;
+          if (/\boklab\s*\(/i.test(txt)) usage.oklab++;
+          if (/\blch\s*\(/i.test(txt)) usage.lch++;
+          if (/\blab\s*\(/i.test(txt)) usage.lab++;
+          if (/\bhsl\s*\(/i.test(txt)) usage.hsl++;
+          if (/\bhwb\s*\(/i.test(txt)) usage.hwb++;
+          if (/\bcolor\s*\(\s*display-p3/i.test(txt) || /\bcolor\s*\(\s*srgb/i.test(txt)) usage.colorFn++;
+          if (/\bcolor-mix\s*\(/i.test(txt)) usage.colorMix++;
+          if (/\blight-dark\s*\(/i.test(txt)) usage.lightDark++;
+          if (/from\s+(?:var\(|currentColor)/i.test(txt)) usage.relative++;
+          if (/\bcurrentColor\b/i.test(txt)) usage.currentColor++;
+        }
+      } catch {}
+    }
+    // Display capability
+    const supports = {
+      p3: matchMedia("(color-gamut: p3)").matches,
+      rec2020: matchMedia("(color-gamut: rec2020)").matches,
+      hdr: matchMedia("(dynamic-range: high)").matches,
+    };
+    return { usage, supports };
+  });
+  extracted.colorSpaceCapture = colorSpaces;
+  const usedSpaces = Object.entries(colorSpaces.usage).filter(([k, v]) => v > 0).map(([k, v]) => `${k}=${v}`);
+  console.log(`  v88-3 color spaces: ${usedSpaces.length > 0 ? usedSpaces.join(" ") : "(only sRGB)"}, gamut p3=${colorSpaces.supports.p3} hdr=${colorSpaces.supports.hdr}`);
+} catch (e) { console.log(`  v88-3 color spaces: ${e.message.slice(0, 60)}`); }
+
 // browser.close() can hang indefinitely after v67's HeapProfiler +
 // Input.dispatchMouseEvent + SystemInfo interactions leave stale CDP
 // state. Race it against a 15s timeout; on timeout, SIGKILL the Chrome
