@@ -5984,6 +5984,83 @@ try {
   console.log(`  v88-3 color spaces: ${usedSpaces.length > 0 ? usedSpaces.join(" ") : "(only sRGB)"}, gamut p3=${colorSpaces.supports.p3} hdr=${colorSpaces.supports.hdr}`);
 } catch (e) { console.log(`  v88-3 color spaces: ${e.message.slice(0, 60)}`); }
 
+// ─── v90-1 — Scroll-driven animations capture (animation-timeline) ────
+// CSS Animations Level-2: animation-timeline: scroll() / view().
+// Modern scroll-driven animations replace JS-side scroll handlers.
+// Captures rule presence + named timelines. Pure facts (CSS recipe).
+try {
+  const scrollAnims = await page.evaluate(() => {
+    const out = {
+      animationTimelineRules: 0,
+      scrollTimeline: 0,
+      viewTimeline: 0,
+      namedTimelines: [],
+      startingStyleRules: 0,
+      animationRangeRules: 0,
+    };
+    for (const sh of document.styleSheets) {
+      try {
+        for (const rule of sh.cssRules || []) {
+          const txt = (() => { try { return rule.cssText || ""; } catch { return ""; } })();
+          if (!txt) continue;
+          if (/animation-timeline:/i.test(txt)) {
+            out.animationTimelineRules++;
+            if (/scroll\s*\(/i.test(txt)) out.scrollTimeline++;
+            if (/view\s*\(/i.test(txt)) out.viewTimeline++;
+          }
+          // Named timelines via @scroll-timeline or scroll-timeline-name
+          const m = txt.match(/scroll-timeline-name:\s*--([\w-]+)/i);
+          if (m) out.namedTimelines.push(m[1]);
+          if (/@starting-style/i.test(txt)) out.startingStyleRules++;
+          if (/animation-range:/i.test(txt)) out.animationRangeRules++;
+        }
+      } catch {}
+    }
+    out.namedTimelines = [...new Set(out.namedTimelines)].slice(0, 20);
+    return out;
+  });
+  extracted.scrollDrivenAnims = scrollAnims;
+  console.log(`  v90-1 scroll-driven: ${scrollAnims.animationTimelineRules} animation-timeline rules (scroll=${scrollAnims.scrollTimeline} view=${scrollAnims.viewTimeline}), ${scrollAnims.startingStyleRules} @starting-style, ${scrollAnims.namedTimelines.length} named`);
+} catch (e) { console.log(`  v90-1 scroll-driven: ${e.message.slice(0, 60)}`); }
+
+// ─── v90-3 — Scroll behavior extension (padding/margin/stop/overscroll) ──
+// Extends v67 scroll-snap capture with adjacent scroll properties.
+// scroll-padding offsets where child boundaries land for snap. scroll-
+// margin adjusts each child's snap area. overscroll-behavior controls
+// rubber-band / scroll chaining. scroll-snap-stop=always pins per-snap
+// stops. Pure facts (CSS recipe values).
+try {
+  const scrollBehavior = await page.evaluate(() => {
+    const out = {
+      scrollPadding: {},
+      scrollMargin: {},
+      overscrollBehavior: {},
+      scrollSnapStop: 0,
+      scrollBehavior: {},
+    };
+    const incr = (m, k) => { if (k && k !== "0px" && k !== "auto" && k !== "normal" && k !== "0px 0px") m[k] = (m[k] || 0) + 1; };
+    const els = [...document.querySelectorAll("*")].slice(0, 1500);
+    for (const el of els) {
+      const cs = getComputedStyle(el);
+      incr(out.scrollPadding, cs.scrollPadding);
+      incr(out.scrollMargin, cs.scrollMargin);
+      incr(out.overscrollBehavior, cs.overscrollBehavior);
+      incr(out.scrollBehavior, cs.scrollBehavior);
+      if (cs.scrollSnapStop === "always") out.scrollSnapStop++;
+    }
+    const top = (m, n) => Object.entries(m).sort((a, b) => b[1] - a[1]).slice(0, n).map(([k, c]) => ({ value: k, count: c }));
+    return {
+      topScrollPadding: top(out.scrollPadding, 4),
+      topScrollMargin: top(out.scrollMargin, 4),
+      topOverscroll: top(out.overscrollBehavior, 3),
+      topScrollBehavior: top(out.scrollBehavior, 3),
+      scrollSnapStop: out.scrollSnapStop,
+    };
+  });
+  extracted.scrollBehavior = scrollBehavior;
+  console.log(`  v90-3 scroll behavior: padding=${scrollBehavior.topScrollPadding.length} margin=${scrollBehavior.topScrollMargin.length} overscroll=${scrollBehavior.topOverscroll.length} snap-stop=${scrollBehavior.scrollSnapStop}`);
+} catch (e) { console.log(`  v90-3 scroll behavior: ${e.message.slice(0, 60)}`); }
+
 // browser.close() can hang indefinitely after v67's HeapProfiler +
 // Input.dispatchMouseEvent + SystemInfo interactions leave stale CDP
 // state. Race it against a 15s timeout; on timeout, SIGKILL the Chrome
@@ -6074,7 +6151,23 @@ const textColor = colorRoles.text;
 // the source has a denser cascade, so we tighten the stagger interval.
 // Sparse animations use a relaxed rhythm. Used by every emitter's
 // staggerChildren prop so the cascade pace matches source density.
+// v90-2 — Refined with v82-1 sync group orchestration evidence: when
+// source has measured sync groups (animations starting within ±50ms),
+// derive stagger from the actual avg spread / member count rather than
+// counting raw animations. Tighter calibration for sites with explicit
+// orchestration vs sites with random scroll-triggered animations.
 const sigmaStaggerValue = (() => {
+  const sync = extracted.timelineSyncGroups;
+  if (sync && sync.total > 0 && sync.avgSpread > 0) {
+    // Average spread / typical member count = effective per-element gap (ms)
+    const totalMembers = (sync.groups || []).reduce((s, g) => s + (g.memberCount || 0), 0);
+    const avgMembers = totalMembers > 0 ? totalMembers / sync.total : 4;
+    const perElementMs = sync.avgSpread / Math.max(2, avgMembers - 1);
+    // Convert to seconds, clamp to sane range
+    const stagger = Math.max(0.02, Math.min(0.12, perElementMs / 1000));
+    return +stagger.toFixed(3);
+  }
+  // Fallback: legacy heuristic from raw animation count
   const totalAnims = extracted.animationOrchestration?.totalAnimations || 0;
   const staggerCount = extracted.animationOrchestration?.staggerSequences?.length || 0;
   if (totalAnims > 100 || staggerCount >= 3) return 0.03;  // Webflow-style dense cascade
