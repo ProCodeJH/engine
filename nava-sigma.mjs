@@ -6385,6 +6385,49 @@ const pseudoCssBlock = (() => {
   return lines.join("\n");
 })();
 
+// v84-1 — Anchor positioning CSS emit (uses v76-J captured facts).
+// When source had elements with anchor-name or position-anchor, emit
+// equivalent CSS rules referencing the same anchor names. Pure facts
+// (CSS Anchor Positioning API names + targets are pure naming data).
+const anchorPositioningBlock = (() => {
+  const ap = extracted.anchorPositioning;
+  if (!ap) return "";
+  const lines = [];
+  if (ap.anchorNames && ap.anchorNames.length > 0) {
+    lines.push("/* v84-1 — CSS Anchor Positioning anchor-name declarations */");
+    for (const a of ap.anchorNames.slice(0, 20)) {
+      lines.push(`${a.tag} { anchor-name: ${a.anchorName}; }`);
+    }
+  }
+  if (ap.positionAnchors && ap.positionAnchors.length > 0) {
+    lines.push("/* v84-1 — CSS Anchor Positioning position-anchor bindings */");
+    for (const pa of ap.positionAnchors.slice(0, 20)) {
+      lines.push(`${pa.tag} { position-anchor: ${pa.positionAnchor}; }`);
+    }
+  }
+  return lines.join("\n");
+})();
+
+// v84-2 — Container query CSS emit (uses extracted.modernCSS.container).
+// Already captured in modernCssBlock as raw rule text. This block
+// provides additional container-type declarations when the source had
+// `container-type: inline-size` or `container-name` on elements.
+// Container queries are already in modernCssBlock; this adds parent
+// container declarations as recipe completion.
+const containerQueryHelpersBlock = (() => {
+  const lp = extracted.layoutPrimitives;
+  if (!lp) return "";
+  const lines = [];
+  // If source had any container queries (capture from modernCSS), emit a
+  // basic container-type on common section parents so queries resolve.
+  const hasContainerQueries = (extracted.modernCSS?.container || []).length > 0;
+  if (hasContainerQueries) {
+    lines.push("/* v84-2 — Container-type declarations to make @container rules resolve */");
+    lines.push("section, article, aside { container-type: inline-size; }");
+  }
+  return lines.join("\n");
+})();
+
 // v83-1 — Per-element responsive @media emit. Uses v83-1 captured
 // per-selector deltas to emit selector-keyed @media rules. Distinguishes
 // individual elements (e.g., second h2 in nav vs first h2 in hero) via
@@ -6522,6 +6565,10 @@ ${responsiveCssBlock}
 ${perElementResponsiveBlock}
 
 ${animBindingsCssBlock}
+
+${anchorPositioningBlock}
+
+${containerQueryHelpersBlock}
 
 :root {
   --font-heading: "${safeHeadingFont}", system-ui, sans-serif;
@@ -7622,13 +7669,35 @@ ${submit ? `        <motion.button
 const emitThreeScene = () => {
   if (emittedComponents.has("ThreeScene")) return "ThreeScene";
   emittedComponents.add("ThreeScene");
+  // v84-3 — Three.js scene reconstruction. Use v83-2 captured scene
+  // counts to scale the emitted scene (mesh count / light count). Each
+  // captured mesh becomes a generic Icosahedron in our brand palette
+  // (geometric placeholder — no source mesh geometry copied). Light
+  // count + types come from v83-2 facts.
+  const sceneSnap = extracted.threeSnapshot;
+  const firstScene = sceneSnap?.scenes?.[0];
+  const meshCount = Math.min(8, firstScene?.counts?.meshes || 1);
+  const lightCount = Math.min(3, Math.max(1, firstScene?.counts?.lights || 2));
+  const meshArrayJsx = Array.from({ length: meshCount }, (_, i) => {
+    const angle = (i / meshCount) * Math.PI * 2;
+    const x = (Math.cos(angle) * 2.4).toFixed(2);
+    const y = ((i % 3 - 1) * 0.6).toFixed(2);
+    const z = (Math.sin(angle) * 2.4).toFixed(2);
+    const scale = (0.6 + (i % 3) * 0.3).toFixed(2);
+    return `      <Spinner key={${i}} position={[${x}, ${y}, ${z}]} scale={${scale}} />`;
+  }).join("\n");
+  const lightsJsx = lightCount >= 2
+    ? `        <pointLight position={[4, 6, 4]} intensity={1.4} color={"${colorRoles.text}"} />
+        <pointLight position={[-4, -2, -2]} intensity={0.8} color={"${colorRoles.accent}"} />`
+    : `        <pointLight position={[4, 6, 4]} intensity={1.4} color={"${colorRoles.text}"} />`;
   const tpl = `"use client";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Icosahedron } from "@react-three/drei";
 import { useRef } from "react";
 import type { Mesh } from "three";
 
-function Spinner() {
+// v84-3 — Reconstructed from v83-2 capture: ${meshCount} mesh(es), ${lightCount} light(s)${sceneSnap?.threeVersion ? ` (source THREE.r${sceneSnap.threeVersion})` : ""}
+function Spinner({ position = [0,0,0] as [number, number, number], scale = 1 }) {
   const ref = useRef<Mesh>(null);
   useFrame((_, delta) => {
     if (ref.current) {
@@ -7637,7 +7706,7 @@ function Spinner() {
     }
   });
   return (
-    <Icosahedron ref={ref} args={[1.4, 1]}>
+    <Icosahedron ref={ref} args={[1.4, 1]} position={position} scale={scale}>
       <meshStandardMaterial color={"${colorRoles.accent}"} wireframe={false} roughness={0.35} metalness={0.6} />
     </Icosahedron>
   );
@@ -7648,9 +7717,8 @@ export default function ThreeScene({ height = 600 }: { height?: number }) {
     <div style={{ width: "100%", height, background: "${colorRoles.primary}" }}>
       <Canvas camera={{ position: [0, 0, 4], fov: 50 }}>
         <ambientLight intensity={0.5} />
-        <pointLight position={[4, 6, 4]} intensity={1.4} color={"${colorRoles.text}"} />
-        <pointLight position={[-4, -2, -2]} intensity={0.8} color={"${colorRoles.accent}"} />
-        <Spinner />
+${lightsJsx}
+${meshArrayJsx}
         <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={0.6} />
       </Canvas>
     </div>
