@@ -6283,7 +6283,10 @@ const emitBlock = (section, idx) => {
     : isMulticol
       ? `flex flex-row flex-wrap justify-center ${layoutAlign}`
       : `flex flex-col ${layoutAlign}`;
-  const innerMaxWidth = useSpatial ? "w-full" : isMulticol ? "max-w-7xl" : "max-w-5xl";
+  // v74 — DOM Mirror needs full width: source's inner content already
+  // carries its own width/positioning via styleFacts. max-w clamping
+  // truncates the captured layout horizontally → pixel-match loss.
+  const innerMaxWidth = useDomMirror ? "w-full" : useSpatial ? "w-full" : isMulticol ? "max-w-7xl" : "max-w-5xl";
   // Spatial mode needs a container height matching source so absolute
   // coordinates resolve correctly. Section-relative % are meaningless
   // without a concrete container height.
@@ -6430,15 +6433,42 @@ const hasNav = true;
 const hasFooter = demotedSections.some(s => s.role === "footer");
 if (hasNav) { componentImports.push(`import Nav from "@/components/Nav";`); pageSections.push("<Nav />"); emitNav(); }
 
+// v74 — Style Fingerprint Mirror routing. When source captured a rich DOM
+// tree (≥5 children with computedStyle facts), bypass design-opinion role
+// templates (Hero/Gallery/Feature/Grid/Prose) and route through emitBlock
+// which has the DOM Mirror primary path. Each role template injects its
+// own structural choices (Hero centers, Gallery makes a grid, Feature is
+// 2-col image+text) — these diverge from source pixels by design.
+//
+// emitBlock with USE_DOM_MIRROR replays source's exact computed styleFacts
+// per element — pure factual rendering, copyright-safe (Computer Associates
+// v. Altai filtration test: computed values are facts, not expression).
+//
+// Footer/Nav still use their dedicated emitters (semantic landmarks need
+// proper <footer>/<nav> elements for a11y; emitBlock would emit <section>).
+let domMirrorRouteCount = 0;
+let templateRouteCount = 0;
 for (const section of demotedSections) {
   if (section.role === "footer" || section.role === "nav") continue;
-  const emit = emitters[section.role] || emitBlock; // unknown role → block
+  let effectiveRole = section.role;
+  const hasRichDomTree = USE_DOM_MIRROR
+    && section.domTree
+    && section.domTree.children
+    && section.domTree.children.length >= 5;
+  if (hasRichDomTree && section.role !== "block") {
+    effectiveRole = "block";  // route through emitBlock → DOM Mirror inner path
+    domMirrorRouteCount++;
+  } else {
+    templateRouteCount++;
+  }
+  const emit = emitters[effectiveRole] || emitBlock;
   const compName = emit(section, idx);
   componentImports.push(`import ${compName} from "@/components/${compName}";`);
   pageSections.push(`<${compName} />`);
   idx++;
   if (idx > 20) break;  // raised from 10 so full 14-section pages fit
 }
+console.log(`  v74 routing: ${domMirrorRouteCount} sections via DOM Mirror, ${templateRouteCount} via role template`);
 
 // Canvas/WebGL scene injection. If source had WebGL canvas, insert
 // ThreeScene before footer so it renders as a feature block. Height comes
@@ -7149,6 +7179,7 @@ try {
     if (ca.aaaPassRatio < 0.3) a11yDebt.push(`⚠ WCAG AAA: only ${Math.round(ca.aaaPassRatio * 100)}% pass the stricter 7:1 / 4.5:1 large bar`);
   }
 
+  // v74 marker for output identification (no behavior change, just version trail)
   if (a11yDebt.length > 0 || (ca && ca.totalSamples > 0)) {
     const a11yNotice = `# Accessibility snapshot — inherited from source
 
