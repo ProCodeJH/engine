@@ -150,6 +150,59 @@ await page.evaluateOnNewDocument(() => {
     return origStroke.call(this, text, x, y, maxWidth);
   };
 
+  // v77-A — Canvas 2D operation log (extends fillText capture). Targets
+  // rect/path/arc/drawImage/transform calls with their parameters + ctx
+  // state. Captured ops are pure facts (numeric coordinates, colors,
+  // dimensions) — emit can replay drawing script in clean-room canvas
+  // with our own glyphs/palette. Hard cap 2000 ops with key-based dedup
+  // so 60fps animations don't overflow.
+  window.__CAPTURED_CANVAS_OPS__ = [];
+  const opSeen = new Set();
+  const recordOp = (method, args, ctx) => {
+    if (window.__CAPTURED_CANVAS_OPS__.length >= 2000) return;
+    const argSig = args.map(a => typeof a === "number" ? a.toFixed(1) : "_").join(",");
+    const key = method + "|" + argSig.slice(0, 80);
+    if (opSeen.has(key)) return;
+    opSeen.add(key);
+    window.__CAPTURED_CANVAS_OPS__.push({
+      method,
+      args: args.slice(0, 8),
+      fillStyle: typeof ctx.fillStyle === "string" ? ctx.fillStyle.slice(0, 60) : "(complex)",
+      strokeStyle: typeof ctx.strokeStyle === "string" ? ctx.strokeStyle.slice(0, 60) : "(complex)",
+      lineWidth: ctx.lineWidth,
+      globalAlpha: ctx.globalAlpha,
+      canvasW: ctx.canvas.width,
+      canvasH: ctx.canvas.height,
+    });
+  };
+  const wrap2D = (name) => {
+    const orig = CanvasRenderingContext2D.prototype[name];
+    if (typeof orig !== "function") return;
+    CanvasRenderingContext2D.prototype[name] = function (...args) {
+      try {
+        const numericOnly = args.filter(a => typeof a === "number");
+        recordOp(name, numericOnly, this);
+      } catch (e) {}
+      return orig.apply(this, args);
+    };
+  };
+  // Geometric primitives (rect / path / arc / image)
+  ["fillRect", "strokeRect", "clearRect", "rect", "roundRect",
+   "moveTo", "lineTo", "arc", "arcTo", "ellipse",
+   "bezierCurveTo", "quadraticCurveTo",
+   "fill", "stroke",
+   "translate", "rotate", "scale", "setTransform",
+  ].forEach(wrap2D);
+  // drawImage — special-case, multiple signatures, args are images not numbers
+  const origDrawImage = CanvasRenderingContext2D.prototype.drawImage;
+  CanvasRenderingContext2D.prototype.drawImage = function (...args) {
+    try {
+      const numericArgs = args.filter(a => typeof a === "number");
+      recordOp("drawImage", numericArgs, this);
+    } catch (e) {}
+    return origDrawImage.apply(this, args);
+  };
+
   // WebGL shader source intercept — the closest we get to "copying" a
   // WebGL scene. Shader source is a string at creation time; we save it
   // before the GPU compiles. Output can replay via raw WebGL or three.js.
@@ -1555,6 +1608,15 @@ const canvasTexts = await page.evaluate(() => {
 });
 console.log(`  canvas text: ${canvasTexts.length} calls captured`);
 extracted.canvasTexts = canvasTexts;
+
+// v77-A — Canvas 2D ops readback. Method calls + parameters per canvas,
+// captured by evaluateOnNewDocument monkey-patch. Pure facts (numeric
+// coordinates / dimensions / colors), copyright-clean replay material.
+const canvasOps = await page.evaluate(() => window.__CAPTURED_CANVAS_OPS__ || []);
+extracted.canvasOps = canvasOps;
+const opMethodCounts = canvasOps.reduce((a, o) => { a[o.method] = (a[o.method] || 0) + 1; return a; }, {});
+const opSummary = Object.entries(opMethodCounts).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([m, c]) => `${m}=${c}`).join(" ");
+console.log(`  v77-A canvas ops: ${canvasOps.length} unique calls — ${opSummary || "(no ops)"}`);
 
 // WebGL shader readback — source strings captured at shaderSource() calls.
 // For sites with WebGL scenes (three.js/raw webgl), this is their DNA.
@@ -5153,6 +5215,108 @@ try {
   console.log(`  v76-M borders: ${borders.uniqueBorders} unique, top radii: ${radiiSummary || "-"}`);
 } catch (e) { console.log(`  v76-M borders: ${e.message.slice(0, 60)}`); }
 
+// ─── v77-B — Per-image color palette via canvas pixel sampling ────────
+// Extract 5 dominant colors from each visible <img>. Used by emit to
+// generate color-aware SVG placeholders that match source's image
+// rhythm even when actual imagery can't be reproduced (clean-room mode).
+// Pixel data sampled in-browser via canvas drawImage + getImageData;
+// CORS-tainted images fall through to 'cors-blocked' marker.
+try {
+  const imgPalettes = await page.evaluate(async () => {
+    const out = [];
+    const imgs = [...document.querySelectorAll("img")].filter(i => {
+      const r = i.getBoundingClientRect();
+      return r.width >= 60 && r.height >= 60 && i.complete && i.naturalWidth > 0;
+    }).slice(0, 30);
+    for (const img of imgs) {
+      try {
+        const cv = document.createElement("canvas");
+        cv.width = 32; cv.height = 32;
+        const cx = cv.getContext("2d");
+        cx.drawImage(img, 0, 0, 32, 32);
+        let pixels;
+        try { pixels = cx.getImageData(0, 0, 32, 32).data; }
+        catch { out.push({ src: img.src.slice(0, 200), alt: img.alt || "", w: img.naturalWidth, h: img.naturalHeight, palette: null, error: "cors-blocked" }); continue; }
+        const buckets = {};
+        for (let i = 0; i < pixels.length; i += 4) {
+          const r = pixels[i] >> 4 << 4;
+          const g = pixels[i + 1] >> 4 << 4;
+          const b = pixels[i + 2] >> 4 << 4;
+          const a = pixels[i + 3];
+          if (a < 200) continue;
+          const key = `${r},${g},${b}`;
+          buckets[key] = (buckets[key] || 0) + 1;
+        }
+        const top = Object.entries(buckets).sort((a, b) => b[1] - a[1]).slice(0, 5)
+          .map(([rgb, count]) => {
+            const [r, g, b] = rgb.split(",").map(Number);
+            const hex = "#" + [r, g, b].map(x => x.toString(16).padStart(2, "0")).join("");
+            return { rgb, hex, count };
+          });
+        out.push({
+          src: img.src.slice(0, 200),
+          alt: (img.alt || "").slice(0, 80),
+          w: img.naturalWidth,
+          h: img.naturalHeight,
+          aspect: +(img.naturalWidth / Math.max(1, img.naturalHeight)).toFixed(3),
+          palette: top,
+        });
+      } catch (e) {
+        out.push({ src: img.src.slice(0, 200), error: e.message.slice(0, 60) });
+      }
+    }
+    return out;
+  });
+  extracted.imagePalettes = imgPalettes;
+  const sampled = imgPalettes.filter(p => p.palette).length;
+  const blocked = imgPalettes.filter(p => p.error === "cors-blocked").length;
+  console.log(`  v77-B image palettes: ${sampled}/${imgPalettes.length} sampled, ${blocked} CORS-blocked`);
+} catch (e) { console.log(`  v77-B image palettes: ${e.message.slice(0, 60)}`); }
+
+// ─── v77-I — Selector-by-class CSS extraction (re-derived) ────────────
+// Walk all CSSStyleSheet rules. Group declarations by class selector.
+// Capture VALUES only (pure facts) — never the rule text. Re-emit our own
+// CSS classes with the same property:value declarations under our own
+// naming. This preserves styling without byte-copying CSS rule body.
+// Computed declarations are facts under Computer Associates v. Altai
+// filtration; the rule-text expression stays with the source.
+try {
+  const classDeclarations = await page.evaluate(() => {
+    const byClass = {};
+    let totalRules = 0, capturedRules = 0;
+    for (const sh of document.styleSheets) {
+      try {
+        for (const rule of sh.cssRules || []) {
+          totalRules++;
+          if (!(rule instanceof CSSStyleRule)) continue;
+          const sel = rule.selectorText || "";
+          const classMatch = sel.match(/^\.([a-zA-Z_][\w-]*)\s*$/);
+          if (!classMatch) continue;
+          const className = classMatch[1];
+          if (!byClass[className]) byClass[className] = {};
+          const decl = rule.style;
+          for (let i = 0; i < decl.length; i++) {
+            const prop = decl[i];
+            const val = decl.getPropertyValue(prop);
+            if (val && val.length < 200) {
+              byClass[className][prop] = val;
+            }
+          }
+          capturedRules++;
+        }
+      } catch {}
+    }
+    const flat = Object.entries(byClass).map(([cls, props]) => ({
+      className: cls,
+      declarations: props,
+      propCount: Object.keys(props).length,
+    })).filter(x => x.propCount > 0).sort((a, b) => b.propCount - a.propCount).slice(0, 80);
+    return { totalRules, capturedRules, classes: flat };
+  });
+  extracted.classDeclarations = classDeclarations;
+  console.log(`  v77-I class decls: ${classDeclarations.classes.length} unique class selectors from ${classDeclarations.capturedRules}/${classDeclarations.totalRules} rules`);
+} catch (e) { console.log(`  v77-I class decls: ${e.message.slice(0, 60)}`); }
+
 // browser.close() can hang indefinitely after v67's HeapProfiler +
 // Input.dispatchMouseEvent + SystemInfo interactions leave stale CDP
 // state. Race it against a 15s timeout; on timeout, SIGKILL the Chrome
@@ -5357,6 +5521,35 @@ const loremSentence = (words) => {
 let picsumSeed = 0;
 const picsum = (w, h) => `https://picsum.photos/seed/sigma-${picsumSeed++}/${Math.max(100, Math.round(w))}/${Math.max(100, Math.round(h))}`;
 
+// v77-B — Color-palette SVG placeholder generator. When source image
+// can't be reproduced (clean-room mode), emit an SVG data URL that
+// matches the source image's dominant color palette via a 5-stop
+// gradient. Visually approximates the original's color rhythm without
+// reproducing actual content. Pure facts (rgb values) — copyright clean.
+let palettePlaceholderSeed = 0;
+const palettePlaceholder = (palette, w, h) => {
+  if (!palette || palette.length === 0) return null;
+  const safeW = Math.max(100, Math.round(w));
+  const safeH = Math.max(100, Math.round(h));
+  // Build gradient stops from top palette entries
+  const stops = palette.slice(0, 5).map((p, i) => {
+    const offset = (i / Math.max(1, palette.length - 1)) * 100;
+    return `<stop offset="${offset.toFixed(1)}%" stop-color="${p.hex}" />`;
+  }).join("");
+  const gradId = `g${palettePlaceholderSeed++}`;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${safeW} ${safeH}" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="${gradId}" x1="0%" y1="0%" x2="100%" y2="100%">${stops}</linearGradient></defs><rect width="${safeW}" height="${safeH}" fill="url(#${gradId})" /></svg>`;
+  return `data:image/svg+xml;base64,${Buffer.from(svg).toString("base64")}`;
+};
+
+// Map source image src → palette for fast lookup during emit.
+const imagePaletteMap = (() => {
+  const m = new Map();
+  for (const p of (extracted.imagePalettes || [])) {
+    if (p.src && p.palette) m.set(p.src, p.palette);
+  }
+  return m;
+})();
+
 // Dev-mode image selector. Given a section + fallback dimensions, returns
 // either an original source image URL (dev mode) or a picsum placeholder.
 // Section's own images[] is preferred; falls back to page-wide pool if
@@ -5374,6 +5567,18 @@ const pickImage = (section, w, h) => {
     const img = pool[devImgCursor % pool.length];
     devImgCursor++;
     return { src: img.src, alt: img.alt || "" };
+  }
+  // v77-B — Clean-room mode: prefer color-palette SVG over picsum if any
+  // section image's palette was captured. Visual color-rhythm matches
+  // source even though specific imagery isn't reproduced.
+  if (section?.images && section.images.length > 0) {
+    for (const img of section.images) {
+      const palette = imagePaletteMap.get(img.src);
+      if (palette) {
+        const svgUrl = palettePlaceholder(palette, w, h);
+        if (svgUrl) return { src: svgUrl, alt: "color-matched placeholder" };
+      }
+    }
   }
   return { src: picsum(w, h), alt: "placeholder" };
 };
@@ -5599,6 +5804,25 @@ const modernCssBlock = [
 // `.sigma-pseudo-after-N` utility classes the user can apply manually. This
 // preserves the FACT (decorative recipes existed at this scale) without
 // guessing target elements. Captured recipes = pure CSS facts.
+// v77-I — Re-emit captured class declarations as our own CSS classes.
+// Source's `.foo { color: red; padding: 16px; }` becomes our
+// `.sigma-cls-foo { color: red; padding: 16px; }`. Property:value pairs
+// are facts; rule TEXT is never byte-copied. Class names get sigma-cls
+// prefix to avoid collision with Tailwind utilities.
+const classDeclBlock = (() => {
+  const cd = extracted.classDeclarations;
+  if (!cd || !cd.classes || cd.classes.length === 0) return "";
+  const lines = ["/* v77-I — Re-derived class declarations from source CSSOM (facts only) */"];
+  for (const c of cd.classes.slice(0, 60)) {
+    const props = Object.entries(c.declarations)
+      .filter(([k, v]) => k && v && !k.startsWith("--__") && v.length < 180)
+      .map(([k, v]) => `  ${k}: ${v};`).join("\n");
+    if (!props) continue;
+    lines.push(`.sigma-cls-${c.className.replace(/[^a-zA-Z0-9_-]/g, "_")} {\n${props}\n}`);
+  }
+  return lines.join("\n\n");
+})();
+
 const pseudoCssBlock = (() => {
   const pe = extracted.pseudoElements;
   if (!pe || (pe.before.length === 0 && pe.after.length === 0)) return "";
@@ -5637,6 +5861,8 @@ ${keyframesBlock}
 ${modernCssBlock}
 
 ${pseudoCssBlock}
+
+${classDeclBlock}
 
 :root {
   --font-heading: "${safeHeadingFont}", system-ui, sans-serif;
