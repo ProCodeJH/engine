@@ -2923,12 +2923,29 @@ try {
         if (criticalBytes >= 50000) break;
       } catch { /* sheet unavailable */ }
     }
+    // v89-2 — Minify critical CSS before storage. Strip comments,
+    // collapse whitespace, remove empty rules. Reduces inline <style>
+    // size in layout.tsx <head> for faster first paint without changing
+    // selectors/declarations (semantic identity preserved).
+    const minifyCss = (s) => s
+      .replace(/\/\*[\s\S]*?\*\//g, "")           // strip /* comments */
+      .replace(/\s+/g, " ")                        // collapse whitespace
+      .replace(/\s*([{};:,>+~])\s*/g, "$1")       // tighten around punctuation
+      .replace(/;}/g, "}")                         // drop redundant trailing ;
+      .replace(/}\s*/g, "}")                       // tighten after rule close
+      .trim();
+    const rawText = criticalParts.join("\n").slice(0, 50000);
+    const minified = minifyCss(rawText);
+    const reduction = rawText.length > 0 ? Math.round((1 - minified.length / rawText.length) * 100) : 0;
     extracted.criticalCss = {
       bytes: criticalBytes,
       sheetCount: Object.keys(usedByStylesheet).length,
-      text: criticalParts.join("\n").slice(0, 50000),
+      text: minified,
+      rawBytes: rawText.length,
+      minifiedBytes: minified.length,
+      reductionPercent: reduction,
     };
-    console.log(`  v81-2 critical CSS: ${criticalBytes}B sliced from ${Object.keys(usedByStylesheet).length} sheets`);
+    console.log(`  v81-2 critical CSS: ${criticalBytes}B sliced from ${Object.keys(usedByStylesheet).length} sheets, v89-2 minified ${rawText.length}→${minified.length} (-${reduction}%)`);
   } catch (e) { console.log(`  v81-2 critical CSS: ${e.message.slice(0, 60)}`); }
   console.log(`  code coverage: CSS ${usedCssBytes}/${totalCssBytes} bytes used (${extracted.codeCoverage.cssUsagePercent}%) / ${jsScripts} JS scripts profiled`);
   await cdp.send("CSS.stopRuleUsageTracking");
@@ -9031,6 +9048,19 @@ try {
     "- **High**: DOM Mirror replay + rich source signals — output should match source closely",
     "- **Medium**: Some signals missing — role template applied to remaining gaps",
     "- **Low**: Sparse capture — role template provides design opinion (may need user edit)",
+    "",
+    "## v89-3 Per-route fidelity (multi-page sites)",
+    "",
+    ...(() => {
+      const routes = Object.keys(extracted.pages || {}).slice(0, 10);
+      if (routes.length === 0) return ["(single-page scan — no per-route data)"];
+      const lines = ["| route | h1 | headings | paragraphs | images | screenshot |", "|---|---|---|---|---|---|"];
+      for (const r of routes) {
+        const data = extracted.pages[r] || {};
+        lines.push(`| \`${r}\` | ${data.h1 ? "✓" : "—"} | ${(data.headings || []).length} | ${(data.paragraphs || []).length} | ${(data.images || []).length} | ${data.screenshotPathsByViewport ? "✓" : "—"} |`);
+      }
+      return lines;
+    })(),
   ];
   fs.writeFileSync(path.join(projDir, "COMPONENT-FIDELITY.md"), fidelityLines.join("\n"));
   console.log(`  v86-1 component fidelity: high=${tierCounts.high} med=${tierCounts.medium} low=${tierCounts.low} → COMPONENT-FIDELITY.md`);
