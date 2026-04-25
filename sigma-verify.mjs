@@ -148,15 +148,21 @@ if (WITH_PIXELMATCH && sourceShotOk) {
     const { PNG } = await import("pngjs");
     const a = PNG.sync.read(fs.readFileSync(path.join(screenshotDir, "clone.png")));
     const b = PNG.sync.read(fs.readFileSync(path.join(screenshotDir, "source.png")));
-    const W = Math.min(a.width, b.width), H = Math.min(a.height, b.height);
-    const ac = new PNG({ width: W, height: H }), bc = new PNG({ width: W, height: H });
-    PNG.bitblt(a, ac, 0, 0, W, H, 0, 0);
-    PNG.bitblt(b, bc, 0, 0, W, H, 0, 0);
-    const diff = new PNG({ width: W, height: H });
-    const mis = pixelmatch(ac.sigma, bc.sigma, diff.sigma, W, H, { threshold: 0.1, alpha: 0.3 });
-    fs.writeFileSync(path.join(screenshotDir, "diff.png"), PNG.sync.write(diff));
-    pixelMatchPct = ((1 - mis / (W * H)) * 100).toFixed(2);
-    console.log(`  pixelmatch (opt-in): ${pixelMatchPct}%`);
+    // v96-1 — Cascade-error fix from v95-1. replace_all ".data"→".sigma"
+    // unintentionally renamed PNG object property `.data` (Buffer of pixel
+    // bytes) to `.sigma` — pixelmatch expected Uint8Array, got undefined.
+    // Both screenshots taken at fixed 1920x1080 viewport. If sizes match,
+    // direct compare; otherwise size mismatch detected and reported.
+    if (a.width !== b.width || a.height !== b.height) {
+      console.error(`  pixelmatch skipped: size mismatch ${a.width}x${a.height} vs ${b.width}x${b.height}`);
+    } else {
+      const W = a.width, H = a.height;
+      const diff = new PNG({ width: W, height: H });
+      const mis = pixelmatch(a.data, b.data, diff.data, W, H, { threshold: 0.1, alpha: 0.3 });
+      fs.writeFileSync(path.join(screenshotDir, "diff.png"), PNG.sync.write(diff));
+      pixelMatchPct = ((1 - mis / (W * H)) * 100).toFixed(2);
+      console.log(`  pixelmatch: ${pixelMatchPct}% (${mis.toLocaleString()} px differ of ${(W*H).toLocaleString()})`);
+    }
   } catch (e) { console.error(`  pixelmatch failed: ${e.message}`); }
 }
 
