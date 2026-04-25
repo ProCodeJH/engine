@@ -5417,6 +5417,51 @@ try {
   console.log(`  v78-3 responsive: ${extracted.responsiveStyles.elementCount} elements, mobile↔desktop delta=${extracted.responsiveStyles.mobileDesktopDelta}, tablet↔desktop=${extracted.responsiveStyles.tabletDesktopDelta}`);
 } catch (e) { console.log(`  v78-3 responsive: ${e.message.slice(0, 60)}`); }
 
+// ─── v80-2 — Element ↔ CSS animation binding capture ──────────────────
+// extracted.cssKeyframes already has @keyframes definitions. This block
+// finds which DOM elements actually USE those animations via computed
+// animationName property. Captured per-element with bbox + animation
+// duration/timing/iteration count. Pure facts — emit can apply same
+// animation to corresponding elements in clone via inline style.
+try {
+  const animBindings = await page.evaluate(() => {
+    const out = [];
+    const els = [...document.querySelectorAll("*")].slice(0, 1500);
+    for (const el of els) {
+      const cs = getComputedStyle(el);
+      const animName = cs.animationName;
+      if (!animName || animName === "none") continue;
+      const r = el.getBoundingClientRect();
+      if (r.width < 5 || r.height < 5) continue;
+      out.push({
+        tag: el.tagName.toLowerCase(),
+        x: Math.round(r.left),
+        y: Math.round(r.top + window.scrollY),
+        w: Math.round(r.width),
+        h: Math.round(r.height),
+        animationName: animName,
+        animationDuration: cs.animationDuration,
+        animationTimingFunction: cs.animationTimingFunction,
+        animationIterationCount: cs.animationIterationCount,
+        animationDirection: cs.animationDirection,
+        animationFillMode: cs.animationFillMode,
+        animationDelay: cs.animationDelay,
+      });
+      if (out.length >= 100) break;
+    }
+    const byName = {};
+    for (const b of out) {
+      const names = b.animationName.split(",").map(s => s.trim());
+      for (const n of names) byName[n] = (byName[n] || 0) + 1;
+    }
+    return { bindings: out, byName };
+  });
+  extracted.animationBindings = animBindings;
+  const namesSummary = Object.entries(animBindings.byName).sort((a, b) => b[1] - a[1])
+    .slice(0, 5).map(([n, c]) => `${n}=${c}`).join(" ");
+  console.log(`  v80-2 anim-bindings: ${animBindings.bindings.length} elements use CSS animations [${namesSummary}]`);
+} catch (e) { console.log(`  v80-2 anim-bindings: ${e.message.slice(0, 60)}`); }
+
 // browser.close() can hang indefinitely after v67's HeapProfiler +
 // Input.dispatchMouseEvent + SystemInfo interactions leave stale CDP
 // state. Race it against a 15s timeout; on timeout, SIGKILL the Chrome
@@ -5666,7 +5711,14 @@ const pickImage = (section, w, h) => {
   if (pool && pool.length > 0) {
     const img = pool[devImgCursor % pool.length];
     devImgCursor++;
-    return { src: img.src, alt: img.alt || "" };
+    // v80-3 — CLS prevention: return source's natural dimensions when
+    // available. Browsers reserve space pre-load, eliminating layout shift.
+    return {
+      src: img.src,
+      alt: img.alt || "",
+      width: img.naturalWidth || img.w || Math.round(w),
+      height: img.naturalHeight || img.h || Math.round(h),
+    };
   }
   // v77-B — Clean-room mode: prefer color-palette SVG over picsum if any
   // section image's palette was captured. Visual color-rhythm matches
@@ -5676,11 +5728,21 @@ const pickImage = (section, w, h) => {
       const palette = imagePaletteMap.get(img.src);
       if (palette) {
         const svgUrl = palettePlaceholder(palette, w, h);
-        if (svgUrl) return { src: svgUrl, alt: "color-matched placeholder" };
+        if (svgUrl) return {
+          src: svgUrl,
+          alt: "color-matched placeholder",
+          width: Math.round(w),
+          height: Math.round(h),
+        };
       }
     }
   }
-  return { src: picsum(w, h), alt: "placeholder" };
+  return {
+    src: picsum(w, h),
+    alt: "placeholder",
+    width: Math.max(100, Math.round(w)),
+    height: Math.max(100, Math.round(h)),
+  };
 };
 
 // Flatten all section images into a page-level pool (fallback for sections
@@ -6122,7 +6184,24 @@ ${(() => {
   if (b.topOutlines?.[0]) lines.push(`  --sigma-outline: ${b.topOutlines[0].value};`);
   return lines.join("\n");
 })()}
-${Object.entries(extracted.cssVariables || {}).map(([k, v]) => `  ${k}: ${v};`).join("\n")}
+${(() => {
+  // v80-1 — CSS variable dep-order emit. Use v76-G dependency graph to
+  // topologically sort variables so that any var(--x) reference resolves
+  // (--x declared before consumer). Without ordering, browsers fall back
+  // to initial values when consumer is declared first. Pure mechanical
+  // sort over captured facts.
+  const vars = extracted.cssVariables || {};
+  const refs = extracted.cssVarGraph?.refs || {};
+  const visited = new Set(), result = [];
+  const visit = (name) => {
+    if (visited.has(name)) return;
+    visited.add(name);
+    for (const dep of (refs[name] || [])) visit(dep);
+    if (Object.prototype.hasOwnProperty.call(vars, name)) result.push(name);
+  };
+  for (const k of Object.keys(vars)) visit(k);
+  return result.map(k => `  ${k}: ${vars[k]};`).join("\n");
+})()}
 }
 
 /* v75-L — apply dominant typography micro-decoration to headings */
@@ -6722,8 +6801,8 @@ const emitGallery = (section, idx) => {
   const motion = dominantMotion(section);
   const isTicker = motion?.kind === "ticker";
   const cards = Array.from({ length: isTicker ? cardCount * 2 : cardCount }, (_, i) => {
-    const { src: imgUrl, alt: imgAlt } = pickImage(section, 600, 400);
-    const inner = `<img src="${imgUrl}" alt="${imgAlt.replace(/"/g, "&quot;")}" className="w-full h-full object-cover" loading="lazy" />`;
+    const { src: imgUrl, alt: imgAlt, width: imgW, height: imgH } = pickImage(section, 600, 400);
+    const inner = `<img src="${imgUrl}" alt="${imgAlt.replace(/"/g, "&quot;")}" width={${imgW}} height={${imgH}} className="w-full h-full object-cover" loading="lazy" decoding="async" />`;
     if (isTicker) {
       return `        <div key={${i}} className="flex-shrink-0 w-80 h-56 rounded-2xl bg-brand-surface overflow-hidden mr-6">
           ${inner}
@@ -6787,7 +6866,7 @@ const emitFeature = (section, idx) => {
   const name = `Feature${idx}`;
   if (emittedComponents.has(name)) return name;
   emittedComponents.add(name);
-  const { src: imgUrl, alt: imgAlt } = pickImage(section, 800, 500);
+  const { src: imgUrl, alt: imgAlt, width: imgW, height: imgH } = pickImage(section, 800, 500);
   const { px: hPx, vh: hVh } = secHeight(section);
   const h = hVh;
   const { bg: sBg, fg: sFg } = bgFor(idx);
@@ -6831,7 +6910,7 @@ ${useSectionParallax ? `  const ref = useRef<HTMLElement>(null);
           className="overflow-hidden rounded-2xl aspect-[8/5]"
           ${useSectionParallax ? `` : ``}
         >
-          <img src="${imgUrl}" alt="${imgAlt.replace(/"/g, "&quot;")}" className="w-full h-full object-cover" loading="lazy" />
+          <img src="${imgUrl}" alt="${imgAlt.replace(/"/g, "&quot;")}" width={${imgW}} height={${imgH}} className="w-full h-full object-cover" loading="lazy" decoding="async" />
         </motion.div>
       </div>
     </section>
@@ -6896,7 +6975,7 @@ const emitGrid = (section, idx) => {
     // Each grid card gets its own image from the section's pool. In dev
     // mode this shows the original site's grid imagery; in clean mode a
     // picsum placeholder. Lazy-loaded because grid sits below-fold.
-    const { src: cardImg, alt: cardAlt } = pickImage(section, 400, 300);
+    const { src: cardImg, alt: cardAlt, width: cardW, height: cardH } = pickImage(section, 400, 300);
     return `        <motion.div
           key={${i}}
           initial={{ opacity: 0 }}
@@ -6908,7 +6987,7 @@ const emitGrid = (section, idx) => {
           style={{ background: "${colorRoles.surface1}" }}
         >
           <div className="aspect-[4/3] overflow-hidden" style={{ background: "${colorRoles.surface2}" }}>
-            <img src="${cardImg}" alt="${cardAlt.replace(/"/g, "&quot;")}" className="w-full h-full object-cover" loading="lazy" />
+            <img src="${cardImg}" alt="${cardAlt.replace(/"/g, "&quot;")}" width={${cardW}} height={${cardH}} className="w-full h-full object-cover" loading="lazy" decoding="async" />
           </div>
           <div className="p-6">
             <h3 className="font-heading text-2xl font-semibold mb-3">{"{{GRID_ITEM_${i}_TITLE}}"}</h3>
