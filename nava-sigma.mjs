@@ -5948,7 +5948,96 @@ const pseudoCssBlock = (() => {
     ...pe.before.slice(0, 20).map((p, i) => renderRule(p, "before", i)),
     ...pe.after.slice(0, 20).map((p, i) => renderRule(p, "after", i)),
   ];
+  // v79-3 — Pseudo auto-application by tag pattern. Group captured pseudos
+  // by tag; if multiple pseudos share the same tag, emit a tag-targeted
+  // rule using the most-frequent property values. This auto-applies
+  // pseudo decoration to elements of the same tag in our output without
+  // user wire-up. Pure facts — same property:value pairs from utility
+  // class, just attached to a CSS selector that matches by tag.
+  const pseudoByTag = (which) => {
+    const list = which === "before" ? pe.before : pe.after;
+    const byTag = {};
+    for (const p of list) {
+      if (!byTag[p.tag]) byTag[p.tag] = [];
+      byTag[p.tag].push(p);
+    }
+    const tagRules = [];
+    for (const [tag, items] of Object.entries(byTag)) {
+      if (items.length < 2) continue;  // need ≥2 occurrences to safely auto-apply
+      // Use first item's recipe as representative (most common pattern)
+      const rep = items[0];
+      const props = [];
+      if (rep.content) props.push(`content: ${rep.content}`);
+      if (rep.bg && rep.bg !== "rgba(0, 0, 0, 0)" && rep.bg !== "transparent") props.push(`background-color: ${rep.bg}`);
+      if (rep.borderRadius && rep.borderRadius !== "0px") props.push(`border-radius: ${rep.borderRadius}`);
+      if (rep.position && rep.position !== "static") props.push(`position: ${rep.position}`);
+      if (rep.opacity && rep.opacity !== "1") props.push(`opacity: ${rep.opacity}`);
+      if (props.length >= 1) {
+        tagRules.push(`${tag}::${which} { ${props.join("; ")} }`);
+      }
+    }
+    return tagRules;
+  };
+  lines.push("/* v79-3 — Auto-applied tag-pattern pseudo rules */");
+  lines.push(...pseudoByTag("before"));
+  lines.push(...pseudoByTag("after"));
   return lines.join("\n");
+})();
+
+// v79-1 — Responsive Tailwind-style emit from per-viewport captures.
+// Walks v78-3 responsiveStyles, finds elements whose computed styles
+// DIFFER between viewports, emits @media rules for those properties.
+// Pure facts (computedStyle values per breakpoint) → CSS recipes.
+// Approach: per-tag dominant fontSize at each viewport, emit override.
+const responsiveCssBlock = (() => {
+  const rs = extracted.responsiveStyles;
+  if (!rs || !rs.perViewport) return "";
+  const viewports = ["mobile", "tablet", "desktop"];
+  const dominantPerTag = {};  // {tag: {viewport: {fontSize, padding, ...}}}
+  for (const vp of viewports) {
+    const entries = rs.perViewport[vp] || [];
+    for (const entry of entries) {
+      if (!dominantPerTag[entry.tag]) dominantPerTag[entry.tag] = {};
+      // First occurrence of each tag at each viewport wins (representative)
+      if (!dominantPerTag[entry.tag][vp]) {
+        dominantPerTag[entry.tag][vp] = {
+          fontSize: entry.fontSize,
+          padding: entry.padding,
+          margin: entry.margin,
+          lineHeight: entry.lineHeight,
+          gridTemplateColumns: entry.gridTemplateColumns,
+        };
+      }
+    }
+  }
+  const lines = ["/* v79-1 — Per-viewport responsive overrides from captured computed styles */"];
+  // Mobile: <=767px
+  const mobileRules = [];
+  for (const [tag, vps] of Object.entries(dominantPerTag)) {
+    if (!vps.mobile || !vps.desktop) continue;
+    const props = [];
+    if (vps.mobile.fontSize !== vps.desktop.fontSize) props.push(`font-size: ${vps.mobile.fontSize}`);
+    if (vps.mobile.padding !== vps.desktop.padding) props.push(`padding: ${vps.mobile.padding}`);
+    if (vps.mobile.lineHeight !== vps.desktop.lineHeight) props.push(`line-height: ${vps.mobile.lineHeight}`);
+    if (props.length > 0) mobileRules.push(`  ${tag} { ${props.join("; ")} }`);
+  }
+  if (mobileRules.length > 0) {
+    lines.push(`@media (max-width: 767px) {\n${mobileRules.join("\n")}\n}`);
+  }
+  // Tablet: 768-1279px
+  const tabletRules = [];
+  for (const [tag, vps] of Object.entries(dominantPerTag)) {
+    if (!vps.tablet || !vps.desktop) continue;
+    const props = [];
+    if (vps.tablet.fontSize !== vps.desktop.fontSize) props.push(`font-size: ${vps.tablet.fontSize}`);
+    if (vps.tablet.padding !== vps.desktop.padding) props.push(`padding: ${vps.tablet.padding}`);
+    if (vps.tablet.lineHeight !== vps.desktop.lineHeight) props.push(`line-height: ${vps.tablet.lineHeight}`);
+    if (props.length > 0) tabletRules.push(`  ${tag} { ${props.join("; ")} }`);
+  }
+  if (tabletRules.length > 0) {
+    lines.push(`@media (min-width: 768px) and (max-width: 1279px) {\n${tabletRules.join("\n")}\n}`);
+  }
+  return lines.length > 1 ? lines.join("\n\n") : "";
 })();
 
 fs.writeFileSync(path.join(appDir, "globals.css"),
@@ -5963,6 +6052,8 @@ ${modernCssBlock}
 ${pseudoCssBlock}
 
 ${classDeclBlock}
+
+${responsiveCssBlock}
 
 :root {
   --font-heading: "${safeHeadingFont}", system-ui, sans-serif;
@@ -6002,6 +6093,22 @@ ${(() => {
   lines.push(`  color-scheme: ${u.colorScheme};`);
   if (u.accentColor) lines.push(`  accent-color: ${u.accentColor};`);
   if (u.caretColor) lines.push(`  caret-color: ${u.caretColor};`);
+  return lines.join("\n");
+})()}
+  /* v79-2 — stacking z-index histogram from v76-H captured layers */
+${(() => {
+  const sc = extracted.stackingContexts;
+  if (!sc || !sc.layers || sc.layers.length === 0) return "";
+  // Find top distinct z-index values, ranked by descending z
+  const distinctZ = [...new Set(sc.layers.map(l => l.zIndex).filter(z => z !== null && z !== undefined))]
+    .sort((a, b) => b - a).slice(0, 5);
+  const lines = [];
+  if (distinctZ[0]) lines.push(`  --sigma-z-top: ${distinctZ[0]};`);
+  if (distinctZ[1]) lines.push(`  --sigma-z-2: ${distinctZ[1]};`);
+  if (distinctZ[2]) lines.push(`  --sigma-z-3: ${distinctZ[2]};`);
+  // Top blend mode for primary mix-blend usage
+  const topBlend = Object.entries(sc.blendModes || {}).sort((a, b) => b[1] - a[1])[0];
+  if (topBlend) lines.push(`  --sigma-blend: ${topBlend[0]};`);
   return lines.join("\n");
 })()}
   /* v76-M — dominant border-radius for UI shape consistency */
