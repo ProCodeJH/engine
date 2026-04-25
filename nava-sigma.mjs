@@ -2887,6 +2887,49 @@ try {
     cssUsagePercent: totalCssBytes > 0 ? ((usedCssBytes / totalCssBytes) * 100).toFixed(1) : 0,
     jsScriptCount: jsScripts,
   };
+  // v81-2 — Critical CSS extraction: slice used byte ranges from each
+  // stylesheet text, concatenate into criticalCss for above-fold inline
+  // emit in layout.tsx <head>. Only USED ranges are kept — unused rules
+  // omitted (deadweight elimination). Coverage ranges are facts about
+  // which CSS bytes the browser actually applied to the DOM.
+  try {
+    const usedByStylesheet = {};
+    for (const entry of (cssUsage.coverage || [])) {
+      if (!entry.used) continue;
+      if (!usedByStylesheet[entry.styleSheetId]) usedByStylesheet[entry.styleSheetId] = [];
+      usedByStylesheet[entry.styleSheetId].push({ start: entry.startOffset, end: entry.endOffset });
+    }
+    const criticalParts = [];
+    let criticalBytes = 0;
+    for (const [sheetId, ranges] of Object.entries(usedByStylesheet)) {
+      try {
+        const txt = await cdp.send("CSS.getStyleSheetText", { styleSheetId: sheetId });
+        const source = txt?.text || "";
+        if (!source) continue;
+        // Merge overlapping ranges
+        ranges.sort((a, b) => a.start - b.start);
+        const merged = [];
+        for (const r of ranges) {
+          if (merged.length === 0 || r.start > merged[merged.length - 1].end) merged.push({ ...r });
+          else merged[merged.length - 1].end = Math.max(merged[merged.length - 1].end, r.end);
+        }
+        for (const r of merged) {
+          const slice = source.slice(r.start, r.end);
+          if (slice.trim() && criticalBytes < 50000) {
+            criticalParts.push(slice);
+            criticalBytes += slice.length;
+          }
+        }
+        if (criticalBytes >= 50000) break;
+      } catch { /* sheet unavailable */ }
+    }
+    extracted.criticalCss = {
+      bytes: criticalBytes,
+      sheetCount: Object.keys(usedByStylesheet).length,
+      text: criticalParts.join("\n").slice(0, 50000),
+    };
+    console.log(`  v81-2 critical CSS: ${criticalBytes}B sliced from ${Object.keys(usedByStylesheet).length} sheets`);
+  } catch (e) { console.log(`  v81-2 critical CSS: ${e.message.slice(0, 60)}`); }
   console.log(`  code coverage: CSS ${usedCssBytes}/${totalCssBytes} bytes used (${extracted.codeCoverage.cssUsagePercent}%) / ${jsScripts} JS scripts profiled`);
   await cdp.send("CSS.stopRuleUsageTracking");
   await cdp.send("Profiler.stopPreciseCoverage");
@@ -6046,6 +6089,31 @@ const pseudoCssBlock = (() => {
   return lines.join("\n");
 })();
 
+// v81-1 — Animation binding tag-pattern emit. Walks v80-2 captured
+// element-animation map, groups by tag, emits `tag { animation: ... }`
+// CSS rules when ≥2 elements of same tag share the same animation.
+// Pure facts (animationName/duration/timing-function/iteration captured
+// per-element) → CSS recipe replay. Combined with v75-D's @keyframes
+// block, animations now AUTO-APPLY to corresponding elements in clone.
+const animBindingsCssBlock = (() => {
+  const ab = extracted.animationBindings;
+  if (!ab || !ab.bindings || ab.bindings.length === 0) return "";
+  const byTag = {};
+  for (const b of ab.bindings) {
+    if (!byTag[b.tag]) byTag[b.tag] = [];
+    byTag[b.tag].push(b);
+  }
+  const rules = ["/* v81-1 — Auto-applied tag-pattern animation rules */"];
+  for (const [tag, items] of Object.entries(byTag)) {
+    if (items.length < 2) continue;
+    // Use first item's recipe as representative
+    const rep = items[0];
+    const animShorthand = `${rep.animationName} ${rep.animationDuration} ${rep.animationTimingFunction} ${rep.animationDelay} ${rep.animationIterationCount} ${rep.animationDirection} ${rep.animationFillMode}`.trim();
+    rules.push(`${tag} { animation: ${animShorthand}; }`);
+  }
+  return rules.length > 1 ? rules.join("\n") : "";
+})();
+
 // v79-1 — Responsive Tailwind-style emit from per-viewport captures.
 // Walks v78-3 responsiveStyles, finds elements whose computed styles
 // DIFFER between viewports, emits @media rules for those properties.
@@ -6116,6 +6184,8 @@ ${pseudoCssBlock}
 ${classDeclBlock}
 
 ${responsiveCssBlock}
+
+${animBindingsCssBlock}
 
 :root {
   --font-heading: "${safeHeadingFont}", system-ui, sans-serif;
@@ -7660,6 +7730,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=${hdFont}:wght@400;600;700;900&family=${bdFont}:wght@400;500;600&display=swap" />
+${extracted.criticalCss?.text ? `        {/* v81-2 — Critical CSS inline (used rules from CSS Coverage) */}
+        <style dangerouslySetInnerHTML={{ __html: ${JSON.stringify(extracted.criticalCss.text.replace(/\s+/g, " ").trim())} }} />` : ""}
 ${(extracted.linkHints || []).slice(0, 20).map(l => {
   const attrs = [`rel="${l.rel}"`, `href="${(l.href || "").replace(/"/g, "&quot;")}"`];
   if (l.as) attrs.push(`as="${l.as}"`);
