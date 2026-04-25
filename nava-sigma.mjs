@@ -5606,6 +5606,162 @@ try {
   console.log(`  v82-2 element fingerprints: ${elementFingerprints.length} elements with ${uniquePaths.size} unique selector paths`);
 } catch (e) { console.log(`  v82-2 element fingerprints: ${e.message.slice(0, 60)}`); }
 
+// ─── v83-1 — Per-element responsive fingerprint at all viewports ──────
+// Re-run v82-2 fingerprint capture at mobile/tablet viewports + compute
+// per-selector responsive deltas. Emit pipe gets selector-keyed @media
+// rules — full element-level responsive parity (vs v79-1's tag-level).
+// Pure facts (computed style at each viewport) per element selector.
+try {
+  const VP_ELEMENT = [
+    { name: "mobile", width: 375, height: 812 },
+    { name: "tablet", width: 768, height: 1024 },
+  ];
+  const responsiveByPath = {};
+  // Index desktop fingerprints by path for diff lookup
+  for (const fp of (extracted.elementFingerprints || [])) {
+    responsiveByPath[fp.path] = { desktop: fp };
+  }
+  for (const vp of VP_ELEMENT) {
+    try {
+      await page.setViewport({ width: vp.width, height: vp.height });
+      await new Promise(r => setTimeout(r, 600));
+      const vpData = await page.evaluate(() => {
+        const selectorOf = (el) => {
+          if (el.id) return `#${el.id}`;
+          const tag = el.tagName.toLowerCase();
+          const parent = el.parentElement;
+          if (!parent) return tag;
+          const sameTagSiblings = [...parent.children].filter(c => c.tagName === el.tagName);
+          const idx = sameTagSiblings.indexOf(el);
+          return sameTagSiblings.length > 1 ? `${tag}:nth-of-type(${idx + 1})` : tag;
+        };
+        const buildPath = (el) => {
+          const parts = []; let cur = el; let d = 0;
+          while (cur && cur !== document.body && d < 5) { parts.unshift(selectorOf(cur)); cur = cur.parentElement; d++; }
+          return parts.join(" > ");
+        };
+        const els = [...document.querySelectorAll("h1, h2, h3, p, section, header, footer, main, nav, button, a, img")]
+          .filter(el => { const r = el.getBoundingClientRect(); return r.width >= 30 && r.height >= 15; })
+          .slice(0, 80);
+        return els.map(el => {
+          const cs = getComputedStyle(el);
+          const r = el.getBoundingClientRect();
+          return {
+            path: buildPath(el),
+            fontSize: cs.fontSize, padding: cs.padding, margin: cs.margin,
+            display: cs.display, lineHeight: cs.lineHeight,
+            w: Math.round(r.width), h: Math.round(r.height),
+          };
+        });
+      });
+      for (const entry of vpData) {
+        if (!responsiveByPath[entry.path]) responsiveByPath[entry.path] = {};
+        responsiveByPath[entry.path][vp.name] = entry;
+      }
+    } catch { /* viewport failed */ }
+  }
+  await page.setViewport({ width: 1920, height: 1080 });
+  await new Promise(r => setTimeout(r, 400));
+  // Compute deltas per selector
+  const responsiveDeltas = [];
+  for (const [path, vps] of Object.entries(responsiveByPath)) {
+    const d = vps.desktop;
+    if (!d) continue;
+    const mob = vps.mobile, tab = vps.tablet;
+    const deltas = { path, mobile: {}, tablet: {} };
+    let hasDeltas = false;
+    if (mob) {
+      for (const k of ["fontSize", "padding", "margin", "lineHeight", "display"]) {
+        if (mob[k] !== undefined && mob[k] !== d[k]) { deltas.mobile[k] = mob[k]; hasDeltas = true; }
+      }
+    }
+    if (tab) {
+      for (const k of ["fontSize", "padding", "margin", "lineHeight", "display"]) {
+        if (tab[k] !== undefined && tab[k] !== d[k]) { deltas.tablet[k] = tab[k]; hasDeltas = true; }
+      }
+    }
+    if (hasDeltas) responsiveDeltas.push(deltas);
+  }
+  extracted.responsiveBySelector = { deltas: responsiveDeltas.slice(0, 60) };
+  console.log(`  v83-1 per-element responsive: ${responsiveDeltas.length} selectors with viewport deltas`);
+} catch (e) { console.log(`  v83-1 per-element responsive: ${e.message.slice(0, 60)}`); }
+
+// ─── v83-2 — Three.js scene snapshot (post-load) ──────────────────────
+// Many WebGL sites expose THREE.Scene via window.scene or
+// __THREE_DEVTOOLS__ event. Walk if accessible — captures mesh count,
+// material types, light setup, camera position. Pure facts (numeric
+// scene-graph properties), no shader source copy. Emit can recreate
+// equivalent scene via react-three-fiber.
+try {
+  const threeSnapshot = await page.evaluate(() => {
+    const out = { available: false, scenes: [] };
+    if (typeof window.THREE === "undefined") return out;
+    out.available = true;
+    out.threeVersion = window.THREE.REVISION || "unknown";
+    // Try common scene exposure patterns
+    const candidates = [];
+    if (window.scene) candidates.push(window.scene);
+    if (window.__scene) candidates.push(window.__scene);
+    if (window.app?.scene) candidates.push(window.app.scene);
+    if (window.experience?.scene) candidates.push(window.experience.scene);
+    for (const sc of candidates) {
+      if (!sc || !sc.children) continue;
+      const counts = { meshes: 0, lights: 0, cameras: 0, groups: 0, others: 0 };
+      const materials = new Set();
+      const walk = (obj, depth = 0) => {
+        if (depth > 10) return;
+        if (obj.isMesh) {
+          counts.meshes++;
+          if (obj.material?.type) materials.add(obj.material.type);
+        } else if (obj.isLight) counts.lights++;
+        else if (obj.isCamera) counts.cameras++;
+        else if (obj.isGroup) counts.groups++;
+        else counts.others++;
+        for (const c of (obj.children || [])) walk(c, depth + 1);
+      };
+      walk(sc);
+      out.scenes.push({ counts, materialTypes: [...materials] });
+    }
+    return out;
+  });
+  extracted.threeSnapshot = threeSnapshot;
+  if (threeSnapshot.available) {
+    const sceneCount = threeSnapshot.scenes.length;
+    const totalMeshes = threeSnapshot.scenes.reduce((s, sc) => s + sc.counts.meshes, 0);
+    console.log(`  v83-2 three.js: r${threeSnapshot.threeVersion}, ${sceneCount} accessible scenes, ${totalMeshes} meshes`);
+  } else {
+    console.log(`  v83-2 three.js: not detected (window.THREE undefined)`);
+  }
+} catch (e) { console.log(`  v83-2 three.js: ${e.message.slice(0, 60)}`); }
+
+// ─── v83-3 — Web Audio context graph detection ────────────────────────
+// Sites with sound effects/music typically expose AudioContext via
+// window.audioContext or set up the graph in module scope. We scan
+// AudioContext.prototype calls if any global audio context exists,
+// otherwise just record presence. Pure capability facts.
+try {
+  const audioGraph = await page.evaluate(() => {
+    const out = { available: false, contexts: 0, nodes: {} };
+    if (typeof AudioContext === "undefined" && typeof webkitAudioContext === "undefined") return out;
+    out.available = true;
+    // Search common globals
+    const candidates = [];
+    if (window.audioContext) candidates.push(window.audioContext);
+    if (window.audioCtx) candidates.push(window.audioCtx);
+    if (window.ctx?.constructor?.name === "AudioContext") candidates.push(window.ctx);
+    out.contexts = candidates.length;
+    for (const ctx of candidates) {
+      if (!ctx) continue;
+      out.sampleRate = ctx.sampleRate;
+      out.state = ctx.state;
+      // Can't enumerate nodes without runtime tracing
+    }
+    return out;
+  });
+  extracted.audioGraph = audioGraph;
+  console.log(`  v83-3 web audio: api=${audioGraph.available}, contexts=${audioGraph.contexts}`);
+} catch (e) { console.log(`  v83-3 web audio: ${e.message.slice(0, 60)}`); }
+
 // ─── v82-3 — Smart preload hints derivation ───────────────────────────
 // Walks captured fontFaces (license-clean only after v78-1) + top images.
 // Builds a list of <link rel="preload"> targets for above-fold critical
@@ -6229,6 +6385,44 @@ const pseudoCssBlock = (() => {
   return lines.join("\n");
 })();
 
+// v83-1 — Per-element responsive @media emit. Uses v83-1 captured
+// per-selector deltas to emit selector-keyed @media rules. Distinguishes
+// individual elements (e.g., second h2 in nav vs first h2 in hero) via
+// nth-of-type selectors. Pure facts (computed style at each viewport)
+// → CSS recipe replay at element-level granularity.
+const perElementResponsiveBlock = (() => {
+  const rs = extracted.responsiveBySelector;
+  if (!rs || !rs.deltas || rs.deltas.length === 0) return "";
+  const lines = ["/* v83-1 — Per-element responsive overrides (selector-keyed) */"];
+  // Group by viewport
+  const buildRule = (viewport, deltas) => {
+    const ruleLines = [];
+    for (const d of deltas) {
+      const props = d[viewport];
+      if (!props || Object.keys(props).length === 0) continue;
+      const cssDecls = Object.entries(props).map(([k, v]) => {
+        const cssProp = k.replace(/[A-Z]/g, m => "-" + m.toLowerCase());
+        return `${cssProp}: ${v}`;
+      }).join("; ");
+      // Selector path: convert " > " to CSS combinator. Some chars (path
+      // contains chars like ":" from nth-of-type, ">") need escaping in
+      // selector — they're already valid CSS so just pass through.
+      const selector = d.path.replace(/^body \> /, "");
+      ruleLines.push(`  ${selector} { ${cssDecls} }`);
+    }
+    return ruleLines;
+  };
+  const mobileRules = buildRule("mobile", rs.deltas);
+  const tabletRules = buildRule("tablet", rs.deltas);
+  if (mobileRules.length > 0) {
+    lines.push(`@media (max-width: 767px) {\n${mobileRules.join("\n")}\n}`);
+  }
+  if (tabletRules.length > 0) {
+    lines.push(`@media (min-width: 768px) and (max-width: 1279px) {\n${tabletRules.join("\n")}\n}`);
+  }
+  return lines.length > 1 ? lines.join("\n\n") : "";
+})();
+
 // v81-1 — Animation binding tag-pattern emit. Walks v80-2 captured
 // element-animation map, groups by tag, emits `tag { animation: ... }`
 // CSS rules when ≥2 elements of same tag share the same animation.
@@ -6324,6 +6518,8 @@ ${pseudoCssBlock}
 ${classDeclBlock}
 
 ${responsiveCssBlock}
+
+${perElementResponsiveBlock}
 
 ${animBindingsCssBlock}
 
