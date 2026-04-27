@@ -56,8 +56,13 @@ const VERBOSE = args.includes("--verbose") || args.includes("-v");
 // Dev mode: keep source image URLs for visual verification. Output is NOT
 // clean-room in this mode — images remain copyrighted by source. User must
 // replace before deployment. Emits NOTICE-DEV.md instead of NOTICE-CLEAN.md.
-const USE_ORIGINAL_IMAGES = args.includes("--use-original-images") || args.includes("--dev-images");
-const USE_ORIGINAL_TEXT = args.includes("--use-original-text") || args.includes("--dev-text");
+// v104 STRICT-CLEAN — `--strict-clean` 강제하면 USE_ORIGINAL_* 모두 무시.
+// 자현의 "100% 저작권 클린" 보장 모드. Baker v. Selden 사실 측정만 emit,
+// 표현 layer는 100% 토큰. 이후 sigma-asset-inject.mjs (v105)로 자현이
+// 자기 자산 일괄 주입. Production 배포용 default 권장.
+const STRICT_CLEAN = args.includes("--strict-clean");
+const USE_ORIGINAL_IMAGES = !STRICT_CLEAN && (args.includes("--use-original-images") || args.includes("--dev-images"));
+const USE_ORIGINAL_TEXT = !STRICT_CLEAN && (args.includes("--use-original-text") || args.includes("--dev-text"));
 // v92-2 — DOM Mirror is the v74 architectural pivot. Default was false
 // which silently disabled the entire Style Fingerprint Mirror routing
 // for 18 versions (v74-v91). Real-world test caught this — 0 sections
