@@ -103,9 +103,18 @@ export async function captureMultiStateDom(page, cdp, extracted, opts = {}) {
           for (const m of muts) {
             for (const n of m.addedNodes || []) {
               if (n.nodeType === 1 && window.__sigma_v99_addedNodes.length < 50) {
+                // v99-1+ capture 강화: outerHTML도 보존 (emit 시 정확한 펼침 panel 재현)
+                let outerHtml = "";
+                try {
+                  outerHtml = (n.outerHTML || "").slice(0, 4000);
+                } catch {}
                 window.__sigma_v99_addedNodes.push({
                   tag: n.tagName?.toLowerCase() || "?",
                   cls: (n.className || "").toString().slice(0, 80),
+                  id: n.id || null,
+                  text: (n.textContent || "").trim().slice(0, 200),
+                  outerHtml,
+                  childCount: n.children?.length || 0,
                 });
               }
             }

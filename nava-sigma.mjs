@@ -27,6 +27,12 @@ import { captureMultiViewport as __sigmaMultiViewport } from "./sigma-multiviewp
 import { pierceClosedShadows as __sigmaShadowPierce } from "./sigma-shadow-pierce.mjs";
 import { captureNetworkReplay as __sigmaNetworkReplay } from "./sigma-network-replay.mjs";
 import { deepCrawl as __sigmaDeepCrawl } from "./sigma-deep-crawl.mjs";
+// Phase 2 emit wiring (v99-2 ~ v103-2)
+import { emitMultiState as __sigmaEmitMultiState } from "./sigma-emit-multistate.mjs";
+import { emitMultiViewport as __sigmaEmitMultiViewport } from "./sigma-emit-multiviewport.mjs";
+import { emitShadowContent as __sigmaEmitShadow } from "./sigma-emit-shadow.mjs";
+import { emitNetworkRoutes as __sigmaEmitNetwork } from "./sigma-emit-network.mjs";
+import { emitRoutePages as __sigmaEmitRoutes } from "./sigma-emit-routes.mjs";
 
 // ═══ MOTION PRESETS ═══════════════════════════════════════════════════
 // Named durations + eases prevent the engine from embedding verbatim
@@ -9106,6 +9112,35 @@ Allow: /
 Sitemap: https://example.com/sitemap.xml
 `);
 console.log(`  sitemap.xml: ${allRoutePaths.length} urls`);
+
+// ─── Σ.4.5 — Phase 2 emit wiring (v99-2 ~ v103-2) ─────────────────────
+// capture 모듈 데이터를 React 컴포넌트로 변환 — 진짜 SOLVABLE_PARTIAL
+// → RESOLVED 이동. base emit과 충돌 없이 추가 컴포넌트만 생성.
+// 자현이 page.tsx에 import해서 사용 또는 base emit 강화 후 자동.
+try {
+  const r1 = __sigmaEmitMultiState(extracted, projDir);
+  if (r1.emitted > 0) console.log(`  v99-2 emit: ${r1.emitted} MultiState components → src/components/multistate/`);
+} catch (e) { console.log(`  v99-2 emit: ${e.message.slice(0, 80)}`); }
+
+try {
+  const r2 = __sigmaEmitMultiViewport(extracted, projDir);
+  if (r2.emitted > 0) console.log(`  v100-2 emit: ViewportNav.tsx → src/components/viewport/`);
+} catch (e) { console.log(`  v100-2 emit: ${e.message.slice(0, 80)}`); }
+
+try {
+  const r3 = __sigmaEmitShadow(extracted, projDir);
+  if (r3.emitted > 0) console.log(`  v101-2 emit: ${r3.emitted} ShadowContent components → src/components/shadow/`);
+} catch (e) { console.log(`  v101-2 emit: ${e.message.slice(0, 80)}`); }
+
+try {
+  const r4 = __sigmaEmitNetwork(extracted, projDir);
+  if (r4.emitted > 0) console.log(`  v102-2 emit: ${r4.emitted} mock API routes → src/app/api/sigma-mock/`);
+} catch (e) { console.log(`  v102-2 emit: ${e.message.slice(0, 80)}`); }
+
+try {
+  const r5 = __sigmaEmitRoutes(extracted, projDir, { useOriginalText: USE_ORIGINAL_TEXT });
+  if (r5.emitted > 0) console.log(`  v103-2 emit: ${r5.emitted} route pages → src/app/[...]/page.tsx`);
+} catch (e) { console.log(`  v103-2 emit: ${e.message.slice(0, 80)}`); }
 
 // ─── Σ.5 LICENSE AUDIT ─────────────────────────────────────────────
 console.log(`[Σ.5] LICENSE AUDIT ${el()}`);

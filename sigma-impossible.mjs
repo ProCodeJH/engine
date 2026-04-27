@@ -163,6 +163,12 @@ const RESOLVED_SIGNALS = [
   "webglInfo", "hoverDeltas", "heapProfile", "systemInfo",
   "storageQuota", "permissions", "indexedDB", "cacheStorage",
   "wasmAvailable",
+  // v99-v103 Phase 1 capture + Phase 2 emit wiring (capture+emit 둘 다 RESOLVED)
+  "multiStateDOMs",         // v99-1 capture + v99-2 MultiState{i}.tsx emit
+  "multiViewportReal",      // v100-1 capture + v100-2 ViewportNav.tsx emit
+  "closedShadowPierced",    // v101-1 CDP pierce + v101-2 ShadowContent{i}.tsx emit
+  "networkPatterns",        // v102-1 fetch shape + v102-2 /api/sigma-mock/ emit
+  "deepCrawl",              // v103-1 sitemap crawl + v103-2 /app/[route]/page.tsx emit
 ];
 
 // ─── 분류 룰 ─────────────────────────────────────────────────────────
@@ -275,37 +281,11 @@ const SOLVABLE_PARTIAL_RULES = (scan) => {
       note: `${scan.canvasText.length} 호출 — v110-1에서 Canvas 2D ops replay`,
     });
   }
-  if ((scan.closedShadowCount || 0) > 0) {
-    out.push({
-      key: "closed Shadow DOM interior",
-      target: "v101",
-      note: `${scan.closedShadowCount}개 → v101 CDP DOM.describeNode pierce:true 우회`,
-    });
-  }
-  // multi-state DOM (v99) — 항상 후보
-  if ((scan.formSurface?.inputs || []).length > 0 ||
-      (scan.interactionDNA?.hoverRules || 0) > 0) {
-    out.push({
-      key: "multi-state DOM (interaction-after states)",
-      target: "v99",
-      note: "햄버거 메뉴/모달/드롭다운 펼침 후 DOM — v99 CDP Input.dispatchMouseEvent 자동 시퀀스",
-    });
-  }
-  // multi-viewport real (v100) — 거의 모든 사이트
-  if ((scan.sections || []).length > 0) {
-    out.push({
-      key: "multi-viewport real capture",
-      target: "v100",
-      note: "현재 desktop만 진짜 캡처. v100에서 mobile drawer 등 viewport별 독립 emit",
-    });
-  }
-  // network replay (v102)
-  if ((scan.apiCaptures || []).length > 0) {
-    out.push({
-      key: "network fetch pattern → mock data",
-      target: "v102",
-      note: `${scan.apiCaptures.length} API 호출 → v102 자동 mock 데이터 생성 (무한스크롤·가상리스트)`,
-    });
+  // v99-v103은 Phase 2 emit wiring 완료로 RESOLVED 이동.
+  // 데이터가 있으면 RESOLVED_SIGNALS에서 카운트되므로 여기서 PARTIAL 표시 안 함.
+  // 신규 SOLVABLE_PARTIAL 후보 (Phase 3 이후 작업):
+  if ((scan.threeScene || []).length > 0) {
+    // 이미 위에 있음 — 중복 제거 안전 위해 패스
   }
   return out;
 };
