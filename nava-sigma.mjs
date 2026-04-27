@@ -45,6 +45,8 @@ import { matchWasmModules as __sigmaWasmHash } from "./sigma-wasm-hash.mjs";
 import { anonymizeLinks as __sigmaAnonymizeLinks } from "./sigma-anonymize-links.mjs";
 // v110.3 진짜 텍스트 rehydrate (dev mode "한 번에 시각 1:1" 보장)
 import { rehydrateText as __sigmaRehydrateText } from "./sigma-text-rehydrate.mjs";
+// v110.4 자체 모션 emit (Lenis + GSAP, framer-motion 의존 0 — feedback-copyright)
+import { emitMotionRoot as __sigmaEmitMotion } from "./sigma-emit-motion.mjs";
 
 // ═══ MOTION PRESETS ═══════════════════════════════════════════════════
 // Named durations + eases prevent the engine from embedding verbatim
@@ -9147,6 +9149,12 @@ try {
   const r5 = __sigmaEmitRoutes(extracted, projDir, { useOriginalText: USE_ORIGINAL_TEXT });
   if (r5.emitted > 0) console.log(`  v103-2 emit: ${r5.emitted} route pages → src/app/[...]/page.tsx`);
 } catch (e) { console.log(`  v103-2 emit: ${e.message.slice(0, 80)}`); }
+
+// v110.4 MotionRoot — Lenis + GSAP 자체 구현 (framer-motion 금지)
+try {
+  const rm = __sigmaEmitMotion(extracted, projDir);
+  console.log(`  v110.4 motion: Lenis=${rm.libsInjected.lenis} GSAP=${rm.libsInjected.gsap} stagger=${rm.config.baseStagger} sticky=${rm.config.hasSticky} parallax=${rm.config.hasParallax} (Block tags +${rm.blockTagsAdded})`);
+} catch (e) { console.log(`  v110.4 motion: ${e.message.slice(0, 80)}`); }
 
 // v108-1 Three.js scene reconstruction (mesh + material + light 정확 재구성)
 try {

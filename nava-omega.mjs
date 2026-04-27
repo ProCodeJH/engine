@@ -33,6 +33,7 @@ import path from "node:path";
 import crypto from "node:crypto";
 import { fileURLToPath } from "node:url";
 import puppeteer from "puppeteer";
+import { decoupleProject } from "./sigma-decouple.mjs";
 
 const ARGS = process.argv.slice(2);
 const URL_ARG = ARGS.find(a => /^https?:\/\//.test(a));
@@ -279,16 +280,25 @@ for (const [absUrl, localPath] of urlMap) {
 }
 console.log(`  JS rewrites: ${jsRewrites}, CSS rewrites: ${cssRewrites}`);
 
-// ─── Ω.5 SW FALLBACK — runtime fetch interceptor ─────────────────────
+// ─── Ω.4.5 — Decouple platform identifiers (Framer/Webflow/Wix) ──────
+console.log(`[Ω.4.5] DECOUPLE ${el()}`);
+try {
+  const dec = decoupleProject(projDir);
+  console.log(`  decoupled: ${dec.detectedPlatforms.join("+") || "(none)"} — ${dec.dataAttrsRemoved} attrs / ${dec.classesAnonymized} classes / ${dec.metaTagsRemoved} meta / ${dec.customElementsRemoved} customElements`);
+} catch (e) { console.log(`  decouple: ${e.message.slice(0, 80)}`); }
+
+// ─── Ω.5 SW FALLBACK — runtime fetch interceptor (catch-all 강화) ─────
 console.log(`[Ω.5] SW FALLBACK ${el()}`);
 
-// Service Worker that intercepts dynamic fetches and tries _fcdn/<hash>
-const swCode = `// nava-omega Service Worker — runtime asset fallback
+// SW catch-all: dynamic fetch + 외부 origin + analytics 무해화
+const swCode = `// nava-omega Service Worker — runtime asset fallback (v2 catch-all)
+// 자현 비전: 동적 fetch도 가능한 한 mirror로 fallback. analytics는 무해화.
 self.addEventListener("install", () => self.skipWaiting());
 self.addEventListener("activate", (event) => event.waitUntil(self.clients.claim()));
 
-const ORIGIN = ${JSON.stringify(origin)};
 const FCDN_PREFIX = "/_fcdn/";
+const SOURCE_ORIGIN = ${JSON.stringify(origin)};
+const ANALYTICS_PATTERNS = /google-analytics|googletagmanager|hotjar|mixpanel|segment|amplitude|datadog|sentry|fullstory|clarity|facebook\\.com\\/tr|connect\\.facebook|gtag/i;
 
 async function sha1Hex(s) {
   const enc = new TextEncoder().encode(s);
@@ -298,18 +308,33 @@ async function sha1Hex(s) {
 
 self.addEventListener("fetch", (event) => {
   const url = event.request.url;
-  // Same-origin fetches: serve directly
+
+  // Same-origin: serve directly (no intercept)
   if (url.startsWith(self.location.origin)) return;
-  // External fetches: try mirrored copy
+
+  // Analytics / tracking: 무해화 (empty 200)
+  if (ANALYTICS_PATTERNS.test(url)) {
+    event.respondWith(new Response("", { status: 200, headers: { "Content-Type": "text/plain" } }));
+    return;
+  }
+
+  // External: try mirrored copy → fallback to network
   event.respondWith((async () => {
     try {
-      const ext = (new URL(url).pathname.match(/\\.[a-z0-9]{2,5}$/i) || [""])[0];
+      const u = new URL(url);
+      const ext = (u.pathname.match(/\\.[a-z0-9]{2,5}$/i) || [""])[0];
       const hash = await sha1Hex(url);
       const local = self.location.origin + FCDN_PREFIX + hash + ext;
       const r = await fetch(local);
       if (r.ok) return r;
     } catch {}
-    return fetch(event.request);
+    // Fallback: network (no-cors for opacity)
+    try {
+      return await fetch(event.request, { mode: "cors" });
+    } catch {
+      try { return await fetch(event.request, { mode: "no-cors" }); }
+      catch { return new Response("", { status: 404 }); }
+    }
   })());
 });
 `;
