@@ -41,6 +41,8 @@ import { generateCleanCertificate as __sigmaCertClean } from "./sigma-cert-clean
 import { reconstructThreeScene as __sigmaThreeReconstruct } from "./sigma-three-reconstruct.mjs";
 import { emitWebRtcMock as __sigmaWebRtcMock } from "./sigma-webrtc-mock.mjs";
 import { matchWasmModules as __sigmaWasmHash } from "./sigma-wasm-hash.mjs";
+// v110.2 외부 링크 후처리 익명화 (CERT-CLEAN PASS 보장)
+import { anonymizeLinks as __sigmaAnonymizeLinks } from "./sigma-anonymize-links.mjs";
 
 // ═══ MOTION PRESETS ═══════════════════════════════════════════════════
 // Named durations + eases prevent the engine from embedding verbatim
@@ -9346,6 +9348,16 @@ if (TRADE_SHIFT) {
     console.log(`  v106 trade-shift: colors=${r.colorsShifted} radii=${r.radiiShifted} shadows=${r.shadowsShifted} → TRADE-SHIFT.md`);
   } catch (e) { console.log(`  v106 trade-shift: ${e.message.slice(0, 80)}`); }
 }
+
+// ─── v110.2 — 외부 링크 후처리 익명화 (CERT-CLEAN PASS 보장) ───────────
+// DOM Mirror가 외부 링크/자산 URL 그대로 emit하면 표현 layer 위반.
+// 모든 .tsx/.css/.html에서 외부 https URL을 토큰화 — 자현이 sigma-asset-
+// inject로 자기 SNS/이미지 채움. CERT-CLEAN VIOLATIONS_FOUND → PASS.
+try {
+  const r = __sigmaAnonymizeLinks(projDir, { sourceUrl: url });
+  if (r.externalLinksFound > 0 || r.externalAssetsFound > 0)
+    console.log(`  v110.2 anonymize-links: ${r.externalLinksFound} links + ${r.externalAssetsFound} assets / ${r.filesModified} files → ANONYMIZE-LINKS.md`);
+} catch (e) { console.log(`  v110.2 anonymize-links: ${e.message.slice(0, 80)}`); }
 
 // ─── v109/v110 — Σ.5.5+ Auto-issued certificates ─────────────────────
 // CERT-CEILING.md (사이트 카테고리 + 도달률 인증) + CERT-CLEAN.md

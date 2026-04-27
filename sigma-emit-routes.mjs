@@ -28,6 +28,16 @@ export function emitRoutePages(extracted, projDir, opts = {}) {
 
     const routeSlug = route.replace(/^\//, "").replace(/\/+$/, "").replace(/\//g, "-");
     if (!routeSlug || routeSlug.length > 60) continue;
+    // v110.2 noise filter: numeric-only / index / common noise routes 제외
+    if (/^\d+$/.test(routeSlug)) continue;        // /11, /33 같은 숫자만 noise
+    if (/^(index|home|main)$/i.test(routeSlug)) continue; // base 페이지 중복
+    if (/^[A-Z]/.test(routeSlug) && /^[A-Z][a-z]+$/.test(routeSlug)) {
+      // 대문자 시작 단일 단어 — 이미 lowercase variant 있을 수 있음 (Company vs company)
+      // skip if lowercase variant exists in same crawl
+      if (Object.keys(dc.routes).some(r => r !== route && r.toLowerCase() === route.toLowerCase())) continue;
+    }
+    // 콘텐츠가 너무 적으면 skip (노이즈 페이지)
+    if ((data.headings || []).length < 1 && (data.paragraphs || []).length < 1) continue;
 
     const routeDir = path.join(appDir, ...route.split("/").filter(Boolean));
     fs.mkdirSync(routeDir, { recursive: true });

@@ -45,15 +45,16 @@ export async function captureMultiViewport(page, cdp, extracted, opts = {}) {
       await page.setViewport({ width: vp.width, height: vp.height });
 
       if (RELOAD_PER_VP) {
-        // Reload triggers real SSR/server-side viewport branching.
-        // 일부 사이트(특히 Next.js, Wix, framer)는 첫 HTTP 요청 시 UA/viewport 헤더
-        // 보고 다른 HTML 보냄. setViewport만으로는 그게 안 잡힘.
         await page.reload({ waitUntil: "networkidle2", timeout: RELOAD_TIMEOUT });
+        // v110.2 fix: page null guard — reload 후 document.body가 아직 안 만들어진 timing
+        await new Promise(r => setTimeout(r, 800));
         await page.evaluate(async () => {
-          const h = document.body.scrollHeight;
+          if (!document.body) return;
+          const h = document.body.scrollHeight || 0;
+          if (h === 0) return;
           for (let y = 0; y < h; y += 400) { window.scrollTo(0, y); await new Promise(r => setTimeout(r, 80)); }
           window.scrollTo(0, 0);
-        });
+        }).catch(() => {});
       } else {
         await new Promise(r => setTimeout(r, 1000));
       }
