@@ -37,6 +37,10 @@ import { emitRoutePages as __sigmaEmitRoutes } from "./sigma-emit-routes.mjs";
 import { applyTradeShift as __sigmaTradeShift } from "./sigma-trade-shift.mjs";
 import { generateCeilingCertificate as __sigmaCertCeiling } from "./sigma-cert-ceiling.mjs";
 import { generateCleanCertificate as __sigmaCertClean } from "./sigma-cert-clean.mjs";
+// Phase 3 잔여 (v108-1/2/3) — Three.js / WebRTC / WASM
+import { reconstructThreeScene as __sigmaThreeReconstruct } from "./sigma-three-reconstruct.mjs";
+import { emitWebRtcMock as __sigmaWebRtcMock } from "./sigma-webrtc-mock.mjs";
+import { matchWasmModules as __sigmaWasmHash } from "./sigma-wasm-hash.mjs";
 
 // ═══ MOTION PRESETS ═══════════════════════════════════════════════════
 // Named durations + eases prevent the engine from embedding verbatim
@@ -9152,6 +9156,24 @@ try {
   const r5 = __sigmaEmitRoutes(extracted, projDir, { useOriginalText: USE_ORIGINAL_TEXT });
   if (r5.emitted > 0) console.log(`  v103-2 emit: ${r5.emitted} route pages → src/app/[...]/page.tsx`);
 } catch (e) { console.log(`  v103-2 emit: ${e.message.slice(0, 80)}`); }
+
+// v108-1 Three.js scene reconstruction (mesh + material + light 정확 재구성)
+try {
+  const r6 = __sigmaThreeReconstruct(extracted, projDir);
+  if (r6.emitted > 0) console.log(`  v108-1 emit: ThreeScene.tsx (${r6.meshes} meshes, ${r6.lights} lights)`);
+} catch (e) { console.log(`  v108-1 three: ${e.message.slice(0, 80)}`); }
+
+// v108-2 WebRTC mock peer scaffold
+try {
+  const r7 = __sigmaWebRtcMock(extracted, projDir);
+  if (r7.emitted > 0) console.log(`  v108-2 emit: ${r7.emitted} RTC components (${r7.peerCount} mock peers)`);
+} catch (e) { console.log(`  v108-2 webrtc: ${e.message.slice(0, 80)}`); }
+
+// v108-3 WASM library hash matching (NOTICE-WASM.md)
+try {
+  const r8 = __sigmaWasmHash(extracted, projDir);
+  if (r8.matched > 0 || r8.unknown > 0) console.log(`  v108-3 wasm: ${r8.matched} matched / ${r8.unknown} unknown → NOTICE-WASM.md`);
+} catch (e) { console.log(`  v108-3 wasm: ${e.message.slice(0, 80)}`); }
 
 // ─── Σ.5 LICENSE AUDIT ─────────────────────────────────────────────
 console.log(`[Σ.5] LICENSE AUDIT ${el()}`);
