@@ -21,6 +21,12 @@ import puppeteer from "puppeteer";
 import fs from "node:fs";
 import path from "node:path";
 import { pickAdapter } from "./platforms/index.mjs";
+import { generateImpossibleReport as __sigmaImpossibleReport } from "./sigma-impossible.mjs";
+import { captureMultiStateDom as __sigmaMultiState } from "./sigma-multistate.mjs";
+import { captureMultiViewport as __sigmaMultiViewport } from "./sigma-multiviewport.mjs";
+import { pierceClosedShadows as __sigmaShadowPierce } from "./sigma-shadow-pierce.mjs";
+import { captureNetworkReplay as __sigmaNetworkReplay } from "./sigma-network-replay.mjs";
+import { deepCrawl as __sigmaDeepCrawl } from "./sigma-deep-crawl.mjs";
 
 // ═══ MOTION PRESETS ═══════════════════════════════════════════════════
 // Named durations + eases prevent the engine from embedding verbatim
@@ -6306,6 +6312,48 @@ const typeScale = (() => {
 })();
 console.log(`  typography: display=${typeScale.display}px h1=${typeScale.h1}px h2=${typeScale.h2}px h3=${typeScale.h3}px body=${typeScale.body}px`);
 
+// ─── Σ.2.5 — Phase 1 SOLVABLE_PARTIAL → RESOLVED 이동 (v99~v103 capture) ─
+// 정적 capture 완료 후, 동적·인터랙션·구조 영역을 추가 캡처.
+// 순서 중요 — 페이지 네비게이션 안전:
+//   1. v99-1 multi-state (현재 desktop DOM 인터랙션, reload 전)
+//   2. v102-1 network replay (apiCaptures 이미 모임, 시점 무관)
+//   3. v101-1 closed shadow pierce (현재 DOM, CDP)
+//   4. v100-1 multi-viewport (reload — desktop DOM 신선화로 다음 단계 안전)
+//   5. v103-1 deep crawl (다른 route 방문 — 마지막, 끝나면 base URL 복귀)
+//
+// 각 try/catch 독립 — 한 모듈 실패해도 다음 진행. capture 천장 깨기 핵심.
+
+// v99-1 Multi-state DOM
+try {
+  await __sigmaMultiState(page, cdp, extracted, { maxToggles: 12, waitMs: 800 });
+} catch (e) { console.log(`  v99-1 multi-state: ${e.message.slice(0, 80)}`); }
+
+// v102-1 Network replay (apiCaptures → mock data shape)
+try {
+  await __sigmaNetworkReplay(page, cdp, extracted, { maxPatterns: 60 });
+} catch (e) { console.log(`  v102-1 network replay: ${e.message.slice(0, 80)}`); }
+
+// v101-1 Closed Shadow DOM pierce
+try {
+  await __sigmaShadowPierce(page, cdp, extracted, { maxDetail: 30 });
+} catch (e) { console.log(`  v101-1 shadow pierce: ${e.message.slice(0, 80)}`); }
+
+// v100-1 Multi-viewport REAL capture (reload per viewport)
+try {
+  await __sigmaMultiViewport(page, cdp, extracted, {
+    viewports: [
+      { name: "mobile", width: 375, height: 812 },
+      { name: "tablet", width: 768, height: 1024 },
+    ],
+    reloadPerViewport: true,
+  });
+} catch (e) { console.log(`  v100-1 multi-viewport: ${e.message.slice(0, 80)}`); }
+
+// v103-1 Deep crawl (sitemap.xml 기반 — 시간 길어 maxRoutes 10 default)
+try {
+  await __sigmaDeepCrawl(page, cdp, extracted, URL, { maxRoutes: 10, respectRobots: true });
+} catch (e) { console.log(`  v103-1 deep crawl: ${e.message.slice(0, 80)}`); }
+
 // ─── Σ.3 CONTENT STRIP ─────────────────────────────────────────────
 console.log(`[Σ.3] CONTENT STRIP ${el()}`);
 // ─── Industry inference + tone-matched placeholder pools ──────────────
@@ -9235,6 +9283,19 @@ try {
   fs.writeFileSync(path.join(projDir, "SCAN-COVERAGE.md"), reportLines.join("\n"));
   console.log(`  v85-1 coverage report: ${coverageReport.length} signal classes${pageRoutes.length > 0 ? ` + ${pageRoutes.length} routes` : ""} → SCAN-COVERAGE.md`);
 } catch (e) { console.log(`  v85-1 coverage report: ${e.message.slice(0, 60)}`); }
+
+// ─── v99-0 — Σ.5.5 IMPOSSIBLE Certificate (6-Register honest 100%) ─────
+// SCAN-COVERAGE.md(잡은 것)의 짝궁. 못 잡은 영역을 6 레지스터로 분류해
+// 합산 100% 정직 인증서 emit. "100% 복제 + 100% 클린"의 모순을 풀어
+// 사이트 카테고리별 ceiling을 명시. v98까지의 결정적 결손 해소.
+// sigma-impossible.mjs 모듈은 standalone CLI로도 작동.
+try {
+  const result = __sigmaImpossibleReport(extracted, projDir, {
+    useOriginalImages: USE_ORIGINAL_IMAGES,
+    useOriginalText: USE_ORIGINAL_TEXT,
+  });
+  console.log(`  v99-0 IMPOSSIBLE: ${result.category} (ceiling ${result.ceiling}%) — R=${result.buckets.RESOLVED.length} H=${result.buckets.HANDOFF.length} D=${result.buckets.DEV_OPT_IN.length} P=${result.buckets.PARTIAL.length} L=${result.buckets.LEGAL_IMPOSSIBLE.length} X=${result.buckets.PHYSICAL_IMPOSSIBLE.length} → IMPOSSIBLE.md`);
+} catch (e) { console.log(`  v99-0 IMPOSSIBLE: ${e.message.slice(0, 80)}`); }
 
 // ─── v86-1 — Per-component fidelity self-assessment ───────────────────
 // For each emitted Hero/Block/Gallery/Feature component, score what
