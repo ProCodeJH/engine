@@ -33,6 +33,10 @@ import { emitMultiViewport as __sigmaEmitMultiViewport } from "./sigma-emit-mult
 import { emitShadowContent as __sigmaEmitShadow } from "./sigma-emit-shadow.mjs";
 import { emitNetworkRoutes as __sigmaEmitNetwork } from "./sigma-emit-network.mjs";
 import { emitRoutePages as __sigmaEmitRoutes } from "./sigma-emit-routes.mjs";
+// Phase 3 인증서 시스템 (v106/v109/v110)
+import { applyTradeShift as __sigmaTradeShift } from "./sigma-trade-shift.mjs";
+import { generateCeilingCertificate as __sigmaCertCeiling } from "./sigma-cert-ceiling.mjs";
+import { generateCleanCertificate as __sigmaCertClean } from "./sigma-cert-clean.mjs";
 
 // ═══ MOTION PRESETS ═══════════════════════════════════════════════════
 // Named durations + eases prevent the engine from embedding verbatim
@@ -63,6 +67,8 @@ const VERBOSE = args.includes("--verbose") || args.includes("-v");
 const STRICT_CLEAN = args.includes("--strict-clean");
 const USE_ORIGINAL_IMAGES = !STRICT_CLEAN && (args.includes("--use-original-images") || args.includes("--dev-images"));
 const USE_ORIGINAL_TEXT = !STRICT_CLEAN && (args.includes("--use-original-text") || args.includes("--dev-text"));
+// v106 trade dress safe-shift — 옵션 default off
+const TRADE_SHIFT = args.includes("--trade-shift");
 // v92-2 — DOM Mirror is the v74 architectural pivot. Default was false
 // which silently disabled the entire Style Fingerprint Mirror routing
 // for 18 versions (v74-v91). Real-world test caught this — 0 sections
@@ -9324,6 +9330,19 @@ try {
   console.log(`  v85-1 coverage report: ${coverageReport.length} signal classes${pageRoutes.length > 0 ? ` + ${pageRoutes.length} routes` : ""} → SCAN-COVERAGE.md`);
 } catch (e) { console.log(`  v85-1 coverage report: ${e.message.slice(0, 60)}`); }
 
+// ─── v106 Trade dress safe-shift (옵션 — --trade-shift flag) ──────────
+if (TRADE_SHIFT) {
+  try {
+    const r = __sigmaTradeShift(projDir, { hueShift: 5, radiusShift: 0.1, shadowShift: 0.05 });
+    console.log(`  v106 trade-shift: colors=${r.colorsShifted} radii=${r.radiiShifted} shadows=${r.shadowsShifted} → TRADE-SHIFT.md`);
+  } catch (e) { console.log(`  v106 trade-shift: ${e.message.slice(0, 80)}`); }
+}
+
+// ─── v109/v110 — Σ.5.5+ Auto-issued certificates ─────────────────────
+// CERT-CEILING.md (사이트 카테고리 + 도달률 인증) + CERT-CLEAN.md
+// (모든 자산 라이선스 클린 인증). 자현이 외부에 "이 클론은 100% 클린
+// + [%]% UI/UX 도달" 자동 증명 가능. IMPOSSIBLE.md는 두 인증서의 원천.
+
 // ─── v99-0 — Σ.5.5 IMPOSSIBLE Certificate (6-Register honest 100%) ─────
 // SCAN-COVERAGE.md(잡은 것)의 짝궁. 못 잡은 영역을 6 레지스터로 분류해
 // 합산 100% 정직 인증서 emit. "100% 복제 + 100% 클린"의 모순을 풀어
@@ -9334,8 +9353,21 @@ try {
     useOriginalImages: USE_ORIGINAL_IMAGES,
     useOriginalText: USE_ORIGINAL_TEXT,
   });
-  console.log(`  v99-0 IMPOSSIBLE: ${result.category} (ceiling ${result.ceiling}%) — R=${result.buckets.RESOLVED.length} H=${result.buckets.HANDOFF.length} D=${result.buckets.DEV_OPT_IN.length} P=${result.buckets.PARTIAL.length} L=${result.buckets.LEGAL_IMPOSSIBLE.length} X=${result.buckets.PHYSICAL_IMPOSSIBLE.length} → IMPOSSIBLE.md`);
+  console.log(`  v99-0 IMPOSSIBLE: ${result.category} (ceiling ${result.ceiling}%) — R=${result.buckets.RESOLVED.length} H=${result.buckets.HANDOFF.length} D=${result.buckets.DEV_OPT_IN.length} P=${result.buckets.SOLVABLE_PARTIAL?.length || result.buckets.PARTIAL?.length || 0} S=${result.buckets.SCOPE_OUT?.length || 0} → IMPOSSIBLE.md`);
 } catch (e) { console.log(`  v99-0 IMPOSSIBLE: ${e.message.slice(0, 80)}`); }
+
+// v109 CERT-CEILING.md
+try {
+  const c = __sigmaCertCeiling(extracted, projDir, { useOriginalImages: USE_ORIGINAL_IMAGES, useOriginalText: USE_ORIGINAL_TEXT });
+  console.log(`  v109 CERT-CEILING: ${c.determination} (UI ${c.measurements.uiClonePotential}%) → CERT-CEILING.md`);
+} catch (e) { console.log(`  v109 CERT-CEILING: ${e.message.slice(0, 80)}`); }
+
+// v110 CERT-CLEAN.md
+try {
+  const c = __sigmaCertClean(projDir);
+  const tag = c.determination === "PASS" ? "✅" : "❌";
+  console.log(`  v110 CERT-CLEAN: ${tag} ${c.determination} (violations: ${c.audit.violations.length}) → CERT-CLEAN.md`);
+} catch (e) { console.log(`  v110 CERT-CLEAN: ${e.message.slice(0, 80)}`); }
 
 // ─── v86-1 — Per-component fidelity self-assessment ───────────────────
 // For each emitted Hero/Block/Gallery/Feature component, score what
