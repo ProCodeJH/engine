@@ -6151,6 +6151,33 @@ try {
   console.log(`  v90-3 scroll behavior: padding=${scrollBehavior.topScrollPadding.length} margin=${scrollBehavior.topScrollMargin.length} overscroll=${scrollBehavior.topOverscroll.length} snap-stop=${scrollBehavior.scrollSnapStop}`);
 } catch (e) { console.log(`  v90-3 scroll behavior: ${e.message.slice(0, 60)}`); }
 
+// ─── Σ.2.5 — Phase 1 SOLVABLE_PARTIAL → RESOLVED 이동 (v99~v103 capture) ─
+// 정적 capture 완료 후 browser.close() *전*에 실행 — page 살아있어야 함.
+// (v110 hotfix: 이전엔 Σ.3 직전 라인 6310에 있었으나 browser.close()가
+// 라인 6158에서 먼저 실행되어 page detached 에러. 이 자리로 이동.)
+//
+// 순서: multistate → networkreplay → shadowpierce → multiviewport(reload)
+//       → deepcrawl(다른 route, 마지막)
+try { await __sigmaMultiState(page, cdp, extracted, { maxToggles: 12, waitMs: 800 }); }
+catch (e) { console.log(`  v99-1 multi-state: ${e.message.slice(0, 80)}`); }
+
+try { await __sigmaNetworkReplay(page, cdp, extracted, { maxPatterns: 60 }); }
+catch (e) { console.log(`  v102-1 network replay: ${e.message.slice(0, 80)}`); }
+
+try { await __sigmaShadowPierce(page, cdp, extracted, { maxDetail: 30 }); }
+catch (e) { console.log(`  v101-1 shadow pierce: ${e.message.slice(0, 80)}`); }
+
+try { await __sigmaMultiViewport(page, cdp, extracted, {
+  viewports: [
+    { name: "mobile", width: 375, height: 812 },
+    { name: "tablet", width: 768, height: 1024 },
+  ],
+  reloadPerViewport: true,
+}); } catch (e) { console.log(`  v100-1 multi-viewport: ${e.message.slice(0, 80)}`); }
+
+try { await __sigmaDeepCrawl(page, cdp, extracted, url, { maxRoutes: 10, respectRobots: true }); }
+catch (e) { console.log(`  v103-1 deep crawl: ${e.message.slice(0, 80)}`); }
+
 // browser.close() can hang indefinitely after v67's HeapProfiler +
 // Input.dispatchMouseEvent + SystemInfo interactions leave stale CDP
 // state. Race it against a 15s timeout; on timeout, SIGKILL the Chrome
@@ -6333,47 +6360,7 @@ const typeScale = (() => {
 })();
 console.log(`  typography: display=${typeScale.display}px h1=${typeScale.h1}px h2=${typeScale.h2}px h3=${typeScale.h3}px body=${typeScale.body}px`);
 
-// ─── Σ.2.5 — Phase 1 SOLVABLE_PARTIAL → RESOLVED 이동 (v99~v103 capture) ─
-// 정적 capture 완료 후, 동적·인터랙션·구조 영역을 추가 캡처.
-// 순서 중요 — 페이지 네비게이션 안전:
-//   1. v99-1 multi-state (현재 desktop DOM 인터랙션, reload 전)
-//   2. v102-1 network replay (apiCaptures 이미 모임, 시점 무관)
-//   3. v101-1 closed shadow pierce (현재 DOM, CDP)
-//   4. v100-1 multi-viewport (reload — desktop DOM 신선화로 다음 단계 안전)
-//   5. v103-1 deep crawl (다른 route 방문 — 마지막, 끝나면 base URL 복귀)
-//
-// 각 try/catch 독립 — 한 모듈 실패해도 다음 진행. capture 천장 깨기 핵심.
-
-// v99-1 Multi-state DOM
-try {
-  await __sigmaMultiState(page, cdp, extracted, { maxToggles: 12, waitMs: 800 });
-} catch (e) { console.log(`  v99-1 multi-state: ${e.message.slice(0, 80)}`); }
-
-// v102-1 Network replay (apiCaptures → mock data shape)
-try {
-  await __sigmaNetworkReplay(page, cdp, extracted, { maxPatterns: 60 });
-} catch (e) { console.log(`  v102-1 network replay: ${e.message.slice(0, 80)}`); }
-
-// v101-1 Closed Shadow DOM pierce
-try {
-  await __sigmaShadowPierce(page, cdp, extracted, { maxDetail: 30 });
-} catch (e) { console.log(`  v101-1 shadow pierce: ${e.message.slice(0, 80)}`); }
-
-// v100-1 Multi-viewport REAL capture (reload per viewport)
-try {
-  await __sigmaMultiViewport(page, cdp, extracted, {
-    viewports: [
-      { name: "mobile", width: 375, height: 812 },
-      { name: "tablet", width: 768, height: 1024 },
-    ],
-    reloadPerViewport: true,
-  });
-} catch (e) { console.log(`  v100-1 multi-viewport: ${e.message.slice(0, 80)}`); }
-
-// v103-1 Deep crawl (sitemap.xml 기반 — 시간 길어 maxRoutes 10 default)
-try {
-  await __sigmaDeepCrawl(page, cdp, extracted, URL, { maxRoutes: 10, respectRobots: true });
-} catch (e) { console.log(`  v103-1 deep crawl: ${e.message.slice(0, 80)}`); }
+// (Σ.2.5 hook moved to line ~6155 before browser.close — v110 hotfix)
 
 // ─── Σ.3 CONTENT STRIP ─────────────────────────────────────────────
 console.log(`[Σ.3] CONTENT STRIP ${el()}`);

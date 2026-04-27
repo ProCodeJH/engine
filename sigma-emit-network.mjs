@@ -50,12 +50,12 @@ export async function ${p.method.toLowerCase()}(req: NextRequest) {
 }
 `;
     fs.writeFileSync(path.join(routeDir, "route.ts"), routeFile);
+    // sampleUrl 제외 — CERT-CLEAN compliance (source hostname leak 방지)
     manifest.push({
       idx: i,
       pattern: p.pattern,
       method: p.method,
       mockEndpoint: `/api/sigma-mock/${routeName}`,
-      sampleUrl: p.sampleUrl,
     });
     emitted++;
   }

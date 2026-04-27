@@ -1,0 +1,13 @@
+{
+  "name": "nava-sigma-engine",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "NAVA Sigma — clean-room copyright-safe website regeneration engine",
+  "dependencies": {
+    "puppeteer": "^23.10.0",
+    "puppeteer-core": "^23.10.0",
+    "pixelmatch": "^6.0.0",
+    "pngjs": "^7.0.0"
+  }
+}

@@ -48,8 +48,15 @@ export const DETECTORS = {
     /netflix|spotify|appletv|hbomax/i.test(s.platformProbe?.metaGenerator || "") ||
     (s.runtime?.mediaKeysAvailable === true),
 
-  antiBotGuard: (s) =>
-    (s.thirdPartyCategorized || []).some(t => /turnstile|datadome|perimeterx|hcaptcha|recaptcha|imperva|akamai/i.test(t.host || t.category || "")),
+  antiBotGuard: (s) => {
+    const tpc = s.thirdPartyCategorized;
+    if (!tpc) return false;
+    const re = /turnstile|datadome|perimeterx|hcaptcha|recaptcha|imperva|akamai/i;
+    // sigma-engine v90+ uses object {matches: {...}}, older uses array
+    if (Array.isArray(tpc)) return tpc.some(t => re.test(t.host || t.category || ""));
+    if (tpc.matches) return Object.keys(tpc.matches).some(k => re.test(k));
+    return false;
+  },
 
   authGated: (s) =>
     (s.formSurface?.inputs || []).some(i => i.type === "password") ||
@@ -65,13 +72,26 @@ export const DETECTORS = {
     (s.runtime?.rtcConnections?.length || 0) > 0 ||
     (s.apiUsage?.webRTC === true && (s.websocketMessages?.length || 0) > 0),
 
-  e2eEncrypted: (s) =>
-    /signal|messenger|whatsapp|threema|wickr/i.test(s.platformProbe?.metaGenerator || "") ||
-    (s.thirdPartyCategorized || []).some(t => /signal-protocol|olm|matrix-js-sdk/i.test(t.host || "")),
+  e2eEncrypted: (s) => {
+    if (/signal|messenger|whatsapp|threema|wickr/i.test(s.platformProbe?.metaGenerator || "")) return true;
+    const tpc = s.thirdPartyCategorized;
+    if (!tpc) return false;
+    const re = /signal-protocol|olm|matrix-js-sdk/i;
+    if (Array.isArray(tpc)) return tpc.some(t => re.test(t.host || ""));
+    if (tpc.matches) return Object.keys(tpc.matches).some(k => re.test(k));
+    return false;
+  },
 
-  paywallContent: (s) =>
-    (s.formSurface?.inputs || []).some(i => i.type === "password") &&
-    (s.thirdPartyCategorized || []).some(t => /stripe|paddle|recurly|chargebee/i.test(t.host || "")),
+  paywallContent: (s) => {
+    const hasPwd = (s.formSurface?.inputs || []).some(i => i.type === "password");
+    if (!hasPwd) return false;
+    const tpc = s.thirdPartyCategorized;
+    const re = /stripe|paddle|recurly|chargebee/i;
+    if (!tpc) return false;
+    if (Array.isArray(tpc)) return tpc.some(t => re.test(t.host || ""));
+    if (tpc.matches) return Object.keys(tpc.matches).some(k => re.test(k));
+    return false;
+  },
 
   eCommerce: (s) =>
     s.platform?.name === "shopify" ||

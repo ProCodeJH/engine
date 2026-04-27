@@ -47,8 +47,8 @@ export function emitRoutePages(extracted, projDir, opts = {}) {
     const descSafe = useOriginalText ? escapeJSX(data.description || "") : `{{ROUTE_${routeSlug.toUpperCase()}_DESC}}`;
 
     const tsx = `// v103-2 Auto-emitted page from deep crawl — route: ${route}
-// Source: ${dc.origin + route}
-// h1: "${(data.h1 || "").slice(0, 60).replace(/"/g, '\\"')}"
+// (source URL omitted — CERT-CLEAN compliance, hostname not leaked)
+// h1 length: ${(data.h1 || "").length} chars
 // Sections: ${data.sectionCount}, Headings: ${headings.length}, Paragraphs: ${paragraphs.length}, Images: ${images.length}
 
 import type { Metadata } from "next";

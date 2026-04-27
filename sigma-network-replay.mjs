@@ -100,9 +100,11 @@ function patternize(url) {
       .replace(/\/\d+(?=\/|$)/g, "/:id")
       .replace(/\/[a-f0-9]{8,}(?=\/|$)/gi, "/:hash")
       .replace(/\/[a-z0-9-]{20,}(?=\/|$)/gi, "/:slug");
-    return `${u.host}${path}`;
+    // CERT-CLEAN compliance: hostname 익명화 (source URL leak 방지).
+    // 패턴 식별엔 path만 필요 — host는 클론 사이트와 무관.
+    return `__source_host__${path}`;
   } catch {
-    return url.split("?")[0].slice(0, 200);
+    return (url.split("?")[0] || "").slice(0, 200).replace(/^https?:\/\/[^/]+/, "__source_host__");
   }
 }
 
