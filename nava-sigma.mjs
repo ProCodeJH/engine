@@ -43,6 +43,8 @@ import { emitWebRtcMock as __sigmaWebRtcMock } from "./sigma-webrtc-mock.mjs";
 import { matchWasmModules as __sigmaWasmHash } from "./sigma-wasm-hash.mjs";
 // v110.2 외부 링크 후처리 익명화 (CERT-CLEAN PASS 보장)
 import { anonymizeLinks as __sigmaAnonymizeLinks } from "./sigma-anonymize-links.mjs";
+// v110.3 진짜 텍스트 rehydrate (dev mode "한 번에 시각 1:1" 보장)
+import { rehydrateText as __sigmaRehydrateText } from "./sigma-text-rehydrate.mjs";
 
 // ═══ MOTION PRESETS ═══════════════════════════════════════════════════
 // Named durations + eases prevent the engine from embedding verbatim
@@ -9349,15 +9351,30 @@ if (TRADE_SHIFT) {
   } catch (e) { console.log(`  v106 trade-shift: ${e.message.slice(0, 80)}`); }
 }
 
+// ─── v110.3 — Text Rehydrate (dev mode "한 번에 시각 1:1") ─────────────
+// USE_ORIGINAL_TEXT 일 때 자동 실행. 진짜 사이트 재방문 → nav links +
+// 모든 sections의 heading/paragraph + body palette 추출 → emit 디렉토리의
+// Nav.tsx + Block{N}.tsx + globals.css 자동 swap. 자현 비즈니스 모델
+// ("복제화해서 편집해서 팔려고")의 핵심 — 한 번 엔진 돌리면 시각 1:1.
+//
+// strict-clean 모드에서는 SKIP — lorem token 보존 + 자현 자기 자산 inject.
+if (USE_ORIGINAL_TEXT) {
+  try {
+    const r = await __sigmaRehydrateText(projDir, url);
+    console.log(`  v110.3 rehydrate: ${r.swaps} swaps (brand="${r.textExtracted.brand}" nav=${r.textExtracted.navLinks.length} ¶=${r.textExtracted.paragraphs.length}) → REHYDRATE-REPORT.md`);
+  } catch (e) { console.log(`  v110.3 rehydrate: ${e.message.slice(0, 80)}`); }
+}
+
 // ─── v110.2 — 외부 링크 후처리 익명화 (CERT-CLEAN PASS 보장) ───────────
-// DOM Mirror가 외부 링크/자산 URL 그대로 emit하면 표현 layer 위반.
-// 모든 .tsx/.css/.html에서 외부 https URL을 토큰화 — 자현이 sigma-asset-
-// inject로 자기 SNS/이미지 채움. CERT-CLEAN VIOLATIONS_FOUND → PASS.
-try {
-  const r = __sigmaAnonymizeLinks(projDir, { sourceUrl: url });
-  if (r.externalLinksFound > 0 || r.externalAssetsFound > 0)
-    console.log(`  v110.2 anonymize-links: ${r.externalLinksFound} links + ${r.externalAssetsFound} assets / ${r.filesModified} files → ANONYMIZE-LINKS.md`);
-} catch (e) { console.log(`  v110.2 anonymize-links: ${e.message.slice(0, 80)}`); }
+// strict-clean 모드에서만 활성. dev mode는 원본 링크 보존 (자현이 클라이언트
+// 자산으로 swap 시 토큰화).
+if (!USE_ORIGINAL_IMAGES && !USE_ORIGINAL_TEXT) {
+  try {
+    const r = __sigmaAnonymizeLinks(projDir, { sourceUrl: url });
+    if (r.externalLinksFound > 0 || r.externalAssetsFound > 0)
+      console.log(`  v110.2 anonymize-links: ${r.externalLinksFound} links + ${r.externalAssetsFound} assets / ${r.filesModified} files → ANONYMIZE-LINKS.md`);
+  } catch (e) { console.log(`  v110.2 anonymize-links: ${e.message.slice(0, 80)}`); }
+}
 
 // ─── v109/v110 — Σ.5.5+ Auto-issued certificates ─────────────────────
 // CERT-CEILING.md (사이트 카테고리 + 도달률 인증) + CERT-CLEAN.md
