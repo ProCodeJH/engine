@@ -1,9 +1,9 @@
 # CERT-VERIFICATION-CASCADE — Paradigm 73
 
-**Issued**: 2026-04-28T10:20:51.225Z
+**Issued**: 2026-04-28T11:02:01.308Z
 **Project**: `C:\Users\dg020\Desktop\작업\projects\engine\omega-dusonnuri-faithful`
 **Source**: `https://www.dusonnuri.co.kr/`
-**Overall score**: **100%** (8/8 stages passed)
+**Overall score**: **87.5%** (7/8 stages passed)
 
 ## Cascade Result
 
@@ -11,7 +11,7 @@
 |---|---|---|
 | 1. HTTP routes | ✅ | 20/20 routes 200 |
 | 2. Korean content | ✅ | korean=true lorem=false workAbout=false |
-| 3. Visual diff | ✅ | composite 50.55% (POOR) — pxl=53.52 pHash=46.88 ssim=77.39 hist=70.9 |
+| 3. Visual diff | ❌ | composite 32.04% (BAD) — pxl=53.52 pHash=46.88 ssim=77.39 hist=70.9 |
 | 4. Motion | ✅ | css=15 gsap=true js=1 |
 | 5. A11y | ✅ | missing-alt=0 skip=true |
 | 6. SEO | ✅ | title=true og=true jsonLd=true sitemap=true |
@@ -20,11 +20,11 @@
 
 ## Paradigm Recommendations
 
-✅ All stages passed — no fix needed.
+- P53 Visual DNA 검증 / P67 Atomic Composition / Vision Reconstruction (P2)
 
 ## 자현 비즈니스 진단
 
-✅ **Production ready** — client deploy 가능
+⚠ **Production caution** — 일부 결손 fix 후 deploy
 
 ## 자동 fix 다음 단계
 

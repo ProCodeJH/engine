@@ -2,7 +2,7 @@
   "partial": {
     "http": 100,
     "korean": 100,
-    "visual": 50.55,
+    "visual": 32.04,
     "motion": 79.5,
     "a11y": 100,
     "seo": 100,
@@ -10,8 +10,8 @@
     "license": 100
   },
   "weights": {
-    "visual": 0.3,
-    "license": 0.15,
+    "visual": 0.2,
+    "license": 0.25,
     "motion": 0.15,
     "korean": 0.1,
     "a11y": 0.1,
@@ -19,8 +19,8 @@
     "http": 0.05,
     "identifier": 0.05
   },
-  "composite": 81.8,
+  "composite": 83,
   "interpretation": "PRODUCTION_CAUTION",
-  "binaryScore": 100,
-  "improvement": -18.2
+  "binaryScore": 87.5,
+  "improvement": -4.5
 }
