@@ -1,0 +1,12 @@
+@font-face {
+	font-family: 'RIDIBatang';
+	font-style: normal;
+	font-weight: normal;
+	src: url('../fonts/subset/ridibatang/RIDIBatang.eot');
+	src:
+		url('../fonts/subset/ridibatang/RIDIBatang.eot?#iefix') format('embedded-opentype'),
+		url('../fonts/subset/ridibatang/RIDIBatang.woff2') format('woff2'),
+		url('../fonts/subset/ridibatang/RIDIBatang.woff') format('woff'),
+		url('../fonts/subset/ridibatang/RIDIBatang.ttf') format('truetype');
+	font-display: swap;
+}

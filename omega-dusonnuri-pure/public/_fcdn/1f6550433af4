@@ -1,0 +1,18 @@
+<html>
+<head>
+<title>행정정보공동이용센터</title>
+<meta http-equiv="Content-Type" content="text/html; charset=euc-kr">
+<script Language="Javascript" src="/ab/js/common/security_main.js"></script>
+<script type="text/javascript">
+	function init() {
+		location.href = "/main_www_2018.jsp";
+	}
+</script>
+</head>
+
+<body onLoad="init();">
+
+</body>
+
+</body></noframes>
+</html>

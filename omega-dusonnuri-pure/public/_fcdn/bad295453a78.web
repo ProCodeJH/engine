@@ -1,0 +1,4663 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=2">
+	
+	<link rel="shortcut icon" href="/npbs/assetsRenew/images/np/favicon.svg">
+	<meta property="og:type" content="website" />
+	<meta property="og:locale" content="ko" />
+	<meta property="og:image" content="https://www.longtermcare.or.kr/npbs/assetsRenew/images/np/og_img.png" />
+	<meta property="og:site_name" content="h-well 국민건강보험 노인장기요양보험" />
+	<meta name="twitter:card" content="summary" />
+	<meta name="twitter:image" content="https://www.longtermcare.or.kr/npbs/assetsRenew/images/np/og_img.png" />
+	<meta itemprop="image" content="https://www.longtermcare.or.kr/npbs/assetsRenew/images/np/og_img.png" />
+	<title></title>
+
+	
+
+
+
+<link rel="stylesheet" href="/npbs/css/external/jquery/jquery-ui.css" />
+
+<!-- 202500808 신규 css 로 제거  최진곤 -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" src="/npbs/js/external/jquery/jquery-1.11.2.js"></script>
+<script type="text/javascript" src="/npbs/js/external/jquery/jquery-ui.js"></script>
+
+
+
+
+
+<link rel="stylesheet" href="/npbs/assetsRenew/css/np/krds.min.css">
+<link rel="stylesheet" href="/npbs/assetsRenew/css/np/layout.css">
+
+
+
+
+
+<script type="text/javascript">var portalMediType="P";</script>
+
+<!--  <script type="text/javascript" src="/npbs/assets/solution/AnySign4PC/anySign4PCInterface.js"></script>-->
+<script type="text/javascript" src="/npbs/assets/solution/AnySignPlus/anySign4PCInterface.js"></script>  
+<script type="text/javascript">
+var s = '';
+s += '-----BEGIN CERTIFICATE-----\n';
+s += 'MIIDujCCAqKgAwIBAgICCoMwDQYJKoZIhvcNAQEFBQAwgZIxCzAJBgNVBAYTAktS\n';
+s += 'MR4wHAYDVQQKExVTb2Z0Zm9ydW0gQ29ycG9yYXRpb24xHjAcBgNVBAsTFVNlY3Vy\n';
+s += 'aXR5IFJORCBEaXZpc2lvbjEcMBoGA1UEAxMTU29mdGZvcnVtIFB1YmxpYyBDQTEl\n';
+s += 'MCMGCSqGSIb3DQEJARYWY2FtYXN0ZXJAc29mdGZvcnVtLmNvbTAeFw0xNTA3MTUw\n';
+s += 'MTQ2MDhaFw0xNjA3MjEwMTQ2MDhaMGcxCzAJBgNVBAYTAktSMRIwEAYDVQQKDAln\n';
+s += 'dW5ib3Rlc3QxEjAQBgNVBAsMCWd1bmJvdGVzdDESMBAGA1UEAwwJZ3VuYm90ZXN0\n';
+s += 'MRwwGgYJKoZIhvcNAQkBFg10ZXN0QHRlc3QuY29tMIGeMA0GCSqGSIb3DQEBAQUA\n';
+s += 'A4GMADCBiAKBgGaFg+DBDfiIVRnl9EoTo2HB13bWGtdU9mJhK3gI9+OyYirK9RzN\n';
+s += 'FmyqbrfOs/6NYiXpYlPmAIKwUUaXJwc0VSf6zlaAknKOA1qT+L+kEreQA1mtE3Sw\n';
+s += 'VNQ8arntO+d0QmQkUpuULHjyT6/bGbdC4KEp64BCKgng3pLLC8ZcXdCdAgMBAAGj\n';
+s += 'gcgwgcUwHwYDVR0jBBgwFoAULkmrJ4royK+XdTfei3S7JA4NJ18wHQYDVR0OBBYE\n';
+s += 'FOy5eWi+kfpwrKihBq6DsdznFYA5MAsGA1UdDwQEAwIEsDAMBgNVHRMBAf8EAjAA\n';
+s += 'MGgGA1UdHwRhMF8wXaBboFmGV2xkYXA6Ly9sZGFwLnNvZnRmb3J1bS5jby5rcjoz\n';
+s += 'ODkvY249c2Usbz1zb2Z0Zm9ydW0sYz1rcj9jZXJ0aWZpY2F0ZVJldm9jYXRpb25s\n';
+s += 'aXN0O2JpbmFyeTANBgkqhkiG9w0BAQUFAAOCAQEAKrJF2cmLmRsblyUOGqmXtCWM\n';
+s += '2ohcS9G4zs7m12+nZMR1LQSVT/6qOf+uh8/S+7eg9z58ShXs6PVYUAis6SuZKKXV\n';
+s += 'rUqPuSIKtHMULDeRE/RBPGOhSUJ+ePk8+oZMjflu+UO6nVGUOvjX5mnCvj9jnltn\n';
+s += '4H6wcM0/Ipk88lc0eELXRZ/D9Mi3piPwik70KFnd5owj8UnsobwMpFgr6HDzvTvJ\n';
+s += 'f43LEZXvQ3AiFt6XjQM/29CSvNI4ZbYm2iHNnCn9HGz1rGFdACuarXlsSPrFO+4C\n';
+s += '5lS+LFmes4Ou6icQccOA3IDXyVjIhBV/8gR/p6CMKT0hVhU/7JytJ6VWgF0hog==\n';
+s += '-----END CERTIFICATE-----\n';
+s += '';
+
+
+/*##PHS##*/
+var bHtml5 = true; //LITE 버전 사용
+
+// AnySign.mAnySignLiteEnable =bHtml5;    // 주석풀었음  jjg  2020.10.12 
+
+/* AnySign.aTransKeyCheckBoxEnable
+aTransKeyEnable
+aTouchEnnxKeyEnable */
+</script> 
+	
+	<script>
+	//ie11 구분
+	var agent = navigator.userAgent.toLowerCase();
+	var isIE = false;
+	if (navigator.appName == 'Microsoft Internet Explorer' || navigator.userAgent.match('Trident/7.0') || navigator.userAgent.match('MSIE')){
+		isIE = true;
+		$('html').addClass('ie11');
+	}
+	
+	</script>
+	
+	<script type="text/javascript" src="/npbs/solution/search/search_new.js"></script>
+	<script type="text/javascript" src="/npbs/solution/search/ark.js"></script>
+	<script type="text/javascript" src="/npbs/solution/search/beta.fix.js"></script>
+	
+</head>
+<body id='body'>
+	
+
+
+
+
+
+
+<div id="skipNavi">
+		<a href="#nav">본문 바로가기</a>
+</div>
+	 
+	<!-- 로그인정보-->
+	<!-- 로그인 세션 -->
+	<!-- 서버타입 -->
+
+	<div id="wrap" class="wrap">
+	    <!-- header -->
+	    <header id="krds-header">
+	        <!-- 헤더 컨텐츠 영역  -->
+	        <div class="header-in">
+	            <!-- 헤더 상단 기타메뉴 -->
+	            <div class="header-container">
+	                <div class="inner">
+	                    <div class="header-utility">
+	                        <ul class="utility-list">
+	                            <li>
+	                                <div class="krds-drop-wrap krds-resize" data-adjust="scale">
+	                                    <button type="button" class="krds-btn small text drop-btn">화면크기 <i class="svg-icon ico-toggle"></i></button>
+	                                    <div class="drop-menu">
+	                                        <div class="drop-in devNpbsResize">
+	                                            <ul class="drop-list">
+	                                                <li><button type="button" class="item-link sm" data-adjust-scale="sm">작게</button></li>
+	                                                <li><button type="button" class="item-link md active" data-adjust-scale="md">보통</button></li>
+	                                                <li><button type="button" class="item-link lg" data-adjust-scale="lg">조금 크게</button></li>
+	                                                <li><button type="button" class="item-link xlg" data-adjust-scale="xlg">크게</button></li>
+	                                                <li><button type="button" class="item-link xxlg" data-adjust-scale="xxlg">가장크게</button></li>
+	                                            </ul>
+	                                            <div class="drop-bottom">
+	                                                <button type="button" class="krds-btn medium text" data-adjust-scale="md"><i class="svg-icon ico-reset"></i> 초기화</button>
+	                                            </div>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                            </li>
+	                            
+	                            
+		                            
+	                            
+	                            <li>
+	                                <a href="/npbs/e/e/100/index.web" class="krds-btn small text btn-lang" target="_blank" title="새 창 열림">English</a>
+	                            </li>
+	                        </ul>
+	                    </div>
+	                    <div class="header-branding">
+	                        <h1 class="logo">
+	                            <a href="/npbs/indexr.jsp"><img src="/npbs/assetsRenew/images/np/logo.svg" alt="h-well 국민겅강보험"></a>
+	                        </h1>
+	                        <div class="header-actions">
+	                            <button type="button" class="btn-navi sch open-modal" id="top_btn_search" title="통합검색 레이어" data-target="modal-total-search-pop">통합검색</button>
+	                            
+	                            	<button type="button" class="btn-navi join" onclick="javascript:gfn_aLink('/npbs/e/z/900/html.web?pgmId=npez906m01s&menuId=npe0000002839', true); return false;">회원가입</button>
+	                            
+	                            
+	                            	
+                           		
+	                         	
+                            	
+                            	
+                            	
+	                            	<button class="btn-navi login" onclick="javascript:gfn_aLink('/npbs/auth/login/loginForm.web?menuId=npe0000002840&rtnUrl=', true); return false;">로그인</button>
+                            	
+	                            
+	                            
+	                           	
+	                            
+	                            <button type="button" class="btn-navi all" aria-controls="mobile-nav">전체메뉴</button>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	            <!-- //헤더 상단 기타메뉴 -->
+	            <!-- //메인메뉴 : 데스크탑 -->
+	            <nav class="krds-main-menu">
+	                <div class="inner">
+	                    <ul class="gnb-menu" id="npe0000000000">
+	                        <li>
+	                            <button type="button" class="gnb-main-trigger" data-trigger="gnb" id="npe0000002758">민원서비스</button>
+	                            <div class="gnb-toggle-wrap">
+	                                <div class="gnb-main-list" data-has-submenu="true">
+	                                    <div class="cate-list">
+	                                        
+                                        </div>
+									</div>
+								</div>
+							</li>
+							<li>
+	                            <button type="button" class="gnb-main-trigger" data-trigger="gnb" id="npe0000002800">장기요양기관</button>
+	                            <div class="gnb-toggle-wrap">
+	                                <div class="gnb-main-list" data-has-submenu="true">
+	                                    <div class="cate-list"> </div>
+									</div>
+								</div>
+							</li>
+							<li>
+	                            <button type="button" class="gnb-main-trigger" data-trigger="gnb" id="npe0000002784">알림&middot;자료실</button>
+	                            <div class="gnb-toggle-wrap">
+	                                <div class="gnb-main-list" data-has-submenu="true">
+	                                    <div class="cate-list"> </div>
+									</div>
+								</div>
+							</li>
+							<li>
+	                            <button type="button" class="gnb-main-trigger" data-trigger="gnb" id="npe0000002721">제도안내</button>
+	                            <div class="gnb-toggle-wrap">
+	                                <div class="gnb-main-list" data-has-submenu="true">
+	                                    <div class="cate-list"> </div>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</nav>
+	            <!-- //메인메뉴 : 데스크탑 -->
+	        </div>
+	        <!-- //헤더 컨텐츠 영역  -->
+	        
+	        
+	        
+<!-- 메인메뉴 : 모바일 ---------------------------------------------------------------------------------->
+        	<div id="mobile-nav" class="krds-main-menu-mobile">
+	            <div class="gnb-wrap">
+	                <!-- gnb-header -->
+	                <div class="gnb-header">
+	                    <div class="gnb-utils">
+	                        <ul class="utility-list">
+	                            
+	                            <li><button type="button" class="krds-btn xsmall text" onclick="javascript:gfn_aLink('/npbs/e/e/100/index.web', true); return false;">ENGLISH</button></li>
+	                        </ul>
+	                    </div>
+	                </div>
+	                <!-- //gnb-header -->
+	                
+	                <!-- gnb-body -->
+	                <div class="gnb-body">
+	                    <!-- gnb-menu -->
+	                    <div class="gnb-menu" id="npe0000000000">
+	                        <div class="menu-wrap">
+	                            <ul>
+	                                <li>
+	                                    <a href="#m_npe0000002758" class="gnb-main-trigger">민원서비스</a>
+	                                </li>
+	                                <li>
+	                                    <a href="#m_npe0000002800" class="gnb-main-trigger">장기요양기관</a>
+	                                </li>
+	                                <li>
+	                                    <a href="#m_npe0000002784" class="gnb-main-trigger">알림·자료실</a>
+	                                </li>
+	                                <li>
+	                                    <a href="#m_npe0000002721" class="gnb-main-trigger">제도안내</a>
+	                                </li>
+	                            </ul>
+	                        </div>
+	                        <div class="submenu-wrap">
+								<div class="gnb-sub-list active" id="m_npe0000002758">
+	                                
+								</div>
+								<div class="gnb-sub-list" id="m_npe0000002800"></div>
+								<div class="gnb-sub-list" id="m_npe0000002784"></div>
+								<div class="gnb-sub-list" id="m_npe0000002721"></div>
+							</div>
+	                    </div>
+	                    <!-- //gnb-menu -->
+	                </div>
+	                <!-- //gnb-body -->
+	                
+	                <!-- gnb-close -->
+	                <button type="button" class="krds-btn medium icon" id="close-nav">
+	                    <span class="sr-only">전체메뉴 닫기</span>
+	                    <i class="svg-icon ico-popup-close"></i>
+	                </button>
+	                <!-- //gnb-close -->
+	            </div>
+	        </div>
+<!-- //메인메뉴 : 모바일 ------------------------------------------------------->
+	    </header>
+	    <!-- //header -->
+	    
+	    <div class="sub-contents" id="container">
+		    <div class="inner">
+		    	
+
+
+
+<!-- 로그인정보-->
+
+<script>
+function fn_check(str) {
+	var isClick = $("#isClick").val();
+
+	if (isClick == "Y") {
+		alert("로드중입니다. 잠시만 기다려 주세요.");
+		return;
+	}
+		$("#isClick").val("Y");
+	gfn_aLink(str);
+}
+</script>
+
+
+
+
+<nav class="krds-side-navigation">
+	<h2 class="lnb-tit">민원 상담실(미사용)</h2>
+	<input type="hidden" name="isClick" id="isClick" value="N" autocomplete="off"/>
+	
+	<input type="hidden" id="request_menu_id"
+		value="npe0000000650" />
+	
+	<input type="hidden" id="current_menu_id"
+		value="npe0000000650" />
+
+	
+		<!-- lnb-list -->
+		<ul class="lnb-list" role="menubar">
+			
+			
+				
+					
+						
+					
+
+					
+		
+		
+
+		
+			
+				
+					
+					
+						
+							<li class="lnb-item" role="none">
+						
+					
+				
+
+				
+					
+						
+							
+							
+								<button type="button" class="lnb-btn lnb-toggle" role="menuitem"
+									aria-controls="lnbmenu-1" aria-expanded="false">장기요양 민원상담(미사용)</button>
+							
+						
+					
+					
+					
+				
+			
+			
+			
+		
+		
+		
+				
+					
+						
+							
+								
+								
+									<div class="lnb-submenu">
+										<ul id="lnbmenu-1" role="menu">
+								
+							
+						
+					
+
+					
+		
+		
+
+		
+			
+			
+			
+				
+					
+					
+						
+						
+							<li class="lnb-subitem" role="none"><a
+								href="/npbs/e/z/900/html.web?pgmId=npez903m01s&menuId=npe0000000420"
+								class="lnb-btn lnb-link npez903m01"
+								onclick="fn_check(this); return false;"
+								id="npe0000000420" role="menuitem">이렇게 이용 하세요!(미사용)</a></li>
+						
+					
+				
+			
+		
+		
+		
+				
+					
+
+					
+		
+		
+		
+
+		
+			
+			
+			
+				
+					
+					
+						
+						
+							<li class="lnb-subitem" role="none"><a
+								href="/npbs/d/m/000/moveBoardView?menuId=npe0000000440&bKey=B0055"
+								class="lnb-btn lnb-link npmc510m01"
+								onclick="fn_check(this); return false;"
+								id="npe0000000440" role="menuitem">민원상담사례(FAQ)(미사용)</a></li>
+						
+					
+				
+			
+		
+		
+		
+				
+					
+
+					
+		
+		
+		
+
+		
+			
+			
+			
+				
+					
+					
+						
+						
+							<li class="lnb-subitem" role="none"><a
+								href="/npbs/e/g/550/openCyberCstMain.web?menuId=npe0000000460"
+								class="lnb-btn lnb-link npeg550m08"
+								onclick="fn_check(this); return false;"
+								id="npe0000000460" role="menuitem">개인별 맞춤상담(미사용)</a></li>
+						
+					
+				
+			
+		
+		
+		
+				
+					
+
+					
+		
+		
+		
+
+		
+			
+			
+			
+				
+					
+					
+						
+						
+							<li class="lnb-subitem" role="none"><a
+								href="/npbs/e/g/540/openCyberCstMain.web?menuId=npe0000002594"
+								class="lnb-btn lnb-link npeg540m08"
+								onclick="fn_check(this); return false;"
+								id="npe0000002594" role="menuitem">일반민원상담(미사용)</a></li>
+						
+					
+				
+			
+		
+		
+		
+				
+					
+
+					
+		
+		
+		
+
+		
+			
+			
+			
+				
+					
+					
+						
+						
+							<li class="lnb-subitem" role="none"><a
+								href="/npbs/e/z/900/html.web?pgmId=npez910m01s&desc= &menuId=npe0000000480"
+								class="lnb-btn lnb-link npez910m01"
+								onclick="fn_check(this); return false;"
+								id="npe0000000480" role="menuitem">국민제안(미사용)</a></li>
+						
+					
+				
+			
+		
+		
+		
+				
+					
+
+					
+		
+		
+		
+
+		
+			
+			
+			
+				
+					
+					
+						
+						
+							<li class="lnb-subitem" role="none"><a
+								href="/npbs/e/g/570/selectIndiOpinList.web?menuId=npe0000002542"
+								class="lnb-btn lnb-link npeg570m01"
+								onclick="fn_check(this); return false;"
+								id="npe0000002542" role="menuitem">자유게시판(미사용)</a></li>
+						
+					
+				
+			
+		
+		
+		
+				
+					
+
+					
+		
+		
+		
+
+		
+			
+			
+				
+				<li class="lnb-subitem" role="none"><a
+					href="http://www.nhis.or.kr/nhis/minwon/retrieveKindAndUnkindEapRecv.do" title="친절, 불친절사례접수(미사용) 새 창 열림"
+					target="_blank" id="npe0000002567"
+					class="lnb-btn lnb-link npeg580m01">친절, 불친절사례접수(미사용)<i
+						class="svg-icon ico-go"></i></a>
+			
+			
+		
+		
+		
+				
+					
+
+					
+		
+		
+		
+
+		
+			
+			
+			
+				
+					
+					
+						
+						
+							<li class="lnb-subitem" role="none"><a
+								href="/npbs/e/z/900/html.web?pgmId=npez912m01s&menuId=npe0000002591"
+								class="lnb-btn lnb-link npez912m01"
+								onclick="fn_check(this); return false;"
+								id="npe0000002591" role="menuitem">4대 사회보험 신고(미사용)</a></li>
+						
+					
+				
+			
+		
+		
+		
+				
+					
+
+					
+						
+		</ul>
+		</div>
+		
+		</li>
+		
+		
+		
+
+		
+			
+				
+					
+					
+						
+							<li class="lnb-item" role="none">
+						
+					
+				
+
+				
+					
+						
+							
+							
+								<button type="button" class="lnb-btn lnb-toggle" role="menuitem"
+									aria-controls="lnbmenu-1" aria-expanded="false">장기요양 신청(미사용)</button>
+							
+						
+					
+					
+					
+				
+			
+			
+			
+		
+		
+		
+				
+					
+						
+							
+								
+								
+									<div class="lnb-submenu">
+										<ul id="lnbmenu-1" role="menu">
+								
+							
+						
+					
+
+					
+		
+		
+
+		
+			
+			
+			
+				
+					
+					
+						
+						
+							<li class="lnb-subitem" role="none"><a
+								href="/npbs/u/b/101/openLtcRcgtAplyPttnChoice.web?aplyTypeScr=appltit&menuId=npe0000000500"
+								class="lnb-btn lnb-link npub101m01"
+								onclick="fn_check(this); return false;"
+								id="npe0000000500" role="menuitem">인정신청 (미사용)</a></li>
+						
+					
+				
+			
+		
+		
+		
+				
+					
+
+					
+		
+		
+		
+
+		
+			
+			
+			
+				
+					
+					
+						
+						
+							<li class="lnb-subitem" role="none"><a
+								href="/npbs/u/b/111/selectRcgtHistDescInq.web?menuId=npe0000000510"
+								class="lnb-btn lnb-link npub111m01"
+								onclick="fn_check(this); return false;"
+								id="npe0000000510" role="menuitem">인정신청내역 조회(미사용)</a></li>
+						
+					
+				
+			
+		
+		
+		
+				
+					
+
+					
+		
+		
+		
+
+		
+			
+			
+			
+				
+					
+					
+						
+						
+							<li class="lnb-subitem" role="none"><a
+								href="/npbs/g/h/101/openSelfBrdnHwangubAplyPttn.web?menuId=npe0000000520"
+								class="lnb-btn lnb-link npgh101m01"
+								onclick="fn_check(this); return false;"
+								id="npe0000000520" role="menuitem">본인부담환급금신청(미사용)</a></li>
+						
+					
+				
+			
+		
+		
+		
+				
+					
+
+					
+		
+		
+		
+
+		
+			
+			
+			
+				
+					
+					
+						
+						
+							<li class="lnb-subitem" role="none"><a
+								href="/npbs/g/h/106/openSelfBrdnHwangubAplyInq.web?menuId=npe0000000530"
+								class="lnb-btn lnb-link npgh106m01"
+								onclick="fn_check(this); return false;"
+								id="npe0000000530" role="menuitem">본인부담환급금신청내역조회(미사용)</a></li>
+						
+					
+				
+			
+		
+		
+		
+				
+					
+
+					
+		
+		
+		
+
+		
+			
+			
+			
+				
+					
+					
+						
+						
+							<li class="lnb-subitem" role="none"><a
+								href="/npbs/m/c/304/selectDmrList.web?menuId=npe0000002570"
+								class="lnb-btn lnb-link npmc304m01"
+								onclick="fn_check(this); return false;"
+								id="npe0000002570" role="menuitem">심사청구/취하 및 조회(미사용)</a></li>
+						
+					
+				
+			
+		
+		
+		
+				
+					
+
+					
+		
+		
+		
+
+		
+			
+			
+			
+				
+					
+					
+						
+						
+							<li class="lnb-subitem" role="none"><a
+								href="/npbs/u/e/201/openGjuRsltRissuePttn.web?menuId=npe0000002572"
+								class="lnb-btn lnb-link npue201m01"
+								onclick="fn_check(this); return false;"
+								id="npe0000002572" role="menuitem">등급판정결과조회 및 출력(미사용)</a></li>
+						
+					
+				
+			
+		
+		
+		
+				
+					
+
+					
+		
+		
+		
+
+		
+			
+			
+			
+				
+					
+					
+						
+						
+							<li class="lnb-subitem" role="none"><a
+								href="/npbs/u/e/203/selectGjuRsltHistDescInq.web?menuId=npe0000002571"
+								class="lnb-btn lnb-link npue203m01"
+								onclick="fn_check(this); return false;"
+								id="npe0000002571" role="menuitem">등급판정결과 출력내역조회(미사용)</a></li>
+						
+					
+				
+			
+		
+		
+		
+				
+					
+
+					
+		
+		
+		
+
+		
+			
+			
+			
+				
+					
+					
+						
+						
+							<li class="lnb-subitem" role="none"><a
+								href="/npbs/u/g/101/openMitgObjtrAplyPttnChoice.web?menuId=npe0000002573"
+								class="lnb-btn lnb-link npug101m01"
+								onclick="fn_check(this); return false;"
+								id="npe0000002573" role="menuitem">감경신청서 작성(미사용)</a></li>
+						
+					
+				
+			
+		
+		
+		
+				
+					
+
+					
+		
+		
+		
+
+		
+			
+			
+			
+				
+					
+					
+						
+						
+							<li class="lnb-subitem" role="none"><a
+								href="/npbs/u/g/105/openMitgCrtfAplyPttn.web?menuId=npe0000002574"
+								class="lnb-btn lnb-link npug105m01"
+								onclick="fn_check(this); return false;"
+								id="npe0000002574" role="menuitem">감경증명서발급 신청(미사용)</a></li>
+						
+					
+				
+			
+		
+		
+		
+				
+					
+
+					
+		
+		
+		
+
+		
+			
+			
+			
+				
+					
+					
+						
+						
+							<li class="lnb-subitem" role="none"><a
+								href="/npbs/u/g/106/selectMitgApfrmHistDescInq.web?menuId=npe0000002575"
+								class="lnb-btn lnb-link npug106m01"
+								onclick="fn_check(this); return false;"
+								id="npe0000002575" role="menuitem">감경신청 내역조회(미사용)</a></li>
+						
+					
+				
+			
+		
+		
+		
+				
+					
+
+					
+		
+		
+		
+
+		
+			
+			
+			
+				
+					
+					
+						
+						
+							<li class="lnb-subitem" role="none"><a
+								href="/npbs/i/a/601/openWelToolPaymtCfrDocChoice.web?menuId=npe0000002592"
+								class="lnb-btn lnb-link npia601m01"
+								onclick="fn_check(this); return false;"
+								id="npe0000002592" role="menuitem">복지용구 추가급여 신청(미사용)</a></li>
+						
+					
+				
+			
+		
+		
+		
+				
+					
+
+					
+						
+		</ul>
+		</div>
+		
+		</li>
+		
+		
+		
+
+		
+			
+				
+					
+					
+						
+							<li class="lnb-item" role="none">
+						
+					
+				
+
+				
+					
+						
+							
+							
+								<button type="button" class="lnb-btn lnb-toggle" role="menuitem"
+									aria-controls="lnbmenu-1" aria-expanded="false">민원사무처리기관 안내(미사용)</button>
+							
+						
+					
+					
+					
+				
+			
+			
+			
+		
+		
+		
+				
+					
+						
+							
+								
+								
+									<div class="lnb-submenu">
+										<ul id="lnbmenu-1" role="menu">
+								
+							
+						
+					
+
+					
+		
+		
+
+		
+			
+			
+			
+				
+					
+					
+						
+						
+							<li class="lnb-subitem" role="none"><a
+								href="/npbs/e/z/900/html.web?pgmId=npez900m01s&desc=&menuId=npe0000000550"
+								class="lnb-btn lnb-link npez900m01"
+								onclick="fn_check(this); return false;"
+								id="npe0000000550" role="menuitem">공단(미사용)</a></li>
+						
+					
+				
+			
+		
+		
+		
+				
+					
+
+					
+		
+		
+		
+
+		
+			
+			
+			
+				
+					
+					
+						
+						
+							<li class="lnb-subitem" role="none"><a
+								href="/npbs/e/z/900/html.web?pgmId=npez901m01s&desc=&menuId=npe0000000560"
+								class="lnb-btn lnb-link npez901m01"
+								onclick="fn_check(this); return false;"
+								id="npe0000000560" role="menuitem">보건복지부(미사용)</a></li>
+						
+					
+				
+			
+		
+		
+		
+				
+					
+
+					
+		
+		
+		
+
+		
+			
+			
+			
+				
+					
+					
+						
+						
+							<li class="lnb-subitem" role="none"><a
+								href="/npbs/e/z/900/html.web?pgmId=npez902m01s&desc=&menuId=npe0000000570"
+								class="lnb-btn lnb-link npez902m01"
+								onclick="fn_check(this); return false;"
+								id="npe0000000570" role="menuitem">시·군·구(미사용)</a></li>
+						
+					
+				
+			
+		
+		
+		
+				
+					
+
+					
+						
+		</ul>
+		</div>
+		
+		</li>
+		
+		
+		
+
+		
+			
+				
+					
+					
+						
+							<li class="lnb-item" role="none">
+						
+					
+				
+
+				
+					
+						
+							
+							
+								<button type="button" class="lnb-btn lnb-toggle" role="menuitem"
+									aria-controls="lnbmenu-1" aria-expanded="false">포상금제도안내(미사용)</button>
+							
+						
+					
+					
+					
+				
+			
+			
+			
+		
+		
+		
+				
+					
+						
+							
+								
+								
+									<div class="lnb-submenu">
+										<ul id="lnbmenu-1" role="menu">
+								
+							
+						
+					
+
+					
+		
+		
+
+		
+			
+			
+			
+				
+					
+					
+						
+						
+							<li class="lnb-subitem" role="none"><a
+								href="/npbs/g/m/108/openIjstDmdDcltMain.web?menuId=npe0000000590"
+								class="lnb-btn lnb-link npgm108m01"
+								onclick="fn_check(this); return false;"
+								id="npe0000000590" role="menuitem">부당청구 장기요양기관 신고·포상금 제도 안내(미사용)</a></li>
+						
+					
+				
+			
+		
+		
+		
+				
+					
+
+					
+		
+		
+		
+
+		
+			
+			
+			
+				
+					
+					
+						
+						
+							<li class="lnb-subitem" role="none"><a
+								href="/npbs/g/m/201/openDcltPmnyAply.web?menuId=npe0000002607"
+								class="lnb-btn lnb-link npgm201m01"
+								onclick="fn_check(this); return false;"
+								id="npe0000002607" role="menuitem">부당청구 장기요양기관 신고·포상금 신청(미사용)</a></li>
+						
+					
+				
+			
+		
+		
+		
+				
+					
+
+					
+		
+		
+		
+
+		
+			
+			
+			
+				
+					
+					
+						
+						
+							<li class="lnb-subitem" role="none"><a
+								href="/npbs/g/m/203/openDcltPmnyAplyDesc.web?menuId=npe0000002608"
+								class="lnb-btn lnb-link npgm203m01"
+								onclick="fn_check(this); return false;"
+								id="npe0000002608" role="menuitem">부당청구 장기요양기관 신고·포상금 신청내역 조회(미사용)</a></li>
+						
+					
+				
+			
+		
+		
+		
+				
+					
+
+					
+		
+		
+		
+
+		
+			
+			
+			
+				
+					
+					
+						
+						
+							<li class="lnb-subitem" role="none"><a
+								href="/npbs/g/j/101/openPaymtContnDcltPm.web?menuId=npe0000002548"
+								class="lnb-btn lnb-link npgj101m01"
+								onclick="fn_check(this); return false;"
+								id="npe0000002548" role="menuitem">장기요양급여 받은 내용 신고·포상금(미사용)</a></li>
+						
+					
+				
+			
+		
+		
+		
+				
+					
+
+					
+		
+		
+		
+
+		
+			
+			
+			
+				
+					
+					
+						
+						
+							<li class="lnb-subitem" role="none"><a
+								href="/npbs/e/z/900/html.web?pgmId=npez911m01s&desc=&menuId=npe0000000600"
+								class="lnb-btn lnb-link npez911m01"
+								onclick="fn_check(this); return false;"
+								id="npe0000000600" role="menuitem">거짓청구 장기요양기관 명단공표제도안내(미사용)</a></li>
+						
+					
+				
+			
+		
+		
+		
+				
+					
+
+					
+		
+		
+		
+
+		
+			
+			
+			
+				
+					
+					
+						
+						
+							<li class="lnb-subitem" role="none"><a
+								href="/npbs/u/f/100/openIjstRepeDcltMain.web?menuId=npe0000002606"
+								class="lnb-btn lnb-link npuf100m01"
+								onclick="fn_check(this); return false;"
+								id="npe0000002606" role="menuitem">부정수급자 신고·포상금제도 안내(미사용)</a></li>
+						
+					
+				
+			
+		
+		
+		
+				
+					
+
+					
+		
+		
+		
+
+		
+			
+			
+			
+				
+					
+					
+						
+						
+							<li class="lnb-subitem" role="none"><a
+								href="/npbs/d/m/000/moveBoardView?menuId=npe0000000610&bKey=B0081"
+								class="lnb-btn lnb-link npmc520m01"
+								onclick="fn_check(this); return false;"
+								id="npe0000000610" role="menuitem">거짓청구 장기요양기관 명단공표(미사용)</a></li>
+						
+					
+				
+			
+		
+		
+		
+				
+					
+
+					
+						
+		</ul>
+		</div>
+		
+		</li>
+		
+		
+		
+
+		
+			
+				
+					
+						
+							<li class="lnb-item active" role="none">
+						
+					
+					
+				
+
+				
+					
+						
+							
+								<button type="button" class="lnb-btn lnb-toggle active"
+									role="menuitem" aria-controls="lnbmenu-1" aria-expanded="true">검색서비스(미사용)</button>
+							
+							
+						
+					
+					
+					
+				
+			
+			
+			
+		
+		
+		
+				
+					
+						
+							
+								
+								
+									<div class="lnb-submenu">
+										<ul id="lnbmenu-1" role="menu">
+								
+							
+						
+					
+
+					
+		
+		
+
+		
+			
+			
+			
+				
+					
+					
+						
+						
+							<li class="lnb-subitem" role="none"><a
+								href="/npbs/r/e/505/selectRftrEduAdminList?menuId=npe0000002612"
+								class="lnb-btn lnb-link npre505m01"
+								onclick="fn_check(this); return false;"
+								id="npe0000002612" role="menuitem">요양보호사 보수교육기관(미사용)</a></li>
+						
+					
+				
+			
+		
+		
+		
+				
+					
+
+					
+		
+		
+		
+
+		
+			
+			
+			
+				
+					
+					
+						
+						
+							<li class="lnb-subitem" role="none"><a
+								href="/npbs/r/e/501/openMdcareMcpcEduAdmin.web?menuId=npe0000001100"
+								class="lnb-btn lnb-link npre501m01"
+								onclick="fn_check(this); return false;"
+								id="npe0000001100" role="menuitem">요양보호사 교육기관(미사용)</a></li>
+						
+					
+				
+			
+		
+		
+		
+				
+					
+
+					
+		
+		
+		
+
+		
+			
+			
+			
+				
+					
+					
+						
+							<li class="lnb-subitem active" role="none"><a
+								href="/npbs/r/a/201/selectLtcoSrch.web?menuId=npe0000000650"
+								class="lnb-btn lnb-link selected npra201m01"
+								onclick="fn_check(this); return false;"
+								id="npe0000000650" role="menuitem">장기요양기관 찾기(미사용)</a></li>
+						
+						
+					
+				
+			
+		
+		
+		
+				
+					
+
+					
+		
+		
+		
+
+		
+			
+			
+			
+				
+					
+					
+						
+						
+							<li class="lnb-subitem" role="none"><a
+								href="/npbs/r/a/601/npra601m01.web?menuId=npe0000002590"
+								class="lnb-btn lnb-link npra601m01"
+								onclick="fn_check(this); return false;"
+								id="npe0000002590" role="menuitem">장기요양 지표(미사용)</a></li>
+						
+					
+				
+			
+		
+		
+		
+
+		<!-- 마지막 레벨에서 레벨2까지  닫기 반복 처리 -->
+		
+			</li>
+			</ul>
+			</div>
+		
+		</ul>
+		<!--lnb-->
+	
+	
+	<!-- //lnb-list -->
+</nav>
+
+
+
+<script type="text/javascript">
+  
+var USER_NAME 	= "";
+var USER_TYPE 	= ""; // 스크랩에서 이용
+var result 		= "";
+
+// let timerElement;
+$(document).ready(function () {
+	//, 최신 브라우저 설치 팝업
+	if (isIE){
+		$(".modal-ie11").css('display','block');
+	}
+	
+	//, [2025년 디지털 서비스 고도화 사업] 화면크기 세팅_[S]
+	const scale = sessionStorage.getItem("zoomLevelScale");
+	
+//     if(result == "success") {
+//         fn_startCountdown(); // 2025.09.23 세션타임아웃 확인용
+//     }
+	
+	if (scale) {
+		var zoom = Number(1);
+	    	
+	   	 if(scale == 'sm'){
+	   		 zoom = parseFloat(0.9);
+	   	 }else if(scale == 'md'){
+	   		 zoom = parseFloat(1);
+	   	 }else if(scale == 'lg'){
+	   		 zoom = parseFloat(1.1);
+	   	 }else if(scale == 'xlg'){
+	   		 zoom = parseFloat(1.3);
+	   	 }else if(scale == 'xxlg'){
+	   		 zoom = parseFloat(1.5);
+	   	 }
+	   	 
+		document.body.style.zoom = parseFloat(zoom);
+		var $dropList = $(".devNpbsResize .drop-list");
+		$dropList.find("[data-adjust-scale]").css("z-index", 0).attr("aria-selected", false).removeClass("active");
+		$dropList.find("[data-adjust-scale='"+scale+"']").css("z-index", 1).attr("aria-selected", true).addClass("active");
+	}
+	//, 화면크기 세팅_[E]
+	
+	//$("#q_menu").css("display","block");
+    //$("#q_menu2").css("display","block");
+    
+    // 가족상담 지원사업 신규
+    var popup = null;
+    
+    //, [2025년 디지털 서비스 고도화 사업] 09.18 마이페이지 header 삭제_기획 주락범 차장님에게 확인함
+    // 나의 즐겨찾기 이동
+    //, $("#btn_myScript").on("click", function (event) {
+    //,     event.preventDefault();  
+    //,     if(USER_TYPE == "P" || USER_TYPE == "D" || USER_TYPE == "F" || USER_TYPE == "G" || USER_TYPE == "H"){
+    //,         location.href="/npbs/e/g/108/selectMyMenuScrapList.web?menuId= 0001300";
+    //,     }else if(USER_TYPE == "A" || USER_TYPE == "B" || USER_TYPE == "C" || USER_TYPE == "E" || USER_TYPE == "O" || USER_TYPE == "I"){
+    //,         gfn_confirm("개인로그인 사용자 전용메뉴입니다. 로그인 하시겠습니까?", function(value){
+    //,             if(value){
+    //,                 location.href="/npbs/auth/login/loginForm.web?menuId=npe0000002840&rtnUrl=";
+    //,             }
+    //,         });
+    //,          
+    //,     }else{
+    //,         location.href="/npbs/auth/login/loginForm.web?menuId=npe0000002840&rtnUrl=";
+    //,     }
+    //,    return false;
+    //, });
+    
+    //, [2025년 디지털 서비스 고도화 사업] 09.18 마이페이지 header 삭제_기획 주락범 차장님에게 확인함
+    //, // 마이페이지 이동
+    //, $("#btn_myPage").on("click", function (event) {
+    //,     event.preventDefault();
+    //,     if(USER_TYPE == "P" || USER_TYPE == "D" || USER_TYPE == "F" || USER_TYPE == "G" || USER_TYPE == "H") { // 개인(마이페이지)
+    //,       //location.href="/npbs/e/g/108/selectMyMenuScrapList.web?menuId=npe0000001300"
+    //,         location.href="/npbs/e/g/101/indiMemSvc.web?menuId=npe0000001280";
+    //,     } else if(USER_TYPE == "A") { // 장기요양기관(마이블로그)
+    //,         location.href="/npbs/r/a/104/openMyBlog.web?menuId=npe0000001770";
+    //,     } else if(USER_TYPE == "B") { // 복지용구공급업체(마이블로그)
+    //,         location.href="/npbs/r/k/104/openMyBlog.web?menuId=npe0000001870";
+    //,     } else if(USER_TYPE == "C") { // 복지용구소독업체(마이블로그)
+    //,         location.href="/npbs/r/k/120/openMyBlog.web?menuId=npe0000001940";
+    //,     } else if(USER_TYPE == "E") { // 요양보호사직무교육기관(마이블로그)
+    //,         location.href="/npbs/r/e/351/openMyBlog.web?menuId=npe0000002010";
+    //,     } else if(USER_TYPE == "O") { // 등록시공업체(마이블로그)
+    //,         location.href="/npbs/r/o/104/openMyBlog.web?menuId=npe0000002621";
+    //,     } else if(USER_TYPE == "I") { // 가족상담 지원사업
+    //,         location.href="/npbs/b/g/101/selectObjtrInq.web?menuId=npe0000002553";
+    //,     } else { // 비로그인시
+    //,         gfn_confirm("로그인 후 이용하는 메뉴입니다. 로그인 하시겠습니까?", function(value){
+    //,             if(value){
+    //,                 location.href="/npbs/auth/login/loginForm.web?menuId=npe0000002840&rtnUrl=";
+    //,             }
+    //,         }); 
+    //,     }
+    //, });
+    
+    //, 2025.09.22 as-is 주석처리된 기능
+    //이의신청 이동
+    //, $("#btn_dmrReg").on("click", function (event) {
+    //,     event.preventDefault();
+    //,     if(USER_TYPE == "P"){
+    //,         gfn_location($(this).prop("href"));
+    //,     } else { // 비로그인시
+    //,         gfn_alert("개인로그인 사용자 전용메뉴입니다.");
+    //,         return false;
+    //,     }
+    //,     
+    //, });
+    
+    $("#btn_popupLogin").on("click", function (event) {
+        event.preventDefault();
+        if (!popup || popup.closed) {
+            var url = "/npbs/auth/login/popup.web?rtnUrl=/g/e/301/openEtcJingsuAplyGuid.web";
+            popup = gfn_openPup(url, "popup", 730, 805,"yes").focus();
+        }
+    });
+    
+  	//, [2025년 디지털 서비스 고도화 사업] 바닥화면에서 검색 -> 팝업에서 검색
+	//검색 버튼 클릭 이벤트
+    //, $("#top_btn_search").on("click", function (event){
+    //,     event.preventDefault();
+    //,     doTopSearch();
+    //, }); 
+     
+	//, [2025년 디지털 서비스 고도화 사업] 화면크기 버튼 이벤트_[S]
+    $(".devNpbsResize button").on("click", function(){
+    	var scale = $(this).attr("data-adjust-scale");
+    	sessionStorage.setItem("zoomLevelScale", scale);
+    });
+    //, 화면크기 버튼 이벤트_[E]		
+});
+//, [2025년 디지털 서비스 고도화 사업] 퀵메뉴 조회 로직(/npbs/menu/selectOrgMyMenuList.web) 삭제 '업무포털 바로가기' 버튼만 노출한다. 
+//, function fn_getOrgMyMenuList2(){
+//,     
+//,     
+//,     
+//,     
+//,     
+//,     
+//,     
+//,     return false;
+//, }
+
+function fn_goLtcMyPage2(MENU_ID){
+    // 2025.09.10 userType == 'L' 추가
+    
+    
+        gfn_confirm("기관회원 전용메뉴입니다. 로그인 하시겠습니까?", function(value){
+            if(value){
+                location.href="/npbs/auth/login/loginForm.web?menuId=npe0000002840&rtnUrl=";
+            }
+        }); 
+    
+}
+
+function goMyBlog(userType){
+	//, 20.10.20  최진곤 대리 요청 메뉴ID TO-BE 기준 'npe0000002835'하나로 통일됨
+	var link = "";
+	if(userType == "E"){
+		link = "/npbs/r/e/351/openMyBlog.web?menuId=npe0000002835";
+	}else if(userType == "A"){
+		link = "/npbs/r/a/104/openMyBlog.web?menuId=npe0000002835";
+	}else if(userType == "C"){
+		link = "/npbs/r/k/120/openMyBlog.web?menuId=npe0000002835";
+	}else if(userType == "B"){
+		link = "/npbs/r/k/104/openMyBlog.web?menuId=npe0000002835";
+	}else if(userType == "O"){
+		link = "/npbs/r/o/104/openMyBlog.web?menuId=npe0000002835";
+	}
+	if(link != ""){
+		gfn_aLink(link, true);	
+	}else{
+		console.log('이동할 url 이 없어요');
+	}
+}
+
+// //2025.09.23 세션타임아웃 확인용
+// function fn_startCountdown() {
+//     updateTimer();
+//     timerElement = setInterval(updateTimer, 1000);
+// }
+
+// //2025.09.23 세션타임아웃 확인용
+// function updateTimer() {
+//     if(extensionTime) {
+
+//         extensionTime = false;
+//     }
+//     let timerElementText = document.getElementById("session-timer");
+    
+//     let minutes = Math.floor(remainingTime / 60);
+//     let seconds = remainingTime % 60;
+    
+//     let formatted = String(minutes).padStart(2, '0') + ":" + String(seconds).padStart(2, '0');
+//     timerElementText.textContent = formatted;
+    
+//     if(remainingTime <= 0) {
+//         clearInterval(timerElement);
+//         timerElementText.textContent = "세션 만료됨";
+        
+// //         openModalPopup('', '<br />미활동 30분경과로 노인장기요양홈페이지 로그아웃 처리되었습니다.<br /><br /><b>페이지 새로고침 또는 확인버튼 클릭 시 업무포털 로그인도 해제됩니다<b/><br />');
+//         gfn_alert('<br />미활동 30분경과로 노인장기요양홈페이지 로그아웃 처리되었습니다.<br /><br /><b>페이지 새로고침 또는 확인버튼 클릭 시 업무포털 로그인도 해제됩니다</b><br />', "[로그아웃 안내]", null, {
+//             "확인" : function() {
+//           	  var url = '/npbs/auth/logout.web';
+//                 gfn_location(url);
+//             }
+//         });
+//     } else {
+//         remainingTime--;
+//     }
+// }
+
+// //2025.09.23 세션타임아웃 확인용
+// let extensionTime = false;
+// // 2025.10.01 세션타임아웃 시 로그아웃 모달 팝업 오픈
+// function openModalPopup(msg1, msg2) {
+//     var modalPopup = $("<div/>").prop("id","modal_popup");
+//     modalPopup.append($("<p style='font-size: 20px; font-weight: bold; line-height: 1.5;'>" + msg1 + "</p>"));
+//     modalPopup.append($("<p style='font-size: 15px; font-weight: bold; color: red; line-height: 1.5;'>" + msg2 + "</p>"));
+//     $("body").append(modalPopup);
+    
+//     $("#modal_popup").dialog({
+//         title: "[미활동 자동 로그아웃 안내]",
+//         width: 550,
+//         modal: true,
+//         buttons:{
+//             "확인" : function() {
+//                 $(this).dialog("close");
+//                 $(this).remove();
+                
+//                 var url = '/npbs/auth/logout.web';
+//                 gfn_location(url);
+//             }
+//         }
+//     });
+//     $('button.ui-dialog-titlebar-close').hide();   
+// }
+</script>
+<!-- contents -->
+<div class="contents">
+
+
+
+
+
+
+
+ 
+
+
+<input type="hidden" id="pgmId" value="npra201m01" />
+<nav aria-label="현재 경로" id ="nav">
+    <ol class="breadcrumb">
+    	
+		
+			
+			    
+			    	<li><a href="/npbs/index.jsp" class="ico ico_home">홈</a></li>
+			    
+			
+				<li class="breadcrumbli"><a>민원 상담실(미사용)</a></li>
+		
+			
+			    
+			
+				<li class="breadcrumbli"><a>검색서비스(미사용)</a></li>
+		
+			
+			    
+			
+				<li class="breadcrumbli"><a>장기요양기관 찾기(미사용)</a></li>
+		
+        
+    </ol>
+</nav>
+
+<div class="title-area" id="title-area">
+    <h2 class="page-title no-outline" id="pageTitle" tabindex="-1">장기요양기관 찾기</h2>
+    <!-- 20250917 인쇄 공유 버튼 제거  -->
+<!--     <div class="page-utility"> -->
+<!--         <button type="button" class="btn btn-print" id="my_print">인쇄</button> -->
+<!--         <button type="button" class="btn btn-share" id="my_scrap">공유</button> -->
+<!--     </div> -->
+</div>
+<form id="ltco_info" action="/npbs/r/a/201/selectLtcoSrch" method="post">
+         <div class="typography-wrap">
+             <div class="group-box">
+                <div class="search-tit-wrap flex-tit-btn">
+                    <h3 class="header-h3">장기요양기관 검색</h3>
+                    <button type="button" id="btn_tip" class="btn-help">
+                        <span class="sr-only">도움말</span>
+                    </button>
+                </div>
+                <div class="board-search type-grid form-add">
+                    <!-- 2025.10.14 layout 구성 수정 -->
+                    <div class="cont-inner">
+                        <div class="form-group rdo-sel full">
+                            <div class="form-tit">
+                                <label for="si_do_cd">지역</label>
+                            </div>
+                            <div class="form-conts">
+                                <div class="input-group">
+                                    <select id="si_do_cd" name="siDoCd" title="지역의 시도선택" class="krds-form-select small">
+	                                    <option value="">선택</option>
+	                                    <option value="11">서울특별시</option><option value="26">부산광역시</option><option value="27">대구광역시</option><option value="28">인천광역시</option><option value="29">광주광역시</option><option value="30">대전광역시</option><option value="31">울산광역시</option><option value="36">세종특별자치시</option><option value="41">경기도</option><option value="43">충청북도</option><option value="44">충청남도</option><option value="46">전라남도</option><option value="47">경상북도</option><option value="48">경상남도</option><option value="50">제주특별자치도</option><option value="51">강원특별자치도</option><option value="52">전북특별자치도</option>
+	                                </select>
+                                     <select id="si_gun_gu_cd" name="siGunGuCd" title="지역의 시군구 선택" class="krds-form-select small">
+	                                    <option value="">전체</option>
+	                                    
+	                                </select>
+                                </div>
+                                <div class="input-group">
+                                    <div class="krds-check-area">
+                                       <div class="krds-form-check medium">
+                                            <input id="gbDongRoad" name="gbDongRoad" type="radio" value="1"/>
+                                            <label for="gbDongRoad"">읍면동</label>
+                                        </div>
+                                        <div class="krds-form-check medium">
+                                            <input id="gbDongRoad2" name="gbDongRoad" type="radio" value="2"/>
+                                            <label for="gbDongRoad2">도로명</label>
+                                        </div>
+                                    </div>
+                                     <select id="h_dong_cd" name="hDongCd" title="주소구분 전체" class="krds-form-select small">
+                                    <option value="">전체</option>
+                                    
+                                </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-tit">
+                                <label for="searchAdminKindCd">급여종류</label>
+                            </div>
+                            <div class="form-conts">
+                                <select id="searchAdminKindCd" name="searchAdminKindCd" title="급여종류" class="krds-form-select small">
+                                    <option value=""  selected >전체</option>
+                                    <option value="01"  >노인요양시설</option>
+                                    <option value="02"  >노인요양공동생활가정</option>
+                                    <option value="03"  >방문요양</option>
+                                    <option value="04"  >방문목욕</option>
+                                    <option value="05"  >방문간호</option>
+                                    <option value="06"  >주야간보호</option>
+                                    <option value="07"  >단기보호</option>
+                                    <option value="08"  >복지용구</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="form-group" id="searchAdminKindCdDiv" style="display:none;">
+                        <div class="form-tit">
+                            <label for="searchAdminKindCdList"></label>
+                        </div>
+                        <div class="form-conts">
+                        	<ul id="searchAdminKindCdList" class="money-list-type"></ul>
+                        	<input id="searchAdminKindCdS" name="searchAdminKindCdS" type="hidden" value=""/>
+                        </div>
+                    </div>
+                    <div class="cont-inner type-option" id=search_condition_div style="display:none;">
+                     	<div class="form-double" id="search_condition" style="display:none;">
+                          <div class="form-group">
+                              <div class="form-tit">
+                                  <label for="type">정원</label>
+                              </div>
+                              <div class="form-conts">
+                                      <select id="searchTotal" name="searchTotal" title="정원" class="krds-form-select small">
+	                                     <option value="">전체</option>
+	                                     <option value="1">1~10명미만</option>
+	                                     <option value="2">10~30명미만</option>
+	                                     <option value="3">30~100명미만</option>
+	                                     <option value="4">100명이상</option>
+                                 	</select>
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <div class="form-tit">
+                                  <label for="type">이용가능</label>
+                              </div>
+                              <div class="form-conts">
+                                  <select id="searchEntGb" name="searchEntGb" title="이용가능" class="krds-form-select small">
+	                                    <option value="">전체</option>
+	                                    <option value="1">가능</option>
+	                                    <option value="2">불가능</option>
+                                 </select>
+                              </div>
+                          </div>
+                         </div>
+                         <div class="form-group" id="search_condition2" style="display:none;">
+                             <div class="form-tit">
+                                 <label for="type">목욕차량</label>
+                             </div>
+                             <div class="form-conts">
+                                 <select id="searchBathVhcl" name="searchBathVhcl" title="목욕차량" class="krds-form-select small">
+                                      <option value="">전체</option>
+                                      <option value="1">보유</option>
+                                      <option value="2">미보유</option>
+                                  </select>
+                             </div>
+                         </div>
+                     </div>
+                    <div class="cont-inner">
+                        <div class="form-group">
+                            <div class="form-tit">
+                                <label for="searchAdminFdatType">설립주체</label>
+                            </div>
+                            <div class="form-conts">
+                                <select id="searchAdminFdatType" name="searchAdminFdatType" title="설립주체" class="krds-form-select small">
+                                    <option value="" >전체</option>
+                                    <option value="1" >국가</option>
+                                    <option value="2" >지방자치단체</option>
+                                    <option value="3" >법인</option>
+                                    <option value="4" >개인</option>
+                                    <option value="5" >기타</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-tit">
+                                <label for="ltc_admin_nm">기관명</label>
+                            </div>
+                            <div class="form-conts">
+                                <div class="org-search">
+                                    <input id="ltc_admin_nm" name="ltcAdminNm" title="기관명" class="krds-input small" type="text" value="" maxlength="100"/>
+                                    <button type="button" class="btn-search" id="btn_ltc_admin_sym_search">검색</button>
+                                    <input id="ltc_admin_sym" name="ltcAdminSym" type="hidden" value=""/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <div class="group-box">
+                 <div class="form-section">
+                     <div class="form-box-b3 type2">
+                         <div class="fieldset">
+                             <div class="form-group">
+                                 <h4 class="article-title-h4">치매관련급여</h4>
+                                 <ul class="check-list">
+                                     <li>
+                                         <div class="check-tit-box">
+                                             <div class="krds-form-check large">
+                                                 <input id="ltcAdminKindChoiceYn1" name="ltcAdminKindChoiceYn1" title=" 치매전담형 장기요양기관" type="checkbox" value="Y"/><input type="hidden" name="_ltcAdminKindChoiceYn1" value="on"/>
+                                                 <label for="ltcAdminKindChoiceYn1">
+                                                     	치매전담형 장기요양기관
+                                                     <button type="button" id="btn_tip1" class="btn-help">
+                                                         <span class="sr-only">도움말</span>
+                                                     </button>
+                                                 </label>
+                                             </div>
+                                         </div>
+                                         <div class="check-desc-box">
+                                             <div class="krds-check-area">
+                                                 <div class="krds-form-check">
+                                                     <input id="ltcAdminPttnChoiceYn11" name="ltcAdminPttnChoiceYn11" title=" 노인요양시설 내 치매전담실" type="checkbox" value="Y"/><input type="hidden" name="_ltcAdminPttnChoiceYn11" value="on"/>
+                                                     <label for="ltcAdminPttnChoiceYn11">노인요양시설 내 치매전담실</label>
+                                                 </div>
+                                                 <div class="krds-form-check">
+                                                     <input id="ltcAdminPttnChoiceYn12" name="ltcAdminPttnChoiceYn12" title=" 치매전담형노인요양공동생활가정" type="checkbox" value="Y"/><input type="hidden" name="_ltcAdminPttnChoiceYn12" value="on"/>
+                                                     <label for="ltcAdminPttnChoiceYn12">치매전담형노인요양공동생활가정</label>
+                                                 </div>
+                                                 <div class="krds-form-check">
+                                                     <input id="ltcAdminPttnChoiceYn13" name="ltcAdminPttnChoiceYn13" title=" 주야간보호 내 치매전담실" type="checkbox" value="Y"/><input type="hidden" name="_ltcAdminPttnChoiceYn13" value="on"/>
+                                                     <label for="ltcAdminPttnChoiceYn13">주야간보호 내 치매전담실</label>
+                                                 </div>
+                                             </div>
+                                         </div>
+                                     </li>
+                                     <li>
+                                         <div class="check-tit-box">
+                                             <div class="krds-form-check large">
+                                                 <input id="ltcAdminKindChoiceYn2" name="ltcAdminKindChoiceYn2" title=" 인지활동형 프로그램 제공기관" type="checkbox" value="Y"/><input type="hidden" name="_ltcAdminKindChoiceYn2" value="on"/>
+                                                 <label for="ltcAdminKindChoiceYn2">
+                                                     	인지활동형 프로그램 제공기관
+                                                     <button type="button" id="btn_tip2" class="btn-help">
+                                                         <span class="sr-only">도움말</span>
+                                                     </button>
+                                                 </label>
+                                             </div>
+                                         </div>
+                                         <div class="check-desc-box">
+                                             <div class="krds-check-area">
+                                                 <div class="krds-form-check">
+                                                     <input id="ltcAdminPttnChoiceYn21" name="ltcAdminPttnChoiceYn21" title=" 방문요양" type="checkbox" value="Y"/><input type="hidden" name="_ltcAdminPttnChoiceYn21" value="on"/>
+                                                     <label for="ltcAdminPttnChoiceYn21">방문요양</label>
+                                                 </div>
+                                                 <div class="krds-form-check">
+                                                     <input id="ltcAdminPttnChoiceYn23" name="ltcAdminPttnChoiceYn23" title=" 주야간보호" type="checkbox" value="Y"/><input type="hidden" name="_ltcAdminPttnChoiceYn23" value="on"/>
+                                                     <label for="ltcAdminPttnChoiceYn23">주야간보호</label>
+                                                 </div>
+                                             </div>
+                                         </div>
+                                     </li>
+                                     <li>
+                                         <div class="check-tit-box">
+                                             <div class="krds-form-check large">
+                                                 <input id="ltcAdminPttnChoiceYn22" name="ltcAdminPttnChoiceYn22" title=" 최초 치매수급자 방문간호 제공기관" type="checkbox" value="Y"/><input type="hidden" name="_ltcAdminPttnChoiceYn22" value="on"/>
+                                                 <label for="ltcAdminPttnChoiceYn22">
+                                                    	 최초 치매수급자 방문간호 제공기관
+                                                     <button type="button" id="btn_tip3" class="btn-help">
+                                                         <span class="sr-only">도움말</span>
+                                                     </button>
+                                                 </label>
+                                             </div>
+                                         </div>
+                                     </li>
+                                     <li>
+                                         <div class="check-tit-box">
+                                             <div class="krds-form-check large">
+                                                 <input id="ltcAdminKindChoiceYn7" name="ltcAdminKindChoiceYn7" title=" 장기요양 가족휴가제 급여제공 기관" type="checkbox" value="Y"/><input type="hidden" name="_ltcAdminKindChoiceYn7" value="on"/>
+                                                 <label for="ltcAdminKindChoiceYn7">
+                                                   	 장기요양 가족휴가제 급여제공 기관
+                                                     <button type="button" id="btn_tip4" class="btn-help">
+                                                         <span class="sr-only" >도움말</span>
+                                                     </button>
+                                                 </label>
+                                             </div>
+                                         </div>
+                                         <div class="check-desc-box">
+                                             <div class="krds-check-area">
+                                                 <div class="krds-form-check">
+                                                     <input id="ltcAdminPttnChoiceYn71" name="ltcAdminPttnChoiceYn71" title=" 종일 방문요양" type="checkbox" value="Y"/><input type="hidden" name="_ltcAdminPttnChoiceYn71" value="on"/>
+                                                     <label for="ltcAdminPttnChoiceYn71">종일 방문요양</label>
+                                                 </div>
+                                                 <div class="krds-form-check">
+                                                     <input id="ltcAdminPttnChoiceYn72" name="ltcAdminPttnChoiceYn72" title=" 단기보호" type="checkbox" value="Y"/><input type="hidden" name="_ltcAdminPttnChoiceYn72" value="on"/>
+                                                     <label for="ltcAdminPttnChoiceYn72">단기보호</label>
+                                                 </div>
+                                             </div>
+                                         </div>
+                                     </li>
+                                 </ul>
+                             </div>
+                             <div class="form-group">
+                                 <h4 class="article-title-h4">통합재가서비스</h4>
+                                 <ul class="check-list">
+                                     <li>
+                                         <div class="check-tit-box">
+                                             <div class="krds-form-check large">
+                                                 <input id="ltcAdminKindChoiceYn8" name="ltcAdminKindChoiceYn8" title=" 통합재가서비스" type="checkbox" value="Y"/><input type="hidden" name="_ltcAdminKindChoiceYn8" value="on"/>
+                                                 <label for="ltcAdminKindChoiceYn8">
+                                                     	통합재가서비스
+                                                     <button type="button" id="btn_tip5" class="btn-help">
+                                                         <span class="sr-only">도움말</span>
+                                                     </button>
+                                                 </label>
+                                             </div>
+                                         </div>
+                                         <div class="check-desc-box box2">
+                                             <div class="form-tit">
+                                                 <label for="service">서비스 유형</label>
+                                             </div>
+                                             <div class="form-conts">
+                                                 <select id="unityOahAdminPttnCd" name="unityOahAdminPttnCd" title="서비스 유형" class="krds-form-select small mo-full">
+				                                    <option value="" >전체</option>
+				                                    <option value="01" >주야간보호형</option>
+				                                    <option value="02" >가정방문형</option>
+					                           </select>
+                                             </div>
+                                         </div>
+                                     </li>
+                                 </ul>
+                             </div>
+                             <div class="form-group">
+                                 <h4 class="article-title-h4">시범사업</h4>
+                                 <ul class="check-list">
+                                     <li>
+                                         <div class="check-tit-box">
+                                             <div class="krds-form-check large">
+                                                 <input id="ltcAdminKindChoiceYn10" name="ltcAdminKindChoiceYn10" title=" 주야간보호기관 내 단기보호 시범사업" type="checkbox" value="Y"/><input type="hidden" name="_ltcAdminKindChoiceYn10" value="on"/>
+                                                 <label for="ltcAdminKindChoiceYn10">
+                                                     	주야간보호기관 내 단기보호 시범사업
+                                                     <button type="button" id="btn_tip6" class="btn-help">
+                                                         <span class="sr-only">도움말</span>
+                                                     </button>
+                                                 </label>
+                                             </div>
+                                         </div>
+                                     </li>
+                                 </ul>
+                             </div>
+                             <div class="form-group">
+                                 <h4 class="article-title-h4">기타</h4>
+                                 <ul class="check-list">
+                                     <li class="all-check-area">
+                                         <div class="check-tit-box">
+                                             <div class="krds-form-check large">
+                                                 <input id="ltcAdminKindChoiceYn3" name="ltcAdminKindChoiceYn3" title=" 청구그린기관" type="checkbox" value="Y"/><input type="hidden" name="_ltcAdminKindChoiceYn3" value="on"/>
+                                                 <label for="ltcAdminKindChoiceYn3">
+                                                     	청구그린기관
+                                                     <button type="button" id="btn_tip7" class="btn-help">
+                                                         <span class="sr-only">도움말</span>
+                                                     </button>
+                                                 </label>
+                                             </div>
+                                         </div>
+                                         <div class="check-tit-box">
+                                             <div class="krds-form-check large">
+                                                 <input id="ltcAdminKindChoiceYn6" name="ltcAdminKindChoiceYn6" title=" 장기요양기관패널" type="checkbox" value="Y"/><input type="hidden" name="_ltcAdminKindChoiceYn6" value="on"/>
+                                                 <label for="ltcAdminKindChoiceYn6">
+                                                  	   장기요양기관패널
+                                                     <button type="button" id="btn_tip8" class="btn-help">
+                                                         <span class="sr-only">도움말</span>
+                                                     </button>
+                                                 </label>
+                                             </div>
+                                         </div>
+                                     </li>
+                                 </ul>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+             <div class="desc-info-box">
+                 <div class="part-span body-b4">
+                     <span class="c-gray">※</span>
+                     <span class="c-gray">게시된 장기요양 정보는 지자체 신고내역과 기관에서 직접 등록한 정보로, 실제정보와 상이할 수 있으니 유선으로 확인 후 방문하시기 바랍니다.</span>
+                 </div>
+                 <div class="part-span body-b4 mt-4">
+                     <span class="c-gray">※</span>
+                     <span class="c-gray">[지도검색/목록검색]에서 기관 검색 시, 기본 정렬 순서는 정책우선 급여종류순 > 평가등급순 > 총점순 > 랜덤으로 조회합니다.</span>
+                 </div>
+                 <div class="part-span body-b4 mt-4">
+                     <span class="c-gray">※</span>
+                     <span class="c-gray">정렬순서는 평가등급순, 지정일자순, 가나다순, 거리순, 랜덤으로 선택하여 조회할 수 있습니다.</span>
+                 </div>
+             </div>
+             <div class="bottom-btn-wrap">
+                 <button type="button" id="btn_search_pop" class="krds-btn medium primary">검색</button>
+             </div>
+         </div>
+</form>
+</div>
+<!-- //contents -->
+
+
+
+
+
+<script type="text/javascript" src="/npbs/solution/netfunnel/js/netfunnel.js?timestamp=0000000001" charset="utf-8"></script>
+
+<script type="text/javascript" src="/npbs/js/external/jquery/jquery-ui.datepicker-ko.js"></script>
+<script type="text/javascript" src="/npbs/js/external/jquery/jquery.validate.js"></script>
+<script type="text/javascript" src="/npbs/js/external/jquery/messages_ko.js"></script>
+<script type="text/javascript" src="/npbs/js/external/jquery/jquery.inputmask.js"></script>
+<script type="text/javascript" src="/npbs/js/external/jquery/jquery.inputmask.extensions.js"></script>
+<script type="text/javascript" src="/npbs/js/external/jquery/jquery.inputmask.date.extensions.js"></script>
+<script type="text/javascript" src="/npbs/js/external/jquery/jquery.inputmask.numeric.extensions.js"></script>
+<script type="text/javascript" src="/npbs/js/external/jquery/jquery.blockUI.js"></script>
+<script type="text/javascript" src="/npbs/js/external/spin/spin.js"></script>
+<script type="text/javascript" src="/npbs/js/external/jquery/jquery.spin.js"></script>
+<script type="text/javascript" src="/npbs/js/external/datejs/date.js"></script>
+<script type="text/javascript" src="/npbs/js/external/jsrender/jsrender.min.js"></script>
+<script type="text/javascript" src="/npbs/js/np/style_new.js?timestamp=0000000001"></script>
+<script type="text/javascript" src="/npbs/js/np/np_constant_new.js?timestamp=0000000001"></script>
+<script type="text/javascript" src="/npbs/js/np/np_common_new.js?timestamp=0000000001"></script>
+
+
+<script type="text/javascript" src="/npbs/assetsRenew/js/np/krds.js"></script>
+<script type="text/javascript" src="/npbs/assetsRenew/js/np/swiper-bundle.min.js"></script>
+<script type="text/javascript" src="/npbs/assetsRenew/js/np/ui.js"></script>
+<script type="text/javascript" src="/npbs/assetsRenew/js/np/common-modal.js"></script>
+<script type="text/javascript" src="/npbs/assetsRenew/js/np/popup.js"></script>
+
+
+
+
+<!-- <script type="text/x-jsrender" id="header_template"> -->
+
+<!-- <div class="nav-column"><h3><a href="#" title="{{:menuNm}}">{{:menuNm}}</a></h3><ul></ul></div> -->
+<!-- </script> -->
+<script type="text/x-jsrender" id="header_template">
+<div class="item devDiv">
+	<h2>{{:menuNm}}</h2>
+	<ul class="devMenuList"></ul>
+</div>
+</script>
+<script type="text/x-jsrender" id="item_template">
+<li><a href="{{:menuUrl}}" onclick="javascript:gfn_aLink(this); return false;" title="{{:menuNm}}">{{:menuNm}}</a></li>
+</script>
+<script type="text/x-jsrender" id="item_template2">
+<li><a href="{{:menuUrl}}" onclick="javascript:gfn_aLink(this); return false;" title="{{:menuNm}}">- {{:menuNm}}</a></li>
+</script>
+
+<script type="text/x-jsrender" id="item_template_blank">
+<li><a href="{{:menuUrl}}" target="_blank" title="새창-{{:menuNm}}">{{:menuNm}}</a></li>
+</script>
+
+<script type="text/x-jsrender" id="m_header_template">
+<div class="sub-cate devDiv">
+	<h2 class="sub-title">{{:menuNm}}</h2>
+	<ul class="devMenuList"></ul>
+<div>
+</script>
+<script type="text/x-jsrender" id="m_item_template">
+<li><a class="gnb-sub-trigger" href="{{:menuUrl}}" onclick="javascript:gfn_aLink(this); return false;" title="{{:menuNm}}">{{:menuNm}}</a></li>
+</script>
+<script type="text/x-jsrender" id="m_item_template_blank">
+<li><a class="gnb-sub-trigger"  href="{{:menuUrl}}" target="_blank" title="새창-{{:menuNm}}">{{:menuNm}}</a></li>
+</script>
+
+
+<form action="" name="xecure" style="position:absolute;"><input type="hidden" name="p" /></form>
+
+<iframe title="파일다운로드를 위한 숨김 프레임" name="np_common_iframe_" id="np_common_iframe_" src="" height="0" width="0" frameborder="0" border="0" tabindex="-1" style="position:absolute;display:none;"></iframe>
+
+
+
+<script type="text/javascript" src="/npbs/assets/solution/AnySign4PC/anySign4PCajax.js?timestamp=0000000001"></script>
+
+<!-- <script type="text/javascript">
+document.write("<script type=\"text/javascript\" src=\"" + "/npbs/assets/solution/AnySign4PC/anySign4PCInterface.js" + "?version=" + new Date().getTime() + "\"></scr"+"ipt>");
+</script> -->
+
+
+<script> var bNxWeb   = false;</script>
+<script> var bNxKey   = false;</script>
+<script> var raonFlag = null;</script>
+
+
+<script type="text/javascript" src="/npbs/assets/solution/raonnx/cmn/TouchEnNx.js?timestamp=0000000001"></script>
+
+
+<script type="text/javascript">
+//키보드 보안 설치 체크여부
+TouchEnNxConfig.use =   {
+        nxkey   :   true, //키보드보안 사용  on
+        nxcr    :   false, //인증서복사 사용 off
+        nxweb   :   false,
+        nxfw    :   false
+};
+
+function touchWebInit(Print, Capture, RClick, ViewSource, Copy, Paste, Save){
+    
+    
+     console.log(' touchWebInit bNxWeb11='+bNxWeb);
+     bNxWeb = true;
+     //웹보안 사용 페이지 일 경우.
+     TouchEnNxConfig.use =   {
+             nxkey   :   true, //키보드보안 사용  off
+             nxcr    :   false, //인증서복사 사용 off
+             nxweb   :   true,
+             nxfw    :   false
+     }; 
+    
+}
+
+function fn_setRaonStatus(_bNxWeb, _bNxKey, _bInsNxKey  ){
+    
+    var tmpNxkey = false;
+    if(!_bInsNxKey){ //키보드보안 설치X
+        tmpNxkey = false;
+    }else if(!_bNxKey){//키보드 사용 X
+        tmpNxkey = false;
+    }else if(_bNxKey){ // 키보드 보안 사용ㅇ
+        tmpNxkey = true;
+    }
+    if(_bNxWeb && !tmpNxkey){ //웹보안사용 ,키보드보안 설치x인경우
+        
+        TouchEnNxConfig.use =   {
+                nxkey   :   false, //키보드보안 
+                nxcr    :   false, //인증서복사 
+                nxweb   :   true,
+                nxfw    :   false
+        };      
+    }else if(_bNxWeb && tmpNxkey ){ //웹보안사용, 키보드보안 사용
+        
+        TouchEnNxConfig.use =   {
+                nxkey   :   true, //키보드보안 
+                nxcr    :   false, //인증서복사
+                nxweb   :   true,
+                nxfw    :   false
+        };              
+    }else if(!_bNxWeb &&! tmpNxkey){ //웹보안사용X,키보드보안 사용 X
+        
+            TouchEnNxConfig.use =   {
+                    nxkey   :   false, //키보드보안 
+                    nxcr    :   false, //인증서복사
+                    nxweb   :   false,
+                    nxfw    :   false
+            };              
+    }else if(!_bNxWeb && tmpNxkey){ //웹보안사용X,키보드보안 사용
+        
+        TouchEnNxConfig.use =   {
+                nxkey   :   true, //키보드보안 
+                nxcr    :   false, //인증서복사
+                nxweb   :   false,
+                nxfw    :   false
+        };              
+    }   
+}
+
+
+function fn_touchKeyFooterRst(bInsNxKey){
+    
+
+/*     console.log('VP_platformInfo.x64 : ' + VP_platformInfo.x64);
+    console.log('VP_platformInfo.Windows : ' + VP_platformInfo.Windows);
+
+    console.log('[foo]fn_touchKeyFooterRst = '+bInsNxKey);
+    console.log('[foo]bNxKey='+bNxKey);
+ */
+//    raonFlag =  bInsNxKey ;
+
+    if (bInsNxKey) {
+        
+        $("#btn_pgmEnkey").html("키보드 보안 프로그램 설치(ㅇ)") ;
+        
+        //kjs 추가 20200923 start
+        $("#chkTouchEn").prop("checked", true);
+        gfn_setCookie("nxKey", "Y", 1) ;
+        //kjs 추가 20200923 end
+
+    } else {
+
+        $("#btn_pgmEnkey").html("키보드 보안 프로그램 설치(X)") ;
+    
+        //kjs 추가 20200923 start
+        $("#chkTouchEn").prop("checked", false);
+        gfn_setCookie("nxKey", "N", 1) ;
+      //kjs 추가 20200923 end
+
+    }
+    
+    
+    //키보드보안 설정값 막음 
+    //kjs fn_setRaonStatus(bNxWeb, bNxKey, bInsNxKey);
+    
+}
+
+
+//---2020 플로그인 제거 사업 관련 START---------------------------------------------------------------------------------------------------------------------------
+//키보드보안 설치여부 체크 kjs 20201023
+function fn_checkTKInstall(){
+
+     tkTimer = setInterval(function(){
+     var nxKeyYn = gfn_getCookie("nxKey");
+     var moduleArrary = TouchEnNx.useModule;
+         TOUCHENEX_CHECK.check(moduleArrary, function(currStatus){
+             if(currStatus.status){
+                 if(nxKeyYn == "Y"){
+                     //alert("rrrr111222HHH===>" + nxKeyYn);
+                     var inputs = document.getElementsByTagName("input");
+                     for(var i = 0; i < inputs.length; i++){
+                         var input = inputs.item(i);
+                         if(input.getAttribute("data-tk-kbdType")!=null){
+                             document.getElementById(input.id).onclick="";
+                             document.getElementById(input.id).readOnly = false;
+                         }
+                     }
+                     
+                     TouchEnNx.init(); //키보드보안 실행
+                     
+                 }
+                 
+                 else{
+                    var inputs = document.getElementsByTagName("input");
+                    for(var i = 0; i < inputs.length; i++){
+                        var input = inputs.item(i);
+                        if(input.getAttribute("data-tk-kbdType")!=null){
+                            document.getElementById(input.id).readOnly = true;
+                        }
+                    }
+                 }
+                 
+                clearInterval(tkTimer);
+             }
+         });
+ }, 1000);
+
+}
+//---2020 플로그인 제거 사업 관련 END---------------------------------------------------------------------------------------------------------------------------
+
+//os버전 체크 kjs 20201022 추가
+function vp_getPlatformInfo() {
+    
+    //alert("111");
+    var platformInfo = {
+      Windows:false, Linux:false, Ubuntu:false, Fedora:false, Mac:false, iOS:false, Android:false,
+      Mobile:false, x64:false,
+      type: "unknown", name: "unknown"
+  };
+  platformInfo.name = navigator.platform;
+  if (navigator.appVersion.match("WOW64")) platformInfo.name = "WOW64";
+
+  if (platformInfo.name.match(/Win32/i) || platformInfo.name.match(/WOW64/i)) {
+      platformInfo.Windows = true;
+      platformInfo.type = "Windows";
+      if (navigator.appVersion.match(/Win64/i)) {
+          platformInfo.name = "Win64";
+          platformInfo.x64 = true;
+          platformInfo.type = "Windows64";
+      }
+  } else if (platformInfo.name.match("Win64")) {
+      platformInfo.Windows = true;
+      platformInfo.x64 = true;
+      platformInfo.type = "Windows64";
+  } else if (platformInfo.name.match("Linux armv")) {
+      platformInfo.Mobile = true;
+      platformInfo.Android = true;
+      platformInfo.type = "Android";
+  } else if (platformInfo.name.match(/Linux/i)) {
+      platformInfo.Linux = true;
+      platformInfo.type = "Linux";
+   
+        if (platformInfo.name.match(/x86_64/i)) {
+          platformInfo.x64 = true;
+          platformInfo.type = "Linux64";
+      } else if (navigator.userAgent.match(/x86_64/i)) { //Opera
+          platformInfo.x64 = true;
+          platformInfo.type = "Linux64";
+      }
+      if (navigator.userAgent.match(/Fedora/i)) {
+          platformInfo.Fedora = true;
+          platformInfo.type = "Fedora";
+          if (platformInfo.x64) platformInfo.type = "Fedora64";
+      } else if (navigator.userAgent.match(/Ubuntu/i)) {
+          platformInfo.Ubuntu = true;
+          platformInfo.type = "Ubuntu";
+          if (platformInfo.x64) platformInfo.type = "Ubuntu64";
+      } else if (navigator.userAgent.match(/Android/i)) { //modify 20150903: Samsung Galaxy Edge
+          platformInfo.Linux = false;
+          platformInfo.Mobile = true;
+          platformInfo.Android = true;
+          platformInfo.type = "Android";
+      }
+  } else if (platformInfo.name.match(/MacIntel/i)) {
+      platformInfo.Mac = true;
+      platformInfo.type = "Mac";
+  } else if (platformInfo.name == "iPad"
+          || platformInfo.name == "iPhone"
+          || platformInfo.name == "iPod"
+          || platformInfo.name == "iOS") {
+      platformInfo.Mobile = true;
+      platformInfo.iOS = true;
+      platformInfo.type = "iOS";
+  }
+
+  if( (navigator.userAgent.match(/iPhone/i))  ||
+      (navigator.userAgent.match(/iPod/i))    ||
+      (navigator.userAgent.match(/iPad/i))    ||
+      (navigator.userAgent.match(/Android/i))) {
+      platformInfo.Mobile = true;
+  }
+  if( (navigator.userAgent.match(/Windows Phone/i)) ||
+      (navigator.userAgent.match(/Windows CE/i))    ||
+      (navigator.userAgent.match(/Symbian/i))       ||
+      (navigator.userAgent.match(/BlackBerry/i))) {
+      platformInfo.Mobile = true;
+  }
+
+  //modify/remove system type
+  if (navigator.userAgent.match("Android") && navigator.userAgent.match("Opera Mini")) {
+      platformInfo.Mobile = true;
+      platformInfo.Android = true;
+      platformInfo.type = "Android";
+  }
+  
+  return platformInfo;
+}
+
+
+/* 2020.10.27. / kjs / 플러그인제거사업   ---> 
+* 키보드보안적용
+*/
+//2020 플로그인 제거 사업 관련 추가
+function fn_PlugInDelNxKeyChk() {
+    
+    
+    if(!TOUCHENEX_UTIL.isLinux()){
+        fn_checkTKInstall();
+    }
+
+    /*    가상키보드 사용여부    init kjs 20201015 */
+  AnySign.mTransKeyEnable     = gfn_getCookie("nxKey") == 'N' || gfn_getCookie("nxKey") == '' ? true:false;   /* PLUGIN2020_06 Anysign 가상키보드 여부  seolz   */
+  AnySign.mTouchEnnxKeyEnable = gfn_getCookie("nxKey") == 'N' || gfn_getCookie("nxKey") == '' ? false:true;   /* PLUGIN2020_06 Anysign 키보드보안 여부  seolz   */
+    
+}
+
+</script>
+
+
+
+
+
+<script type="text/javascript">
+/* alert('script.jsp'); */
+</script>
+
+
+<script type="text/javascript" src="/npbs/js/np/t/z/st_common_new.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function () {
+
+    fn_changeCondition();
+
+    // 2024.06.13 change로 수정
+    //$("#searchAdminKindCd").on("selectmenuchange", function(event){
+    $("#searchAdminKindCd").on("change", function(event){
+        fn_changeCondition();
+    });
+
+
+    function fn_changeCondition()
+    {
+        /* searchAdminKindCdList 추가 이벤트 st - 박주승 2021.12.13 **************************************************************************************************************/
+        
+        // 추가할 값을 콤보에서 읽어온다
+        const addEle = document.getElementById('searchAdminKindCd').value;
+        const addEleText = $("#searchAdminKindCd option:checked").text();
+        
+        var sakcList = $('#searchAdminKindCdList');
+        
+        if (sakcList.text().indexOf(addEleText) != -1) {
+        	gfn_alert(addEleText + "은(는) 이미 추가 되어있습니다.");
+        } else {
+            if (!(addEleText == "전체")) {
+                //sakcList.append("<li id='" + addEle + "' value='" + addEle + "' text='" + addEleText + "' onclick='fn_delEle(this)' style='cursor:pointer'>" + addEleText + " ❌</li>");
+                $("#searchAdminKindCdDiv").css('display','flex');
+                sakcList.append("<li id='" + addEle + "' value='" + addEle + "' text='" + addEleText + "'><span class='body-b3 c-default'>"+ addEleText +"<button type='button' onclick='fn_delEle(this)'></button></span></li>");
+//              gfn_alert(addEleText + "을(를) 추가 되었습니다.");
+            } else { // 전체를 선택한 경우
+                // 전체를 선택한 경우
+                $("#searchAdminKindCdList").empty(); // 모든 항목 지우기
+                $("#searchAdminKindCdDiv").css('display','none');
+            }
+        }
+//         gfn_alert(sakcList.text()); // @@@@@ ttest
+        /* searchAdminKindCdList 추가 이벤트 ed - 박주승 2021.12.13 **************************************************************************************************************/
+
+        //급여종류가 주야간보호, 단기보호, 시설, 치매전담형시설 일때 검색 조건 변경
+        if($("#searchAdminKindCd").val() == "01" || $("#searchAdminKindCd").val() == "02" || $("#searchAdminKindCd").val() == "06" || $("#searchAdminKindCd").val() == "07"
+             || sakcList.text().indexOf("노인요양시설") != -1 || sakcList.text().indexOf("노인요양공동생활가정") != -1 || sakcList.text().indexOf("주야간보호") != -1 || sakcList.text().indexOf("단기보호") != -1){
+            $("#search_condition_div").show();
+        	$("#search_condition").show();
+        }else{
+        	$("#search_condition").hide();
+            $("#search_condition").find("select").val("").attr("selected","selected");
+            //$(".search_condition").find("select").selectmenu("refresh"); // 2024.06.13 접근성 관련 select 삭제 후 주석처리
+        }
+        //급여종류가 주야간보호, 단기보호, 시설, 치매전담형시설 일때 검색 조건 변경
+        if($("#searchAdminKindCd").val() == "04" || sakcList.text().indexOf("방문목욕") != -1 ){
+        	$("#search_condition_div").show();
+            $("#search_condition2").show();
+        }else{
+        	$("#search_condition2").hide();
+            $("#search_condition2").find("select").val("").attr("selected","selected");
+            //$(".search_condition2").find("select").selectmenu("refresh"); // 2024.06.13 접근성 관련 select 삭제 후 주석처리
+        }
+    }
+
+    $("#ltcAdminKindChoiceYn1").on("click", function(event){
+        var isChecked = $("input:checkbox[name=ltcAdminKindChoiceYn1]").is(":checked");
+
+        if (isChecked){
+            $("input:checkbox[name=ltcAdminPttnChoiceYn11]").prop("checked", true);
+            $("input:checkbox[name=ltcAdminPttnChoiceYn12]").prop("checked", true);
+            $("input:checkbox[name=ltcAdminPttnChoiceYn13]").prop("checked", true);
+
+            var isChecked = $("input:checkbox[name=ltcAdminKindChoiceYn2]").is(":checked");
+
+            if (isChecked){
+                $("input:checkbox[name=ltcAdminKindChoiceYn2]").prop("checked", false);
+                $("input:checkbox[name=ltcAdminPttnChoiceYn21]").prop("checked", false);
+                $("input:checkbox[name=ltcAdminPttnChoiceYn23]").prop("checked", false);
+
+            } else {
+                ;
+            }
+
+        } else {
+            $("input:checkbox[name=ltcAdminPttnChoiceYn11]").prop("checked", false);
+            $("input:checkbox[name=ltcAdminPttnChoiceYn12]").prop("checked", false);
+            $("input:checkbox[name=ltcAdminPttnChoiceYn13]").prop("checked", false);
+        }
+    });
+
+    $("#ltcAdminPttnChoiceYn11").on("click", function(event){
+        var isChecked1 = $("input:checkbox[name=ltcAdminPttnChoiceYn11]").is(":checked");
+        var isChecked2 = $("input:checkbox[name=ltcAdminPttnChoiceYn12]").is(":checked");
+        var isChecked3 = $("input:checkbox[name=ltcAdminPttnChoiceYn13]").is(":checked");
+
+        if (isChecked1||isChecked2||isChecked3){
+            $("input:checkbox[name=ltcAdminKindChoiceYn1]").prop("checked", true);
+        } else {
+            $("input:checkbox[name=ltcAdminKindChoiceYn1]").prop("checked", false);
+        }
+
+        var isChecked = $("input:checkbox[name=ltcAdminKindChoiceYn2]").is(":checked");
+
+        if (isChecked){
+            $("input:checkbox[name=ltcAdminKindChoiceYn2]").prop("checked", false);
+            $("input:checkbox[name=ltcAdminPttnChoiceYn21]").prop("checked", false);
+            $("input:checkbox[name=ltcAdminPttnChoiceYn23]").prop("checked", false);
+
+        } else {
+            
+            
+       
+            ;
+        }
+    });
+
+    $("#ltcAdminPttnChoiceYn12").on("click", function(event){
+        var isChecked1 = $("input:checkbox[name=ltcAdminPttnChoiceYn11]").is(":checked");
+        var isChecked2 = $("input:checkbox[name=ltcAdminPttnChoiceYn12]").is(":checked");
+        var isChecked3 = $("input:checkbox[name=ltcAdminPttnChoiceYn13]").is(":checked");
+
+        if (isChecked1||isChecked2||isChecked3){
+            $("input:checkbox[name=ltcAdminKindChoiceYn1]").prop("checked", true);
+        } else {
+            $("input:checkbox[name=ltcAdminKindChoiceYn1]").prop("checked", false);
+        }
+
+        var isChecked = $("input:checkbox[name=ltcAdminKindChoiceYn2]").is(":checked");
+
+        if (isChecked){
+            $("input:checkbox[name=ltcAdminKindChoiceYn2]").prop("checked", false);
+            $("input:checkbox[name=ltcAdminPttnChoiceYn21]").prop("checked", false);
+            $("input:checkbox[name=ltcAdminPttnChoiceYn23]").prop("checked", false);
+
+        } else {
+            ;
+        }
+    });
+
+    $("#ltcAdminPttnChoiceYn13").on("click", function(event){
+        var isChecked1 = $("input:checkbox[name=ltcAdminPttnChoiceYn11]").is(":checked");
+        var isChecked2 = $("input:checkbox[name=ltcAdminPttnChoiceYn12]").is(":checked");
+        var isChecked3 = $("input:checkbox[name=ltcAdminPttnChoiceYn13]").is(":checked");
+
+        if (isChecked1||isChecked2||isChecked3){
+            $("input:checkbox[name=ltcAdminKindChoiceYn1]").prop("checked", true);
+        } else {
+            $("input:checkbox[name=ltcAdminKindChoiceYn1]").prop("checked", false);
+        }
+
+        var isChecked = $("input:checkbox[name=ltcAdminKindChoiceYn2]").is(":checked");
+
+        if (isChecked){
+            $("input:checkbox[name=ltcAdminKindChoiceYn2]").prop("checked", false);
+            $("input:checkbox[name=ltcAdminPttnChoiceYn21]").prop("checked", false);
+            $("input:checkbox[name=ltcAdminPttnChoiceYn23]").prop("checked", false);
+        } else {
+            ;
+        }
+    });
+
+    $("#ltcAdminKindChoiceYn2").on("click", function(event){
+        var isChecked = $("input:checkbox[name=ltcAdminKindChoiceYn2]").is(":checked");
+
+        if (isChecked){
+            $("input:checkbox[name=ltcAdminPttnChoiceYn21]").prop("checked", true);
+            $("input:checkbox[name=ltcAdminPttnChoiceYn23]").prop("checked", true);
+
+            var isChecked = $("input:checkbox[name=ltcAdminKindChoiceYn1]").is(":checked");
+
+            if (isChecked){
+                $("input:checkbox[name=ltcAdminKindChoiceYn1]").prop("checked", false);
+                $("input:checkbox[name=ltcAdminPttnChoiceYn11]").prop("checked", false);
+                $("input:checkbox[name=ltcAdminPttnChoiceYn12]").prop("checked", false);
+                $("input:checkbox[name=ltcAdminPttnChoiceYn13]").prop("checked", false);
+            } else {
+                ;
+            }
+
+        } else {
+            $("input:checkbox[name=ltcAdminPttnChoiceYn21]").prop("checked", false);
+            $("input:checkbox[name=ltcAdminPttnChoiceYn23]").prop("checked", false);
+        }
+    });
+
+    $("#ltcAdminPttnChoiceYn21").on("click", function(event){
+        var isChecked1 = $("input:checkbox[name=ltcAdminPttnChoiceYn21]").is(":checked");
+        var isChecked3 = $("input:checkbox[name=ltcAdminPttnChoiceYn23]").is(":checked");
+
+        if (isChecked1||isChecked2||isChecked3){
+            $("input:checkbox[name=ltcAdminKindChoiceYn2]").prop("checked", true);
+        } else {
+            $("input:checkbox[name=ltcAdminKindChoiceYn2]").prop("checked", false);
+        }
+
+        var isChecked = $("input:checkbox[name=ltcAdminKindChoiceYn1]").is(":checked");
+
+        if (isChecked){
+            $("input:checkbox[name=ltcAdminKindChoiceYn1]").prop("checked", false);
+            $("input:checkbox[name=ltcAdminPttnChoiceYn11]").prop("checked", false);
+            $("input:checkbox[name=ltcAdminPttnChoiceYn12]").prop("checked", false);
+            $("input:checkbox[name=ltcAdminPttnChoiceYn13]").prop("checked", false);
+        } else {
+            ;
+        }
+    });
+
+/*     $("#ltcAdminPttnChoiceYn22").on("click", function(event){
+        var isChecked1 = $("input:checkbox[name=ltcAdminPttnChoiceYn21]").is(":checked");
+        var isChecked2 = $("input:checkbox[name=ltcAdminPttnChoiceYn22]").is(":checked");
+        var isChecked3 = $("input:checkbox[name=ltcAdminPttnChoiceYn23]").is(":checked");
+
+        if (isChecked1||isChecked2||isChecked3){
+            $("input:checkbox[name=ltcAdminKindChoiceYn2]").prop("checked", true);
+        } else {
+            $("input:checkbox[name=ltcAdminKindChoiceYn2]").prop("checked", false);
+        }
+
+        var isChecked = $("input:checkbox[name=ltcAdminKindChoiceYn1]").is(":checked");
+
+        if (isChecked){
+            $("input:checkbox[name=ltcAdminKindChoiceYn1]").prop("checked", false);
+            $("input:checkbox[name=ltcAdminPttnChoiceYn11]").prop("checked", false);
+            $("input:checkbox[name=ltcAdminPttnChoiceYn12]").prop("checked", false);
+            $("input:checkbox[name=ltcAdminPttnChoiceYn13]").prop("checked", false);
+        } else {
+            ;
+        }
+    }); */
+
+    $("#ltcAdminPttnChoiceYn23").on("click", function(event){
+        var isChecked1 = $("input:checkbox[name=ltcAdminPttnChoiceYn21]").is(":checked");
+        var isChecked3 = $("input:checkbox[name=ltcAdminPttnChoiceYn23]").is(":checked");
+
+        if (isChecked1||isChecked2||isChecked3){
+            $("input:checkbox[name=ltcAdminKindChoiceYn2]").prop("checked", true);
+        } else {
+            $("input:checkbox[name=ltcAdminKindChoiceYn2]").prop("checked", false);
+        }
+
+        var isChecked = $("input:checkbox[name=ltcAdminKindChoiceYn1]").is(":checked");
+
+        if (isChecked){
+            $("input:checkbox[name=ltcAdminKindChoiceYn1]").prop("checked", false);
+            $("input:checkbox[name=ltcAdminPttnChoiceYn11]").prop("checked", false);
+            $("input:checkbox[name=ltcAdminPttnChoiceYn12]").prop("checked", false);
+            $("input:checkbox[name=ltcAdminPttnChoiceYn13]").prop("checked", false);
+
+        } else {
+            ;
+        }
+    });
+
+    //201902
+    $("#ltcAdminKindChoiceYn7").on("click", function(event){
+        var isChecked = $("input:checkbox[name=ltcAdminKindChoiceYn7]").is(":checked");
+
+        if (isChecked){
+            $("input:checkbox[name=ltcAdminPttnChoiceYn71]").prop("checked", true);
+            $("input:checkbox[name=ltcAdminPttnChoiceYn72]").prop("checked", true);
+        } else {
+            $("input:checkbox[name=ltcAdminPttnChoiceYn71]").prop("checked", false);
+            $("input:checkbox[name=ltcAdminPttnChoiceYn72]").prop("checked", false);
+        }
+    });
+
+    $("#ltcAdminPttnChoiceYn71").on("click", function(event){
+        var isChecked1 = $("input:checkbox[name=ltcAdminPttnChoiceYn71]").is(":checked");
+        var isChecked2 = $("input:checkbox[name=ltcAdminPttnChoiceYn72]").is(":checked");
+
+        if (isChecked1||isChecked2){
+            $("input:checkbox[name=ltcAdminKindChoiceYn7]").prop("checked", true);
+        } else {
+            $("input:checkbox[name=ltcAdminKindChoiceYn7]").prop("checked", false);
+        }
+    });
+
+    $("#ltcAdminPttnChoiceYn72").on("click", function(event){
+        var isChecked1 = $("input:checkbox[name=ltcAdminPttnChoiceYn71]").is(":checked");
+        var isChecked2 = $("input:checkbox[name=ltcAdminPttnChoiceYn72]").is(":checked");
+
+        if (isChecked1||isChecked2){
+            $("input:checkbox[name=ltcAdminKindChoiceYn7]").prop("checked", true);
+        } else {
+            $("input:checkbox[name=ltcAdminKindChoiceYn7]").prop("checked", false);
+        }
+    });
+    
+    //조회 버튼 이벤트 핸들러
+    $("#btn_search_pop").on("click", function(event){
+        event.preventDefault();
+        
+        var data = {siDoCd: $("#si_do_cd").val() };
+        if(data.siDoCd == ""){
+        	gfn_alert("시도를 선택 후 조회하시기 바랍니다.");
+            return;
+        }
+
+        var url = "/npbs/r/a/201/selectXLtcoSrch.web";
+        var params = '?siDoCd=' + $("#si_do_cd").val();//, 시, 도
+        if($("#si_gun_gu_cd").val()!=''){params+='&si_gun_gu_cd='+$("#si_gun_gu_cd").val()}//, 시군구
+        
+        var radHDongType = $('input:radio[name="gbDongRoad"]:checked').val();//, 읍면동 또는 도로명
+        if(radHDongType > 0 ){params+='&gbDongRoad='+radHDongType}
+        if($("#h_dong_cd").val()!=''){params+='&h_dong_cd='+$("#h_dong_cd").val()} //, 주소구분
+        
+        //if($("#searchAdminKindCd").val()!=''){params+='&searchAdminKindCd='+$("#searchAdminKindCd").val();}
+        
+        //, 급여종류 세팅_[S] ================================================================================================
+        var temp = "";
+        var sakcList = $('#searchAdminKindCdList');
+        if (sakcList.text().indexOf("노인요양시설")         != -1) { if(temp.length>0){temp += ",01"}else{temp += "01"} };
+        if (sakcList.text().indexOf("노인요양공동생활가정")    != -1) { if(temp.length>0){temp += ",02"}else{temp += "02"} };
+        if (sakcList.text().indexOf("방문요양")            != -1) { if(temp.length>0){temp += ",03"}else{temp += "03"} };
+        if (sakcList.text().indexOf("방문목욕")            != -1) { if(temp.length>0){temp += ",04"}else{temp += "04"} };
+        if (sakcList.text().indexOf("방문간호")            != -1) { if(temp.length>0){temp += ",05"}else{temp += "05"} };
+        if (sakcList.text().indexOf("주야간보호")           != -1) { if(temp.length>0){temp += ",06"}else{temp += "06"} };
+        if (sakcList.text().indexOf("단기보호")            != -1) { if(temp.length>0){temp += ",07"}else{temp += "07"} };
+        if (sakcList.text().indexOf("복지용구")            != -1) { if(temp.length>0){temp += ",08"}else{temp += "08"} };
+        if(temp.length>0){
+            params+='&searchAdminKindCdS='+temp;
+        }
+      	//, 급여종류 세팅_[E] ================================================================================================
+      	
+		$("#ltc_admin_nm").val(fn_sanitize($("#ltc_admin_nm").val()));	
+      		
+        if($("#ltc_admin_sym").val()!=''){params+='&ltc_admin_sym='+$("#ltc_admin_sym").val();}//, 기관번호
+        if($("#ltc_admin_nm").val()!=''){params+='&ltc_admin_nm='+escape(encodeURIComponent($("#ltc_admin_nm").val()));}//, 기관명
+        if($("#searchAdminFdatType").val()!=''){params+='&searchAdminFdatType='+$("#searchAdminFdatType").val();}//, 설립주체
+        if($("#unityOahAdminPttnCd").val()!=''){params+='&unityOahAdminPttnCd='+$("#unityOahAdminPttnCd").val();}//, 서비스 유형
+
+        if($("#searchTotal").val()!=''){params+='&searchTotal='+$("#searchTotal").val();}//, 정원
+        if($("#searchEntGb").val()!=''){params+='&searchEntGb='+$("#searchEntGb").val();}//, 이용가능
+        if($("#searchBathVhcl").val()!=''){params+='&searchBathVhcl='+$("#searchBathVhcl").val();}//, 목욕차량
+
+        if($("input:checkbox[name=ltcAdminKindChoiceYn1]").is(":checked")){params+='&ltcAdminKindChoiceYn1=Y';}//,  치매전담형 장기요양기관
+        if($("input:checkbox[name=ltcAdminPttnChoiceYn11]").is(":checked")){params+='&ltcAdminPttnChoiceYn11=Y';}//,  노인요양시설 내 치매전담실
+        if($("input:checkbox[name=ltcAdminPttnChoiceYn12]").is(":checked")){params+='&ltcAdminPttnChoiceYn12=Y';}//,  치매전담형노인요양공동생활가정
+        if($("input:checkbox[name=ltcAdminPttnChoiceYn13]").is(":checked")){params+='&ltcAdminPttnChoiceYn13=Y';}//,  주야간보호 내 치매전담실
+        if($("input:checkbox[name=ltcAdminKindChoiceYn2]").is(":checked")){params+='&ltcAdminKindChoiceYn2=Y';}//,  인지활동형 프로그램 제공기관
+        if($("input:checkbox[name=ltcAdminPttnChoiceYn21]").is(":checked")){params+='&ltcAdminPttnChoiceYn21=Y';}//,  방문요양
+        if($("input:checkbox[name=ltcAdminPttnChoiceYn23]").is(":checked")){params+='&ltcAdminPttnChoiceYn23=Y';}//, 주야간보호
+        if($("input:checkbox[name=ltcAdminPttnChoiceYn22]").is(":checked")){params+='&ltcAdminPttnChoiceYn22=Y';}//,  최초 치매수급자 방문간호 제공기관
+        if($("input:checkbox[name=ltcAdminKindChoiceYn7]").is(":checked")){params+='&ltcAdminKindChoiceYn7=Y';}//,  장기요양 가족휴가제 급여제공 기관
+        if($("input:checkbox[name=ltcAdminPttnChoiceYn71]").is(":checked")){params+='&ltcAdminPttnChoiceYn71=Y';}//,  종일 방문요양
+        if($("input:checkbox[name=ltcAdminPttnChoiceYn72]").is(":checked")){params+='&ltcAdminPttnChoiceYn72=Y';}//, 단기보호
+        if($("input:checkbox[name=ltcAdminKindChoiceYn4]").is(":checked")){params+='&ltcAdminKindChoiceYn4=Y';}//, 건강관리강화 시범사업
+        if($("input:checkbox[name=ltcAdminKindChoiceYn10]").is(":checked")){params+='&ltcAdminKindChoiceYn10=Y';}//,  주야간보호기관 내 단기보호 시범사업
+        if($("input:checkbox[name=ltcAdminKindChoiceYn8]").is(":checked")){params+='&ltcAdminKindChoiceYn8=Y';}//, 통합재가서비스
+        if($("input:checkbox[name=ltcAdminKindChoiceYn3]").is(":checked")){params+='&ltcAdminKindChoiceYn3=Y';}//,  청구그린기관
+        if($("input:checkbox[name=ltcAdminKindChoiceYn6]").is(":checked")){params+='&ltcAdminKindChoiceYn6=Y';}//,  장기요양기관패널
+        
+        url += params;
+        
+        //gfn_openPup(url, "xselectLtcoSrchPopList", 900, 1200,"yes").focus();
+        gfn_openPupComn(url, "selectXLtcoSrch", 900, 1500, "yes").focus();//
+    });
+
+    // 장기요양기관 보기 버튼 클릭 시 하단 테이블 display 이벤트
+    $("#btn_tip").on("click", function (event) {
+        /* if( $("#div_pop").css("display") == "none" ){
+
+            var el =$(this);
+            el.attr("data-focus","on");
+
+            $("#div_pop").css("display", "");
+
+            $("#div_pop").attr("tabindex","0");
+            $("#div_pop").show();
+            $("#div_pop").focus();
+
+            $("#div_pop1").css("display", "none");
+            $("#div_pop2").css("display", "none");
+            $("#div_pop3").css("display", "none");
+            $("#div_pop4").css("display", "none");
+            $("#div_pop6").css("display", "none");
+            $("#div_pop7").css("display", "none");
+            $("#div_pop8").css("display", "none");
+            $("#div_pop9").css("display", "none");
+            $("#div_pop10").css("display", "none");
+        }else{
+            $("#div_pop").css("display", "none");
+        } */
+        gfn_openModalPop("modal-find-popup1");
+    });
+
+    $("#btn_tip1").on("click", function (event) {
+        /* if( $("#div_pop1").css("display") == "none" ){
+
+            var el =$(this);
+            el.attr("data-focus","on");
+
+            $("#div_pop1").css("display", "");
+
+            $("#div_pop1").attr("tabindex","0");
+            $("#div_pop1").show();
+            $("#div_pop1").focus();
+
+            $("#div_pop").css("display", "none");
+            $("#div_pop2").css("display", "none");
+            $("#div_pop3").css("display", "none");
+            $("#div_pop4").css("display", "none");
+            $("#div_pop6").css("display", "none");
+            $("#div_pop7").css("display", "none");
+            $("#div_pop8").css("display", "none");
+            $("#div_pop9").css("display", "none");
+            $("#div_pop10").css("display", "none");
+        }else{
+            $("#div_pop1").css("display", "none");
+        } */
+    	gfn_openModalPop("modal-find-popup2");
+    });
+
+    $("#btn_tip2").on("click", function (event) {
+        /* if( $("#div_pop2").css("display") == "none" ){
+
+            var el =$(this);
+            el.attr("data-focus","on");
+            
+            $("#div_pop2").css("display", "");
+
+            $("#div_pop2").attr("tabindex","0");
+            $("#div_pop2").show();
+            $("#div_pop2").focus();
+            
+            $("#div_pop1").css("display", "none");
+            $("#div_pop").css("display", "none");
+            $("#div_pop3").css("display", "none");
+            $("#div_pop4").css("display", "none");
+            $("#div_pop6").css("display", "none");
+            $("#div_pop7").css("display", "none");
+            $("#div_pop8").css("display", "none");
+            $("#div_pop9").css("display", "none");
+            $("#div_pop10").css("display", "none");
+        }else{
+            $("#div_pop2").css("display", "none");
+        } */
+    	gfn_openModalPop("modal-find-popup3");
+    });
+
+    $("#btn_tip3").on("click", function (event) {
+        /* if( $("#div_pop3").css("display") == "none" ){
+
+            var el =$(this);
+            el.attr("data-focus","on");
+
+            $("#div_pop3").css("display", "");
+
+            $("#div_pop3").attr("tabindex","0");
+            $("#div_pop3").show();
+            $("#div_pop3").focus();
+
+            $("#div_pop1").css("display", "none");
+            $("#div_pop2").css("display", "none");
+            $("#div_pop").css("display", "none");
+            $("#div_pop4").css("display", "none");
+            $("#div_pop6").css("display", "none");
+            $("#div_pop7").css("display", "none");
+            $("#div_pop8").css("display", "none");
+            $("#div_pop9").css("display", "none");
+            $("#div_pop10").css("display", "none");
+        }else{
+            $("#div_pop3").css("display", "none");
+        } */
+    	gfn_openModalPop("modal-find-popup4");
+    });
+
+    $("#btn_tip4").on("click", function (event) {
+        /* if( $("#div_pop4").css("display") == "none" ){
+
+            var el =$(this);
+            el.attr("data-focus","on");
+
+            $("#div_pop4").css("display", "");
+
+            $("#div_pop4").attr("tabindex","0");
+            $("#div_pop4").show();
+            $("#div_pop4").focus();
+
+            $("#div_pop1").css("display", "none");
+            $("#div_pop2").css("display", "none");
+            $("#div_pop3").css("display", "none");
+            $("#div_pop").css("display", "none");
+            $("#div_pop6").css("display", "none");
+            $("#div_pop7").css("display", "none");
+            $("#div_pop8").css("display", "none");
+            $("#div_pop9").css("display", "none");
+            $("#div_pop10").css("display", "none");
+        }else{
+            $("#div_pop4").css("display", "none");
+        } */
+    	gfn_openModalPop("modal-find-popup5");
+    });
+
+    $("#btn_tip5").on("click", function (event) {
+        /* if( $("#div_pop6").css("display") == "none" ){
+
+            var el =$(this);
+            el.attr("data-focus","on");
+
+            $("#div_pop6").css("display", "");
+
+            $("#div_pop6").attr("tabindex","0");
+            $("#div_pop6").show();
+            $("#div_pop6").focus();
+
+            $("#div_pop1").css("display", "none");
+            $("#div_pop2").css("display", "none");
+            $("#div_pop3").css("display", "none");
+            $("#div_pop4").css("display", "none");
+            $("#div_pop").css("display", "none");
+            $("#div_pop7").css("display", "none");
+            $("#div_pop8").css("display", "none");
+            $("#div_pop9").css("display", "none");
+            $("#div_pop10").css("display", "none");
+        }else{
+            $("#div_pop6").css("display", "none");
+        } */
+    	gfn_openModalPop("modal-find-popup6");
+    });
+
+    // 201902 팝업 추가
+    $("#btn_tip6").on("click", function (event) {
+        /* if( $("#div_pop7").css("display") == "none" ){
+
+            var el =$(this);
+            el.attr("data-focus","on");
+
+            $("#div_pop7").css("display", "");
+
+            $("#div_pop7").attr("tabindex","0");
+            $("#div_pop7").show();
+            $("#div_pop7").focus();
+
+            $("#div_pop1").css("display", "none");
+            $("#div_pop2").css("display", "none");
+            $("#div_pop3").css("display", "none");
+            $("#div_pop4").css("display", "none");
+            $("#div_pop6").css("display", "none");
+            $("#div_pop").css("display", "none");
+            $("#div_pop8").css("display", "none");
+            $("#div_pop9").css("display", "none");
+            $("#div_pop10").css("display", "none");
+        }else{
+            $("#div_pop7").css("display", "none");
+        } */
+    	gfn_openModalPop("modal-find-popup7");
+        
+    });
+
+    $("#btn_tip7").on("click", function (event) {
+        /* if( $("#div_pop8").css("display") == "none" ){
+
+            var el =$(this);
+            el.attr("data-focus","on");
+
+            $("#div_pop8").css("display", "");
+
+            $("#div_pop8").attr("tabindex","0");
+            $("#div_pop8").show();
+            $("#div_pop8").focus();
+
+            $("#div_pop1").css("display", "none");
+            $("#div_pop2").css("display", "none");
+            $("#div_pop3").css("display", "none");
+            $("#div_pop4").css("display", "none");
+            $("#div_pop6").css("display", "none");
+            $("#div_pop7").css("display", "none");
+            $("#div_pop").css("display", "none");
+            $("#div_pop9").css("display", "none");
+            $("#div_pop10").css("display", "none");
+        }else{
+            $("#div_pop8").css("display", "none");
+        } */
+    	gfn_openModalPop("modal-find-popup8");
+    });
+
+    // 2020.02.18. 최초 치매수급자 방문간호 제공기관 팝업 추가
+    $("#btn_tip8").on("click", function (event) {
+        /* if( $("#div_pop9").css("display") == "none" ){
+
+            var el =$(this);
+            el.attr("data-focus","on");
+
+            $("#div_pop9").css("display", "");
+
+            $("#div_pop9").attr("tabindex","0");
+            //$("#div_pop9").show();
+            $("#div_pop9").focus();
+
+            $("#div_pop1").css("display", "none");
+            $("#div_pop2").css("display", "none");
+            $("#div_pop3").css("display", "none");
+            $("#div_pop4").css("display", "none");
+            $("#div_pop6").css("display", "none");
+            $("#div_pop7").css("display", "none");
+            $("#div_pop8").css("display", "none");
+            $("#div_pop").css("display", "none");
+            $("#div_pop10").css("display", "none");
+        }else{
+            $("#div_pop9").css("display", "none");
+        } */
+    	gfn_openModalPop("modal-find-popup9");
+    });
+
+    // 2021.04.16. 191460 정성훈 주야간 단기보호 시범사업 팝업 추가
+    $("#btn_tip9").on("click", function (event) {
+        if( $("#div_pop10").css("display") == "none" ){
+
+            var el =$(this);
+            el.attr("data-focus","on");
+
+            $("#div_pop10").css("display", "");
+
+            $("#div_pop10").attr("tabindex","0");
+            $("#div_pop10").show();
+            $("#div_pop10").focus();
+
+            $("#div_pop1").css("display", "none");
+            $("#div_pop2").css("display", "none");
+            $("#div_pop3").css("display", "none");
+            $("#div_pop4").css("display", "none");
+            $("#div_pop6").css("display", "none");
+            $("#div_pop7").css("display", "none");
+            $("#div_pop8").css("display", "none");
+            $("#div_pop9").css("display", "none");
+            $("#div_pop").css("display", "none");
+        }else{
+            $("#div_pop10").css("display", "none");
+        }
+    });
+
+    // 장기요양기관패널 탭에서 TIP 버튼 클릭 시 하단 테이블 display 이벤트
+//    $("#btn_tip7").on("click", function (event) {
+//        if( $("#div_info").css("display") == "none" ){
+//            $("#div_info").css("display", "");
+//        }else{
+//            $("#div_info").css("display", "none");
+//        }
+//    });
+
+    $("a[name=fn_close]").on("click", function (event) {
+        $("a[data-focus=on]").focus();
+        $("#div_pop").css("display", "none");
+    });
+
+    $("a[name=fn_close1]").on("click", function (event) {
+        $("a[data-focus=on]").focus();
+        $("#div_pop1").css("display", "none");
+    });
+
+    $("a[name=fn_close2]").on("click", function (event) {
+        $("a[data-focus=on]").focus();
+        $("#div_pop2").css("display", "none");
+    });
+
+    $("a[name=fn_close3]").on("click", function (event) {
+        $("a[data-focus=on]").focus();
+        $("#div_pop3").css("display", "none");
+    });
+
+    $("a[name=fn_close4]").on("click", function (event) {
+        $("a[data-focus=on]").focus();
+        $("#div_pop4").css("display", "none");
+    });
+
+    $("a[name=fn_close6]").on("click", function (event) {
+        $("a[data-focus=on]").focus();
+        $("#div_pop6").css("display", "none");
+    });
+
+    // 201902 닫기 추가
+    $("a[name=fn_close7]").on("click", function (event) {
+        $("a[data-focus=on]").focus();
+        $("#div_pop7").css("display", "none");
+    });
+
+    $("a[name=fn_close8]").on("click", function (event) {
+        $("a[data-focus=on]").focus();
+        $("#div_pop8").css("display", "none");
+    });
+
+    // 2020.02.18. 닫기 추가
+    $("a[name=fn_close9]").on("click", function (event) {
+        $("a[data-focus=on]").focus();
+        $("#div_pop9").css("display", "none");
+    });
+
+    // 2021.04.16. 닫기 추가
+    $("a[name=fn_close10]").on("click", function (event) {
+        $("a[data-focus=on]").focus();
+        $("#div_pop10").css("display", "none");
+    });
+
+    // 2024.06.11 cssClass에 select를 제거하고 이벤트 change로 변경
+    //$("#si_do_cd").on("selectmenuchange", function(event){
+    $("#si_do_cd").on("change", function(event){
+
+        var data = {siDoCd: $("#si_do_cd").val() };
+        if(data.siDoCd == ""){
+            $("#si_gun_gu_cd").empty();
+            ST.fn_addComboItem("si_gun_gu_cd","", "전체");
+            $("#si_gun_gu_cd").val("").attr("selected","selected");
+           // $("#si_gun_gu_cd").selectmenu("refresh");
+
+            //읍면동
+            $("#h_dong_cd").empty();
+            ST.fn_addComboItem("h_dong_cd","", "전체");
+            $("#h_dong_cd").val("").attr("selected","selected");
+            //$("#h_dong_cd").selectmenu("refresh");
+        }else{
+            ST.fn_getAddrSiGunGuCd(data, function (data){
+                $("#si_gun_gu_cd").empty();
+                ST.fn_addComboItem("si_gun_gu_cd","", "전체");
+                for(var i=0; i<data.length; i++){
+                    ST.fn_addComboItem("si_gun_gu_cd",data[i].siGunGuCd, data[i].siGunGuNm);
+                }
+                $("#si_gun_gu_cd").val("").attr("selected","selected");
+                //$("#si_gun_gu_cd").selectmenu("refresh");
+            });
+
+            //시군구 이벤트 발생
+            $("#h_dong_cd").empty();
+            ST.fn_addComboItem("h_dong_cd","", "전체");
+            $("#h_dong_cd").val("").attr("selected","selected");
+            //$("#h_dong_cd").selectmenu("refresh");
+        }
+    });
+
+    //읍면동
+    // 2024.06.11 cssClass에 select를 제거하고 이벤트 change로 변경
+    //$("#si_gun_gu_cd").on("selectmenuchange", function(event){
+    $("#si_gun_gu_cd").on("change", function(event){
+        var data = {siDoCd: $("#si_do_cd").val(),
+                siGunGuCd: $("#si_gun_gu_cd").val(),
+                hDongCd: $("#h_dong_cd").val(),
+                adptYn: "Y"
+        };
+        if(data.siGunGuCd == ""){
+            $("#h_dong_cd").empty();
+            ST.fn_addComboItem("h_dong_cd","", "전체");
+            $("#h_dong_cd").val("").attr("selected","selected");
+            //$("#h_dong_cd").selectmenu("refresh");
+        }else{
+            var hDongType1 = $('input:radio[name="gbDongRoad"]:checked').val();
+            
+            if(hDongType1 == "2") {
+                ST.fn_getAddrRoadCd(data, function (data){
+                    $("#h_dong_cd").empty();
+                    ST.fn_addComboItem("h_dong_cd","", "전체");
+                    for(var i=0; i<data.length; i++){
+                        ST.fn_addComboItem("h_dong_cd",data[i].hDongCd, data[i].hDongNm);
+                    }
+                    $("#h_dong_cd").val("").attr("selected","selected");
+                    //$("#h_dong_cd").selectmenu("refresh");
+                });
+                
+            }else{
+                ST.fn_getAddrBDongCd(data, function (data){
+                    $("#h_dong_cd").empty();
+                    ST.fn_addComboItem("h_dong_cd","", "전체");
+                    for(var i=0; i<data.length; i++){
+                        ST.fn_addComboItem("h_dong_cd",data[i].hDongCd, data[i].hDongNm);
+                    }
+                    $("#h_dong_cd").val("").attr("selected","selected");
+                    //$("#h_dong_cd").selectmenu("refresh");
+                });
+            }
+        }
+    });
+
+    $("input:radio[name=gbDongRoad]").click(function(){ 
+        var data = {siDoCd: $("#si_do_cd").val(),
+                siGunGuCd: $("#si_gun_gu_cd").val(),
+                hDongCd: $("#h_dong_cd").val(),
+                adptYn: "Y"
+        };
+        
+        if($(this).val()== "2") {
+            ST.fn_getAddrRoadCd(data, function (data){
+                $("#h_dong_cd").empty();
+                ST.fn_addComboItem("h_dong_cd","", "전체");
+                for(var i=0; i<data.length; i++){
+                    ST.fn_addComboItem("h_dong_cd",data[i].hDongCd, data[i].hDongNm);
+                }
+                $("#h_dong_cd").val("").attr("selected","selected");
+                //$("#h_dong_cd").selectmenu("refresh");
+            });
+            
+        }else{
+            ST.fn_getAddrBDongCd(data, function (data){
+                $("#h_dong_cd").empty();
+                ST.fn_addComboItem("h_dong_cd","", "전체");
+                for(var i=0; i<data.length; i++){
+                    ST.fn_addComboItem("h_dong_cd",data[i].hDongCd, data[i].hDongNm);
+                }
+                $("#h_dong_cd").val("").attr("selected","selected");
+                //$("#h_dong_cd").selectmenu("refresh");
+            });
+        }
+    });    
+
+    //기관검색
+    $("#btn_ltc_admin_sym_search").on("click", function (event) {
+        event.preventDefault();
+        $("#ltc_admin_nm").val(fn_sanitize($("#ltc_admin_nm").val()));
+        gfn_openPupComn("/npbs/t/z/150/selectLtcoInfoList.web?ltcoNm="+escape(encodeURIComponent($("#ltc_admin_nm").val())), "selectLtcoInfoList", 680, 920,"yes").focus();
+    });
+
+    $("input[id*=ltc_admin_nm]").on("focusin", function (event) {
+        //var targetId = $(this).attr("id").substring(0,4);
+        $("#ltc_admin_sym").val("");
+        $("#ltc_admin_nm").val("");
+    });
+    
+    
+    //자주묻는질문 아코디언
+    $(".acc_ltc_tit>a").click(function(){
+        var parentTgt = $(this).parent().parent();
+        if(parentTgt.attr("class").indexOf(" on") == -1 ) parentTgt.addClass("on");
+        else parentTgt.removeClass("on");
+    });
+
+});
+
+//장기요양기관 검색 팝업 결과값 처리
+function fn_rstLtcoInfo(ltcoInfo){
+    $("#ltc_admin_sym").val(ltcoInfo.ltcoSym);
+    $("#ltc_admin_nm").val(ltcoInfo.ltcoNm);
+}; 
+
+function fn_sanitize(input){
+	if (input == null) return null;
+    return input
+            .replace("\\", "&#92;")     // 역슬래시: \ → &#92;
+            .replace("&", "&amp;")        // & → &amp;         
+            .replace("<", "&lt;")         // < → &lt;
+            .replace(">", "&gt;")         // > → &gt;
+            .replace("\"", "&quot;")      // " → &quot;
+            .replace("'", "&#x27;")       // ' → &#x27;
+            .replace("{", "&#123;")     // { → &#123;
+            .replace("}", "&#125;")     // } → &#125;
+            .replace("[", "&#91;")      // [ → &#91;
+            .replace("]", "&#93;")      // ] → &#93;
+            .replace("(", "&#40;")      // ( → &#40;
+            .replace(")", "&#41;")      // ) → &#41;
+            .replace("`", "&#96;");        // ` → &#96;
+}; 
+
+
+// 통합재가서비스 서비스유형 드롭박스 비활성화(기본값)
+const ltcAdminKindChoiceYn8Checkbox = document.getElementById("ltcAdminKindChoiceYn8");
+const unityOahAdminPttnCdDropdwon = document.getElementById("unityOahAdminPttnCd");
+unityOahAdminPttnCdDropdwon.disabled = true;    
+
+ltcAdminKindChoiceYn8Checkbox.addEventListener("change", function(){
+	if (ltcAdminKindChoiceYn8Checkbox.checked){ //통합재가서비스 체크박스 선택시
+		unityOahAdminPttnCdDropdwon.disabled = false;  //서비스유형 체크박스 활성화
+	}
+	else {
+		unityOahAdminPttnCdDropdwon.disabled = true;	
+	}
+	
+})
+
+// 선택한 급여종류 삭제
+function fn_delEle(selectItem) {
+    
+    var p = selectItem.parentElement.parentElement;
+    // 20240709 접근성수정건
+    //p.removeChild(selectItem);
+    $(p).remove();
+    var addEleText = $("#searchAdminKindCd option:checked").val('');
+    
+    var sakcList = $('#searchAdminKindCdList');
+    // 검색 조건 삭제 시 처리 이벤트
+    //급여종류가 주야간보호, 단기보호, 시설, 치매전담형시설 일때 검색 조건 변경
+    if($("#searchAdminKindCd").val() == "01" || $("#searchAdminKindCd").val() == "02" || $("#searchAdminKindCd").val() == "06" || $("#searchAdminKindCd").val() == "07"
+         || sakcList.text().indexOf("노인요양시설") != -1 || sakcList.text().indexOf("노인요양공동생활가정") != -1 || sakcList.text().indexOf("주야간보호") != -1 || sakcList.text().indexOf("단기보호") != -1){
+    	$("#search_condition").show();
+    }else{
+    	$("#search_condition_div").hide();
+    	$("#search_condition").hide();
+        $("#search_condition").find("select").val("").attr("selected","selected");
+        //$(".search_condition").find("select").selectmenu("refresh"); // 2024.06.13 접근성 관련 select 삭제 후 주석처리
+    }
+    //급여종류가 주야간보호, 단기보호, 시설, 치매전담형시설 일때 검색 조건 변경
+    if($("#searchAdminKindCd").val() == "04" || sakcList.text().indexOf("방문목욕") != -1 ){
+    	$("#search_condition2").show();
+    }else{
+    	$("#search_condition2").hide();
+        $("#search_condition2").find("select").val("").attr("selected","selected");
+        //$(".search_condition2").find("select").selectmenu("refresh"); // 2024.06.13 접근성 관련 select 삭제 후 주석처리
+    }
+    
+    // 모든 항목을 지웠을 경우 처리 로직
+    if ($('#searchAdminKindCdList li').length == 0) {
+        $('#searchAdminFdatType').focus();
+        $("#searchAdminKindCd option:eq(0)").prop("selected", true);
+        $("#searchAdminKindCdDiv").css('display','none');
+        //$("#searchAdminKindCd").selectmenu("refresh");
+    }else{
+         $('#searchAdminKindCdList li').eq(0).find('button').focus();
+    }
+}
+
+ 
+</script>
+<script type="text/javascript">
+  $(function () { 
+   // style.js 관련해서 다시 title 수정
+   setTimeout(function(){
+    $('#si_do_cd').attr('title', '지역의 시도선택'); 
+    $('#si_gun_gu_cd').attr('title', '지역의 시군구 선택');
+   },500);
+  });
+  </script>
+
+
+
+<script type="text/javascript" src="/npbs/js/np/mark.js?timestamp=0000000001"></script>
+<link type="text/css" href="/npbs/install/veraport/sitelogo/veraport20.css" rel="stylesheet" /> <!-- 멀티OS용UI_CSS -->
+		
+		</div>
+	</div>
+ 
+	<footer>
+		<div class="footer-quick">
+           <div class="inner">
+               <div class="link">
+                   <button type="button" class="btn-link open-modal" data-target="npez801m02p" title="분야별 업무 사이트 레이어">분야별 업무 사이트</button>
+                   <button type="button" class="btn-link open-modal" data-target="npez801m03p" title="관련 사이트 레이어">관련 사이트</button>
+               </div>
+
+               <div class="viewer">
+                   <strong>뷰어 다운로드</strong>
+                   <a href="https://get.adobe.com/kr/reader/" class="btn-download-pdf" target="_blank" title="새창">PDF</a>
+                   <a href="https://www.hancom.com/" class="btn-download-hwp" target="_blank" title="새창">한글</a>
+                   
+                   
+               </div>
+           </div>
+		</div>
+       	<div class="site-info">
+			<div class="inner">
+               <div class="logo">
+                   <img src="/npbs/assetsRenew/images/np/f_logo.svg" alt="노인장기요양보험">
+               </div>
+               <div class="info-content">
+					<div class="f-info">
+                       	<p class="info-addr">(26464) 강원특별자치도 원주시 건강로 32(반곡동) 국민건강보험공단</p>
+                       	<ul class="info-cs">
+                           	<li><b>대표전화</b> 1577-1000 (유료)</li>
+                           	<li><b>기관청구 상담</b> 033-811-2002 (유료)</li>
+                           	<li><b>업무시간</b> 09시~18시(월 ~ 금)</li>
+                       	</ul>
+                       	
+		                    <div class="util-btn-wrap">
+		                        <button type="button" class="krds-btn border xsmall open-modal" data-target="npez801m01p">배너달기</button>
+		                        
+		                        <button type="button" class="krds-btn border xsmall" onclick="gfn_aLink('https://www.nhis.or.kr/helpcom_new/hc_user_main.jsp?longtermcare=Y', true);">온라인 상담원 원격지원</button>
+		                    </div>
+	                    
+                   	</div>
+                   	<div class="link-sns">
+                      	<a href="https://x.com/#!/noin100/" class="ico-x" target="_blank" title="새 창 열림">
+                           	<span class="sr-only">X</span>
+                       	</a>
+                       	<a href="http://www.facebook.com/?ref=home#!/pages/%EB%85%B8%EC%9D%B8%EC%9E%A5%EA%B8%B0%EC%9A%94%EC%96%91%EB%B3%B4%ED%97%98/287410204618783" class="ico-facebook" target="_blank" title="새 창 열림">
+                           	<span class="sr-only">페이스북</span>
+                       	</a>
+                   	</div>
+               	</div>
+           	</div>
+			<div class="terms">
+               	<div class="inner">
+                   	<div class="terms-nav">
+                       	<a href="https://www.nhis.or.kr/nhis/etc/privacy_policy.do" target="_blank" class="privacy" title="새 창 열림">개인정보처리방침</a>
+                       	<a href="/npbs/e/z/900/htmlView.web?pgmId=npez904m01s&desc=&menuId=npe0000002844">이메일 추출 방지정책</a>
+                       	<a href="/npbs/e/z/900/html.web?pgmId=npez907m01s&menuId=npe0000002842">이용약관</a>
+                       	<a href="https://www.nhis.or.kr/nhis/about/retrieveBranchList.do" target="_blank" title="새 창 열림">지사안내</a>
+                   	</div>
+                   	<div class="mark">
+                       	<a href="#" onclick="markPopupE('2025-EP-R013'); return false;" title="새 창 열림"><img src="/npbs/assetsRenew/images/np/eprivacy.png" alt="ePRIVACY 개인정보보호우수사이트 마크"></a>
+                       	
+                       		<a href="/npbs/images/np/footer/webwatch251217_pc.pdf"><img src="/npbs/assetsRenew/images/np/wa.png" alt="WA 품질인증 마크, 웹와치(WebWatch) 2026.12.16 ~  2026.12.16"></a>
+                       	
+                       	
+                       	<a href="/npbs/images/np/footer/isms_p_in.jpg"><img src="/npbs/assetsRenew/images/np/isms-p.png" alt="isms-p 인증 마크"></a>
+                   	</div>
+                   	<p class="copyright">&copy; National Health Insurance Service. All rights reserved.</p>
+              	</div>
+			</div>
+       	</div>
+   	</footer>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section id="npez801m01p" class="krds-modal fade" role="dialog" aria-labelledby="tit-npez801m01p" style="width:560px;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="tit-npez801m01p" class="modal-title">노인장기요양보험 배너달기</h2>
+            </div>
+            <div class="modal-conts">
+                <div class="insert-banner">
+                    <p class="body-b2">배너를 달기를 원하는 HTML의 위치에 아래 소스(Source)를 복사하시면, 배너가 삽입됩니다.</p>
+                    <dl class="banner">
+                        <dt class="sbj-b2-bold">노인장기요양보험 165*60 pixel 배너</dt>
+                        <dd>
+                            <img src="/npbs/assetsRenew/images/np/banner_img.jpg" alt="long term care 노인장기요양보험">
+                        </dd>
+                    </dl>
+                    <dl class="source">
+                        <dt class="sbj-b2-bold">소스(Source)</dt>
+                        <dd contenteditable="true" tabindex="0">
+                            &lt;a href="https://www.longtermcare.or.kr" target="_blank" title="새창열림"&gt;&lt;img src="http://www.longtermcare.or.kr/npbs/images/np/contents/banner_img.jpg" width="165" height="60" border="0" alt="long term care 노인장기요양보험" /&gt;&lt;/a&gt;
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+            <button type="button" class="krds-btn medium icon btn-close close-modal">
+                <span class="sr-only">닫기</span>
+                <i class="svg-icon ico-popup-close"></i>
+            </button>
+        </div>
+    </div>
+    <div class="modal-back in"></div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section id="npez801m02p" class="krds-modal fade" role="dialog" aria-labelledby="tit-npez801m02p" style="width:760px;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="npez801m02p" class="modal-title">분야별 업무 사이트</h2>
+            </div>
+            <div class="modal-conts">
+                <div class="list-group family-links-list">
+                    <ul>
+                        <li><a href="https://www.nhis.or.kr/nhis/index.do" onclick="javascript:fn_setTargetHref(this)">국민건강보험공단</a></li>
+						<li><a href="http://si4n.nhis.or.kr"				onclick="javascript:fn_setTargetHref(this)">사회보험통합징수포털</a></li>
+                        <li><a href="https://medicare.nhis.or.kr"			onclick="javascript:fn_setTargetHref(this)">요양기관정보마당 사이트</a></li>
+                        <li><a href="https://edi.nhis.or.kr" 				onclick="javascript:fn_setTargetHref(this)">국민건강보험 EDI서비스</a></li>
+						<li><a href="http://sis.nhis.or.kr/nxui/index.do"	onclick="javascript:fn_setTargetHref(this)">건강검진 기관포털</a></li>
+                        <li><a href="http://nhiss.nhis.or.kr"				onclick="javascript:fn_setTargetHref(this)">건강보험자료 공유 서비스</a></li>
+                        <li><a href="/npbs/e/e/100/index.web" 				onclick="javascript:fn_setTargetHref(this)">노인장기요양보험 English</a></li>
+                        <li><a href="https://www.w4c.go.kr" 				onclick="javascript:fn_setTargetHref(this)">사회복지시설 정보시스템</a></li>
+                    </ul>
+                </div>
+            </div>
+            <button type="button" class="krds-btn medium icon btn-close close-modal">
+                <span class="sr-only">닫기</span>
+                <i class="svg-icon ico-popup-close"></i>
+            </button>
+        </div>
+    </div>
+    <div class="modal-back in"></div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section id="npez801m03p" class="krds-modal fade" role="dialog" aria-labelledby="tit-npez801m03p" style="width:760px;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="npez801m03p" class="modal-title">관련 사이트</h2>
+            </div>
+            <div class="modal-conts">
+                <div class="list-group family-links-list">
+                    <ul>
+						<li><a href="https://www.safekorea.go.kr"							onclick="javascript:fn_setTargetReorHref(this)">국민재난안전포털</a></li>
+						<li><a href="http://www.nhimc.or.kr" 								onclick="javascript:fn_setTargetReorHref(this)">일산병원</a></li>
+						<li><a href="http://서울요양원.kr/" 									onclick="javascript:fn_setTargetReorHref(this)">서울요양원</a></li>
+						<li><a href="http://www.nps.or.kr" 									onclick="javascript:fn_setTargetReorHref(this)">국민연금</a></li>
+						<li><a href="http://www.mohw.go.kr" 								onclick="javascript:fn_setTargetReorHref(this)">보건복지부</a></li>
+						<li><a href="http://www.acrc.go.kr" 								onclick="javascript:fn_setTargetReorHref(this)">국민권익위원회</a></li>
+						<li><a href="http://www.giro.or.kr" 								onclick="javascript:fn_setTargetReorHref(this)">금융결제원 통합납부서비스</a></li>
+						<li><a href="http://www.hira.or.kr" 								onclick="javascript:fn_setTargetReorHref(this)">건강보험심사평가원</a></li>
+						<li><a href="https://www.gov.kr" 									onclick="javascript:fn_setTargetReorHref(this)">정부24</a></li>
+						<li><a href="http://www.129.go.kr/index.jsp?m=10&amp;s=20" 			onclick="javascript:fn_setTargetReorHref(this)">보건복지부 인터넷채팅상담</a></li>
+						<li><a href="https://www.share.go.kr" 								onclick="javascript:fn_setTargetReorHref(this)">행정정보공동이용시스템</a></li>
+						<li><a href="http://www.ableservice.or.kr/application/index.jsp" 	onclick="javascript:fn_setTargetReorHref(this)">장애인활동지원</a></li>
+						<li><a href="https://www.noinboho1389.or.kr" 						onclick="javascript:fn_setTargetReorHref(this)">중앙노인보호전문기관</a></li>
+                    </ul>
+                </div>
+            </div>
+            <button type="button" class="krds-btn medium icon btn-close close-modal">
+                <span class="sr-only">닫기</span>
+                <i class="svg-icon ico-popup-close"></i>
+            </button>
+        </div>
+    </div>
+    <div class="modal-back in"></div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section id="npez701m02p" class="krds-modal modal-agree fade" role="dialog" aria-labelledby="tit-npez701m02p" style="width:760px;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="tit-npez701m02p" class="modal-title">개인정보 수집&middot;이용 및 목적 외 이용 동의서</h2>
+            </div>
+            <div class="modal-conts">
+            	<p class="txt">국민건강보험공단은 노인장기요양보험 홈페이지 로그인 본인확인 및 이력관리를 위하여 귀하의 개인정보를 수집ㆍ이용 및 목적 외 이용하고자 하오니, 수집ㆍ이용 및 목적 외 이용에 대한 내용을 자세히 읽어 보신 후 동의여부를 결정하여 주시기 바랍니다.</p>
+            	
+                <div class="krds-form-check large">
+                    <input type="checkbox" name="npez701m02p_allChk" id="npez701m02p_allChk">
+                    <label for="npez701m02p_allChk">전체동의</label>
+                </div>
+                <div class="agree-contents" id="npez701m02p_agree">
+                    <div>
+                    	<div class="krds-form-check">
+                            <input type="checkbox" name="npez701m02p_chk1" id="npez701m02p_chk1" required>
+                        	<label for="npez701m02p_chk1">개인정보 수집&middot;이용 내역(필수)</label>
+						</div>
+						<ul>
+                            <li>① 개인정보의 수집ㆍ이용 목적: 노인장기요양보험 홈페이지 로그인 이력관리</li>
+                            <li>② 수집하려는 개인정보의 항목: IP주소, 브라우저 정보, HIPIN</li>
+                            <li>③ 개인정보 보유 및 이용 기간: <span class="c-red underline">접속일로부터 10년 보유 후 삭제</span></li>
+                        	<li>④ 위의 개인정보 수집·이용에 대한 동의를 거부할 권리가 있습니다.<br>그러나 위 항목에 대한 동의를 거부할 경우 노인장기요양보험 홈페이지의 로그인이 필요한 서비스 이용에 제한을 받을 수 있습니다.</li>
+						</ul>
+                    </div>
+                    <div>
+                    	<div class="krds-form-check">
+                            <input type="checkbox" name="npez701m02p_chk2" id="npez701m02p_chk2" required>
+                        	<label for="npez701m02p_chk2">개인정보 수집 목적 외 이용 내역(필수)</label>
+						</div>
+						<ul>
+                            <li>① 개인정보 수집 목적 외 이용의 목적: 노인장기요양보험 홈페이지 로그인 시 본인확인</li>
+                            <li>② 수집 목적 외 이용하려는 개인정보의 항목: CI(연계정보)</li>
+                            <li>③ 개인정보 보유 및 이용 기간: <span class="c-red underline">본인인증 후 즉시 파기</span></li>
+                        	<li>④ 위의 개인정보 수집 목적 외 이용에 대한 동의를 거부할 권리가 있습니다.<br>그러나 위 항목에 대한 동의를 거부할 경우 노인장기요양보험 홈페이지의 로그인이 필요한 서비스 이용에 제한을 받을 수 있습니다.</li>
+						</ul>
+                    </div>
+				</div>
+                    	
+                <!-- <div class="krds-accordion line" id="npez701m02p_agreeAccordion">
+                    <div class="accordion-item active">
+                        <div class="accordion-header">
+                            <div class="krds-form-check">
+                                <input type="checkbox" name="npez701m02p_chk1" id="npez701m02p_chk1" required>
+                                <label for="npez701m02p_chk1">개인정보 수집&middot;이용 내역(필수)</label>
+                            </div>
+                            <button type="button" id="npez701m02p_accordion1" class="btn-accordion" aria-controls="npez701m02p_accordionCls1">더보기</button>
+                        </div>
+                        <div id="npez701m02p_accordionCls1" class="accordion-collapse collapse" aria-labelledby="npez701m02p_accordion1">
+                            <div class="accordion-body">
+                                <ul>
+                                    <li>① 개인정보의 수집ㆍ이용 목적: 노인장기요양보험 홈페이지 로그인 이력관리</li>
+                                    <li>② 수집하려는 개인정보의 항목: IP주소, 브라우저 정보, HIPIN</li>
+                                    <li>③ 개인정보 보유 및 이용 기간: <span class="c-red underline">접속일로부터 10년 보유 후 삭제</span></li>
+                                    <li>④ 위의 개인정보 수집·이용에 대한 동의를 거부할 권리가 있습니다.<br>그러나 위 항목에 대한 동의를 거부할 경우 노인장기요양보험 홈페이지의 로그인이 필요한 서비스 이용에 제한을 받을 수 있습니다.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <div class="krds-form-check">
+                                <input type="checkbox" name="npez701m02p_chk2" id="npez701m02p_chk2" required>
+                                <label for="npez701m02p_chk2">개인정보 수집 목적 외 이용 내역(필수)</label>
+                            </div>
+                            <button type="button" id="npez701m02p_accordion2" class="btn-accordion" aria-controls="npez701m02p_accordionCls2">더보기</button>
+                        </div>
+                        <div id="npez701m02p_accordionCls2" class="accordion-collapse collapse" aria-labelledby="npez701m02p_accordion2">
+                            <div class="accordion-body">
+                                <ul>
+                                    <li>① 개인정보 수집 목적 외 이용의 목적: 노인장기요양보험 홈페이지 로그인 시 본인확인</li>
+                                    <li>② 수집 목적 외 이용하려는 개인정보의 항목: CI(연계정보)</li>
+                                    <li>③ 개인정보 보유 및 이용 기간: <span class="c-red underline">본인인증 후 즉시 파기</span></li>
+                                    <li>④ 위의 개인정보 수집 목적 외 이용에 대한 동의를 거부할 권리가 있습니다.<br>그러나 위 항목에 대한 동의를 거부할 경우 노인장기요양보험 홈페이지의 로그인이 필요한 서비스 이용에 제한을 받을 수 있습니다.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+            <div class="modal-btn btn-wrap">
+                <button type="button" class="krds-btn primary medium" id="npez701m02p_confirm">확인</button>
+            </div>
+            <button type="button" class="krds-btn medium icon btn-close close-modal">
+                <span class="sr-only">닫기</span>
+                <i class="svg-icon ico-popup-close"></i>
+            </button>
+        </div>
+    </div>
+    <div class="modal-back in"></div>
+</section>
+<script>
+	var npez701m02p = {
+		init : function(){
+			$("#npez701m02p [type='checkbox']").prop("checked", false);
+			gfn_openModalPop("npez701m02p");
+		}
+		, check : function(){
+			var isAllchk = true;
+			$("#npez701m02p_agree [type='checkbox']").each(function(){
+				if(! $(this).prop("checked")){
+					isAllchk = false;
+					return;
+				}
+			});
+			
+			return isAllchk;
+		}
+	}
+	//, 전체 체크
+	$(document).on('click', "#npez701m02p_allChk", function(){
+		$("#npez701m02p_agree [type='checkbox']").prop("checked", $(this).prop("checked"));
+	});
+	
+	$(document).on('click', "#npez701m02p_agree [type='checkbox']", function(){
+		var isAllchk = true;
+		$("#npez701m02p_agree [type='checkbox']").each(function(){
+			if(! $(this).prop("checked")){
+				isAllchk = false;
+				return;
+			}
+		});
+		$("#npez701m02p_allChk").prop("checked", isAllchk);
+	});	
+	//, 확인 버튼
+	$(document).on('click', "#npez701m02p_confirm", function () {
+		//, validation check
+		//, if(! $("#npez701m02p_allChk").prop("checked")){
+		//, 	gfn_alert("서비스 이용에 대한 필수항목 동의를 하셔야 합니다.");
+		//, 	return false;
+		//, }
+		if(! $("#npez701m02p_chk1").prop("checked")){
+			gfn_alert("개인정보 수집·이용 내역에 대한 <br/>필수항목 동의를 하셔야 합니다.");
+			return false;
+		}
+		if(! $("#npez701m02p_chk2").prop("checked")){
+			gfn_alert("개인정보 목적 외 이용 내역에 대한<br/>필수항목 동의를 하셔야 합니다.");
+			return false;
+		}
+		gfn_simpleAhtcPop(simpleAhtcOption, simpleAhtcParam);
+		//, popup close
+		krds_modal.closeModal("npez701m02p");
+	});
+	
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="modal-ie11" style="display: none;">
+	<div class="modal-inner">
+		<div class="modal-header">
+			<h1>신규 홈페이지 오픈(‘26.1.16. ~)에 따른 최신 브라우저 설치 필요 안내</h1>
+		</div>
+		<div class="modal-body">
+			<p>저희 노인장기요양 홈페이지를 이용해 주셔서 감사합니다.</p>
+			<p>노인장기요양 홈페이지는 사용자 중심의 쉽고 편리한 서비스 제공을 위해 2026년 1월 16일 개편되었습니다.</p>
+			<p>개편되는 새로운 홈페이지에서는 인터넷 익스플로러(Internet Explorer) 브라우저를 통한 접속 및 서비스 이용이 불가함을 안내드립니다.</p>
+			<p>이는 해당 브라우저 제조사의 서비스 지원 중단 (’22.6. ~)에 따른 불가피한 조치임을 양해 부탁드리오며, 원할한 서비스 이용을 위해 아래 링크를 활용하여 최신 브라우저를 사용해주시기 바랍니다.</p>
+			<div class="border-box">
+				<h2>브라우저 다운로드 링크</h2>
+				<p>원활한 서비스 이용을 위해 아래의 최신 브라우저를 사용해 주시기 바랍니다.</p>
+				<div class="btn-area">
+					<a href="https://www.google.com/intl/ko_kr/chrome/">Google Chrome 다운로드</a>
+					<a href="https://www.microsoft.com/ko-kr/edge/download">Microsoft Edge 다운로드</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+
+// <a href="#" id="login_service" class="more">바로</a>
+// <dd><a href="#" id="btn_pgmAstx">개인방화벽 프로그램 설치</a></dd>
+// <dd><a href="#" id="btn_pgmEnkey">키보드 보안 프로그램 설치</a></dd>
+
+
+$("#btn_pgmAstx").on("click", function (event) {
+
+
+
+    // VP_platformInfo.Linux 리눅스 (우분투,페도라)
+    // VP_platformInfo.Fedora 리눅스 (페도라)
+    // VP_platformInfo.Ubuntu 리눅스 (우분투)
+    // VP_platformInfo.Windows
+    // VP_platformInfo.Mac
+
+    // VP_platformInfo.x64 : 64bit OS
+
+    // VP_browserInfo.MSIE
+    // VP_browserInfo.Firefox
+    // VP_browserInfo.Edge
+    // VP_browserInfo.Chrome
+    // VP_browserInfo.Safari
+    // VP_browserInfo.Opera
+
+    //alert("VP_platformInfo.Windows : " + VP_platformInfo.Windows );
+    //alert("VP_platformInfo.Ubuntu : " + VP_platformInfo.Ubuntu );
+
+    var msg = "개인방화벽 프로그램을 설치하시겠습니까?";
+    if (!confirm(msg)){
+        // fn_download_ASTx_real2();
+        return ;
+    }
+
+    console.log('VP_platformInfo.x64 : ' + VP_platformInfo.x64);
+    console.log('VP_platformInfo.Windows : ' + VP_platformInfo.Windows);
+
+    //운영, 개발 구분후 분기
+    if (document.location.hostname.indexOf("www.longtermcare.or.kr")>=0) { // 운영
+
+        //alert("real");
+        fn_download_ASTx_real();
+
+    } else { //개발
+
+        var _baseURL = document.location.protocol+"//"+document.location.host+"/npbs/assets/solution/ASTx";
+
+        if(VP_platformInfo.x64){       // 64bit 구분
+
+            if(VP_platformInfo.Windows){
+                var downURL = _baseURL + "/astx_setup.exe";
+
+            } else if(VP_platformInfo.Mac){
+                var downURL = _baseURL + "/astx.dmg";
+
+            } else if(VP_platformInfo.Fedora){
+                var downURL = _baseURL + "/astx_f32.rpm";
+
+            } else if(VP_platformInfo.Ubuntu){
+                var downURL = _baseURL + "/astx_u64.deb";
+
+            } else { // if(linkType=="N"){
+
+            }
+
+         } else {                         // 32bit
+
+            if(VP_platformInfo.Windows){
+                var downURL = _baseURL + "/astx_setup.exe";
+
+            } else if(VP_platformInfo.Mac){
+                var downURL = _baseURL + "/astx.dmg";
+
+            } else if(VP_platformInfo.Fedora){
+                var downURL = _baseURL + "/astx_f32.rpm";
+
+            } else if(VP_platformInfo.Ubuntu){
+                var downURL = _baseURL + "/astx_u32.deb";
+
+            } else { // if(linkType=="N"){
+
+            }
+
+         } // end of 64bit 구분
+
+         if (downURL != "") document.location = downURL;
+
+    } // end of 운영개발 구분
+
+});
+
+
+$("#btn_pgmEnkey").on("click", function (event) {
+   // 키보드보안 프로그램은 win, mac 버전만 있음
+    var msg = "키보드보안 프로그램을 설치하시겠습니까?";
+    if (!confirm(msg)){
+        return ;
+    }
+
+    console.log('VP_platformInfo.x64 : ' + VP_platformInfo.x64);
+    console.log('VP_platformInfo.Windows : ' + VP_platformInfo.Windows);
+
+    // /assets/solution/raonnx/nxKey/module/TouchEn_nxKey_32bit.exe
+    var _baseURL = "http://idcwww.nhis.or.kr/viewer30_new/ltcrext/nxKey";
+
+// 내부 다운로드 링크 제거
+//    var _baseURL = document.location.protocol+"//"+document.location.host+"/npbs/assets/solution/raonnx/nxKey/module";
+
+    if(VP_platformInfo.x64){       // 64bit 구분
+
+        if(VP_platformInfo.Windows){
+            var downURL = _baseURL + "/TouchEn_nxKey_64bit.exe";
+            if (!VP_browserInfo.MSIE) downURL = _baseURL + "/TouchEn_nxKey_32bit.exe"; //멀티브라우저 및 엣지브라우저 32bit설치(라온측 설명)
+
+        } else if(VP_platformInfo.Mac){
+            var downURL = _baseURL + "/TouchEn_nxKey_Installer.pkg";
+
+        } else { // if(linkType=="N"){
+
+        }
+
+     } else {                         // 32bit
+
+        if(VP_platformInfo.Windows){
+            var downURL = _baseURL + "/TouchEn_nxKey_32bit.exe";
+
+        } else if(VP_platformInfo.Mac){
+            var downURL = _baseURL + "/TouchEn_nxKey_Installer.pkg";
+
+        } else { // if(linkType=="N"){
+
+        }
+
+     } // end of 64bit 구분
+
+     if (downURL != "") document.location = downURL;
+
+});
+
+
+$("#btn_test").on("click", function (event) {
+
+    $("#btn_pgmAstx").html("html") ;
+
+});
+
+
+
+//ASTx_real 설치 URL 설정 샘플
+function fn_download_ASTx_real( ) {
+      var VP_platformInfo = vp_getPlatformInfo();
+    console.log('fn_download_ASTx_real : ');
+    // 운영CDN
+    var _baseURL = "https://safetx.ahnlab.com/master/win/default/all";
+    var downURL = _baseURL + "/astx_setup.exe";
+
+    //멀티OS용 설치 설정
+    if (VP_platformInfo.Ubuntu) {
+        _baseURL = "http://safetx.ahnlab.com/master/linux";
+        downURL = _baseURL + "/astx_u32.deb";
+        if (VP_platformInfo.x64) downURL = _baseURL + "/astx_u64.deb";
+    }
+    else if (VP_platformInfo.Fedora) {
+        _baseURL = "http://safetx.ahnlab.com/master/linux";
+        downURL = _baseURL + "/astx_f32.rpm";
+        if (VP_platformInfo.x64) downURL = _baseURL + "/astx_f64.rpm";
+    }
+    else if (VP_platformInfo.Mac) {
+        _baseURL = "http://safetx.ahnlab.com/master/mac";
+        downURL = _baseURL + "/astx.dmg";
+    }
+    else {
+        // else...
+    }
+    console.log('downURL : '+downURL);
+//    return ;
+
+    if (downURL != "") document.location = downURL;
+
+
+//    fn_download_noitce("ASTx", downURL);
+}
+
+function fn_download_ASTx_real2() {
+    // 운영CDN
+    alert("downURL : ");
+
+//    fn_download_noitce("ASTx", downURL);
+}
+
+</script>
+
+
+<!-- AOS(V3 백신) 시작  -->
+
+
+<!-- <script language="JavaScript" src="http://ahnlabdownload.nefficient.co.kr/aos/plugin/aosmgr_common.js"></script> -->
+
+<!-- <script language="JavaScript" src=  + "//assets/solution/ASTx/js/astx2.min.js"></script> -->
+<!-- <script language="JavaScript" src=  + "//assets/solution/ASTx/js/astx2_custom.js"></script> -->
+
+
+<script language="JavaScript" src= '/npbs//assets/solution/ASTx/js/page.js?timestamp=0000000001'></script>
+<script language="JavaScript" src= '/npbs//assets/solution/ASTx/js/astx2.min.js?timestamp=0000000002'></script>
+<script language="JavaScript" src= '/npbs//assets/solution/ASTx/js/astx2_custom.js?timestamp=0000000002'></script>
+
+
+
+
+<script language="JavaScript">
+
+//2025-12-18 최진곤
+window.addEventListener('pageshow',function(event){
+	if(event.persisted){
+		//aside isClick 값은 footer 에만 존재함으로 뒤로가기시 강제로 N으로 변경
+		document.getElementById('isClick').value="N";
+		//뒤로가기 및 페이지 재진입시 로딩바 제거 -- 최수진 대리님 요청 작업
+		gfn_spinStop();
+	}
+});
+
+/*2018.10.20. / 김태연 / 엑티브X제거사업   --->
+* 안랩체크 func
+*/
+
+function checkInstallASTXFooter(fnSuccess, fnFailure)
+{
+    // ERROR_NOTINST : 103
+    // alert("fnFailure : " + fnFailure) ;
+    //var str = '/npbs' ;
+    //alert("pageContext.request.contextPath : " + str ) ;
+
+
+    $ASTX2.init(
+    function onSuccess() {
+    //  alert("onSuccess") ;
+        //kjs 추가 20200923 start
+    $("#chkAhnlab").prop("checked", true);
+    gfn_setCookie("ahnlabFlag", "Y", 1) ;
+  //kjs 추가 20200923 end
+
+    $("#btn_pgmAstx").html("개인방화벽 프로그램 설치(ㅇ)") ;
+      $_astxu.log('ASTX.init() success');
+      if(fnSuccess) { fnSuccess(); }
+    },
+
+    function onFailure() {
+      var errno = $ASTX2.getLastError();
+      //alert("errno : " + errno) ;
+      // alert("CONTEXT_PATH : " + CONTEXT_PATH) ;
+      // 미설치시 103 에러
+      // alert("errno : " + errno) ;
+      $_astxu.log('ASTX.init() failure: errno='+errno);
+
+      if(errno == $ASTX2_CONST.ERROR_NOTINST) {
+//       alert("errno") ;
+        //kjs 추가 20200923 start
+          $("#chkAhnlab").prop("checked", false);
+          gfn_setCookie("ahnlabFlag", "N", 1) ;
+        //kjs 추가 20200923 end
+
+          $("#btn_pgmAstx").html("개인방화벽 프로그램 설치(X)") ;
+//    $("#btn_pgmAstx").html("개인 PC 방화벽 프로그램 설치 (ㅇ)") ;
+          //        gotoInstallASTX2();
+      }else {
+      if(fnFailure) { fnFailure(); }
+      } // end of if
+    }
+    );
+}
+
+
+
+function checkInstallRaonKeyFooter()
+{
+//    console.log('[footer1]bNxKey='+bNxKey);
+//    fn_touchKeyFooterRst() ;
+//    console.log('[footer2]bNxKey='+bNxKey);
+//    console.log('[footer2]raonFlag='+raonFlag);
+    if (raonFlag) {
+
+        $("#btn_pgmEnkey").html("키보드 보안 프로그램 설치(ㅇ)") ;
+
+    } else {
+
+        $("#btn_pgmEnkey").html("키보드 보안 프로그램 설치(X)") ;
+
+    }
+
+
+}
+
+
+
+
+$(document).ready(function () {
+     //  ASTX 체크
+     checkInstallASTXFooter();
+     //  RAONKey 체크
+//     checkInstallRaonKeyFooter();
+	
+    //, PC만 지원 페이지 모바일 접근 시 APP 안내 페이지로 이동_[2]  
+	if("PC" != "PC" && $("#wrap").hasClass('only-pc')){
+ 		location.href="/npbs/e/z/301/selectAppInfo";
+ 	}
+});
+
+
+
+</script>
+
+
+
+<!-- AOS(V3 백신) 끝  -->
+</body>
+</html>
+<!-- 장기요양기관 보기 -->
+<section id="modal-find-popup1" class="krds-modal fade" role="dialog" aria-labelledby="tit-modal-find" style="width:760px;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="pop-header">
+                        <p class="tit-pop-header">장기요양기관</p>
+                    </div>
+                </div>
+                <div class="modal-conts">
+                    <div class="list-cont-wrap">
+                        <div class="list-group-type2">
+                            <ul>
+                                <li>
+                                    재가급여 서비스중 방문요양, 방문간호, 방문목욕은 서비스 특성상 대기에 대한 의미가 없으므로 잔여, 대기 인원을 별도 표시하지 않습니다.
+                                </li>
+                                <li>
+                                    방문목욕의 경우 기관의 차량 유무를 확인하려면, 장기요양기관(상세보기)나 블로그를 클릭하시면 확인하실 수 있습니다.
+                                </li>
+                                <li>
+                                    ‘24시간 방문요양’은 방문요양 및 방문간호 급여를 함께 제공하는 기관에서 서비스를 제공할 수 있습니다.
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="list-group-type2">
+                            <h5 class="header-h5">장기요양급여 평가결과 안내</h5>
+                            <ul>
+                                <li>
+                                    정기평가 : 장기요양급여 종류별로 3년마다 정기평가 실시
+                                </li>
+                                <li>
+                                    수시평가 : 정기평가 결과 하위등급 기관에 대해 정기평가 다음해에 수시평가 실시
+                                </li>
+                                <li>
+                                    평가등급(5등급) : 절대평가등급 기준에 따라 급여종류별로 A(최우수), B(우수), C(양호), D(보통), E(미흡) 결정
+                                    <div class="part-span body-b4 mt-4">
+                                        <span class="c-gray">※</span>
+                                        <span class="c-gray">평가등급을 클릭하면 대분류영역별 수준 별(★)개수 및 환산점수 확인가능</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    평가거부 : 자료제출이나 평가를 거부한 기관
+                                </li>
+                                <li>
+                                    평가비대상 : 휴‧폐업, 적용종료, 업무정지, 지정취소, 폐쇄명령, 평균수급자 3인 미만 기관 등의 사유로 평가연도에 평가를 받지 못한 기관
+                                </li>
+                                <li>
+                                    신설기관 : 평가대상기관 선정 시점 이후 지정‧설치된 기관
+                                    <div class="part-span body-b4 mt-4">
+                                        <span class="c-gray">※</span>
+                                        <span class="c-gray">시설급여 평가결과 대분류영역별 환산점수 공개 확대는 2018년 시설급여 평가 대상부터 적용</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="krds-btn medium icon btn-close close-modal">
+                    <span class="sr-only">닫기</span>
+                    <i class="svg-icon ico-popup-close"></i>
+                </button>
+            </div>
+        </div>
+        <div class="modal-back in"></div>
+    </section>
+    
+    <!-- 치매전담형 장기요양기관  -->
+    <section id="modal-find-popup2" class="krds-modal fade" role="dialog" aria-labelledby="tit-modal-find" style="width:760px;">
+        <div class="modal-dialog">
+            <div class="modal-content pop-window">
+                <div class="modal-header">
+                    <div class="pop-header">
+                        <p class="tit-pop-header">치매전담형 장기요양기관</p>
+                    </div>
+                </div>
+                <div class="modal-conts">
+                    <div class="list-cont-wrap"> 
+                        <p class="body-b3">치매전담형 장기요양기관은 치매 어르신이 안정감을 느낄 수 있는 시설환경을 제공하고 치매 전문인력을 배치하여, 인지기능 유지 및 문제행동을 개선할 수 있도록 맞춤형 서비스를 제공하는 기관입니다.</p>
+                        <div class="list-group-type2">
+                            <ul>
+                                <li>
+                                    (종류) 노인요양시설 내 치매전담실, 치매전담형 노인요양공동생활가정, 주야간보호 내 치매전담실
+                                </li>
+                                <li>
+                                    (이용대상) 의사소견서에 ‘치매상병’이 기재되어 있거나, 최근 2년 이내 치매진료내역이 있는 2~5등급 수급자, 인지지원등급 수급자
+                                </li>
+                            </ul>
+                            <div class="part-span body-b4 mt-8">
+                                <span class="c-gray">※</span>
+                                <span class="c-gray">인지지원등급 수급자는 ‘주야간보호 내 치매전담실’에 한함</span>
+                            </div>
+                            <div class="part-span body-b4 mt-8">
+                                <span class="c-gray">※</span>
+                                <span class="c-gray">2등급자 중 노인장기요양보험법 시행령 제6조 제1호에 해당하는 자(심신상태나 거동상태 등이 현저하게 불편한 자) 제외</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="krds-btn medium icon btn-close close-modal">
+                    <span class="sr-only">닫기</span>
+                    <i class="svg-icon ico-popup-close"></i>
+                </button>
+            </div>
+        </div>
+        <div class="modal-back in"></div>
+    </section>
+    
+    <!-- 인지활동형 프로그램 제공기간 -->
+    <section id="modal-find-popup3" class="krds-modal fade" role="dialog" aria-labelledby="tit-modal-find" style="width:760px;">
+        <div class="modal-dialog">
+            <div class="modal-content pop-window">
+                <div class="modal-header">
+                    <div class="pop-header">
+                        <p class="tit-pop-header">인지활동형 프로그램 제공기관</p>
+                    </div>
+                </div>
+                <div class="modal-conts">
+                    <div class="list-cont-wrap"> 
+                        <div class="list-group-type2">
+                            <ul>
+                                <li>
+                                    인지활동형 프로그램 제공 기관
+                                </li>
+                                <li>
+                                    치매전문교육을 이수한 장기요양요원(요양보호사 등)이 속한 기관에서 인지활동형 프로그램 제공
+                                </li>
+                                <li>
+                                    서비스 가능 급여종류 : 주야간보호, 인지활동형 방문요양
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="krds-btn medium icon btn-close close-modal">
+                    <span class="sr-only">닫기</span>
+                    <i class="svg-icon ico-popup-close"></i>
+                </button>
+            </div>
+        </div>
+        <div class="modal-back in"></div>
+    </section>
+    
+    <!-- 최초 치매수급자 방문간호 제공기관 -->
+    <section id="modal-find-popup4" class="krds-modal fade" role="dialog" aria-labelledby="tit-modal-find" style="width:760px;">
+        <div class="modal-dialog">
+            <div class="modal-content pop-window">
+                <div class="modal-header">
+                    <div class="pop-header">
+                        <p class="tit-pop-header">최초 치매수급자 방문간호 제공기관</p>
+                    </div>
+                </div>
+                <div class="modal-conts">
+                    <p class="body-b3">최초 치매수급자 방문간호는 등급을 처음 판정받은1~5등급 치매수급자가 등급을 받은 60일 이내에 월 한도액과 관계없이 방문간호급여를 총 4회 범위 내에서 월 2회까지 이용할 수 있는 것으로, 치매돌봄 정보제공, 교육.상담 등을 위해 치매전문교육을 이수한 간호(조무)사가 제공합니다.</p>
+                </div>
+                <button type="button" class="krds-btn medium icon btn-close close-modal">
+                    <span class="sr-only">닫기</span>
+                    <i class="svg-icon ico-popup-close"></i>
+                </button>
+            </div>
+        </div>
+        <div class="modal-back in"></div>
+    </section>
+    
+    <!-- 치매가족휴가제 급여제공 기관 -->
+    <section id="modal-find-popup5" class="krds-modal fade" role="dialog" aria-labelledby="tit-modal-find" style="width:760px;">
+         <div class="modal-dialog">
+            <div class="modal-content pop-window">
+                <div class="modal-header">
+                    <div class="pop-header">
+                        <p class="tit-pop-header">장기요양 가족휴가제 급여제공 기관</p>
+                    </div>
+                </div>
+                <div class="modal-conts">
+                    <div class="list-cont-wrap"> 
+                        <p class="body-b3">장기요양 가족휴가제는 가정에서 중증수급자(1·2등급 수급자)또는 치매가 있는 3~5등급, 인지지원등급 수급자를 돌보는 가족이 여행 등으로 일시적 휴식이 필요한 경우 월 한도액과 관계없이 연간 12일 이내에 단기보호 또는 종일 방문요양(24회, 1회당 12시간)을 제공하는 제도입니다.</p><!-- 2026.01.05 수정 -->
+                        <div class="list-group-type2">
+                            <div class="part-span body-b4 mt-8">
+                                <span class="c-red">※</span>
+                                <span class="c-red">급여 제공여부는 기관 운영 사정에 따라 달라질 수 있어 해당 기관과 개별 상담이 필요합니다.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="krds-btn medium icon btn-close close-modal">
+                    <span class="sr-only">닫기</span>
+                    <i class="svg-icon ico-popup-close"></i>
+                </button>
+            </div>
+        </div>
+        <div class="modal-back in"></div>
+    </section>
+    
+    <!-- 통합재가서비스 제공기관 -->
+    <section id="modal-find-popup6" class="krds-modal fade" role="dialog" aria-labelledby="tit-modal-find" style="width:760px;">
+        <div class="modal-dialog">
+            <div class="modal-content pop-window">
+                <div class="modal-header">
+                    <div class="pop-header">
+                        <p class="tit-pop-header">통합재가서비스 제공기관</p>
+                    </div>
+                </div>
+                <div class="modal-conts">
+                    <p class="body-b3">하나의 기관(주·야간보호 또는 방문간호)에서 수급자의 욕구‧상태에 따라 다양한 재가서비스(주·야간보호, 방문요양, 목욕, 간호)를 전문인력(간호사‧간호조무사, 물리‧작업치료사, 사회복지사, 요양보호사)이 복합적으로 제공하는 서비스</p>
+                </div>
+                <button type="button" class="krds-btn medium icon btn-close close-modal">
+                    <span class="sr-only">닫기</span>
+                    <i class="svg-icon ico-popup-close"></i>
+                </button>
+            </div>
+        </div>
+        <div class="modal-back in"></div>
+    </section>
+    
+    <!-- 주야간보호기관 내 단기보호 시범사업 참여기관 -->
+    <section id="modal-find-popup7" class="krds-modal fade" role="dialog" aria-labelledby="tit-modal-find" style="width:760px;">
+        <div class="modal-dialog">
+            <div class="modal-content pop-window">
+                <div class="modal-header">
+                    <div class="pop-header">
+                        <p class="tit-pop-header">주야간보호기관 내 단기보호 시범사업 참여기관</p>
+                    </div>
+                </div>
+                <div class="modal-conts">
+                    <p class="body-b3">주 야간보호기관 내 단기보호 시범사업 참여기관은 가족의 부재(입원, 출장 등)로 수급자의 일시적 돌봄이 필요한 경우 주 야간보호기관에서 일정기간(월 9일이내) 보호하여 재가생활을 유지할 수 있도록 지원하는 기관입니다.</p>
+                    <div class="part-span body-b4 mt-12">
+                        <span class="c-red">※</span>
+                        <span class="c-red">주 야간보호기관 내 단기보호 시범사업 안내 : 알림자료실 > 공지사항 > 60974 참고</span>
+                    </div>
+                </div>
+                <button type="button" class="krds-btn medium icon btn-close close-modal">
+                    <span class="sr-only">닫기</span>
+                    <i class="svg-icon ico-popup-close"></i>
+                </button>
+            </div>
+        </div>
+        <div class="modal-back in"></div>
+    </section>
+    
+    <!-- 청구그린기관 -->
+    <section id="modal-find-popup8" class="krds-modal fade" role="dialog" aria-labelledby="tit-modal-find" style="width:760px;">
+        <div class="modal-dialog">
+            <div class="modal-content pop-window">
+                <div class="modal-header">
+                    <div class="pop-header">
+                        <p class="tit-pop-header">청구그린기관</p>
+                    </div>
+                </div>
+                <div class="modal-conts">
+                    <div class="list-cont-wrap"> 
+                        <p class="body-b3">청구그린(Green)기관은 장기요양급여비용 산정기준에 맞게 청구를 잘하는 모범기관으로 올바른 청구문화 풍토를 조성하고자 운영하는 제도입니다.</p>
+                        <div class="list-group-type2">
+                            <ul>
+                                <li>
+                                    대상기관 : 방문요양 , 방문목욕 , 방문간호 , 주야간보호, 단기보호 , 노인요양공동생활가정, 노인요양(구법) , 노인요양(현행법) , 요양시설내치매전담실가형, 요양시설내치매전담실나형, 치매전담형노인요양공동생활가정, 주야간보호내치매전담실
+                                </li>
+                                <li>
+                                    선정기관 : 자격요건에 해당 하는 기관 중 선정기준 배점 합 상위기관 
+                                </li>
+                            </ul> 
+                        </div>
+                        <div class="list-group-type2">
+                            <h5 class="header-h5">자격요건</h5>
+                            <ul>
+                                <li>
+                                    [기준1] 직전 정기평가 결과 B등급 이상 기관(휴폐업 제외)
+                                </li>
+                                <li>
+                                    [기준2] 장기요양기관 지정일 1년 이상인 기관
+                                </li>
+                                <li>
+                                    [기준3] 1년 이내 장기요양급여비용 환수내역이 없는 기관(자진신고, 공단착오 제외)
+                                </li>
+                                <li>
+                                    [기준4] 3년 이내 현지조사 등으로 행정처분 받지 않은 기관
+                                </li>
+                                <li>
+                                    [기준5] 건강(장기요양)보험료 체납이 없는 기관
+                                </li>
+                            </ul> 
+                        </div>
+                        <div class="list-group-type2">
+                            <h5 class="header-h5">선정기준</h5>
+                            <ul>
+                                <li>
+                                    [기준1] (공통)1년간 심사 불능 및 조정 금액 발생 비율에 따른 배점
+                                </li>
+                                <li>
+                                    [기준2] (공통)1년간 장기요양급여비용 환수 발생 비율에 따른 배점
+                                </li>
+                                <li>
+                                    [기준3] (재가)재가급여전자관리시스템 자동청구율(90~100%)에 따른 배점
+                                </li>
+                                <li>
+                                    [기준4] (시설(입소형))인력추가배치가산 중 4대 직종(요양보호사,간호사,물리치료사,사회복지사) 수에 따른 배점
+                                </li>
+                                <li>
+                                    [기준5] (공통)지역본부별 급여종별 수급자 수에 따른 배점
+                                </li>
+                                <li>
+                                    [기준6] (공통)전년도 청구상담봉사자 상담활동 실적에 따른 배점
+                                </li>
+                            </ul> 
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="krds-btn medium icon btn-close close-modal">
+                    <span class="sr-only">닫기</span>
+                    <i class="svg-icon ico-popup-close"></i> 
+                </button>
+            </div>
+        </div>
+        <div class="modal-back in"></div>
+    </section>
+    
+    <!-- 장기요양기관 패널 -->
+	<section id="modal-find-popup9" class="krds-modal fade" role="dialog" aria-labelledby="tit-modal-find" style="width:760px;">
+        <div class="modal-dialog">
+            <div class="modal-content pop-window">
+                <div class="modal-header">
+                    <div class="pop-header">
+                        <p class="tit-pop-header">장기요양기관 패널</p>
+                    </div>
+                </div>
+                <div class="modal-conts">
+                    <div class="list-cont-wrap"> 
+                        <p class="body-b3">장기요양기관패널은 매년 공단에서 실시하는 경영실태조사에 참여하여, 정확하고 신뢰도 높은 경영실태자료를 제공함으로써 장기요양기관의 경영실태 변화 연구 및 노인장기요양보험 제도 발전에 기여하는 기관입니다.</p>
+                        <div class="list-group-type2">
+                            <h5 class="header-h5">패널자격</h5>
+                            <ul>
+                                <li>
+                                    최소 3년 이상 지속적인 운영이 이루어지고 있는 기관
+                                </li>
+                                <li>
+                                    패널 참여 전년도 12개월 동안 급여실적이 있는 기관
+                                </li>
+                                <li>
+                                    최근 3년 이내에 건강보험료 체납 및 행정처분이 없는 기관 
+                                </li>
+                                <li>
+                                    장기요양기관 평가 등급이 A~D에 해당하는 기관
+                                </li>
+                                <li>
+                                    연평균 일정 수급자수(현원기준) 이상을 유지하는 기관 
+                                    <!-- table -->
+                                    <div class="table-wrap">
+                                        <div class="krds-table-wrap">
+                                            <table class="tbl col data">
+                                                <caption>패널자격</caption>
+                                                <colgroup>
+                                                    <col style="width:120px">
+                                                    <col style="width:286px">
+                                                    <col style="width:286px">
+                                                </colgroup>
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">구분</th> 
+                                                        <th scope="col">급여유형</th>
+                                                        <th scope="col">선정기준 (연평균 수급자수)</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td rowspan="2" class="sm-txt left">시설</td>
+                                                        <td class="sm-txt left">노인요양시설</td>
+                                                        <td class="sm-txt left">10인 이상</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="sm-txt left">노인요양공동생활가정</td>
+                                                        <td class="sm-txt left">5인 이상</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td rowspan="5" class="sm-txt left">재가</td>
+                                                        <td class="sm-txt left">주·야간보호기관</td>
+                                                        <td class="sm-txt left">10인 이상</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="sm-txt left">단기보호기관</td>
+                                                        <td class="sm-txt left">10인 이상</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="sm-txt left">방문요양</td>
+                                                        <td class="sm-txt left">10인 이상</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="sm-txt left">방문목욕</td>
+                                                        <td class="sm-txt left">10인 이상</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="sm-txt left">방문간호</td>
+                                                        <td class="sm-txt left">10인 이상</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div> 
+                                    <!-- //table -->
+                                    <div class="part-content">
+                                        <div class="part-span body-b4">
+                                            <span class="c-gray">※</span>
+                                            <span class="c-gray">연평균 수급자수(현원) 계산 방법(소수점 이하 반올리)</span>
+                                        </div>
+                                        <div class="part-span body-b4 mt-4">
+                                            <span class="c-gray">※</span>
+                                            <span class="c-gray">
+                                                입소형태 : 입소시설, 주·야간보호, 단기보호<br>
+                                                1. 월평균 수급자수 = 각 일자별 입소자수의 합/월 급여제공일수<br>
+                                                2. 연평균 수급자수 = 각 월평균 수급자수의 합/12
+                                            </span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul> 
+                        </div>
+                        
+                        <strong class="body-b3-bold">[참고] 장기요양기관패널 명단의 노인장기요양보험 홈페이지 게시에 동의한 기관에 한하여 검색 가능</strong>
+                    </div>
+                </div>
+                <button type="button" class="krds-btn medium icon btn-close close-modal">
+                    <span class="sr-only">닫기</span>
+                    <i class="svg-icon ico-popup-close"></i> 
+                </button>
+            </div>
+        </div>
+        <div class="modal-back in"></div>
+    </section>    

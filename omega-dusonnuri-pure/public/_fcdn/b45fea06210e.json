@@ -1,0 +1,13 @@
+{
+    "service": {
+        "code": "",
+        "is_default": "",
+        "period_start": "",
+        "period_end": "",
+        "timestamp_start": "",
+        "timestamp_end": ""
+    },
+    "block_dates": [],
+    "block_timestamps": [],
+    "message": "legacy compatible dummy config"
+}

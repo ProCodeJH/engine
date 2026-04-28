@@ -1,0 +1,402 @@
+@charset "UTF-8";
+/* NHN Technology Services UI Development Team2 */
+
+.talk_preview_area body, .talk_preview_area p, .talk_preview_area ul, .talk_preview_area li, .talk_preview_area table, .talk_preview_area th, .talk_preview_area td, .talk_preview_area input, .talk_preview_area button {
+	margin: 0;
+	padding: 0;
+}
+
+.talk_preview_area em {
+	font-style: normal !important;
+}
+
+.talk_preview_area img, .talk_preview_area fieldset {
+	border: 0 !important;
+}
+
+.talk_preview_area ul, .talk_preview_area ol {
+	list-style: none !important;
+}
+
+.talk_preview_area .talk_banner_link {
+	text-decoration: none;
+	display: block;
+}
+
+.talk_preview_area {
+	display: inline-block !important;
+	position: relative;
+	text-align: center !important;
+}
+
+.talk_preview_area .talk_banner_preview {
+	overflow: hidden;
+	display: inline-block;
+	min-width: 37px;
+	min-height: 37px;
+	margin: 0 auto;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	box-sizing: border-box;
+	font-family: '나눔고딕',NanumGothic,'맑은고딕',MalgunGothic,'돋움',Dotum,AppleGothic,sans-serif !important;
+	font-size: 13px;
+	vertical-align: top;
+}
+
+.talk_expose_white {
+	background-color: #fff;
+	border: 1px solid #d4d4d4;
+	color: #333;
+}
+
+.talk_expose_grey {
+	background-color: #f2f2f2;
+	border: 1px solid #e6e6e6;
+	color: #00c73c;
+}
+
+.talk_expose_green {
+	background-color: #00c73c;
+	border: 1px solid #09b93e;
+	color: #fff;
+}
+
+.talk_expose_black {
+	background-color: #333;
+	border: 1px solid #222;
+	color: #fff;
+}
+
+.talk_preview_area.off .talk_banner_preview {
+	background-color: #bbbfc7;
+	border-color: #b1b5bd;
+	color: #fff;
+}
+
+.talk_preview_area.off .talk_banner_preview .ico_talk_banner {
+	background-position: -56px 0;
+}
+
+.talk_preview_area .talk_banner_preview.on {
+	padding: 0 13px;
+}
+
+.talk_preview_area .talk_banner_preview:after {
+	display: inline-block;
+	width: 1px;
+	height: 100%;
+	margin-left: -5px;
+	vertical-align: middle;
+	content: '';
+}
+
+.talk_preview_area .ico_talk_banner {
+	display: inline-block;
+	width: 18px;
+	height: 18px;
+	margin-top: 1px;
+	background: url(../img/sp_talkbanner.png) no-repeat;
+	background-position: 0 0;
+	line-height: 999px;
+	overflow: hidden;
+	vertical-align: middle;
+}
+
+.talk_banner_preview.talk_expose_green .ico_talk_banner {
+	background-position: -56px 0;
+}
+
+.talk_banner_preview.talk_expose_grey .ico_talk_banner {
+	background-position: -28px 0;
+}
+
+.talk_preview_area .talk_banner_desc {
+	margin-left: 2px;
+	line-height: 15px;
+	font-weight: bold;
+	vertical-align: middle;
+}
+
+.talk_preview_area .banner_type_card {
+	display: table !important;
+	min-width: 74px;
+	min-width: 74px;
+	max-width: 400px !important;
+	max-height: 400px !important;
+	margin: auto !important;
+	padding: 0 !important;
+	white-space: normal !important;
+}
+
+.talk_preview_area .banner_type_card:after {
+	display: none;
+}
+
+.talk_preview_area .talk_banner_preview_inner {
+	display: table-cell;
+	vertical-align: middle;
+	padding: 24px 21px 22px;
+}
+
+.banner_type_card .ico_talk_banner, .banner_type_card.talk_expose_grey .ico_talk_banner {
+	width: 30px;
+	height: 30px;
+	background-position: -40px -28px;
+	margin-top: 0;
+}
+
+.banner_type_card.talk_expose_green .ico_talk_banner {
+	background-position: -80px -28px;
+}
+
+.banner_type_card.talk_expose_black .ico_talk_banner {
+	background-position: 0 -28px;
+}
+
+.talk_preview_area .banner_type_card.talk_expose_grey .talk_banner_desc {
+	color: #00c73c;
+}
+
+.talk_preview_area .banner_type_card.talk_expose_green .talk_banner_desc {
+	color: #fff;
+}
+
+.talk_preview_area .banner_type_card.talk_expose_black .talk_banner_desc {
+	color: #fff;
+}
+
+.banner_type_card .talk_banner_desc,
+.banner_type_card .talk_banner_detail {
+	word-break: break-all;
+}
+
+.banner_type_card .talk_banner_desc {
+	display: block;
+	margin: 8px 0 0 0;
+	font-size: 15px;
+	font-weight: 600;
+	line-height: 20px;
+	color: #222;
+}
+
+.banner_type_card .talk_banner_detail {
+	margin: 8px 0 0;
+	font-size: 12px;
+	line-height: 17px;
+	font-weight: normal;
+	color: #8c8c8c;
+}
+
+.banner_type_card.talk_expose_grey .talk_banner_detail {
+	color: #00c73c;
+}
+
+.banner_type_card.talk_expose_green .talk_banner_detail {
+	color: #d2f1d8;
+}
+
+.banner_type_card.talk_expose_black .talk_banner_detail {
+	color: #adadad;
+}
+
+.banner_type_card .talk_banner_consult {
+	display: inline-block;
+	margin-top: 19px;
+	padding: 0 14px;
+	border: 1px solid #00c73c;
+	border-radius: 20px;
+	background-color: #fff;
+	font-weight: 600;
+	line-height: 26px;
+	color: #00c73c;
+}
+
+.banner_type_card .talk_banner_consult:after {
+	display: inline-block;
+	width: 5px;
+	height: 7px;
+	margin: -2px 0 0 6px;
+	background: url(../img/sp_talkbanner.png) no-repeat;
+	background-position: 0 -68px;
+	vertical-align: middle;
+	content: '';
+}
+
+.banner_type_card .talk_banner_detail.talk_hide + div .talk_banner_consult {
+	margin-top: 9px;
+}
+
+.banner_type_card.talk_expose_grey .talk_banner_consult {
+	border-color: #999;
+	background-color: #f2f2f2;
+	color: #555;
+}
+
+.banner_type_card.talk_expose_grey .talk_banner_consult:after {
+	background-position: -30px -68px;
+}
+
+.banner_type_card.talk_expose_green .talk_banner_consult {
+	border-color: #fff;
+	background-color: #00c73c;
+	color: #fff;
+}
+
+.banner_type_card.talk_expose_green .talk_banner_consult:after {
+	background-position: -15px -68px;
+}
+
+.banner_type_card.talk_expose_black .talk_banner_consult {
+	border-color: #00c73c;
+	background-color: #333;
+	color: #00c73c;
+}
+
+.talk_preview_area.off .talk_banner_link {
+	cursor: default;
+}
+
+.talk_preview_area.off .banner_type_card {
+	background-color: #bbbfc7;
+	border-color: #b1b5bd;
+}
+
+.talk_preview_area.off .banner_type_card .ico_talk_banner {
+	background-position: -80px -28px;
+}
+
+.talk_preview_area.off .banner_type_card .talk_banner_desc,
+.talk_preview_area.off .banner_type_card .talk_banner_detail {
+	color: #fff;
+}
+
+.talk_preview_area.off .banner_type_card .talk_banner_consult {
+	border-color: #fff;
+	background-color: #bbbfc7;
+	color: #fff;
+}
+
+.talk_preview_area.off .banner_type_card .talk_banner_consult:after {
+	background-position: -15px -68px;
+}
+
+.talk_preview_area .banner_type_blog {
+	display: table !important;
+	position: relative !important;
+	width: 170px !important;
+	min-height: 200px;
+	max-height: 400px !important;
+	padding: 32px 0 0 0 !important;
+	background: url(../img/bg_banner_profile.png) 0 0 no-repeat #fff !important;
+	border: 1px solid #09b93e !important;
+	white-space: normal !important;
+}
+
+.talk_preview_area .talk_banner_preview.banner_type_blog:after {
+	display: none;
+}
+
+.talk_preview_area .talkpartner_img_area {
+	position: absolute;
+	left: 50%;
+	margin-left: -42px;
+}
+
+.talk_preview_area .talkpartner_thumb {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 82px;
+	height: 82px;
+	margin: -41px 0 0 -41px;
+	background: url(../img/sp_talkbanner.png) -120px 0 no-repeat;
+	content: '';
+}
+
+.talk_preview_area .talkpartner_profile {
+	width: 80px;
+	height: 80px;
+	vertical-align: top;
+}
+
+.talk_preview_area .banner_type_blog .talk_banner_preview_inner {
+	display: table-cell;
+	padding: 80px 15px 83px;
+	height: auto;
+}
+
+.talk_preview_area .banner_type_blog .talk_banner_desc {
+	display: block;
+	overflow: hidden;
+	max-height: 63px;
+	margin: 22px 0 0;
+	font-size: 15px;
+	font-weight: 600;
+	color: #222;
+	line-height: 22px;
+	word-break: break-all;
+}
+
+.talk_preview_area .banner_type_blog .talk_banner_detail {
+	overflow: hidden;
+	max-height: 51px;
+	margin: 13px 0 0;
+	word-break: break-all;
+	color: #666;
+	font-size: 12px;
+	line-height: 18px;
+}
+
+.talk_preview_area.off .btn_bn_talk {
+	cursor: default;
+}
+
+.talk_preview_area.off .banner_type_blog {
+	background-color: #fff;
+	border-color: #09b93e;
+}
+
+.talk_preview_area .btn_bn_talk:before {
+	display: inline-block;
+	background: url(../img/sp_talkbanner.png) -56px 0 no-repeat;
+	width: 18px;
+	height: 18px;
+	vertical-align: middle;
+	content: '';
+	margin-right: 5px;
+}
+
+.talk_preview_area .btn_bn_talk {
+	position: absolute;
+	left: 15px;
+	bottom: 15px;
+	width: 138px;
+	height: 34px;
+	background-color: #00c73c;
+	color: #fff;
+	font-size: 13px;
+	font-weight: 600;
+	border: 0;
+	cursor: pointer;
+}
+
+.talk_preview_area .talk_btn_txt {
+	vertical-align: middle;
+}
+
+.talk_preview_area.off .btn_bn_talk {
+	background-color: #bbbfc7;
+}
+
+.talk_hide {
+	display: none !important;
+}
+
+.talk_blind {
+	overflow: hidden !important;
+	position: absolute !important;
+	clip: rect(0 0 0 0) !important;
+	width: 1px !important;
+	height: 1px !important;
+	margin: -1px !important;
+}

@@ -1,0 +1,14 @@
+<html>
+<head>
+<script type="text/javascript">
+                        var filter="win16|win32|win64|mac|macintelMacIntel";
+                        if(navigator.platform){
+                                if(0 > filter.indexOf(navigator.platform.toLowerCase())){
+                                        location.href="http://www.safekorea.go.kr/safekorea-kor/";
+                                }else{
+                                        location.href="http://www.safekorea.go.kr/safekorea-kor/";
+                                }
+                        }
+                </script>
+</head>
+</html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-type" content="text/html;charset=euc-kr"> </meta>
+    <meta http-equiv="Content-style-type" content="text/css" > </meta>
+    <meta name="version" content="3.21_04" > </meta>
+    <meta name="keywords" content="" > </meta>
+    <meta name="description" content="Edi Main" > </meta>
+	<title>건강보험공단 EDI포털</title>
+</head>
+
+<script type="text/javascript">
+	location.href = "https://edi.nhis.or.kr/homeapp/wep/m/retrieveMain.xx";
+</script>
+
+
+</html>

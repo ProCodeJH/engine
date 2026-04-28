@@ -1,0 +1,2369 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/resources/assets/image/favicon.png" type="image/x-icon" sizes="16x16">
+    <link rel="stylesheet" href="/resources/assets/css/lib/swiper.min.css">
+    <link rel="stylesheet" href="/resources/assets/css/font.css">
+    <link rel="stylesheet" href="/resources/assets/css/reset.css">
+    <link rel="stylesheet" href="/resources/assets/css/ux-common.css">
+    <link rel="stylesheet" href="/resources/assets/css/main.css">
+
+    <script type="text/javascript" src="/resources/assets/js/lib/jquery/jquery-3.6.0.min.js"></script>
+    
+<!--     
+    <script>
+        $(document).ready(function () {
+            
+           $(document).bind('keydown', function (e) {
+               if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                   if (e.keyCode === 123 || (e.shiftKey && e.ctrlKey && e.keyCode === 73)) {
+                       e.preventDefault();
+                       e.returnValue = false;
+                   }
+               }
+           })
+        });
+    </script>
+-->    
+    
+    <title>건강보험 빅데이터 플랫폼</title>
+</head>
+<body>
+    <div class="wrap">
+        <ul class="skip_navi">
+            <li class="hidden">바로가기 메뉴</li>
+            <li><a href="#gnb">주메뉴 바로가기</a></li>
+            <li><a href="#real_contents">본문 바로가기</a></li>
+        </ul>
+
+        
+<script type="text/javascript">
+	$(document).ready(function() {
+		
+		getTopBannerList();
+	});
+	
+	function setBanner(list) {
+		if(list > 0) {
+			if(ComLib.isEmpty(get_cookie("bannerClose"))){
+				$("#pageBanner").removeClass("display-hide");
+				$("#closeImg").css("rotate", "0deg");
+				$("#closeTxt").text("팝업닫기");
+			} else {
+				$("#closeImg").css("rotate", "180deg");
+				$("#closeTxt").text("팝업열기");
+			}
+		}
+		
+		$("#btnCloseBanner").on("click", function() {
+			if($("#pageBanner").hasClass('display-hide')) {
+				removeBannerCookie();
+				$("#closeImg").css("rotate", "0deg");
+				$("#closeTxt").text("팝업닫기");
+				$("#pageBanner").removeClass('display-hide');
+			} else {
+				setBannerCookie();
+				$("#closeImg").css("rotate", "180deg");
+				$("#closeTxt").text("팝업열기");
+				$("#pageBanner").addClass('display-hide');
+			}
+		});
+		
+		$("#btnCloseBannerToday").on("click", function(){
+			if($("#pageBanner").hasClass('display-hide')) {
+				removeBannerCookie();
+				$("#closeImg").css("rotate", "0deg");
+				$("#closeTxt").text("팝업닫기");
+				$("#pageBanner").removeClass('display-hide');
+			} else {
+				setBannerCookie();
+				$("#closeImg").css("rotate", "180deg");
+				$("#closeTxt").text("팝업열기");
+				$("#pageBanner").addClass('display-hide');
+			}
+		});
+		
+		var setBannerCookie = function() {
+			var expires = "";
+			var now = new Date();
+			var midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1)
+			var remain = midnight - now;
+			
+			if (remain > 0) {
+				var date = new Date();
+				date.setTime(date.getTime() + remain);
+				expires = "; expires=" + date.toUTCString();
+			}
+			document.cookie = "bannerClose=Y" + expires + "; path=/";
+		}
+		
+		var removeBannerCookie = function() {
+			var expires = "";
+			var now = new Date();
+			var midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1)
+			var remain = midnight - now;
+			
+			if (remain > 0) {
+				var date = new Date();
+				date.setTime(date.getTime() + remain);
+				expires = "; expires=" + date.toUTCString();
+			}
+			document.cookie = "bannerClose=N" + expires + "; path=/ ; Max-Age=0";
+		}
+		
+		if(list > 0) {
+			$("#btnCloseBanner").show();
+		}
+	}
+	
+	//========================================================================================================================
+	// 메인화면 상단 베너 조회
+	//========================================================================================================================
+	function getTopBannerList() {
+		var request = ComLib.ajaxReqObj("/lp/z/a/001/getTopBannerList.do", {});
+		request.done(function(data) {
+			$("#pageTopBannerList").html("");
+			
+			if(data.list.length > 0) {
+				for (var i = 0; i < data.list.length; i++) {
+					var info = data.list[i];
+					var bnrId = info.bnrId;
+					var bnrTitlNm = info.bnrTitlNm;
+					var bnrCnte = info.bnrCnte;
+					var bltnPttnCd = info.bltnPttnCd;
+					var linkUrlAddr = info.linkUrlAddr;
+					var bnrWidSize = info.bnrWidSize
+					var bnrHghtSize = info.bnrHghtSize
+					
+					var html = "";
+					html += "<div class=\"swiper-slide\">";
+					html += "  <div class=\"d-flex align-center\">";
+					html += "    <a href=\""+ linkUrlAddr +"\" target=\"_self\" >";
+					html += "      <span class=\"img-wrap\">";
+					html += "        <img src=\"/lp/z/a/001/image.do?id="+ bnrId +"&cd="+ bltnPttnCd +"\" alt=\"\" style=\"width: "+ bnrWidSize +"px;height:"+ bnrHghtSize +"px;border-radius: 10px;\" >";
+					html += "      </span>";
+					html += "      <div class=\"top-banner__cont\">";
+					html += "        <h1 class=\"top-banner__tit\">"+ bnrTitlNm +"</h1>";
+					html += "        <p class=\"top-banner__txt\">"+ bnrCnte +"</p>";
+					html += "      </div>";
+					html += "      <p>";
+					html += "        자세히 보기";
+					html += "        <span class=\"img-wrap\">";
+					html += "          <img src=\"/resources/assets/image/common/icon/icon-link--detail.svg\" alt=\"\">";
+					html += "        </span>";
+					html += "      </p>";
+					html += "    </a>";
+					html += "  </div>";
+					html += "</div>";
+					
+					$("#pageTopBannerList").append(html);
+				}
+				
+			} else { //기본설정
+			}
+			
+			setBanner(data.list.length);
+			
+		});
+		request.fail(function (xhr, statusText, errorThrown) {//실패는 공통으로 처리
+			defaultTopBanner();
+		});
+	}
+	
+	function defaultTopBanner() {
+		$("#pageTopBannerList").html("");
+		
+		var html = "";
+		html += "<div class=\"swiper-slide\">";
+		html += "  <div class=\"d-flex align-center\">";
+		html += "    <a href=\"\">";
+		html += "      <span class=\"img-wrap\"><img src=\"/resources/assets/image/common/img-top__banner-bell.png\" alt=\"\"></span>";
+		html += "      <div class=\"top-banner__cont\">";
+		html += "        <h1 class=\"top-banner__tit\">빅데이터 플랫폼 홈페이지 개편 안내</h1>";
+		html += "        <p class=\"top-banner__txt\">새로운 연구 맞춤형 자료공유 서비스 오픈!</p>";
+		html += "      </div>";
+		html += "      <p>";
+		html += "        자세히 보기";
+		html += "        <span class=\"img-wrap\">";
+		html += "          <img src=\"/resources/assets/image/common/icon/icon-link--detail.svg\" alt=\"\">";
+		html += "        </span>";
+		html += "      </p>";
+		html += "    </a>";
+		html += "  </div>";
+		html += "</div>";
+		
+		$("#pageTopBannerList").append(html);
+		
+		html = "";
+		html += "<div class=\"swiper-slide\">";
+		html += "  <div class=\"d-flex align-center\">";
+		html += "    <a href=\"\">";
+		html += "      <span class=\"img-wrap\"><img src=\"/resources/assets/image/common/img-top__banner-bell.png\" alt=\"\"></span>";
+		html += "      <div class=\"top-banner__cont\">";
+		html += "        <h1 class=\"top-banner__tit\">연구자 추출용DB 개방 안내</h1>";
+		html += "        <p class=\"top-banner__txt\">새로운 연구 맞춤형 자료공유 서비스 오픈!</p>";
+		html += "      </div>";
+		html += "      <p>";
+		html += "        자세히 보기";
+		html += "        <span class=\"img-wrap\">";
+		html += "          <img src=\"/resources/assets/image/common/icon/icon-link--detail.svg\" alt=\"\">";
+		html += "        </span>";
+		html += "      </p>";
+		html += "    </a>";
+		html += "  </div>";
+		html += "</div>";
+		
+		$("#pageTopBannerList").append(html);
+	}
+	
+</script>
+<div class="top-banner display-hide" id="pageBanner">
+	<div class="top-banner__inner">
+		<div class="top-banner__slide">
+			<div class="swiper">
+				<div class="swiper-wrapper" id="pageTopBannerList">
+				</div>
+			</div>
+			<button type="button" class="swiper-button-prev" title="이전"></button>
+			<button type="button" class="swiper-button-next" title="다음"></button>
+		</div>
+		<div class="top-banner__control">
+			<div class="swiper-pagination"></div>
+			<button type="button" class="swiper-button-prev" title="이전"></button>
+			<button type="button" class="swiper-button-play"></button>
+			<button type="button" class="swiper-button-next" title="다음"></button>
+			<button type="button" class="top-banner__todayClose" id="btnCloseBannerToday">
+				<span class="img-wrap">
+					<img src="/resources/assets/image/common/icon/icon-todayClose__rect.png" alt="">
+				</span>
+				오늘 하루 열지 않기
+			</button>
+		</div>
+	</div>
+</div>
+
+
+        <header>
+            
+
+<script type="text/javascript" src="/resources/assets/js/lib/jquery/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="/resources/assets/js/lib/jquery/jquery-ui.js"></script>
+
+<style>
+.dropdown-zoom__content {
+    right: 7rem;
+}
+
+.dropdown-zoom__content a {
+    display: block;
+    padding: 1.5rem 1.6rem;
+    font-size: 1.7rem;
+    font-weight: 400;
+    color: #222;
+    vertical-align: middle;
+    border-radius: 0.6rem;
+    }
+.dropdown-zoom__content a:hover {
+  background-color: #EBEBF1;
+  text-decoration: none;
+}
+
+.zoom_button {
+  margin: 0 1rem 0 0;
+}
+/*.side-floating {
+    padding: 1rem 0 0  !important;
+}*/
+</style>
+<script type="text/javascript">
+var loginId = '';
+
+$(document).ready(function() {
+	$(".js-dropdown").on("click", function() {
+	    var isClick = $(this).hasClass('is-click');
+	    $(".js-dropdown").removeClass('is-click');
+	    if(isClick) {
+	        $(this).addClass('is-click');
+	    }
+	});
+});
+
+function goUrl(urlText){
+	window.location.replace(urlText);
+}
+
+function doLogout(){
+	
+	$.ajax({
+		url:		'/lp/z/a/006/lpza006m01.do',
+		dataType:	"json",
+		data:		{},
+		method:		"POST",
+		async:		false,
+		success: function(data){
+			switch(data.resultCode){
+			case 1:	//LOGIN_CHECK_SUCCESS
+				alert(data.resultMsg);
+			
+				window.location.replace('/');
+			
+				break;
+			case 0:	//LOGOUT_FAIL
+				alert(data.resultMsg);
+				break;			
+			default:
+				break;	
+			}			
+		}
+	});		
+	
+	
+	
+}
+
+var zoom = 100;
+function zoomin() {
+	
+// 	if(zoom >= 200) {
+// 		alert("화면확대는 기본크기에서 200% 초과 확대할 수 없습니다.");
+// 		return false;
+// 	}
+	
+	zoom = zoom + 10;
+	
+	$("body").attr("style", "zoom:"+ zoom +"%");
+}
+
+function zoomout() {
+	
+// 	if(zoom <= 70) {
+// 		alert("화면축소는 기본크기에서 70% 미만으로 축소할 수 없습니다.");
+// 		return false;
+// 	}
+	
+	zoom = zoom - 10;
+	$("body").attr("style", "zoom:"+ zoom +"%");
+}
+
+//========================================================================================================================
+//replaceAll
+//========================================================================================================================
+function replaceAll(str, searchStr, replaceStr){
+	return str.split(searchStr).join(replaceStr);
+}
+
+var timer;
+
+function fnExtendTime() {
+	clearTimeout(timer);
+	
+	var paramMap = {
+			 "userId" : loginId
+		};	
+	
+	$.ajax({
+		url:		'/login/checkExistUserInfo.do',
+		dataType:	"json",
+		data:		paramMap,
+		method:		"POST",
+		async:		false,
+		success: function(data){
+			clearTimeout(timer);
+			fnTimer(1800);
+		}
+	});
+}
+
+function fn_set(sec) {
+	var h = Math.floor(sec/3600);
+	var m = Math.floor((sec - h * 3600) / 60);
+	var s = sec - h * 3600 - m * 60;
+	var hh = ((h < 10) ? '0' : '') + h;
+	var mm = ((m < 10) ? '0' : '') + m;
+	var ss = ((s < 10) ? '0' : '') + s;
+	return mm +":"+ ss;
+}
+
+function fnTimer(time) {
+	$("[name=timeTxt]").text(fn_set(time));
+	
+	if(time >= 0) {
+		timer = setTimeout(fnTimer, 1000, --time);
+	} else {
+		var wwidth = window.innerWidth;
+		if(wwidth > 780) { // pc버전일째만
+			doLogout();
+		}
+	}
+}
+
+
+
+</script>
+
+<section class="header__inner">
+	<article class="header-nav">
+		<div class="header-nav__inner">
+			<div class="header-nav__linkWrap">
+<!--                 <a href="javascript:void(0)" data-target="el-forExUser" class="header-nav__link is-active">예비사용자</a> -->
+<!--                 <a href="javascript:void(0)" data-target="el-forResearcher" class="header-nav__link">연구자</a> -->
+<!--                 <a href="javascript:void(0)" class="header-nav__link">빅데이터</a> -->
+				<p class="header-nav__txt">건강보험공단은 소통과 배려로 국민과 함께 하겠습니다.</p>
+			</div>
+			<div class="header-nav__myInfo">
+				<!-- <a href="">로그인</a> -->
+				<a href="http://nhis.or.kr/helpcom_new/hc_user_main.jsp" target="_blank" style="display:none;">온라인 도우미</a>
+				<a href="javascript:ComLib.fn_openLayer('lpza100m10', '/lp/z/a/100/lpza100m10.do', {})">사이트맵</a>
+				
+				<button type="button" class="header-nav__myInfo-lang js-dropdown zoom_button" data-target="dropdown-zoom__content">화면크기</button>
+				<div class="dropdown-zoom__content">
+					<a href="javascript:zoomin();">
+						<span class="img-wrap">
+							<img src="/resources/assets/image/common/icon/icon_btnplus.png" alt="" style="width: 12px;border: 1px solid #dddddd;">
+						</span>
+						화면확대
+					</a>
+					<a href="javascript:zoomout();">
+						<span class="img-wrap">
+							<img src="/resources/assets/image/common/icon/icon_btnMinus.png" alt="" style="width: 12px;border: 1px solid #dddddd;">
+						</span>
+						화면축소
+					</a>
+				</div>
+				
+				<button type="button" class="header-nav__myInfo-lang js-dropdown" data-target="dropdown-language__content">Language</button>
+				<div class="dropdown-language__content">
+					<a href="javascript:goUrl('/')">
+						한국어
+						<span class="img-wrap">
+							<img src="/resources/assets/image/common/icon/icon-exLink.svg" alt="">
+						</span>
+					</a>
+					<a href="javascript:goUrl('/en/z/a/001/lpza001m01en.do')">
+						English
+						<span class="img-wrap">
+							<img src="/resources/assets/image/common/icon/icon-exLink.svg" alt="">
+						</span>
+					</a>
+				</div>
+			</div>
+			<button type="button" class="top-banner__close" id="btnCloseBanner" style="display: none;">
+				<span id="closeTxt">팝업닫기</span>
+				<span class="img-wrap">
+					<img id="closeImg" src="/resources/assets/image/common/icon/icon-bannerClose__up.svg" class="close" alt="">
+				</span>
+			</button>
+		</div>
+	</article>
+
+    <!-- 2024.05.21 이전 haeder -->
+    <!-- <article class="header-menu">
+        <div class="header-menu__inner">
+            <div class="header-menu__logo">
+                <a href="">
+                    <img src="/resources/assets/image/common/img-common__logo.png" alt="h well 국민건강보험 빅데이터 플랫폼 건강보험 빅데이터 플랫폼">
+                </a>
+            </div>
+            <div class="header-menu__gnb">
+                <div class="gnb">
+                    <button type="button">서비스 안내</button>
+                    <button type="button">연구과제</button>
+                    <button type="button">가상화 연구분석</button>
+                    <button type="button">커뮤니티</button>
+                    <button type="button">빅데이터 통계분석</button>
+                    <button type="button">고객지원</button>
+                </div>
+            </div>
+            <div class="header-menu__sideBtn">
+                <button type="button" class="header-menu__schBtn" title="검색 열림">
+                    <img src="/resources/assets/image/common/icon/icon-sch.svg" alt="">
+                </button>
+                <button type="button" class="header-menu__sitemapBtn" title="사이트맵 열림">
+                    <img src="/resources/assets/image/common/icon/icon-sitemap.svg" alt="">
+                </button>
+            </div>
+        </div>
+    </article> -->
+    <!-- /2024.05.21 이전 haeder -->
+
+    <!-- 2024.05.21 이후 haeder -->
+    <article class="header-subTopBlock">
+        <div class="header-subTopBlock__inner">
+            <div class="header-subTopBlock__logo">
+                <a href="javascript:goUrl('/');">
+                    <img src="/resources/assets/image/common/img-common__subLogo.png" alt="h well 국민건강보험 소통, 배려 국민과 함께 빅데이터 플랫폼 건강보험 빅데이터 플랫폼">
+                </a>
+            </div>
+            <div class="header-subTopBlock__myInfo">
+            	
+            	
+<!--                 <button type="button" class="mo-hidden" onclick="ComLib.goPostUrl('/lp/z/a/002/lpza002m01.do');"> -->
+					<button type="button" class="mo-hidden" onclick="ComLib.fn_openLayer('lpza002p01', '/lp/z/a/002/p01/lpza002p01.do');">
+                                <span class="img-wrap">
+                                    <img src="/resources/assets/image/common/icon/img-common__subSch.svg" alt="">
+                                </span>
+                    <em>통합검색</em>
+                </button>
+                <a href="javascript:goUrl('/lp/z/a/003/lpza003m01.do');" class="menu-login">
+                                <span class="img-wrap">
+                                    <img src="/resources/assets/image/common/icon/img-common__subLogin.svg" alt="">
+                                </span>
+                    <em>로그인</em>
+                </a>
+	                        
+                <a href="javascript:goUrl('/lp/z/a/007/lpza007m01.do');" class="mo-hidden">
+                                <span class="img-wrap">
+                                    <img src="/resources/assets/image/common/icon/img-common__subJoin.svg" alt="">
+                                </span>
+                    <em>회원가입</em>
+                </a>            	
+            	
+                <button type="button" class="mo-menu">
+                                <span class="img-wrap">
+                                    <img src="/resources/assets/image/common/icon/icon-menu--mo.svg" alt="">
+                                </span>
+                    전체메뉴
+                </button>
+                <div class="mo-menu__cont">
+                    <div class="mo-menu__cont-head">
+                        <button type="button" class="mo-menu__cont-close">
+                                        <span class="img-wrap">
+                                            <img src="/resources/assets/image/common/icon/icon-mo-menu__close.svg" alt="">
+                                        </span>
+                        </button>
+                        <button type="button" class="mo-menu__lang js-dropdown" data-target="mo-menu__lang-cont" style="display: none;">Language</button>
+                        <div class="mo-menu__lang-cont">
+                            12
+                        </div>
+                        <div class="auth-info" style="margin-bottom: 0rem;"><!-- select-user주석처리해서 bottom 0으로 변경 -->
+                            
+                            
+                            
+	                            <button type="button" class="auth-info__login" onclick="goUrl('/lp/z/a/003/lpza003m01.do');">
+	                                            <span class="img-wrap">
+	                                                <img src="/resources/assets/image/common/icon/img-common__subLogin.svg" alt="">
+	                                            </span>
+	                                로그인
+	                            </button>
+	                            <button type="button" class="auth-info__join" onclick="goUrl('/lp/z/a/007/lpza007m01.do');">
+	                                            <span class="img-wrap">
+	                                                <img src="/resources/assets/image/common/icon/img-common__subJoin.svg" alt="">
+	                                            </span>
+	                                회원가입
+	                            </button>
+	                            <button type="button" class="auth-info__logout">
+	                                            <span class="img-wrap">
+	                                                <img src="/resources/assets/image/common/icon/icon-logout.svg" alt="">
+	                                            </span>
+	                            </button>
+                            
+                        </div>
+                        <!-- <div class="select-user">
+                            <button type="button" class="is-active">예비사용자</button>
+                            <button type="button" class="">연구자</button>
+                            <button type="button" class="">빅데이터통계</button>
+                        </div> -->
+                    </div>
+                    <div class="mo-menu__cont-links" style="height: calc(100% - 14rem);">
+                        
+                        
+
+
+	
+	
+	
+	
+		<div class='mo-menu--dep1'>
+    <button type='button' class='is-active' data-target='mo-menu--01'>서비스안내</button>
+    <button type='button' data-target='mo-menu--02'>가상화연구분석</button>
+    <button type='button' data-target='mo-menu--03'>고객지원</button>
+    <button type='button' data-target='mo-menu--04'>나의 과제</button>
+</div>
+<div class='mo-menu--dep2'>
+    <div class='mo-menu--dep2-cont open mo-menu--01'>
+        <p class='mo-menu--dep2-tit'>서비스안내</p>
+        <a href="javascript:ComLib.goGetUrl('/lp/z/z/999/lpzzcms.do?cntsKeyVl=H1');">빅데이터 플랫폼 소개</a>
+        <a href="javascript:ComLib.goGetUrl('/lp/z/z/999/lpzzcms.do?cntsKeyVl=H2');">용어설명</a>
+        <a href="javascript:ComLib.goGetUrl('/lp/z/z/999/lpzzcms.do?cntsKeyVl=H3');">운영조직</a>
+        <a href="javascript:ComLib.goGetUrl('/lp/z/z/999/lpzzcms.do?cntsKeyVl=H4');">관련규정</a>
+        <a href="javascript:ComLib.goGetUrl('/lp/z/z/999/lpzzcms.do?cntsKeyVl=S');">심의위원회</a>
+    </div>
+    <div class='mo-menu--dep2-cont mo-menu--02'>
+        <p class='mo-menu--dep2-tit'>가상화연구분석</p>
+        <button type='button' class='mo-menu--dep3'>가상화연구분석안내</button>
+        <div class='mo-menu--dep3-cont'>
+            <a href="javascript:ComLib.goPostUrl('/lp/z/z/104/lpzz104m01.do');">가상화연구분석안내</a> 
+        <a href="javascript:ComLib.goPostUrl('/lp/d/z/100/lpdz100m01.do');">분석센터소개</a> 
+
+        </div>
+        <button type='button' class='mo-menu--dep3'>분석센터이용</button>
+        <div class='mo-menu--dep3-cont'>
+            <a href="javascript:ComLib.goPostUrl('/lp/d/b/001/lpdb001m01.do');">분석센터예약</a> 
+        <a href="javascript:ComLib.goPostUrl('/lp/d/b/002/lpdb002m01.do');">분석센터예약현황</a> 
+
+        </div>
+            <a href="javascript:ComLib.goPostUrl('/lp/d/z/001/lpdz001m01.do');">자료반출신청현황</a> 
+
+            <a href="javascript:ComLib.goPostUrl('/lp/d/z/101/lpdz101m01.do');">가상화 비밀번호 변경</a> 
+
+        <button type='button' class='mo-menu--dep3'>연구자추출용 PC 예약</button>
+        <div class='mo-menu--dep3-cont'>
+            <a href="javascript:ComLib.goPostUrl('/lp/d/b/200/lpdb200m01.do');">연구자추출용 PC 예약</a> 
+        <a href="javascript:ComLib.goPostUrl('/lp/d/b/201/lpdb201m01.do');">연구자추출용 PC 예약 현황</a> 
+
+        </div>
+    </div>
+    <div class='mo-menu--dep2-cont mo-menu--03'>
+        <p class='mo-menu--dep2-tit'>고객지원</p>
+            <a href="javascript:ComLib.goPostUrl('/lp/j/c/001/lpjc001m01.do');">공지사항</a> 
+
+        <button type='button' class='mo-menu--dep3'>행사 및 교육안내</button>
+        <div class='mo-menu--dep3-cont'>
+            <a href="javascript:ComLib.goPostUrl('/lp/j/d/001/lpjd001m01.do');">교육 리스트</a> 
+        <a href="javascript:ComLib.goPostUrl('/lp/j/d/101/lpjd101m01.do');">심포지엄 리스트</a> 
+
+        </div>
+    </div>
+    <div class='mo-menu--dep2-cont mo-menu--04'>
+        <p class='mo-menu--dep2-tit'>나의 과제</p>
+            <a href="javascript:ComLib.goPostUrl('/lp/a/z/100/lpaz100m01.do');">나의 신청현황</a> 
+
+    </div>
+</div>
+	
+
+<script>
+$(".header-subMenu__inner").css("max-width", "132.2rem");
+</script>
+                    </div>
+                    <div class="mo-menu__cont-foot">
+                        <a href="https://www.nhis.or.kr/nhis/etc/privacy_policy.do" target="_blank" class="footer-nav__link is-active">개인정보처리방침</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+    <article id="gnb" class="header-subMenu">
+        <div class="header-subMenu__inner">    
+            <button type="" class="header-subMenu__dep1" data-target="dep3-0300000001" aria-expanded="false" aria-controls="dep3-0300000001">서비스 안내</button>
+            <div class="header-subMenu__dep2">
+                <div class="header-subMenu__dep2-inner">
+                    <div class="block-wrap block-one">
+                        <div class="block-link d-flex flex-wrap w-100" id="dep3-0300000001" role="region" aria-hidden="true">
+                            <h3>서비스 안내</h3>
+                            <a href="javascript:ComLib.goGetUrl('/lp/z/z/999/lpzzcms.do?cntsKeyVl=H1');">빅데이터 플랫폼 소개</a>
+                            <a href="javascript:ComLib.goGetUrl('/lp/z/z/999/lpzzcms.do?cntsKeyVl=H2');">용어설명</a>
+                            <a href="javascript:ComLib.goGetUrl('/lp/z/z/999/lpzzcms.do?cntsKeyVl=H3');">운영조직</a>
+                            <a href="javascript:ComLib.goGetUrl('/lp/z/z/999/lpzzcms.do?cntsKeyVl=H4');">관련규정</a>
+                            <a href="javascript:ComLib.goGetUrl('/lp/z/z/999/lpzzcms.do?cntsKeyVl=S');">심의위원회</a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>        
+			
+
+
+	
+	
+	
+	
+		<button type='button' class='header-subMenu__dep1' data-target='dep3-0400000001' aria-expanded='false' aria-controls='dep3-0400000001'>연구과제</button>	
+	<div class='header-subMenu__dep2'>                                 			
+		<div class='header-subMenu__dep2-inner'>                       			
+			<div class='block-wrap block-two'>			               			
+					 <div class='header-subMenu__dep3' id='dep3-0400000001' role='region' aria-hidden='true'>																					
+ 	<button type='button' data-target='dep3-0401000001' class=''>연구안내</button>      	
+ 	<button type='button' data-target='dep3-0402000001' class=''>표본연구DB신청</button>      	
+ 	<button type='button' data-target='dep3-0403000001' class=''>맞춤형연구DB신청</button>      	
+ 	<button type='button' data-target='dep3-0405000001' class=''>결합자료제공신청</button>      	
+ 	<button type='button' data-target='dep3-0406000001' class=''>교육용DB신청</button>      	
+ </div>                                                                                                             	
+                                       
+					<div class='block-link d-flex flex-wrap w-100 dep3-0401000001'>	
+	<h3>연구안내</h3>                                       
+		<a href='javascript:ComLib.goPostUrl("/lp/z/z/999/lpzzcms.do?cntsKeyVl=J");'>연구진행 절차안내</a> 
+<a href='javascript:ComLib.goPostUrl("/lp/z/z/999/lpzzcms.do?cntsKeyVl=D");'>표본연구DB 연구소개</a> 
+<a href='javascript:ComLib.goPostUrl("/lp/z/z/999/lpzzcms.do?cntsKeyVl=E");'>맞춤형연구DB 연구소개</a> 
+<a href='javascript:ComLib.goPostUrl("/lp/a/a/303/lpaa303m01.do");'>데모다운로드</a> 
+                                                  
+</div> 																	
+<div class='block-link d-flex flex-wrap w-100 dep3-0402000001'>	
+	<h3>표본연구DB신청</h3>                                       
+		<a href='javascript:ComLib.goPostUrl("/lp/a/a/200/lpaa200m01.do");'>표본코호트DB신청</a> 
+<a href='javascript:ComLib.goPostUrl("/lp/a/a/200/lpaa201m01.do");'>건강검진코호트DB신청</a> 
+<a href='javascript:ComLib.goPostUrl("/lp/a/a/200/lpaa202m01.do");'>노인코호트DB신청</a> 
+<a href='javascript:ComLib.goPostUrl("/lp/a/a/200/lpaa204m01.do");'>저위험 표본코호트DB신청</a> 
+                                                  
+</div> 																	
+<div class='block-link d-flex flex-wrap w-100 dep3-0403000001'>	
+	<h3>맞춤형연구DB신청</h3>                                       
+		<a href='javascript:ComLib.goPostUrl("/lp/a/b/100/lpab100m01.do");'>맞춤형연구DB신청</a> 
+                                                  
+</div> 																	
+<div class='block-link d-flex flex-wrap w-100 dep3-0405000001'>	
+	<h3>결합자료제공신청</h3>                                       
+		<a href='javascript:ComLib.goPostUrl("/lp/a/c/101/lpac101m01.do");'>결합자료제공신청</a> 
+                                                  
+</div> 																	
+<div class='block-link d-flex flex-wrap w-100 dep3-0406000001'>	
+	<h3>교육용DB신청</h3>                                       
+		<a href='javascript:ComLib.goPostUrl("/lp/a/f/002/lpaf002m01.do");'>교육용 표본연구DB 신청</a> 
+                                                  
+</div> 																	
+                                              
+			</div>                                                              
+		</div>                                                                  
+	</div> 																		
+<button type='button' class='header-subMenu__dep1' data-target='dep3-0500000001' aria-expanded='false' aria-controls='dep3-0500000001'>가상화연구분석</button>	
+	<div class='header-subMenu__dep2'>                                 			
+		<div class='header-subMenu__dep2-inner'>                       			
+			<div class='block-wrap block-two'>			               			
+					 <div class='header-subMenu__dep3' id='dep3-0500000001' role='region' aria-hidden='true'>																					
+ 	<button type='button' data-target='dep3-0501000001' class=''>가상화연구분석안내</button>      	
+ 	<button type='button' data-target='dep3-0502000001' class=''>분석센터이용</button>      	
+ 	<button type='button' data-target='dep3-0503000001' class=''>자료 반출입신청</button>      	
+ 	<button type='button' data-target='dep3-0504000001' class=''>가상화</button>      	
+ 	<button type='button' data-target='dep3-0505000001' class=''>연구자추출용 PC 예약</button>      	
+ </div>                                                                                                             	
+                                       
+					<div class='block-link d-flex flex-wrap w-100 dep3-0501000001'>	
+	<h3>가상화연구분석안내</h3>                                       
+		<a href='javascript:ComLib.goPostUrl("/lp/z/z/104/lpzz104m01.do");'>가상화연구분석안내</a> 
+<a href='javascript:ComLib.goPostUrl("/lp/d/z/100/lpdz100m01.do");'>분석센터소개</a> 
+                                                  
+</div> 																	
+<div class='block-link d-flex flex-wrap w-100 dep3-0502000001'>	
+	<h3>분석센터이용</h3>                                       
+		<a href='javascript:ComLib.goPostUrl("/lp/d/b/001/lpdb001m01.do");'>분석센터예약</a> 
+<a href='javascript:ComLib.goPostUrl("/lp/d/b/002/lpdb002m01.do");'>분석센터예약현황</a> 
+<a href='javascript:ComLib.goPostUrl("/lp/d/h/001/lpdh001m01.do");'>분석센터이용제한현황<br/>(수칙위반)</a> 
+<a href='javascript:ComLib.goPostUrl("/lp/d/h/002/lpdh002m01.do");'>분석센터이용제한현황<br/>(예약미이행)</a> 
+                                                  
+</div> 																	
+<div class='block-link d-flex flex-wrap w-100 dep3-0503000001'>	
+	<h3>자료 반출입신청</h3>                                       
+		<a href='javascript:ComLib.goPostUrl("/lp/d/z/001/lpdz001m01.do");'>자료반출신청현황</a> 
+<a href='javascript:ComLib.goPostUrl("/lp/d/z/004/lpdz004m01.do");'>자료반입신청현황</a> 
+                                                  
+</div> 																	
+<div class='block-link d-flex flex-wrap w-100 dep3-0504000001'>	
+	<h3>가상화</h3>                                       
+		<a href='javascript:ComLib.goPostUrl("/lp/d/e/001/lpde001m01.do");'>연구자료보관 신청 및 현황</a> 
+<a href='javascript:ComLib.goPostUrl("/lp/d/g/001/lpdg001m01.do");'>가상화재사용 신청 및 현황</a> 
+<a href='javascript:ComLib.goPostUrl("/lp/d/f/001/lpdf001m01.do");'>사용기간연장 신청 및 현황</a> 
+<a href='javascript:ComLib.goPostUrl("/lp/d/z/101/lpdz101m01.do");'>가상화 비밀번호 변경</a> 
+                                                  
+</div> 																	
+<div class='block-link d-flex flex-wrap w-100 dep3-0505000001'>	
+	<h3>연구자추출용 PC 예약</h3>                                       
+		<a href='javascript:ComLib.goPostUrl("/lp/d/b/200/lpdb200m01.do");'>연구자추출용 PC 예약</a> 
+<a href='javascript:ComLib.goPostUrl("/lp/d/b/201/lpdb201m01.do");'>연구자추출용 PC 예약 현황</a> 
+                                                  
+</div> 																	
+                                              
+			</div>                                                              
+		</div>                                                                  
+	</div> 																		
+<button type='button' class='header-subMenu__dep1' data-target='dep3-0600000001' aria-expanded='false' aria-controls='dep3-0600000001'>커뮤니티</button>	
+	<div class='header-subMenu__dep2'>                                 			
+		<div class='header-subMenu__dep2-inner'>                       			
+			<div class='block-wrap block-two'>			               			
+					 <div class='header-subMenu__dep3' id='dep3-0600000001' role='region' aria-hidden='true'>																					
+ 	<button type='button' data-target='dep3-0601000001' class=''>연구커뮤니티</button>      	
+ </div>                                                                                                             	
+                                       
+					<div class='block-link d-flex flex-wrap w-100 dep3-0601000001'>	
+	<h3>연구커뮤니티</h3>                                       
+		<a href='javascript:ComLib.goPostUrl("/lp/e/b/001/lpeb001m01.do");'>연구성과공유목록</a> 
+<a href='javascript:ComLib.goPostUrl("/lp/e/b/100/lpeb100m01.do");'>NHIS연구성과</a> 
+                                                  
+</div> 																	
+                                              
+			</div>                                                              
+		</div>                                                                  
+	</div> 																		
+<button type='button' class='header-subMenu__dep1' data-target='dep3-0700000001' aria-expanded='false' aria-controls='dep3-0700000001'>빅데이터/통계</button>	
+	<div class='header-subMenu__dep2'>                                 			
+		<div class='header-subMenu__dep2-inner'>                       			
+			<div class='block-wrap block-two'>			               			
+					 <div class='header-subMenu__dep3' id='dep3-0700000001' role='region' aria-hidden='true'>																					
+ 	<button type='button' data-target='dep3-0701010101' class=''>건강보험통계</button>      	
+ 	<button type='button' data-target='dep3-0701010201' class=''>질병통계</button>      	
+ 	<button type='button' data-target='dep3-0704000001' class=''>공공데이터</button>      	
+ 	<button type='button' data-target='dep3-0705000001' class=''>한국인건강지수참조표준</button>      	
+ </div>                                                                                                             	
+                                       
+					<div class='block-link d-flex flex-wrap w-100 dep3-0701010101'>	
+	<h3>건강보험통계</h3>                                       
+		<a href='javascript:ComLib.goPostUrl("/lp/f/a/300/lpfa300m01.do");'>건강보험통계</a> 
+<a href='javascript:ComLib.goPostUrl("/lp/f/a/400/lpfa400m01.do");'>다빈도 요청 통계</a> 
+<a href='javascript:ComLib.goPostUrl("/lp/f/z/400/lpfz400m01.do");'>NHIS 통계자료실</a> 
+                                                  
+</div> 																	
+<div class='block-link d-flex flex-wrap w-100 dep3-0701010201'>	
+	<h3>질병통계</h3>                                       
+		<a href='javascript:ComLib.goPostUrl("/lp/f/a/300/lpfa300m04.do");'>질병소분류(3단상병)통계</a> 
+<a href='javascript:ComLib.goPostUrl("/lp/f/a/300/lpfa300m11.do");'>질병소분류(4단상병)통계</a> 
+                                                  
+</div> 																	
+<div class='block-link d-flex flex-wrap w-100 dep3-0704000001'>	
+	<h3>공공데이터</h3>                                       
+		<a href='javascript:ComLib.goPostUrl("/lp/f/z/002/lpfz002m01.do");'>공공데이터 이용안내</a> 
+                                                  
+</div> 																	
+<div class='block-link d-flex flex-wrap w-100 dep3-0705000001'>	
+	<h3>한국인건강지수참조표준</h3>                                       
+		<a href='javascript:ComLib.goPostUrl("/lp/f/h/001/lpfh001m01.do");'>참조표준이란?</a> 
+<a href='javascript:ComLib.goPostUrl("/lp/f/h/002/lpfh002m01.do");'>참조표준 조회</a> 
+                                                  
+</div> 																	
+                                              
+			</div>                                                              
+		</div>                                                                  
+	</div> 																		
+<button type='button' class='header-subMenu__dep1' data-target='dep3-1200000001' aria-expanded='false' aria-controls='dep3-1200000001'>산업계 빅데이터</button>	
+	<div class='header-subMenu__dep2'>                                 			
+		<div class='header-subMenu__dep2-inner'>                       			
+			<div class='block-wrap block-two'>			               			
+					 <div class='header-subMenu__dep3' id='dep3-1200000001' role='region' aria-hidden='true'>																					
+ 	<button type='button' data-target='dep3-1201000001' class=''>산업계맞춤형익명정보신청</button>      	
+ 	<button type='button' data-target='dep3-1202000001' class=''>의약품·의료기기 사용통계</button>      	
+ 	<button type='button' data-target='dep3-1203000001' class=''>질병통계</button>      	
+ </div>                                                                                                             	
+                                       
+					<div class='block-link d-flex flex-wrap w-100 dep3-1201000001'>	
+	<h3>산업계맞춤형익명정보신청</h3>                                       
+		<a href='javascript:ComLib.goPostUrl("/lp/a/g/003/lpag003m01.do");'>산업계맞춤형익명정보신청</a> 
+                                                  
+</div> 																	
+<div class='block-link d-flex flex-wrap w-100 dep3-1202000001'>	
+	<h3>의약품·의료기기 사용통계</h3>                                       
+		<a href='javascript:ComLib.goPostUrl("/lp/f/a/100/lpfa100m04.do");'>의약품 사용통계</a> 
+<a href='javascript:ComLib.goPostUrl("/lp/f/a/100/lpfa100m05.do");'>의료기기 사용통계</a> 
+                                                  
+</div> 																	
+<div class='block-link d-flex flex-wrap w-100 dep3-1203000001'>	
+	<h3>질병통계</h3>                                       
+		<a href='javascript:ComLib.goPostUrl("/lp/f/a/100/lpfa100m06.do");'>질병통계</a> 
+                                                  
+</div> 																	
+                                              
+			</div>                                                              
+		</div>                                                                  
+	</div> 																		
+<button type='button' class='header-subMenu__dep1' data-target='dep3-0800000001' aria-expanded='false' aria-controls='dep3-0800000001'>고객지원</button>	
+	<div class='header-subMenu__dep2'>                                 			
+		<div class='header-subMenu__dep2-inner'>                       			
+			<div class='block-wrap block-two'>			               			
+					 <div class='header-subMenu__dep3' id='dep3-0800000001' role='region' aria-hidden='true'>																					
+ 	<button type='button' data-target='dep3-0801000001' class=''>자주묻는질문</button>      	
+ 	<button type='button' data-target='dep3-0802000001' class=''>서비스문의</button>      	
+ 	<button type='button' data-target='dep3-0803000001' class=''>공지사항</button>      	
+ 	<button type='button' data-target='dep3-0804000001' class=''>행사 및 교육안내</button>      	
+ 	<button type='button' data-target='dep3-0805000001' class=''>설문조사</button>      	
+ 	<button type='button' data-target='dep3-0806000001' class=''>자료실</button>      	
+ </div>                                                                                                             	
+                                       
+					<div class='block-link d-flex flex-wrap w-100 dep3-0801000001'>	
+	<h3>자주묻는질문</h3>                                       
+		<a href='javascript:ComLib.goPostUrl("/lp/j/a/001/lpja001m01.do");'>자주묻는 질문</a> 
+                                                  
+</div> 																	
+<div class='block-link d-flex flex-wrap w-100 dep3-0802000001'>	
+	<h3>서비스문의</h3>                                       
+		<a href='javascript:ComLib.goPostUrl("/lp/j/b/001/lpjb001m01.do");'>서비스문의 등록</a> 
+                                                  
+</div> 																	
+<div class='block-link d-flex flex-wrap w-100 dep3-0803000001'>	
+	<h3>공지사항</h3>                                       
+		<a href='javascript:ComLib.goPostUrl("/lp/j/c/001/lpjc001m01.do");'>공지사항</a> 
+                                                  
+</div> 																	
+<div class='block-link d-flex flex-wrap w-100 dep3-0804000001'>	
+	<h3>행사 및 교육안내</h3>                                       
+		<a href='javascript:ComLib.goPostUrl("/lp/j/d/001/lpjd001m01.do");'>교육 리스트</a> 
+<a href='javascript:ComLib.goPostUrl("/lp/j/d/101/lpjd101m01.do");'>심포지엄 리스트</a> 
+                                                  
+</div> 																	
+<div class='block-link d-flex flex-wrap w-100 dep3-0805000001'>	
+	<h3>설문조사</h3>                                       
+		<a href='javascript:ComLib.goPostUrl("/lp/m/d/001/lpmd001m01.do");'>설문리스트</a> 
+                                                  
+</div> 																	
+<div class='block-link d-flex flex-wrap w-100 dep3-0806000001'>	
+	<h3>자료실</h3>                                       
+		<a href='javascript:ComLib.goPostUrl("/lp/j/f/001/lpjf001m01.do");'>자료실 리스트</a> 
+                                                  
+</div> 																	
+                                              
+			</div>                                                              
+		</div>                                                                  
+	</div> 																		
+<button type='button' class='header-subMenu__dep1' data-target='dep3-1100000001' aria-expanded='false' aria-controls='dep3-1100000001'>나의 과제</button>	
+	<div class='header-subMenu__dep2'>                                 			
+		<div class='header-subMenu__dep2-inner'>                       			
+			<div class='block-wrap block-two'>			               			
+					 <div class='header-subMenu__dep3' id='dep3-1100000001' role='region' aria-hidden='true'>																					
+ 	<button type='button' data-target='dep3-1101000001' class=''>나의 신청현황</button>      	
+ 	<button type='button' data-target='dep3-1102000001' class=''>결합신청현황</button>      	
+ 	<button type='button' data-target='dep3-1103000001' class=''>산업계신청현황</button>      	
+ 	<button type='button' data-target='dep3-1104000001' class=''>교육용DB신청현황</button>      	
+ </div>                                                                                                             	
+                                       
+					<div class='block-link d-flex flex-wrap w-100 dep3-1101000001'>	
+	<h3>나의 신청현황</h3>                                       
+		<a href='javascript:ComLib.goPostUrl("/lp/a/z/100/lpaz100m01.do");'>나의 신청현황</a> 
+                                                  
+</div> 																	
+<div class='block-link d-flex flex-wrap w-100 dep3-1102000001'>	
+	<h3>결합신청현황</h3>                                       
+		<a href='javascript:ComLib.goPostUrl("/lp/a/c/200/lpac200m01.do");'>결합신청현황</a> 
+                                                  
+</div> 																	
+<div class='block-link d-flex flex-wrap w-100 dep3-1103000001'>	
+	<h3>산업계신청현황</h3>                                       
+		<a href='javascript:ComLib.goPostUrl("/lp/a/g/001/lpag001m01.do");'>산업계신청현황</a> 
+                                                  
+</div> 																	
+<div class='block-link d-flex flex-wrap w-100 dep3-1104000001'>	
+	<h3>교육용DB신청현황</h3>                                       
+		<a href='javascript:ComLib.goPostUrl("/lp/a/f/001/lpaf001m01.do");'>교육용 표본연구DB 신청현황</a> 
+                                                  
+</div> 																	
+                                              
+			</div>                                                              
+		</div>                                                                  
+	</div> 																		
+
+	
+
+<script>
+$(".header-subMenu__inner").css("max-width", "132.2rem");
+</script>
+        </div>
+    </article>  
+    <!-- /2024.05.21 이후 haeder -->
+</section>
+        </header>
+        <div id="real_contents" class="container">
+            
+
+<script type="text/javascript">
+
+
+//========================================================================================================================
+//기본 셋팅 및 이벤트
+//========================================================================================================================
+$(document).ready(function(){
+	//---------------------------------------------------------------------------------
+	// 메인화면 메인이미지
+	//---------------------------------------------------------------------------------		
+	getMainVisualInnerList();
+	//---------------------------------------------------------------------------------
+	// 메인화면 공지사항 오른쪽 베너 조회
+	//---------------------------------------------------------------------------------
+	getNoticeSideBannerList();
+	//---------------------------------------------------------------------------------
+	//진행중인 과제 현황표시
+	//---------------------------------------------------------------------------------		
+	getUserExCount();
+	//---------------------------------------------------------------------------------
+	//최신 심의차수 정보조회
+	//---------------------------------------------------------------------------------	
+	getReviewInfoShorts('5');
+	//---------------------------------------------------------------------------------
+	//공지사항 SHORTS
+	//---------------------------------------------------------------------------------
+	getNoticeList('120', '6');
+	//---------------------------------------------------------------------------------
+	//FAQ SHORTS
+	//---------------------------------------------------------------------------------
+	getNoticeList('100', '7');
+	//---------------------------------------------------------------------------------
+	//FAQ SHORTS
+	//---------------------------------------------------------------------------------
+	getImageLayerPopup();
+})
+//========================================================================================================================
+//사용자 진행중인 과제현황 숫자
+//========================================================================================================================
+function getUserExCount(){
+	
+	var paramMap = {
+		};		
+	
+	$.ajax({						
+		url:		'/lp/z/a/001/getUserExCount.do',
+		dataType:	"json",
+		data:		paramMap,
+		method:		"POST",
+		async:		true,
+		success: function(data){
+			switch(data.resultCode){
+			case 1:
+
+				makeUserExCount(data.resultVo);
+				
+				break;
+			case 2:			
+			default:
+				break;				
+			}			
+		}
+	});
+}
+
+//========================================================================================================================
+//사용자 진행중인 과제현황 숫자 TAG
+//========================================================================================================================
+function makeUserExCount(userExCount){
+	
+	var tagText = '';
+
+	tagText += '<article class="main-directLink_B-item__group__inner">						' + '\n';
+	tagText += '<p class="main-directLink_B-item__group-tit">						' + '\n';
+	tagText += '	진행중인 과제                                             ' + '\n';
+	tagText += '</p>                                                        ' + '\n';
+	tagText += '<ul id="userExCountArea" class="main-directLink_B-item__group-list"> ' + '\n';
+	
+	tagText += '<li>				      ' + '\n';
+	tagText += '	신청서작성중            ' + '\n';
+	tagText += '	<span>#step1#</span>  ' + '\n';
+	tagText += '</li>                     ' + '\n';
+	tagText += '<li>                      ' + '\n';
+	tagText += '	결재대기                ' + '\n';
+	tagText += '	<span>#step2#</span>  ' + '\n';
+	tagText += '</li>                     ' + '\n';
+	tagText += '<li>                      ' + '\n';
+	tagText += '	심의중                 '  + '\n';
+	tagText += '	<span>#step3#</span>  ' + '\n';
+	tagText += '</li>                     ' + '\n';
+	tagText += '<li>                      ' + '\n';
+	tagText += '	배정중                 ' +  '\n';
+	tagText += '	<span>#step4#</span>  ' + '\n';
+	tagText += '</li>                     ' + '\n';
+	
+	tagText += '</ul>' + '\n';
+	tagText += '</article>' + '\n';
+	
+	tagText = replaceAll(tagText, '#step1#',  			userExCount.step1);
+	tagText = replaceAll(tagText, '#step2#',  			userExCount.step2);
+	tagText = replaceAll(tagText, '#step3#',  			userExCount.step3);
+	tagText = replaceAll(tagText, '#step4#',  			userExCount.step4);
+	
+	$('#userExCountArea').empty();
+	$('#userExCountArea').append(tagText);		
+}	
+
+
+
+//========================================================================================================================
+//최신 심의차수 정보조회
+//========================================================================================================================
+function getReviewInfoShorts(srchLimit){
+	var paramMap = {
+			"srchLimit"  : srchLimit
+		};		
+	
+	
+	$.ajax({						
+		url:		'/lp/z/a/001/getReviewInfoShorts.do',
+		dataType:	"json",
+		data:		paramMap,
+		method:		"POST",
+		async:		true,
+		success: function(data){
+			switch(data.resultCode){
+			case 1:
+
+				makeReviewInfoShorts(data.resultVo);
+				
+				break;
+			case 2:			
+			default:
+				break;				
+			}			
+		}
+	});	
+}
+//========================================================================================================================
+//최신 심의차수 정보조회 TAG
+//========================================================================================================================
+function makeReviewInfoShorts(reviewShorts){
+	
+	var tagText = '';
+	
+	for(var i= 0; i< reviewShorts.length; i++){
+
+		tagText += '<div class="swiper-slide">																				' + '\n';
+		tagText += '	<a href="javascript:goMore(\'130\');" class="main-schedule__item">                                  ' + '\n';
+		tagText += '					<span class="img-wrap">                                                             ' + '\n';
+		tagText += '						<img src="/resources/assets/image/main/icon/icon-schedule__file.png" alt="">    ' + '\n';
+		tagText += '					</span>                                                                             ' + '\n';
+		tagText += '		<strong>#dlbrSequNm#</strong>                                                                   ' + '\n';
+		tagText += '		<div class="main-schedule__info">                                                               ' + '\n';
+		tagText += '			<dl><dt>마감일</dt><dd>#dcmtRecvDdlnDt#</dd></dl>                                             ' + '\n';
+		tagText += '			<dl><dt>심의일</dt><dd>#dlbrDt#</dd></dl>                                                             ' + '\n';
+		tagText += '			<dl><dt>심의건수</dt><dd>#dlbrTot#건</dd></dl>                                                           ' + '\n';
+		tagText += '		</div>                                                                                          ' + '\n';
+//		tagText += '		<span>                                                                                          ' + '\n';
+//		tagText += '						<q>#dcmtRecvDdlnDt#</q> / <q>#dlbrDt#</q> / <q>#dlbrTot#</q>건                  ' + '\n';
+//		tagText += '					</span>                                                                             ' + '\n';
+//		tagText += '		<em>마감일 / 심의일 / 심의건수</em>                                                               ' + '\n';
+		tagText += '	</a>                                                                                                ' + '\n';
+		tagText += '</div>                                                                                                  ' + '\n';
+		
+		tagText = replaceAll(tagText, '#dlbrSequNm#',  		shortTitle(reviewShorts[i].dlbrSequNm, 15));
+		tagText = replaceAll(tagText, '#dcmtRecvDdlnDt#',  	reviewShorts[i].dcmtRecvDdlnDt);
+		tagText = replaceAll(tagText, '#dlbrDt#',  			reviewShorts[i].dlbrDt);
+		tagText = replaceAll(tagText, '#dlbrTot#',  		reviewShorts[i].dlbrTot);		
+		
+	}
+
+	$('#reviewShortsArea').empty();
+	$('#reviewShortsArea').append(tagText);		
+}
+
+
+//========================================================================================================================
+//공지사항 SHORTS 조회
+//========================================================================================================================
+function getNoticeList(srchKnd, srchLimit){
+
+	var paramMap = {
+			 "srchKnd"    : srchKnd
+			,"srchLimit"  : srchLimit
+		};		
+	
+	
+	$.ajax({						
+		url:		'/lp/z/a/001/noticeShorts.do',
+		dataType:	"json",
+		data:		paramMap,
+		method:		"POST",
+		async:		true,
+		success: function(data){
+			switch(data.resultCode){
+			case 1:
+				
+				if(srchKnd == '120'){
+					makeNoticeShorts(data.resultVo);	
+				}else if(srchKnd == '100'){
+					makeFaqShorts(data.resultVo);
+				}
+				
+				break;
+				
+			case 2:			
+			default:
+				break;				
+			}			
+		}
+	});	
+}
+//========================================================================================================================
+//공지사항 SHORTS TAG
+//========================================================================================================================
+function makeNoticeShorts(noticeShorts){
+	
+	var tagText = '';
+	
+	for(var i= 0; i< noticeShorts.length; i++){
+		
+		tagText += '<li>															' + '\n';   		
+		tagText += '	<span>#srchSpnm#</span>                                     ' + '\n';   
+		tagText += '	<a href="javascript:goDetail(\'120\', \'#srchId#\')">#srchTitl#</a>	' + '\n';   
+		tagText += '	<em>#regDt#</em>                                            ' + '\n';   
+		tagText += '</li>						                                    ' + '\n';   
+		
+		tagText = replaceAll(tagText, '#srchSpnm#',  noticeShorts[i].srchSpnm);
+		tagText = replaceAll(tagText, '#srchId#',  	 noticeShorts[i].srchId);
+		tagText = replaceAll(tagText, '#srchTitl#',  shortTitle(noticeShorts[i].srchTitl, 50));
+		tagText = replaceAll(tagText, '#regDt#',  	 noticeShorts[i].regDt);
+	}
+
+	
+	$('#noticeShortsArea').empty();
+	$('#noticeShortsArea').append(tagText);	
+}
+
+//========================================================================================================================
+//FAQ SHORTS TAG
+//========================================================================================================================
+function makeFaqShorts(faqShorts){
+	
+	var tagText = '';
+	
+	for(var i= 0; i< faqShorts.length; i++){	
+	
+		tagText += '<li>																' + '\n';		
+		tagText += '	<a href="javascript:goDetail(\'100\', \'#srchId#\')">           ' + '\n';
+		tagText += '		<strong>#srchSpnm#</strong>                                ' + '\n';
+		tagText += '		<span>#srchTitl#</span>  									' + '\n';
+		tagText += '	</a>                                                            ' + '\n';
+		tagText += '</li>                                                               ' + '\n';	
+	
+		tagText = replaceAll(tagText, '#srchSpnm#',  faqShorts[i].srchSpnm);
+		tagText = replaceAll(tagText, '#srchId#',  	 faqShorts[i].srchId);
+		tagText = replaceAll(tagText, '#srchTitl#',  shortTitle(faqShorts[i].srchTitl, 30));
+		
+	}
+	
+	$('#faqShortsArea').empty();
+	$('#faqShortsArea').append(tagText);
+}
+//========================================================================================================================
+//상세페이지 가기
+//========================================================================================================================
+function goDetail(srchKnd, contId){
+
+	switch(srchKnd){
+	case '120':
+		ComLib.goPostUrl("/lp/j/c/002/lpjc002m01.do", {"blbdId" : contId});
+		break;
+	case '100':
+		ComLib.goPostUrl("/lp/j/a/002/lpja002m01.do", {"blbdId" : contId});
+		break;
+	}
+}
+//========================================================================================================================
+//더보기 
+//========================================================================================================================
+function goMore(srchKnd){
+	
+	switch(srchKnd){
+	case '120':
+		ComLib.goPostUrl("/lp/j/c/001/lpjc001m01.do", {"blbdTitlCnte" : ''});
+		break;
+	case '100':
+		ComLib.goPostUrl("/lp/j/a/001/lpja001m01.do", {"blbdTitlCnte" : ''});
+		break;
+//	case '130':
+//		ComLib.goPostUrl("/lp/z/z/103/lpzz103m01.do", {"blbdTitlCnte" : ''});
+//		break;
+	}
+}
+//========================================================================================================================
+//분석센터현황지도 클릭
+//========================================================================================================================
+function goMap(p){
+// 	switch(p){
+// 	case '120':
+		ComLib.goPostUrl("/lp/d/b/001/lpdb001m01.do", {});
+// 		break;
+// 	}
+}
+//========================================================================================================================
+//제목 줄임
+//========================================================================================================================
+function shortTitle(titleText, length){
+	
+	if(titleText != '' && titleText.length > length){
+		titleText = titleText.substring(0, length) + '...';
+	}
+	
+	return titleText;
+}
+
+function goOther(p) {
+	switch(p){
+	case 'atlas':
+		var protocol = "https:";//window.location.protocol;
+		var host = window.location.hostname;
+		var atlasUrl = protocol +"//"+ host +":4443/";
+		
+		window.open(atlasUrl, '_blank');
+		break;
+	case 'cs':
+		window.open('https://nhiscs.nhis.or.kr/', '_blank');
+		break;
+	}
+}
+
+//========================================================================================================================
+// 메인화면 메인이미지 조회
+//========================================================================================================================
+function getMainVisualInnerList() {
+	var request = ComLib.ajaxReqObj("/lp/z/a/001/getMainVisualInnerList.do", {});
+	request.done(function(data) {
+		//$("#mainVisualInnerList").html("");
+		
+		if(data.list.length > 0) {
+			for (var i = 0; i < data.list.length; i++) {
+				var info = data.list[i];
+				var bnrId = info.bnrId;
+				var bltnPttnCd = info.bltnPttnCd;
+				
+				var html = "";
+				html += "<div class=\"main-visual__slide_0"+ i +" swiper-slide\" style=\"background-image: url(/lp/z/a/001/image.do?id="+ bnrId +"&cd="+ bltnPttnCd +"); \">";
+				html += "  <a href=\"javascript:;\">";
+				html += "    <div class=\"main-visual__slide_inner\">";
+				html += "      <article class=\"main-visual__title\">";
+				html += "        <h2>국민의 행복, 건강한 미래<br>건강보험 빅데이터 플랫폼</h2>";
+				html += "        <span>빅데이터로 만드는 더 안전한 보건의료 연구 환경,<br>건강보험공단이 함께 합니다</span>";
+				html += "      </article>";
+				html += "    </div>";
+				html += "  </a>";
+				html += "</div>";
+				
+				$("#mainVisualInnerList").append(html);
+			}
+		} else { //기본설정
+			defaultmainVisualInner();
+		}
+		
+		try {
+			swiperMainVisual.update();
+		} catch (e) {
+		}
+	});
+	request.fail(function (xhr, statusText, errorThrown) {//실패는 공통으로 처리
+		defaultmainVisualInner();
+	});
+}
+
+//========================================================================================================================
+// 메인화면 공지사항 오른쪽 베너 조회
+//========================================================================================================================
+function getNoticeSideBannerList() {
+	var request = ComLib.ajaxReqObj("/lp/z/a/001/getNoticeSideBannerList.do", {});
+	request.done(function(data) {
+		$("#noticeSideBannerList").html("");
+		
+		if(data.list.length > 0) {
+			for (var i = 0; i < data.list.length; i++) {
+				var info = data.list[i];
+				var bnrId = info.bnrId;
+				var bltnPttnCd = info.bltnPttnCd;
+				var linkUrlAddr = info.linkUrlAddr;
+				var bnrWidSize = info.bnrWidSize
+				var bnrHghtSize = info.bnrHghtSize
+				
+				var html = "";
+				
+				if(linkUrlAddr.indexOf('popup') > 0) {
+					bnrWidSize = '600';
+					bnrHghtSize = '750';
+
+					html += "<div class=\"swiper-slide\">";
+					html += "  <a href=\"#\" onclick=\"window.open('"+ linkUrlAddr  +"', '_blank', 'width="+ bnrWidSize  +", height="+ bnrHghtSize +", scrollbars=YES'); return false;\" >";
+					html += "    <img src=\"/lp/z/a/001/image.do?id="+ bnrId +"&cd="+ bltnPttnCd +"\" alt=\"메인 사이드 배너\" style=\"width: "+ bnrWidSize +"px;height:"+ bnrHghtSize +"px;border-radius: 10px; max-width: 408px; max-height: 246px;\" >";
+					html += "  </a>";
+					html += "</div>";						
+				} else {
+					html += "<div class=\"swiper-slide\">";
+					html += "  <a href=\""+ linkUrlAddr +"\" target=\"_blank\" >";
+					html += "    <img src=\"/lp/z/a/001/image.do?id="+ bnrId +"&cd="+ bltnPttnCd +"\" alt=\"메인 사이드 배너\" style=\"width: "+ bnrWidSize +"px;height:"+ bnrHghtSize +"px;border-radius: 10px; max-width: 408px; max-height: 246px;\" >";
+					html += "  </a>";
+					html += "</div>";	
+				}
+
+
+				
+				$("#noticeSideBannerList").append(html);
+			}
+		} else { //기본설정
+			defaultNoticeSideBanner();
+		}
+		
+		try {
+			swiperNoticeBanner.update();
+		} catch (e) {
+		}
+	});
+	request.fail(function (xhr, statusText, errorThrown) {//실패는 공통으로 처리
+		defaultNoticeSideBanner();
+	});
+}
+
+function defaultmainVisualInner() {
+	//$("#mainVisualInnerList").html("");
+	for (var i = 3; i <= 4; i++) {
+		var html = "";
+		html += "<div class=\"main-visual__slide_0"+ i +" swiper-slide\">";
+		html += "  <div class=\"main-visual__slide_inner\">";
+		html += "    <article class=\"main-visual__title\">";
+		html += "      <h2>국민의 행복, 건강한 미래<br>건강보험 빅데이터 플랫폼</h2>";
+		html += "      <span>빅데이터로 만드는 더 안전한 보건의료 연구 환경,<br>건강보험공단이 함께 합니다</span>";
+		html += "    </article>";
+		html += "  </div>";
+		html += "</div>";
+		html += "";
+		html += "";
+		
+		$("#mainVisualInnerList").append(html);
+	}
+}
+
+function defaultNoticeSideBanner() {
+	$("#noticeSideBannerList").html("");
+	for (var i = 0; i < 3; i++) {
+		var html = "";
+		html += "<div class=\"swiper-slide\">";
+		html += "  <a href=\"\">";
+		html += "    <img src=\"/resources/assets/image/main/img-sideBanner--01.png\" alt=\"\">";
+		html += "  </a>";
+		html += "</div>";
+		
+		$("#noticeSideBannerList").append(html);
+	}
+}
+
+function noMobile() {
+	alert("모바일에서 지원하지 않는 메뉴입니다.\n");
+	return false;
+}
+
+function fn_closeLayer(_this) {
+	var _layerId = ComLib.isEmpty(_this) ? "" : $(_this).closest(".popup-content").attr("id");
+	$("#"+_layerId).last().fadeIn(300).css("display", "none").remove();
+	
+	if($("#"+_layerId).length > 0) {
+		$("#"+_layerId).last().fadeIn(150).css("display", "block");
+	}
+}
+
+function fn_closeTodayLayer(_this) {
+	var _layerId = ComLib.isEmpty(_this) ? "" : $(_this).closest(".popup-content").attr("id");
+	
+	setLayerPopupCookie(_layerId);
+	
+	fn_closeLayer(_this);
+};
+
+
+var setLayerPopupCookie = function(_layerId) {
+	var expires = "";
+	var now = new Date();
+	var midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1)
+	var remain = midnight - now;
+	
+	if (remain > 0) {
+		var date = new Date();
+		date.setTime(date.getTime() + remain);
+		expires = "; expires=" + date.toUTCString();
+	}
+	document.cookie = _layerId+"=Y" + expires + "; path=/";
+}
+
+var getImageLayerPopup = function() {
+	var request = ComLib.ajaxReqObj("/lp/z/a/001/getImageLayerPopup.do", {});
+	request.done(function(data) {
+		$("#mainLayerPopup").remove();
+		
+		if(data.list.length > 0) {
+			var mainHtml = "";
+			mainHtml += '<div class="layerPopup popup-wrap popup-main-intro posAbs" id="mainLayerPopup" style="display:none;">';
+			mainHtml += '    <div class="popup-container">';
+			mainHtml += '    </div>';
+			mainHtml += '</div>';
+			
+			$("body").append(mainHtml);
+			$("#mainLayerPopup").show();
+			
+			for (var i = 0; i < data.list.length; i++) {
+				var info = data.list[i];
+				var bnrId = info.bnrId;
+				var bltnPttnCd = info.bltnPttnCd;
+				var linkUrlAddr = info.linkUrlAddr;
+				var bnrWidSize = info.bnrWidSize
+				var bnrHghtSize = info.bnrHghtSize
+				var popupId = 'popup'+bnrId;
+                var bnrCnte = info.bnrCnte;
+                if (bnrCnte && typeof bnrCnte === 'string') {
+                    bnrCnte = bnrCnte.replace(/"/g, "'");
+                }
+				
+				var html = "";
+				html += '        <div id="'+ popupId +'" class="popup-content" style="width:'+ bnrWidSize +'px;display:none;position:absolute;">';
+				html += '            <div class="popup-content__inner intro_inner">';
+				html += '                <div class="popup-cont">';
+				html += '                    <a href="'+ linkUrlAddr +'"><img src="/lp/z/a/001/image.do?id='+ bnrId +'&cd='+ bltnPttnCd +'" alt="' + bnrCnte + '"></a>';
+				html += '                    <button type="button" onclick="fn_closeLayer(this);" class="cust_close_btn" title="팝업 닫기"></button>';
+				html += '                </div>';
+				html += '                <div class="popup-foot">';
+				html += '                    <div class="btn-wrap flex-center">';
+				html += '                        <div class="today_close">';
+				html += '                            <div class="form-wrap">';
+				html += '                                <div class="form-check">';
+				html += '                                    <label for="input-popReserInsert--01" class="d-flex align-center">';
+				html += '                                        <input type="checkbox" name="" id="input-popReserInsert--01" class="form-check__input" title="오늘은 그만보기 선택" onclick="fn_closeTodayLayer(this);">';
+				html += '                                    </label>';
+				html += '                                </div>';
+				html += '                            </div>';
+				html += '                            <div class="today_tit">';
+				html += '                                <p><label onclick="fn_closeTodayLayer(this);" for="input-popReserInsert--01">오늘은 그만보기</label></p>';
+				html += '                            </div>';
+				html += '                        </div>';
+				html += '                        <button type="button" onclick="fn_closeLayer(this);" class="btn btn-save">닫기</button>';
+				html += '                    </div>';
+				html += '                </div>';
+				html += '            </div>';
+				html += '        </div>';
+				
+				$(".popup-container", $("#mainLayerPopup")).append(html);
+				
+				$("#"+popupId, $("#mainLayerPopup")).draggable({
+					start : function(a, b, c) {
+						$(".popup-content", $("#mainLayerPopup")).css("z-index", "1005");
+						$(a.currentTarget, $("#mainLayerPopup")).css("z-index", "1006");
+					}
+				});
+				if(get_cookie(popupId) == null || get_cookie(popupId) != 'Y') {
+					$("#"+popupId).show();
+                    // 마지막 팝업 Focus
+                    if (i == data.list.length - 1) {
+                        $("#"+popupId + " a").focus();
+                    }
+				}
+			}
+		}
+	});
+}
+</script>
+
+<style>
+@media (min-width: 320px) and (max-width: 780px) {
+	.noMobile {display : none;}
+	.posAbs {height: 100vh !important;}
+}
+
+@media (min-width: 780px) {
+	.noPc {display : none;}
+}
+</style>
+
+<div class="content">
+    <div class="content__inner">
+        <section class="main-visual">
+            <div class="main-visual__inner min620401">
+                <div class="swiper">
+                    <div class="swiper-wrapper" id="mainVisualInnerList">
+                        <!-- 메인 비쥬얼 인터렉션 1 : 스와이퍼 1번 하드코딩(PC&MO 노출) -->
+                        <div class="main-visual_ani swiper-slide">
+                            <a href="javascript:;">
+	                            <div class="bg2"></div>
+	                            <div class="obj obj1"></div>
+	                            <div class="obj obj2"></div>
+	                            <div class="obj obj3"></div>
+	                            <div class="obj obj4"></div>
+	                            <div class="obj obj5"></div>
+	                            <div class="obj obj6"></div>
+	                            <div class="obj obj7 type1"></div>
+	                            <div class="obj obj8"></div>
+	                            <div class="obj obj9"></div>
+	                            <div class="obj obj10"></div>
+	                            <div class="main-visual__slide_inner">
+	                                <article class="main-visual__title">
+	                                    <h2>국민의 행복, 건강한 미래<br>건강보험 빅데이터 플랫폼</h2>
+	                                    <span>빅데이터로 만드는 더 안전한 보건의료 연구 환경,<br>건강보험공단이 함께 합니다</span>
+	                                </article>
+	                            </div>
+                            </a>
+                        </div>
+                        <!-- //메인 비쥬얼 인터렉션 1 : 스와이퍼 1번 하드코딩(PC&MO 노출) -->
+                        
+                        <!-- 메인 비쥬얼 인터렉션 2 : 스와이퍼 2번 하드코딩(MO만 노출) -->
+                        <div class="main-visual_ani type2 swiper-slide">
+                            <a href="javascript:;">
+	                            <div class="bg2"></div>
+	                            <div class="obj obj1"></div>
+	                            <div class="obj obj2"></div>
+	                            <div class="obj obj3"></div>
+	                            <div class="obj obj4"></div>
+	                            <div class="obj obj5"></div>
+	                            <div class="obj obj6"></div>
+	                            <div class="obj obj7 type2"></div>
+	                            <div class="obj obj8"></div>
+	                            <div class="obj obj9"></div>
+	                            <div class="obj obj10"></div>
+	                            <div class="main-visual__slide_inner">
+	                                <article class="main-visual__title">
+	                                    <h2>국민의 행복, 건강한 미래<br>건강보험 빅데이터 플랫폼</h2>
+	                                    <span>빅데이터로 만드는 더 안전한 보건의료 연구 환경,<br>건강보험공단이 함께 합니다</span>
+	                                </article>
+	                            </div>
+                            </a>
+                        </div>
+                        <!-- //메인 비쥬얼 인터렉션 2 : 스와이퍼 2번 하드코딩(MO만 노출) -->
+                    </div>
+                </div>
+                <div class="swiper-control">
+                    <div class="swiper-control__inner">
+                    	<div class="swiper-control__div">
+	                        <div class="swiper-pagination"></div>
+	                        <div class="swiper-mpagination">
+	                        	<span class=current></span> /
+	                        	<span class=total></span>
+	                        </div>
+	                        <button type="button" class="swiper-button-play"></button>
+                    	</div>
+                        <button type="button" class="swiper-button-prev" title="이전"></button>
+                        <button type="button" class="swiper-button-next" title="다음"></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="main-group">
+            <section class="main-directLink_B">
+                <div class="main-directLink_B__inner">
+                    <div class="main-directLink_B__group ">
+                        <div class="main-directLink_B-item__group" id="userExCountArea">
+                        </div>
+                        <div class="main-directLink_B-link__group noMobile">
+                            <article class="main-directLink_B-link__group__inner">
+                                <a href="javascript:ComLib.goPostUrl('/lp/z/z/999/lpzzcms.do?cntsKeyVl=D');" class="main-directLink_B-link__item">
+                                    <span class="img-wrap">
+                                        <img src="/resources/assets/image/main/icon/icon-dirLink--specimen.svg" alt="">
+                                    </span>
+                                    <em>표본DB연구소개</em>
+                                </a>
+                                <a href="javascript:ComLib.goPostUrl('/lp/z/z/999/lpzzcms.do?cntsKeyVl=E');" class="main-directLink_B-link__item">
+                                    <span class="img-wrap">
+                                        <img src="/resources/assets/image/main/icon/icon-dirLink--customDBintro.svg" alt="">
+                                    </span>
+                                    <em>맞춤형DB연구소개</em>
+                                </a>
+                                <!-- 20250317 메인화면 결합연구소개 버튼 숨김처리
+                                <a href="" class="main-directLink_B-link__item">
+                                    <span class="img-wrap">
+                                        <img src="/resources/assets/image/main/icon/icon-dirLink--combineIntro.svg" alt="">
+                                    </span>
+                                    <em>결합연구소개</em>
+                                </a> -->
+                                <a href="javascript:ComLib.goPostUrl('/lp/a/a/200/lpaa200m01.do');" class="main-directLink_B-link__item">
+                                    <span class="img-wrap">
+                                        <img src="/resources/assets/image/main/icon/icon-dirLink--specimenDB.svg" alt="">
+                                    </span>
+                                    <em>표본DB신청</em>
+                                </a>
+                                <a href="javascript:ComLib.goPostUrl('/lp/a/b/100/lpab100m01.do');" class="main-directLink_B-link__item">
+                                    <span class="img-wrap">
+                                        <img src="/resources/assets/image/main/icon/icon-dirLink--customDBapply.svg" alt="">
+                                    </span>
+                                    <em>맞춤형DB신청</em>
+                                </a>
+                                <a href="javascript:ComLib.goPostUrl('/lp/a/c/101/lpac101m01.do');" class="main-directLink_B-link__item">
+                                    <span class="img-wrap">
+                                        <img src="/resources/assets/image/main/icon/icon-dirLink--combineApply.svg" alt="">
+                                    </span>
+                                    <em>결합자료신청</em>
+                                </a>
+                                <span class="line"></span>
+                                <a href="javascript:goOther('cs');" class="main-directLink_B-link__item">
+                                    <span class="img-wrap">
+                                        <img src="/resources/assets/image/main/icon/icon-dirLink--combineSystem.png" alt="">
+                                    </span>
+                                    <em>가명정보 결합서비스</em>
+                                </a>
+                                <a href="javascript:goOther('atlas');" class="main-directLink_B-link__item">
+                                    <span class="img-wrap">
+                                        <img src="/resources/assets/image/main/icon/icon-dirLink--medicalUtil.png" alt="">
+                                    </span>
+                                    <em>의료이용지표</em>
+                                </a>
+                            </article>
+                        </div>
+                        
+                        <div class="main-directLink_B-link__group noPc">
+	                        <article class="main-directLink_B-link__group__inner">
+                                <a href="javascript:noMobile();" class="main-directLink_B-link__item">
+                                    <span class="img-wrap">
+                                        <img src="/resources/assets/image/main/icon/icon-dirLink--specimen.svg" alt="">
+                                    </span>
+                                    <em>표본DB연구소개</em>
+                                </a>
+                                <a href="javascript:noMobile();" class="main-directLink_B-link__item">
+                                    <span class="img-wrap">
+                                        <img src="/resources/assets/image/main/icon/icon-dirLink--customDBintro.svg" alt="">
+                                    </span>
+                                    <em>맞춤형DB연구소개</em>
+                                </a>
+                                <a href="javascript:noMobile();" class="main-directLink_B-link__item">
+                                    <span class="img-wrap">
+                                        <img src="/resources/assets/image/main/icon/icon-dirLink--combineIntro.svg" alt="">
+                                    </span>
+                                    <em>결합연구소개</em>
+                                </a>
+                                <a href="javascript:noMobile();" class="main-directLink_B-link__item">
+                                    <span class="img-wrap">
+                                        <img src="/resources/assets/image/main/icon/icon-dirLink--specimenDB.svg" alt="">
+                                    </span>
+                                    <em>표본DB신청</em>
+                                </a>
+                                <a href="javascript:noMobile();" class="main-directLink_B-link__item">
+                                    <span class="img-wrap">
+                                        <img src="/resources/assets/image/main/icon/icon-dirLink--customDBapply.svg" alt="">
+                                    </span>
+                                    <em>맞춤형DB신청</em>
+                                </a>
+                                <a href="javascript:noMobile();" class="main-directLink_B-link__item">
+                                    <span class="img-wrap">
+                                        <img src="/resources/assets/image/main/icon/icon-dirLink--combineApply.svg" alt="">
+                                    </span>
+                                    <em>결합자료신청</em>
+                                </a>
+                                <a href="javascript:goOther('cs');" class="main-directLink_B-link__item">
+                                    <span class="img-wrap">
+                                        <img src="/resources/assets/image/main/icon/icon-dirLink--combineSystem.png" alt="">
+                                    </span>
+                                    <em>가명정보 결합서비스</em>
+                                </a>
+                                <a href="javascript:goOther('atlas');" class="main-directLink_B-link__item">
+                                    <span class="img-wrap">
+                                        <img src="/resources/assets/image/main/icon/icon-dirLink--medicalUtil.png" alt="">
+                                    </span>
+                                    <em>의료이용지표</em>
+                                </a>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="main-directLink_B-contact">
+                <div class="main-directLink_B-contact__inner">
+                    <a href="javascript:ComLib.fn_openLayer('lpza001p01', '/lp/z/a/001/lpza001p01.do', {});">
+                        <dl>
+                            <dt>
+                                <span class="img-wrap">
+                                    <img src="/resources/assets/image/main/icon/contact-dep_icn.svg" alt="">
+                                </span>
+                            </dt>
+                            <dd>부서별 문의하기</dd>
+                        </dl>
+                    </a>
+                </div>
+                <div class="main-directLink_B-contact__inner">
+                    <a href="javascript:ComLib.goPostUrl('/lp/j/b/101/lpjb101m01.do');">
+                        <dl>
+                            <dt>
+                                <span class="img-wrap">
+                                    <img src="/resources/assets/image/main/icon/my-question.png" alt="">
+                                </span>
+                            </dt>
+                            <dd>나의 질문현황&nbsp;</dd>
+                        </dl>
+                    </a>
+                </div>
+            </div>
+            
+            <article class="main-notice">
+                <div class="main-notice__list">
+                    <p class="main-notice__list--tit">
+                        공지사항
+                        <a href="javascript:goMore('120');" class="btn-link--more" title="공지사항 더보기">
+                            더보기
+                        </a>
+                    </p>
+                    <ul class="main-notice__items" id="noticeShortsArea">
+                    </ul>
+                </div>
+            </article>
+            <article class="main-notice__sideBanner">
+                <p class="main-notice__list--tit">
+                    홍보존
+                </p>
+                <div class="swiper">
+                    <div class="swiper-wrapper" id="noticeSideBannerList">
+                    </div>
+                    <div class="swiper-control">
+                        <div class="swiper-pagination"></div>
+                        <button type="button" class="swiper-button-pause"></button>
+                        <button type="button" class="swiper-button-prev" title="이전"></button>
+                        <button type="button" class="swiper-button-next" title="다음"></button>
+                    </div>
+                </div>
+                <!-- <a href="">
+                    연구성과공유
+                    <span class="img-wrap">
+                        <img src="/resources/assets/image/main/icon/icon-notice--share.png" alt="">
+                    </span>
+                </a>
+                <a href="">
+                    서비스 문의
+                    <span class="img-wrap">
+                        <img src="/resources/assets/image/main/icon/icon-notice--ask.png" alt="">
+                    </span>
+                </a> -->
+            </article>
+            <article class="main-schedule">
+                <p class="main-schedule--tit">
+                    심의위원회 일정
+<!--                     <a href="" class="btn-link--more" title="심의위원회 일정 더보기"> -->
+<!--                         부서별 문의하기 -->
+<!--                     </a> -->
+                </p>
+                <div class="main-schedule__list">
+                    <div class="swiper">
+                        <div class="swiper-wrapper" id="reviewShortsArea">
+                        </div>
+	                    <div class="swiper-control">
+	                        <div class="swiper-pagination"></div>
+	                        <button type="button" class="swiper-button-prev ml-5" title="이전"></button>
+	                        <button type="button" class="swiper-button-next ml-5" title="다음"></button>
+	                    </div>
+                    </div>
+                </div>
+            </article>
+            <article class="main-service">
+                <div class="service__inner">
+                    <div class="service__info">
+                        <dl>
+                            <dt><strong>여러분, 반갑습니다.</strong></dt>
+                            <dd><span>건강보험 빅테이터 플랫폼에<br> 오신것을 환영합니다.</span></dd>
+                            <a href="javascript:goUrl('/lp/z/z/999/lpzzcms.do?cntsKeyVl=H1');" style="position: relative;z-index:1;">
+                                서비스 소개<span class="img-ar"><img src="/resources/assets/image/main/icon/main-service-icn-ar.svg" alt="" /></span>
+                            </a>
+                            <p class="img-wrap" style="z-index:0;"><img src="/resources/assets/image/main/icon/main-service-prn.png" alt="" /></p>
+                        </dl>
+                    </div>
+                    <div class="service__org-reg">
+                        <ul>
+                            <li>
+                                <dl>
+                                    <dt><strong>운영조직</strong></dt>
+                                    <dd><span>빅데이터운영실<br/><br/><br/></span></dd>
+                                    <a href="javascript:goUrl('/lp/z/z/999/lpzzcms.do?cntsKeyVl=H3')";>
+                                        자세히 보기<span class="img-ar"><img src="/resources/assets/image/main/icon/main-service-icn-ar.svg" alt="" /></span>
+                                    </a>
+                                    <p class="img-wrap"><img src="/resources/assets/image/main/icon/main-org-icn.svg" alt="" /></p>
+                                </dl>
+                            </li>
+                            <li>
+                                <dl>
+                                    <dt><strong>관련규정</strong></dt>
+                                    <dd>
+                                        <span>
+                                            <span style="padding: 0">개인정보보호법,</span>
+                                            <span style="padding: 0;letter-spacing: -1px">국민건강정보자료</span>
+                                            <span style="padding: 0;letter-spacing: -2px">제공 및 이용 운영규정</span>
+                                        </span>
+                                    </dd>
+                                    <a href="javascript:goUrl('/lp/z/z/999/lpzzcms.do?cntsKeyVl=H4');">
+                                        자세히 보기<span class="img-ar"><img src="/resources/assets/image/main/icon/main-service-icn-ar.svg" alt="" /></span>
+                                    </a>
+                                    <p class="img-wrap"><img src="/resources/assets/image/main/icon/main-reg-icn.svg" alt="" /></p>
+                                </dl>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </article>
+            <article class="main-qna">
+                <p class="main-qna--tit">
+                    자주묻는 질문
+                    <a href="javascript:goMore('100');" class="btn-link--more" title="자주묻는 질문 더보기">
+                        더보기
+                    </a>
+                </p>
+                <ul id="faqShortsArea" class="main-qna--items">
+                </ul>
+            </article>
+            
+            <article class="main-center">
+                <div class="main-center--tit">
+                    <p>빅데이터 분석센터</p>
+                    <div class="main-center--pagination swiper-pagination"></div>
+                </div>
+                <div class="swiper">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <span class="img-wrap">
+                                <img src="/resources/assets/image/main/bigdata_map_kor.png" usemap="#Map1" alt="">
+                                <map name="#Map1">
+                                    <area shape="rect" coords="125,87,216,120" href="javascript:goMap('1');" alt="일산병원" title="분석센터예약 바로가기">
+                                    <area shape="rect" coords="126,123,193,150" href="javascript:goMap('2');" alt="서울" title="분석센터예약 바로가기">
+                                    <area shape="rect" coords="124,156,196,183" href="javascript:goMap('3');" alt="경인" title="분석센터예약 바로가기">
+                                    <area shape="rect" coords="123,188,189,215" href="javascript:goMap('4');" alt="대전" title="분석센터예약 바로가기">
+                                    <area shape="rect" coords="124,233,216,262" href="javascript:goMap('5');" alt="전주북부" title="분석센터예약 바로가기">
+                                    <area shape="rect" coords="122,289,190,322" href="javascript:goMap('6');" alt="광주" title="분석센터예약 바로가기">
+                                    <area shape="rect" coords="442,124,543,150" href="javascript:goMap('7');" alt="본부(원주)" title="분석센터예약 바로가기">
+                                    <area shape="rect" coords="444,162,536,192" href="javascript:goMap('8');" alt="청주서부" title="분석센터예약 바로가기">
+                                    <area shape="rect" coords="446,211,509,237" href="javascript:goMap('9');" alt="대구" title="분석센터예약 바로가기">
+                                    <area shape="rect" coords="438,248,511,277" href="javascript:goMap('10');" alt="부산" title="분석센터예약 바로가기">
+                                    <area shape="rect" coords="35,131,101,148" href="javascript:goMap('11');" alt="서울대병원" title="분석센터예약 바로가기">
+                                    <area shape="rect" coords="35,152,101,170" href="javascript:goMap('12');" alt="연세의료원" title="분석센터예약 바로가기">
+                                    <area shape="rect" coords="35,172,103,188" href="javascript:goMap('13');" alt="서울대학교" title="분석센터예약 바로가기">
+                                    <area shape="rect" coords="35,191,112,211" href="javascript:goMap('14');" alt="고려대의료원" title="분석센터예약 바로가기">
+                                  </map>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </section>
+
+    </div>
+</div>
+
+
+        </div>
+        <footer>
+            
+
+<!-- start::footer -->
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#footerCombo1, #footerCombo2").on("change", function(){
+            if(!ComLib.isEmpty($(this).val())){
+                window.open($(this).val(), '_blank');
+            }
+        });
+        
+        //TODO 네비게이션의 프린트, 증겨찾기 등 버튼 숨김처리
+        $(".subContent-shareBox").hide();
+
+        // 이용약관 X 버튼으로 닫을 때 이벤트
+        $(document).on('click', "#popup-virtualResearch--dataOutApplyCheck button.popup-close", function () {
+            fn_closeLayerPopup();
+        })
+    });
+</script>
+
+
+<!--  new section -->
+
+<link href="/resources/assets/css/service.css" rel="stylesheet">
+<script type="text/javascript">
+    function fn_openLayerPopup(){
+         $("div[id='popup-virtualResearch--dataOutApplyCheck']").show();
+         // 닫기 버튼 Focus
+         setTimeout(function () {
+             $("#popup-virtualResearch--dataOutApplyCheck .popup-tit").focus();
+             $("#popup-virtualResearch--dataOutApplyCheck button.popup-close").attr("title", "팝업 닫기");
+         }, 0);
+         return;
+    };
+
+    function fn_closeLayerPopup(){
+         $("div[id='popup-virtualResearch--dataOutApplyCheck']").hide();
+         // 이용약관 버튼 focus
+        setTimeout(function () {
+            $('a[title="이용약관"]').focus();
+        }, 0);
+         return;
+    };
+    
+    window.addEventListener('DOMContentLoaded', function () {
+    	var paramMap = {
+    		  "menuUrlAddr" : document.location.pathname
+    		, "searchKey" : document.location.search
+    	};
+		
+    	$.ajax({
+     		url:		'/common/menu/getMenuTitle.do',
+     		data: 		paramMap,
+    		dataType:	"json",
+    		method:		"POST",
+    		async:		false,
+    		success: function(data){
+    			if("undefined"!==typeof data.menuTitle &&  "" != data.menuTitle) {
+    				document.title = data.menuTitle;
+    			}
+    		}
+    	});
+    });
+	
+</script>
+
+<!-- start::popup -->
+        <div class="popup-wrap" id="popup-virtualResearch--dataOutApplyCheck" style="display: none;">
+            <div class="popup-container">
+                <div class="popup-content" style="width: 128rem;"> 
+                    <div class="popup-head no-underline">
+                        <h1 class="popup-tit" tabindex="-1">건강보험 빅데이터 플랫폼 홈페이지 이용약관</h1>
+                    </div>
+                    <div class="popup-cont popup-cont--dataOutApplyCheck">                        
+                        <div class="box-wrap">
+                            <p class="txt-dep--01 mt-10 pre-wrap ov-auto" style="height: calc(100vh - 38.8rem);">건강보험 빅데이터 플랫폼 홈페이지 이용약관
+                                                    
+[2025.08.13. 제정]
+
+제1조(목적) 본 약관은 국민건강보험공단(이하 "공단")이 제공하는 건강보험 빅데이터 플랫폼 홈페이지(이하 "플랫폼")의 이용과 관련하여, 이용자(회원과 비회원을 포함합니다)와 공단 간의 권리의무 및 책임, 서비스 이용 절차 등에 관한 사항을 규정함을 목적으로 합니다.
+
+제2조(약관의 효력 및 변경) 
+  ① 본 약관은 플랫폼을 이용하는 모든 이용자에게 적용됩니다.
+  ② 공단은 관련 법령의 개정, 서비스 내용의 변경 등 사유가 발생한 경우 약관을 개정할 수 있습니다.
+  ③ 변경된 약관은 시행일 7일 전에 플랫폼에 사전 공지합니다. 단, 이용자에게 불리하거나 중대한 사항은 30일 전에 공지합니다.
+  ④ 이용자는 변경된 약관에 동의하지 않을 경우 서비스 이용을 중단하거나 탈퇴(회원에 한함)할 수 있습니다. 별도 이의제기 없이 계속 이용 시 동의한 것으로 간주됩니다.
+
+제3조(약관 외 준칙) 이 약관에 명시되지 않은 사항은 공공기관의 개인정보보호에 관한 법률, 전기통신기본법, 전기통신사업법, 정보통신망이용촉진 및 정보보호 등에 관한 법률, 전자서명법, 기타 관련 법령, 공단이 별도로 정한 규정 및 지침에 따릅니다.
+
+제4조(서비스의 제공) ① 공단은 다음 각 호의 서비스를 제공합니다.   
+   1. 국민건강정보자료(빅데이터) 제공·보완·변경신청 및 승인결과에 따른 자료제공
+   2. 자료분석을 위한 프로그램 제공 및 빅데이터분석센터 이용 예약
+   3. 자료분석기간(이용기간) 연장, 재사용 및 연구산출물의 보관신청
+   4. 자료분석을 통해 발생한 연구산출물 반출 및 외부파일 반입신청
+   5. 건강보험통계연보 등 각종 통계자료
+   6. 게시판, 민원 상담 등 부가 서비스
+  ② 제1항의 서비스를 제공받기 위해 플랫폼 회원가입을 진행하여야 할 수 있으며, 회원가입과 관련된 사항은 「건강보험 빅데이터 플랫폼 홈페이지 회원약관」에 따릅니다.
+  ③ 공단은 서비스 개선을 위해 일부 서비스를 변경하거나 추가할 수 있으며, 필요 시 사전 공지 후 중단할 수 있습니다.
+
+제5조(서비스 이용시간) ① 서비스는 연중무휴 1일 24시간 제공을 원칙으로 합니다. ② 제1항에도 불구하고, 다음 각 호에 해당하는 경우 서비스 제공을 중단할 수 있으며, 이 경우 사전 또는 사후에 공지할 수 있습니다. 
+   1. 장비 점검 및 유지보수 
+   2. 시스템 장애, 천재지변 등 불가항력 사유 
+   3. 기타 공단이 필요하다고 인정하는 경우
+  ③ 제2항에 따른 서비스 중단 시 별도의 이용기간 연장은 실시하지 않을 수 있습니다.
+
+제6조(서비스 이용요금) ① 공단이 플랫폼을 통해 제공하는 서비스는 무료로 제공함을 원칙으로 합니다.
+  ② 제1항에도 불구하고, 제4조제1항제1호부터 제3호까지의 경우, 소정의 서비스 이용요금이 발생할 수 있으며, 이용요금은 별도 기준에 따라 정합니다.
+
+제7조(공단의 의무) ① 공단은 관련 법령과 본 이용약관이 금지하는 행위를 하지 않으며, 안정적인 서비스 제공을 위해 최선을 다합니다.
+  ② 공단은 이용자가 안정적으로 서비스를 이용할 수 있도록 보안시스템 등을 갖추어야 합니다.
+
+제8조(이용자의 의무) ① 이용자는 다음 각 호의 행위를 하여서는 안 됩니다.
+   1. 타인의 개인정보 도용
+   2. 공공질서 및 미풍양속에 반하는 행위   
+   3. 서비스 운영을 방해하는 행위
+   4. 공단의 사전 허락 없이 자동화된 수단(예: 매크로 프로그램, 로봇(봇), 스파이더, 스크래퍼, 크롤링 등)을 이용하여 로그인을 시도 또는 로그인하는 행위
+   5. 공단이 제공하는 자료의 수집·처리·변경·재배포·제공하는 행위 등 이용자의 실제 이용을 전제로 하는 공단의 서비스 제공 취지에 부합하지 않는 방식으로 공단의 서비스를 이용하거나 이와 같은 행위를 막기 위한 공단의 기술적 조치를 무력화 하려는 일체의 행위(예: IP를 지속적으로 바꿔가며 접속하는 행위)
+   6. 제4호의 자동화된 수단을 예방하기 위한 검증절차(CAPTCHA 등)를 외부솔루션 등을 통해 우회하거나 무력화 하는 행위 등
+   7. 기타 법령, 플랫폼 회원약관 및 공단 정책에 위반되는 행위
+  ② 공단은 위 각 호의 위반 행위를 방지하기 위해 각종 보안 솔루션 도입, 로그인 시도 횟수 제한 등의 기술적 조치를 시행할 수 있습니다.③ 이용자가 제1항과 제2항의 사항을 위반하여 공단 또는 제3자에게 손해를 발생시킨 경우, 해당 이용자는 민사상 손해배상책임을 지며, 필요한 경우 공단은 민·형사 고발 등 법적 조치를 취할 수 있습니다.
+
+제9조(손해배상) ① 공단은 서비스 이용과 관련하여 이용자에게 어떠한 손해가 발생하더라도 공단이 고의로 행한 범죄행위를 제외하고 이에 대하여 책임을 지지 않습니다.
+  ② 이용자가 서비스를 이용함에 있어 행한 불법행위로 인하여 공단이 제3자로부터 손해배상청구, 소송을 비롯한 각종의 이의제기를 받는 경우 해당 이용자는 공단의 면책을 위하여 노력하여야 하며, 만일 공단이 면책되지 못한 경우 해당 이용자는 그로 인하여 공단에 발생한 모든 손해를 배상하여야 합니다.
+
+제10조(면책사항) 공단은 다음 각 호에 해당하는 경우 손해에 대해 책임을 지지 않습니다.
+  1. 이용자의 귀책사유로 인한 장애
+  2. 이용자가 기대한 수익 또는 효과의 미실현
+  3. 이용자가 게재한 정보, 자료, 사실의 신뢰도 및 정확성 등에 관한 내용의 오류 등
+
+제11조(관할법원) ① 서비스 이용과 관련하여 공단과 이용자 사이에 분쟁이 발생한 경우, 쌍방 간에 분쟁의 해결을 위해 성실히 협의한 후가 아니면 제소할 수 없습니다.
+  ② 제1항의 협의에서도 분쟁이 해결되지 않을 경우 관할법원은 공단 본부 소재지를 관할하는 법원을 전속 관할법원으로 합니다.
+
+부칙<2025.8.13.>
+제1조(시행일) 본 이용약관은 2025년 9월 1일부터 시행합니다.
+</p>
+                        </div>
+                    </div>
+                    <div class="popup-foot">
+                        <div class="btn-wrap flex-center">
+                            <button class="btn btn-save" onclick="javascript:fn_closeLayerPopup();" type="button">닫기</button>
+                            <button class="btn btn-prev" onclick="ComLib.commonFileDown('COMMON_FILE_00023');" type="button">다운로드</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup-overlay"></div>
+        </div>
+        <!-- end::popup -->
+
+<!-- end section -->
+
+
+<footer>
+    <div class="footer-nav__familySite">
+        <div class="footer-nav__familySite-inner">
+            <div class="form-wrap">
+                <div class="form-select" style="display:none;">
+                    <button type="button" class="sections-site">분야별 업무 사이트</button>
+                    <div class="sections-site__list">
+                        <div class="sections-site__list-inner">
+                            <h3 class="sections-site__list-tit">분야별 업무 사이트</h3>
+                            <button type="button" class="sections-site__close">
+                                        <span class="img-wrap">
+                                            <img src="/resources/assets/image/common/icon/icon-sectionsSite__close.svg" alt="">
+                                        </span>
+                            </button>
+                            <a href="">Footer-link</a>
+                            <a href="">Footer-link</a>
+                            <a href="">Footer-link</a>
+                            <a href="">Footer-link</a>
+                            <a href="">Footer-link</a>
+                            <a href="">Footer-link</a>
+                            <a href="">Footer-link</a>
+                            <a href="">Footer-link</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-select">
+                    <select id="footerCombo1">
+                        <option value="" selected="selected" title="공단내부 관련사이트(새 창으로 이동)">공단내부 관련사이트</option>
+                        <option value="http://www.nhis.or.kr" title="건강보험공단사이트(새 창으로 이동)">건강보험공단사이트</option>
+<!--                         <option value="http://www.nhis.or.kr/static/html/wbd/i/a/wbdia0101.html">서울지역 본부사이트</option> -->
+<!--                         <option value="http://www.nhis.or.kr/static/html/wbd/i/b/wbdib0101.html">부산지역 본부사이트</option> -->
+<!--                         <option value="http://www.nhis.or.kr/static/html/wbd/i/c/wbdic0101.html">대구지역 본부사이트</option> -->
+<!--                         <option value="http://www.nhis.or.kr/static/html/wbd/i/d/wbdid0101.html">광주지역 본부사이트</option> -->
+<!--                         <option value="http://www.nhis.or.kr/static/html/wbd/i/e/wbdie0101.html">대전지역 본부사이트</option> -->
+<!--                         <option value="http://www.nhis.or.kr/static/html/wbd/i/f/wbdif0101.html">경인지역 본부사이트</option> -->
+                        <option value="http://www.longtermcare.or.kr/" title="노인장기요양보험(새 창으로 이동)">노인장기요양보험</option>
+                        <option value="https://medicate.nhis.or.kr/portal/index.do" title="요양기관정보마당 사이트(새 창으로 이동)">요양기관정보마당 사이트</option>
+                        <option value="https://sis.nhis.or.kr/nxui/index.do" title="건강관리포털 시스템(새 창으로 이동)">건강관리포털 시스템</option>
+                        <option value="http://life.nhis.or.kr" title="국가건강검진교육연수원(새 창으로 이동)">국가건강검진교육연수원</option>
+                        <option value="http://hrd.nhis.or.kr" title="국민건강보험공단 인재개발원(새 창으로 이동)">국민건강보험공단 인재개발원</option>
+                        <option value="http://lib.nhis.or.kr" title="국민건강보험공단 전문도서관(새 창으로 이동)">국민건강보험공단 전문도서관</option>
+<!--                         <option value="http://hi.nhis.or.kr/">건강iN 사이트</option> -->
+<!--                         <option value="http://jr.nhis.or.kr">주니어건강iN 사이트</option> -->
+<!--                         <option value="http://www.nhis.or.kr/jsp/wbk/wbkmain.jsp">어린이 사이트</option> -->
+<!--                         <option value="http://si4n.nhis.or.kr/">사회보험징수포털</option> -->
+<!--                         <option value="http://life.nhis.or.kr">국가건강검진교육연수원</option> -->
+                    </select>
+                </div>
+                <div class="form-select">
+                    <select id="footerCombo2">
+                        <option value="" selected="selected">관련사이트</option>
+                        <option value="https://www.xn--2i4bo5fgwadewe.kr/sgcf/" title="서울요양원(새 창으로 이동)">서울요양원</option>
+						<option value="http://www.nhimc.or.kr " title="일산병원(새 창으로 이동)">일산병원</option>
+						<option value="https://share.go.kr/main_www_2018.jsp " title="행정정보공동이용시스템(새 창으로 이동)">행정정보공동이용시스템</option>
+						<option value="http://www.nps.or.kr " title="국민연금공단(새 창으로 이동)">국민연금공단</option>
+						<option value="http://www.kcomwel.or.kr/kcomwel/main.jsp " title="근로복지공단(새 창으로 이동)">근로복지공단</option>
+						<option value="http://www.mohw.go.kr/ " title="보건복지부(새 창으로 이동)">보건복지부</option>
+						<option value="http://www.acrc.go.kr/acrc/index.do " title="국민권익위원회(새 창으로 이동)">국민권익위원회</option>
+						<option value="http://www.giro.or.kr " title="금융결제원 통합납부서비스(새 창으로 이동)">금융결제원 통합납부서비스</option>
+						<option value="http://www.hira.or.kr " title="건강보험심사평가원(새 창으로 이동)">건강보험심사평가원</option>
+						<option value="https://www.gov.kr/portal/main " title="정부24(새 창으로 이동)">정부24</option>
+						<option value="http://efamily.scourt.go.kr/ " title="전자가족관계등록시스템(새 창으로 이동)">전자가족관계등록시스템</option>
+						<option value="http://www.129.go.kr/ " title="보건복지상담센터(새 창으로 이동)">보건복지상담센터</option>
+						<option value="https://data.kihasa.re.kr/ " title="보건복지데이터포털(새 창으로 이동)">보건복지데이터포털</option>
+						<option value="http://www.ssis.or.kr " title="한국사회보장정보원(새 창으로 이동)">한국사회보장정보원</option>
+						<option value="https://www.ei.go.kr/ei/eih/cm/hm/main.do " title="고용보험(새 창으로 이동)">고용보험</option>
+						<option value="https://total.kcomwel.or.kr " title="고용산재보험 토탈서비스(새 창으로 이동)">고용산재보험 토탈서비스</option>
+						<option value="http://www.neca.re.kr " title="한국보건의료연구원(새 창으로 이동)">한국보건의료연구원</option>
+						<option value="http://www.k-medi.or.kr " title="한국의료분쟁조정중재원(새 창으로 이동)">한국의료분쟁조정중재원</option>
+						<option value="http://www.hikorea.go.kr " title="하이코리아(새 창으로 이동)">하이코리아</option>
+						<option value="http://www.obnhic.co.kr " title="국민건강보험 동우회(새 창으로 이동)">국민건강보험 동우회</option>
+						<option value="http://www.4insure.or.kr " title="4대사회보험 정보연계센터(새 창으로 이동)">4대사회보험 정보연계센터</option>
+						<option value="http://www.safekorea.go.kr " title="국민재난안전포털(새 창으로 이동)">국민재난안전포털</option>
+						<option value="https://nct.go.kr " title="국가트라우마센터(새 창으로 이동)">국가트라우마센터</option>
+						<option value="https://www.safedriving.or.kr " title="한국도로교통공단(새 창으로 이동)">한국도로교통공단</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="footer__inner">
+        <article class="footer-info">
+            <div class="footer-info__address">
+                        <span class="img-wrap">
+                            <img src="/resources/assets/image/common/img-common__footer.png" alt="빅데이터 플랫폼 건강보험 빅데이터 플랫폼 로고">
+                        </span>
+                <p>
+                    본 홈페이지에 게시된 이메일주소가 수집되는 것을 거부하며, 이를 위반시 정보통신망법에 의해 처벌됨을 유념하시기 바랍니다.
+                    <span>26464 강원특별자치도 원주시 건강로 32(반곡동) 국민건강보험공단</span>
+                </p>
+                <article class="footer-nav">
+                    <div class="footer-nav__linkWrap">
+                        <a href="https://www.nhis.or.kr/nhis/etc/wbhazd03100m01.do" target="_blank" class="footer-nav__link" title="뷰어다운로드(새 창으로 이동)">뷰어다운로드</a>
+                        <a href="https://www.nhis.or.kr/nhis/etc/wbhazd02900m01.do" target="_blank" class="footer-nav__link" title="보안프로그램장애해결(새 창으로 이동)">보안프로그램장애해결</a>
+                        <a href="https://www.nhis.or.kr/nhis/etc/privacy_policy.do" target="_blank" class="footer-nav__link is-active" title="개인정보처리방침(새 창으로 이동)" style="font-size: 2.0rem">개인정보처리방침</a>
+                        
+<!--  new item -->                        
+                        <a href="javascript:ComLib.viewCommonFilePdf('COMMON_FILE_00023');" class="footer-nav__link" title="이용약관">이용약관</a>
+                        
+<!--  new item end -->
+                         
+                        <a href="https://www.nhis.or.kr/helpcom_new/hc_user_main.jsp" target="_blank" class="footer-nav__link" title="온라인도우미(새 창으로 이동)">온라인도우미</a>
+                        <a href="https://www.nhis.or.kr/upload/ISMS-P.pdf" target="_blank" class="footer-nav__link footer-info__logo" title="새 창에서 열림">
+                            <img src="/resources/assets/image/common/img-common__footerlogo.png" alt="ISMSP로고">
+                        </a>
+                        <a href="javascript:ComLib.staticFile('건강보험_빅데이터_플랫폼_정보통신접근성_품질인증서.pdf', true);" class="footer-info__logo" title="새 창에서 정보통신접근성 품질인증서 PDF 열림">
+                            <img src="/resources/assets/image/common/WA_Mark.png" style="width: 8.4rem; height: 5.5rem" alt="과학기술정보통신부 WA(WEB접근성) 품질인증 마크, 웹와치(WebWatch) 2026.2.25 ~ 2027.2.24" title="WA 품질인증 마크, 웹와치(WebWatch) 2026.2.25 ~ 2027.2.24">
+                        </a>
+                    </div>
+                </article>
+                <!-- <em>© copyright (c) 2014 NATIONAL HEALTH INSURANCE SERVICE ALL RIGHTS RESERVED. Version: 20240824</em> -->
+                <em>© National Health Insurance Service. <span class="mobr">All rights reserved.</span></em>
+            </div>
+        </article>
+    </section>
+</footer>
+        </footer>
+
+        
+
+<div class="side-floating" style="z-index: 11;"><!-- TODO 241007 오픈쪽 플롯팅 메뉴 맨위로 변경 -->
+    <div class="side-floating-loginB" style="display:none">
+        <a href="javascript:ComLib.goPostUrl('/lp/j/a/001/lpja001m01.do');" title="자주묻는 질문 이동">
+            <span class="img-wrap">
+                <img src="/resources/assets/image/sub/icon/Icon-usuallyAsk.svg" alt="">
+            </span>
+            <em>자주묻는<br>질문</em>
+        </a>
+        <a href="javascript:ComLib.goPostUrl('/lp/m/f/001/lpmf001m02.do');" title="용어사전 이동" style="display: none;">
+            <span class="img-wrap">
+                <img src="/resources/assets/image/sub/icon/icon-dictionary.svg" alt="">
+            </span>
+            <em>용어사전</em>
+        </a>
+        <a href="javascript:ComLib.goPostUrl('/lp/f/a/200/lpfa200m01.do');" title="통계자료 이동">
+            <span class="img-wrap">
+                <img src="/resources/assets/image/sub/icon/Icon-staticsData.svg" alt="">
+            </span>
+            <em>통계자료</em>
+        </a>
+        <a href="" title="건강보험 빅데이터 플랫폼(NHIS Big Data Platform) 발간자료 이동">
+            <span class="img-wrap">
+                <img src="/resources/assets/image/sub/icon/icon-nhissData.svg" alt="">
+            </span>
+            <em>건강보험 빅데이터 플랫폼(NHIS Big Data Platform)<br/>발간자료</em>
+        </a>
+    </div>
+    <div class="side-floating-loginA">
+        <a href="javascript:ComLib.fn_openLayer('lpza001p01', '/lp/z/a/001/lpza001p01.do', {});" title="업무별 담당번호 팝업 열림">
+            <span class="img-wrap">
+                <img src="/resources/assets/image/sub/icon/Icon-usuallyAsk.svg" alt="">
+            </span>
+            <em>문의하기</em>
+        </a>
+        <a href="javascript:ComLib.goPostUrl('/lp/d/b/001/lpdb001m01.do');" title="분석센터 예약 이동">
+            <span class="img-wrap">
+                <img src="/resources/assets/image/sub/icon/icon-center.svg" alt="">
+            </span>
+            <em>분석센터<br>예약</em>
+        </a>
+        <a href="javascript:ComLib.goPostUrl('/lp/m/f/001/lpmf001m02.do');" title="용어사전 이동" style="display: none;">
+            <span class="img-wrap">
+                <img src="/resources/assets/image/sub/icon/icon-dictionary.svg" alt="">
+            </span>
+            <em>용어사전</em>
+        </a>
+<!--         <a href="javascript:ComLib.goPostUrl('/lp/a/f/002/lpaf002m01.do');" title="교육DB신청 이동"> -->
+<!--             <span class="img-wrap"> -->
+<!--                 <img src="/resources/assets/image/sub/icon/icon-edudb.svg" alt=""> -->
+<!--             </span> -->
+<!--             <em>교육DB신청</em> -->
+<!--         </a> -->
+        <a href="javascript:ComLib.goPostUrl('/lp/m/e/001/lpme001m01.do');" title="보안프로그램 설치 이동">
+            <span class="img-wrap">
+                <img src="/resources/assets/image/sub/icon/icon-secu.svg" alt="">
+            </span>
+            <em>보안<br>프로그램<br>설치</em>
+        </a>
+    </div>
+
+    <div class="side-floating-recent" style="display:none">
+        <strong>최근본메뉴</strong>
+        <a href="" title="서비스 안내 이동">
+            <span class="img-wrap">
+                <img src="/resources/assets/image/sub/icon/icon-service-guide.svg" alt="">
+            </span>
+            <em>서비스 안내</em>
+        </a>
+        <a href="" title="연구과제 이동">
+            <span class="img-wrap">
+                <img src="/resources/assets/image/sub/icon/icon-rs_project.svg" alt="">
+            </span>
+            <em>연구과제</em>
+        </a>
+        <a href="" title="가상화 연구분석 이동">
+            <span class="img-wrap">
+                <img src="/resources/assets/image/sub/icon/icon-analysis.svg" alt="">
+            </span>
+            <em>가상화<br>연구분석</em>
+        </a>
+        <a href="" title="커뮤니티 이동">
+            <span class="img-wrap">
+                <img src="/resources/assets/image/sub/icon/icon-community.svg" alt="">
+            </span>
+            <em>커뮤니티</em>
+        </a>
+        <a href="" title="빅데이터 통계분석 이동">
+            <span class="img-wrap">
+                <img src="/resources/assets/image/sub/icon/icon-bigdata.svg" alt="">
+            </span>
+            <em>빅데이터<br>통계분석</em>
+        </a>
+        <a href="" title="고객지원 이동">
+            <span class="img-wrap">
+                <img src="/resources/assets/image/sub/icon/icon-cs.svg" alt="">
+            </span>
+            <em>고객지원</em>
+        </a>
+        <a href="" title="온라인심의 이동">
+            <span class="img-wrap">
+                <img src="/resources/assets/image/sub/icon/icon-deliberation.svg" alt="">
+            </span>
+            <em>온라인심의</em>
+        </a>
+        <a href="" title="마이페이지 이동">
+            <span class="img-wrap">
+                <img src="/resources/assets/image/sub/icon/icon-mypage.svg" alt="">
+            </span>
+            <em>마이페이지</em>
+        </a>
+        <a href="" title="전문위원 서비스 이동">
+            <span class="img-wrap">
+                <img src="/resources/assets/image/sub/icon/icon-professional.svg" alt="">
+            </span>
+            <em>전문위원<br>서비스</em>
+        </a>
+    </div>
+    <div class="side-floating-ing" style="display:none">
+        <strong>진행중과제</strong>
+        <a href="" title="신청서작성중 이동">
+            <span class="img-wrap">
+                <b>2</b>
+                <img src="/resources/assets/image/sub/icon/icon-writing.svg" alt="">
+            </span>
+            <em>신청서작성중</em>
+        </a>
+        <a href="" title="결재대기 이동">
+            <span class="img-wrap">
+                <b>1</b>
+                <img src="/resources/assets/image/sub/icon/icon-pay-wait.svg" alt="">
+            </span>
+            <em>결제대기</em>
+        </a>
+        <a href="" title="심의중 이동">
+            <span class="img-wrap">
+                <b>1</b>
+                <img src="/resources/assets/image/sub/icon/icon-under-deli.svg" alt="">
+            </span>
+            <em>심의중</em>
+        </a>
+    </div>
+    <button type="button" class="scroll-top" title="top 이동">
+        <span class="img-wrap">
+            <img src="/resources/assets/image/sub/icon/icon-btnTop.svg" alt="">
+        </span>
+    </button>
+</div>
+
+    </div>
+
+
+
+    <script type="text/javascript" src="/resources/assets/js/lib/fullpage.js"></script>
+    <script type="text/javascript" src="/resources/assets/js/lib/swiper.min.js"></script>
+    <script type="text/javascript" src="/resources/assets/js/lib/sly.min.js"></script>
+    <script type="text/javascript" src="/resources/assets/js/lib/simplebar.min.js"></script>
+    <script type="text/javascript" src="/resources/assets/js/common.js"></script>
+    <script type="text/javascript" src="/resources/assets/js/main.js"></script>
+    <script type="text/javascript" src="/resources/assets/js/sub.js"></script>
+
+    <!-- 커스텀 스크립트 -->
+    <script type="text/javascript" src='/resources/js/external/moment-2.29.4/moment.min.js'></script>
+    <script type="text/javascript" src='/resources/js/common.js'></script>
+    <script type="text/javascript" src='/resources/js/dateLib.js'></script>
+    <script type="text/javascript" src='/resources/js/jsrender.js'></script>
+    <script type="text/javascript" src='/resources/js/UserScriptConf.js'></script>
+    
+
+    <!-- ######################################################################-->
+    <!-- 추가한 부분 Start. 터치앤웹 2026.04.08.-->
+	<script type='text/javascript' charset='utf-8' src='/resources/raonnx/cmn/TouchEnNx.js'></script>
+	<script type='text/javascript' charset='utf-8' src='/resources/raonnx/cmn/TouchEnNx_exproto.js'></script>
+	<script type='text/javascript' charset='utf-8' src='/resources/raonnx/nxWeb/js/TouchEnNxWeb_Html5.js'></script>
+	<script type='text/javascript' charset='utf-8' src='/resources/raonnx/nxWeb/js/nxweb_config.js'></script>
+	<script type='text/javascript' charset='utf-8' src='/resources/raonnx/nxWeb/js/TouchEnNxWeb.js'></script>
+    <!-- 추가한 부분 End. 터치앤웹 2026.04.08.-->    
+    <!-- ######################################################################-->
+        
+</body>
+</html>

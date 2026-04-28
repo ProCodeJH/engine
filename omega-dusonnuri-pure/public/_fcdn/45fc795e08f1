@@ -1,0 +1,265 @@
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0, minimum-scale=1.0, user-scalable=yes">
+
+<meta name="title" content="국민연금공단">
+<meta name="keywords" content="국민연금, 연금, NPS, 4대보험">
+<meta name="description" content="국민연금 홈페이지">
+<meta name="Author" content="국민연금">
+<meta name="Publisher" content="국민연금">
+<meta name="Other Agent" content="">
+<meta name="copyright" content="우) 54870 전라북도 전주시 덕진구 기지로 180(만성동)">
+
+<title>국민연금공단</title>
+<script>
+	// 배경 이미지 먼저 로드
+	function preload() {
+		const image = new Image();
+		image.src = '/images/gate/gate_day_low.jpg'
+	}
+
+	/*
+	 * sso 쿠키 셋팅
+	 */
+	function setSsoCookie(url) {
+			$.ajax({
+				type: 'GET',
+				url : "/lgn/getSsoCookieAjax.do",	
+				success: function(data){
+					if (typeof pAppGbn != 'undefined' && pAppGbn.toLowerCase().startsWith('nps_')) {
+						fnMoveUlr(url);
+					} else {
+						window.open("about:blank").location.href = url;
+					}
+				},
+				error : function(e, data){
+					if (typeof pAppGbn != 'undefined' && pAppGbn.toLowerCase().startsWith('nps_')) {
+						fnMoveUlr(url);
+					} else {
+						window.open("about:blank").location.href = url;
+					}
+				}
+			});
+	}
+	
+	preload();
+</script>
+<link rel="icon" type="image/x-icon" href="/images/common/favicon.ico">
+<link rel="icon" type="image/png" href="/images/common/favicon_16x16.png">
+<link rel="icon" type="image/png" href="/images/common/favicon_32x32.png">
+<link rel="apple-touch-icon" href="/images/common/apple_touch_icon.png">
+
+<link href="/css/reset.css" rel="stylesheet">
+<link href="/css/gate.css" rel="stylesheet">
+</head>
+<body class="gate">
+	<div class="gate-wrap">
+		<div class="gate-bg">
+			<img src="/images/gate/gate_day_low.jpg" alt="" class="morning-bg">
+			<img src="/images/gate/gate_night-v1_low.jpg" alt="" class="night-bg">
+		</div>
+		<div class="ci-logo">
+			<img src="/images/contents/bg_desc_w.svg" alt="">
+		</div>
+		<div class="inner">
+			<div class="title">
+				<p><img src="/images/gate/copy4.png" alt="국민이 주인인 연금에서"></p>
+				<p><img src="/images/gate/copy5.png" alt="모두가 누리는 연금으로"></p>
+			</div>
+			<div class="links">
+				<div class="col col-1">
+					<div class="item">
+						<a href="/main.do" class="go-to-link">
+							<strong><b>대표</b>홈페이지</strong>
+							<p>새소식, 채용 공고 등 최신 소식과<br>다양한 연금정보를 만나보세요!</p>
+							<span class="link-btn">바로가기</span>
+						</a>
+					</div>
+				</div>
+				<div class="col col-4">
+					<div class="item">
+						<a href="/elctcvlcpt/comm/getOHAC0000M3.do?menuId=MN24001727" class="go-to-link">
+							<strong><b>개인</b>민원</strong>
+							<p>가입증명서 발급부터 연금청구까지,<br>지사 방문 없이 해결하는 민원 서비스!</p>
+							<span class="link-btn">바로가기</span>
+						</a>
+					</div>
+					<div class="item">
+						<a href="https://fund.nps.or.kr/" class="go-to-link">
+							<strong><b>기금운용</b>본부</strong>
+							<p>국민의 노후 자금! 국민연금기금 투자현황과<br>적립금 현황을 확인해 보세요.</p>
+							<span href="https://fund.nps.or.kr/" class="link-btn">바로가기</span>
+						</a>
+					</div>
+					<div class="item">
+						<a href="https://edi.nps.or.kr/" class="go-to-link">
+							<strong><b>사업장</b>민원(국민연금EDI)</strong>
+							<p>사업장 관련 신고ㆍ신청, 조회, 공단 통지문서, 증명서 발급 등 전자민원서비스를 편리하게 이용해 보세요.</p>
+							<span class="link-btn">바로가기</span>
+						</a>
+					</div>
+					<div class="item">
+						<a href="javascript:setSsoCookie('https://csa.nps.or.kr/');" class="go-to-link">
+							<strong><b>중앙노후준비</b>지원센터</strong>
+							<p>다양한 노후준비정보와 함께<br>노후준비 수준 진단도 받아보세요.</p>
+							<span class="link-btn">바로가기</span>
+						</a>
+					</div>
+				</div>
+			</div>
+			
+			<!-- slide 용  -->
+			<div class="links-slider">
+				<div class="swiper-container">
+					<div class="swiper-controller">
+						<button type="button" class="status-prev-btn">이전 슬라이드</button>
+						<button type="button" class="status-next-btn">다음 슬라이드</button>
+					</div>
+					<div class="swiper-wrapper">
+						<div class="swiper-slide item">
+							<a href="/main.do" class="go-to-link">
+								<strong><b>대표</b>홈페이지</strong>
+								<p>새소식, 채용 공고 등 최신 소식과<br>다양한 연금정보를 만나보세요!</p>
+								<span href="/main.do" class="link-btn">바로가기</span>
+							</a>
+						</div>
+						<div class="swiper-slide item">
+							<a href="/elctcvlcpt/comm/getOHAC0000M3.do?menuId=MN24001727" class="go-to-link">
+								<strong><b>개인</b>민원</strong>
+								<p>가입증명서 발급부터 연금청구까지,<br>지사 방문 없이 해결하는 민원 서비스!</p>
+								<span class="link-btn">바로가기</span>
+							</a>
+						</div>
+						<div class="swiper-slide item">
+							<a href="https://edi.nps.or.kr/" class="go-to-link">
+								<strong><b>사업장</b>민원(국민연금EDI)</strong>
+								<p>사업장 관련 신고ㆍ신청, 조회, 공단 통지문서, 증명서 발급 등 전자민원서비스를 편리하게 이용해 보세요.</p>
+								<span class="link-btn">바로가기</span>
+							</a>
+						</div>
+						<div class="swiper-slide item">
+							<a href="https://fund.nps.or.kr/" class="go-to-link">
+								<strong><b>기금운용</b>본부</strong>
+								<p>국민의 노후 자금! 국민연금기금 투자현황과<br>적립금 현황을 확인해 보세요.</p>
+								<span class="link-btn">바로가기</span>
+							</a>
+						</div>
+						<div class="swiper-slide item">
+							<a href="https://csa.nps.or.kr/" class="go-to-link">
+								<strong><b>중앙노후준비</b>지원센터</strong>
+								<p>다양한 노후준비정보와 함께<br>노후준비 수준 진단도 받아보세요.</p>
+								<span class="link-btn">바로가기</span>
+							</a>
+						</div>
+					</div>
+					<div class="swiper-pagination"></div>
+				</div>
+			</div>
+		</div>
+		<div class="copy">
+			<span class="privacy_btn"><a href="/comm/footer/getOHAH0003M0.do">개인정보처리방침</a></span>
+			<p>54870 전북특별자치도 전주시 덕진구 기지로 180 (만성동, 국민연금)</p>
+			<span>ⓒ nps.or.kr. All Rights Reserved.</span>
+		</div>
+	</div>
+	<script src="/js/lib/jquery.min.js"></script>
+	<script src="/js/lib/jquery-3.7.0.min.js"></script>
+
+	<script src="/js/lib/swiper.min.js"></script>
+
+
+<script>
+
+	let selectedItem = null;
+	let selectedNum;
+	let timer;
+	const container = document.querySelector('.gate-container');
+	const sub = document.querySelector('.gate-sub');
+	const prevBtns = document.querySelectorAll('.prev-btn');
+	
+
+	
+	document.addEventListener('DOMContentLoaded', () => {
+
+		if(window.innerWidth < 1024) {
+			moSlide();
+		}
+		prevBtns.forEach(item => {
+			item.addEventListener('click', () => {
+				container.classList.remove('active');
+				sub.classList.remove('active');
+			});
+		});
+
+		// gate bg
+		let today = new Date();
+		let current_hour = today.getHours();
+
+		if(current_hour < 6 || 20 <= current_hour){
+			document.querySelector('body').classList.add('night');
+		}else{
+			document.querySelector('body').classList.remove('night');
+		}
+
+		// 1024 이하 사이즈에서 초기화면으로
+		window.addEventListener('resize', () => {
+			if(window.innerWidth < 1024) {
+				moSlide();
+			}
+		});
+	});
+	
+	function moSlide(){
+		var mySwiper = new Swiper('.swiper-container', {
+			loop: false,			
+			pagination: {
+				el: '.swiper-pagination',
+				clickable: true
+			},
+			navigation:{
+				prevEl: ".links-slider .status-prev-btn",
+				nextEl: ".links-slider .status-next-btn",
+			},
+			a11y:{
+	    		prevSlideMessage: '이전 슬라이드',
+	    		nextSlideMessage: '다음 슬라이드',
+	    	},
+		})
+	}
+	
+	function selectItem(num){
+// 		if(selectedNum && (num === selectedNum)) return;
+
+		if(selectedItem){
+			selectedItem.classList.remove('selected');
+		}
+		if(timer) {
+			clearTimeout(timer);
+		}
+		timer = setTimeout(function(){
+			document.querySelector('.site' + num).classList.add('selected');
+			selectedItem = document.querySelector('.site' + num);
+		},10);
+
+		sub.setAttribute("data-sub", num);
+		selectedNum = num;
+	}
+</script>
+
+</body>
+</html>

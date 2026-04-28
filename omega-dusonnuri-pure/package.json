@@ -1,0 +1,12 @@
+{
+  "name": "omega-www-dusonnuri-co-kr",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "sirv public --port 3100 --single",
+    "start:host": "sirv public --port 3100 --host --single"
+  },
+  "devDependencies": {
+    "sirv-cli": "^2.0.2"
+  }
+}

@@ -1,0 +1,401 @@
+<html><head>
+<base href="/">
+<script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/sw.js").catch(() => {});
+  }
+</script>
+<style id="__sigma_reveal_css__">
+
+/* P136 Force-Reveal — sigma-reveal-animations */
+/* AOS */
+[data-aos] { opacity: 1 !important; transform: none !important; transition: none !important; }
+[data-aos].aos-animate { opacity: 1 !important; transform: none !important; }
+
+/* WOW.js / Animate.css */
+.wow, .animated, .fadeIn, .fadeInUp, .fadeInDown, .fadeInLeft, .fadeInRight,
+.slideInUp, .slideInDown, .zoomIn {
+  opacity: 1 !important;
+  transform: none !important;
+  visibility: visible !important;
+  animation-duration: 0s !important;
+  animation-delay: 0s !important;
+}
+
+/* Custom common class names */
+.reveal, .appear, .animate-on-scroll, .scroll-fade, .fade-up, .fade-down,
+.in-view, .scroll-reveal, .lazy-reveal {
+  opacity: 1 !important;
+  transform: none !important;
+  visibility: visible !important;
+}
+
+/* Framer Motion */
+[data-framer-component-type] { opacity: 1 !important; }
+[data-framer-component-type] [style*="opacity: 0"] { opacity: 1 !important; }
+[data-framer-name] { opacity: 1 !important; transform: none !important; }
+
+/* Generic transition opacity */
+[style*="opacity: 0"][style*="transition"] { opacity: 1 !important; }
+[style*="opacity:0"][style*="transition"] { opacity: 1 !important; }
+
+/* Generic translateY pre-animation states */
+[style*="translateY(20px)"], [style*="translateY(30px)"], [style*="translateY(40px)"],
+[style*="translateY(50px)"], [style*="translateY(60px)"], [style*="translateY(80px)"],
+[style*="translateY(100px)"] { transform: none !important; }
+
+/* Imweb specific (dusonnuri base) */
+[class*="iw-fade"], [class*="iw-slide"], [class*="iw-zoom"] {
+  opacity: 1 !important; transform: none !important;
+}
+
+</style>
+<style>*:focus-visible{outline:2px solid #4f46e5;outline-offset:2px}</style>
+</head><body>
+<a href="#main" class="sigma-skip-link" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;text-decoration:none;" onfocus="this.style.cssText='position:fixed;top:0;left:0;width:auto;height:auto;padding:8px 16px;background:white;color:black;z-index:99999;border:2px solid #4f46e5;text-decoration:none;'" onblur="this.style.cssText='position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;text-decoration:none;'">Skip to content / 본문 바로가기</a><script id="__sigma_carousel_lock__">
+
+(function lockCarousels() {
+  const log = [];
+
+  // ─── 1. Stop CSS animations + transitions ─────────────────
+  const freezeStyle = document.createElement('style');
+  freezeStyle.id = '__sigma_freeze_style__';
+  freezeStyle.textContent = `
+    *, *::before, *::after {
+      animation-play-state: paused !important;
+      animation-delay: 0s !important;
+      animation-duration: 0s !important;
+      transition-duration: 0s !important;
+      transition-delay: 0s !important;
+    }
+  `;
+  document.head.appendChild(freezeStyle);
+  log.push('[freeze] CSS animations + transitions paused');
+
+  // ─── 2. Swiper.js lock ──────────────────────────────────────
+  document.querySelectorAll('.swiper, .swiper-container').forEach(s => {
+    if (s.swiper) {
+      try {
+        s.swiper.autoplay?.stop?.();
+        s.swiper.slideTo(0, 0);
+        log.push('[swiper] locked to slide 0');
+      } catch (e) {}
+    }
+    // Force first slide active via class manipulation
+    const slides = s.querySelectorAll('.swiper-slide');
+    slides.forEach((sl, i) => {
+      sl.classList.toggle('swiper-slide-active', i === 0);
+      sl.style.transform = 'translate3d(0,0,0)';
+    });
+    const wrapper = s.querySelector('.swiper-wrapper');
+    if (wrapper) wrapper.style.transform = 'translate3d(0,0,0)';
+  });
+
+  // ─── 3. Slick lock ──────────────────────────────────────────
+  document.querySelectorAll('.slick-slider, .slick-initialized').forEach(s => {
+    if (window.jQuery && window.jQuery(s).slick) {
+      try {
+        window.jQuery(s).slick('slickPause');
+        window.jQuery(s).slick('slickGoTo', 0, true);
+        log.push('[slick] locked to slide 0');
+      } catch (e) {}
+    }
+    const slides = s.querySelectorAll('.slick-slide');
+    slides.forEach((sl, i) => {
+      sl.classList.toggle('slick-active', i === 0);
+      sl.classList.toggle('slick-current', i === 0);
+    });
+    const track = s.querySelector('.slick-track');
+    if (track) {
+      track.style.transform = 'translate3d(0,0,0)';
+      track.style.transition = 'none';
+    }
+  });
+
+  // ─── 4. Splide lock ─────────────────────────────────────────
+  document.querySelectorAll('.splide').forEach(s => {
+    const list = s.querySelector('.splide__list');
+    if (list) list.style.transform = 'translateX(0)';
+    s.querySelectorAll('.splide__slide').forEach((sl, i) => {
+      sl.classList.toggle('is-active', i === 0);
+      sl.classList.toggle('is-visible', i === 0);
+    });
+  });
+
+  // ─── 5. Owl Carousel lock ───────────────────────────────────
+  document.querySelectorAll('.owl-carousel').forEach(s => {
+    const stage = s.querySelector('.owl-stage');
+    if (stage) {
+      stage.style.transform = 'translate3d(0,0,0)';
+      stage.style.transition = 'none';
+    }
+    s.querySelectorAll('.owl-item').forEach((sl, i) => {
+      sl.classList.toggle('active', i === 0);
+    });
+  });
+
+  // ─── 6. Glide.js lock ───────────────────────────────────────
+  document.querySelectorAll('.glide').forEach(s => {
+    const slides = s.querySelector('.glide__slides');
+    if (slides) {
+      slides.style.transform = 'translate3d(0,0,0)';
+      slides.style.transition = 'none';
+    }
+    s.querySelectorAll('.glide__slide').forEach((sl, i) => {
+      sl.classList.toggle('glide__slide--active', i === 0);
+    });
+  });
+
+  // ─── 7. bxSlider lock ───────────────────────────────────────
+  document.querySelectorAll('.bxslider, .bx-wrapper').forEach(s => {
+    s.querySelectorAll('.bx-clone').forEach(c => c.style.display = 'none');
+    const viewport = s.querySelector('.bx-viewport');
+    if (viewport) {
+      const inner = viewport.firstElementChild;
+      if (inner) inner.style.transform = 'translate3d(0,0,0)';
+    }
+  });
+
+  // ─── 8. FlexSlider lock ─────────────────────────────────────
+  document.querySelectorAll('.flexslider').forEach(s => {
+    const slides = s.querySelectorAll('.slides > li, .flex-slide');
+    slides.forEach((sl, i) => {
+      sl.classList.toggle('flex-active-slide', i === 0);
+      sl.style.opacity = i === 0 ? '1' : '0';
+      sl.style.zIndex = i === 0 ? '2' : '1';
+    });
+  });
+
+  // ─── 9. Tiny Slider lock ────────────────────────────────────
+  document.querySelectorAll('.tns-slider, [data-tns]').forEach(s => {
+    s.style.transform = 'translate3d(0,0,0)';
+    s.style.transition = 'none';
+    s.querySelectorAll('.tns-item').forEach((sl, i) => {
+      sl.classList.toggle('tns-slide-active', i === 0);
+    });
+  });
+
+  // ─── 10. Generic [data-autoplay] / autoplay attr ────────────
+  document.querySelectorAll('[data-autoplay], [autoplay]').forEach(el => {
+    el.removeAttribute('autoplay');
+    el.removeAttribute('data-autoplay');
+    if (el.tagName === 'VIDEO') {
+      el.pause?.();
+      el.currentTime = 0;
+    }
+  });
+
+  // ─── 11. Imweb-specific (dusonnuri base) ────────────────────
+  // imweb는 .iw-carousel, .iw-slide* 변형 사용
+  document.querySelectorAll('.iw-carousel, [class*="carousel"], [class*="slider"]').forEach(s => {
+    const items = s.querySelectorAll('[class*="slide"], [class*="item"]');
+    items.forEach((sl, i) => {
+      const isActive = i === 0;
+      // Common class patterns
+      ['active', 'current', 'is-active', 'selected'].forEach(c => {
+        if (sl.className.includes(c.replace(/-/g, ''))) sl.classList.toggle(c, isActive);
+      });
+      if (!isActive) {
+        // Off-screen slides hidden visually but DOM kept
+        sl.style.visibility = 'hidden';
+        sl.style.position = 'absolute';
+        sl.style.left = '-99999px';
+      }
+    });
+  });
+
+  // ─── 12. clearInterval all auto-rotators ────────────────────
+  // Some carousels don't expose an API. Stop all setInterval (heavy hammer)
+  // 단, 자체 React/Vue runtime 손상 방지 위해 신중히 — 일정 시간 후만
+  if (!window.__sigma_intervals_cleared__) {
+    window.__sigma_intervals_cleared__ = true;
+    // Track intervals (best effort — only catches future ones)
+    const origSetInterval = window.setInterval;
+    window.setInterval = function() {
+      // Don't actually run new intervals after lock
+      return -1;
+    };
+    log.push('[generic] new setInterval blocked');
+  }
+
+  // ─── 13. Scroll to top (deterministic position) ─────────────
+  window.scrollTo(0, 0);
+
+  return log;
+})();
+
+</script>
+<script id="__sigma_reveal_js__">
+
+(function forceRevealAnimations() {
+  // 1. Trigger AOS init+refresh if loaded
+  if (window.AOS) {
+    try {
+      window.AOS.init({ disable: true });
+      document.querySelectorAll('[data-aos]').forEach(el => {
+        el.classList.add('aos-animate');
+        el.removeAttribute('data-aos-delay');
+        el.removeAttribute('data-aos-duration');
+      });
+    } catch (e) {}
+  }
+
+  // 2. Trigger WOW.js
+  if (window.WOW) {
+    try {
+      const wow = new window.WOW({ live: false });
+      wow.init();
+      document.querySelectorAll('.wow').forEach(el => {
+        el.style.visibility = 'visible';
+        el.classList.add('animated');
+      });
+    } catch (e) {}
+  }
+
+  // 3. Trigger GSAP ScrollTrigger refresh + force reveal
+  if (window.gsap && window.ScrollTrigger) {
+    try {
+      window.ScrollTrigger.getAll().forEach(t => {
+        // Skip animation, jump to final state
+        if (t.animation) {
+          t.animation.progress(1);
+          t.animation.kill();
+        }
+      });
+    } catch (e) {}
+  }
+
+  // 4. IntersectionObserver — fire all callbacks immediately
+  // 이미 등록된 observer는 못 만지지만, future ones는 instant fire
+  const origIO = window.IntersectionObserver;
+  if (origIO) {
+    window.IntersectionObserver = class extends origIO {
+      constructor(callback, options) {
+        super((entries, obs) => {
+          // Force isIntersecting=true on all entries
+          const fakeEntries = entries.map(e => ({ ...e, isIntersecting: true, intersectionRatio: 1 }));
+          callback(fakeEntries, obs);
+        }, options);
+      }
+      observe(target) {
+        super.observe(target);
+        // Manually trigger
+        setTimeout(() => {
+          const entry = {
+            target, isIntersecting: true, intersectionRatio: 1,
+            boundingClientRect: target.getBoundingClientRect(),
+            intersectionRect: target.getBoundingClientRect(),
+            rootBounds: null, time: performance.now(),
+          };
+          // Get the callback (private — best effort)
+        }, 0);
+      }
+    };
+  }
+
+  // 5. Force visible — generic class hunt
+  const hiddenSelectors = [
+    '.opacity-0', '[style*="opacity: 0"]', '[style*="opacity:0"]',
+    '.invisible', '.hidden-on-load', '.before-reveal',
+    '.fade-in:not(.appeared)', '.scroll-trigger:not(.triggered)',
+  ];
+  document.querySelectorAll(hiddenSelectors.join(',')).forEach(el => {
+    el.style.opacity = '1';
+    el.style.visibility = 'visible';
+    el.style.transform = 'none';
+    el.classList.add('appeared', 'triggered', 'in-view');
+  });
+
+  // 6. Scroll once to bottom + back to top to trigger any remaining
+  // (이건 capture 후엔 useless하지만 mirror에선 사용자 경험에 도움)
+  const initialScroll = window.scrollY;
+  // Don't actually scroll in mirror — user might be reading
+  // window.scrollTo(0, document.body.scrollHeight);
+  // window.scrollTo(0, initialScroll);
+
+  console.log('[P136] Reveal animations forced');
+})();
+
+</script>
+<script id="__sigma_media_determinism__">
+
+(function mediaDeterminism() {
+  const log = [];
+
+  // ─── 1. <video> + <audio> pause ─────────────────────────────
+  document.querySelectorAll('video, audio').forEach(m => {
+    try {
+      m.pause();
+      m.currentTime = 0;
+      m.removeAttribute('autoplay');
+      m.removeAttribute('loop');
+      m.muted = true;
+      log.push('[media] paused ' + m.tagName);
+    } catch (e) {}
+  });
+
+  // ─── 2. YouTube iframe — strip autoplay + reset to t=0 ──────
+  document.querySelectorAll('iframe').forEach(f => {
+    try {
+      const src = f.src || f.getAttribute('src') || '';
+      if (!src) return;
+
+      let cleanSrc = src
+        .replace(/[?&]autoplay=1/g, '')
+        .replace(/[?&]start=\d+/g, '')
+        .replace(/[?&]t=\d+s?/g, '')
+        .replace(/[?&]loop=1/g, '')
+        .replace(/[?&]mute=1/g, '');
+
+      // For YouTube: add explicit autoplay=0
+      if (src.includes('youtube.com') || src.includes('youtu.be')) {
+        cleanSrc += (cleanSrc.includes('?') ? '&' : '?') + 'autoplay=0';
+      }
+
+      // Vimeo
+      if (src.includes('vimeo.com')) {
+        cleanSrc += (cleanSrc.includes('?') ? '&' : '?') + 'autoplay=0';
+      }
+
+      // Wistia
+      if (src.includes('wistia')) {
+        cleanSrc = cleanSrc.replace(/autoPlay=true/g, 'autoPlay=false');
+      }
+
+      if (cleanSrc !== src) {
+        f.src = cleanSrc;
+        log.push('[iframe] reset ' + src.substring(0, 50));
+      }
+    } catch (e) {}
+  });
+
+  // ─── 3. PostMessage to YouTube iframe (better control) ──────
+  // YT IFrame API postMessage to pause
+  document.querySelectorAll('iframe[src*="youtube.com/embed"]').forEach(f => {
+    try {
+      f.contentWindow?.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+      f.contentWindow?.postMessage('{"event":"command","func":"seekTo","args":[0,true]}', '*');
+    } catch (e) {}
+  });
+
+  // ─── 4. Vimeo postMessage ───────────────────────────────────
+  document.querySelectorAll('iframe[src*="vimeo.com"]').forEach(f => {
+    try {
+      f.contentWindow?.postMessage('{"method":"pause"}', '*');
+      f.contentWindow?.postMessage('{"method":"setCurrentTime","value":0}', '*');
+    } catch (e) {}
+  });
+
+  // ─── 5. Background videos (CSS video) ───────────────────────
+  document.querySelectorAll('video[autoplay], video[loop]').forEach(v => {
+    v.autoplay = false;
+    v.loop = false;
+    v.pause();
+    v.currentTime = 0;
+  });
+
+  return log;
+})();
+
+</script>
+</body></html>

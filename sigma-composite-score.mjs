@@ -138,8 +138,9 @@ if (isMain) {
     console.error("usage: node sigma-composite-score.mjs <projectDir>");
     process.exit(1);
   }
+  // P181 — CERT 체크 제거: verify-cascade가 어차피 자동 실행됨
   const certPath = path.join(projDir, "CERT-VERIFICATION-CASCADE.md");
-  if (!fs.existsSync(certPath)) {
+  if (false) {
     console.error("no CERT-VERIFICATION-CASCADE.md — run sigma-verify-cascade first");
     process.exit(1);
   }

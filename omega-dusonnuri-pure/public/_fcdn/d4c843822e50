@@ -1,0 +1,5274 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!doctype html>
+<html lang="ko" >
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, maximum-scale=1.0, user-scalable=yes">
+  <meta name="format-detection" content="address=no, email=no">
+  <meta name="keywords" content="국민건강보험 일산병원">
+  <meta name="description" content="국민의 건강한 삶과 의료 표준을 선도하는 건강보험 모델병원">
+  <meta name="decorator" content="portal"><!-- Sns -->
+	<meta name="naver-site-verification" content="52df6dac81e2b8dbdc22e0fe3cbb5186f6125848" />
+	
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="국민건강보험 일산병원">
+  <meta property="og:description" content="국민의 건강한 삶과 의료 표준을 선도하는 건강보험 모델병원">
+  <meta property="og:site_name" content="국민건강보험 일산병원">
+  <meta property="og:url" content="">
+  <meta property="og:image" content="">
+  <meta property="og:image:alt" content="국민건강보험 일산병원">
+  <title>국민건강보험 일산병원</title>
+	
+	<link href="/common/front/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/common/front/kor/css/jquery-ui.css">
+  <link type="text/css" rel="stylesheet" href="/common/front/kor/css/swiper.min.css" />
+  <link type="text/css" rel="stylesheet" href="/common/front/kor/css/default.css?dt=20260424" />
+	
+
+  
+  <link rel="stylesheet" href="/common/front/kor/css/main.css?dt=20251223" />
+	<link type="text/css" rel="stylesheet" href="/common/front/kor/css/mo_main.css?dt=20240405">
+  
+
+	<link type="text/css" rel="stylesheet" href="/common/front/kor/css/mo_default.css?dt=20230704">
+	<link type="text/css" rel="stylesheet" href="/common/front/kor/css/ie.css?dt=20230704" />
+
+  <script type="text/javascript" src="/common/front/kor/js/jquery-1.12.4.js"></script>
+  <script type="text/javascript" src="/common/front/kor/js/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="/common/front/kor/js/swiper.min.js"></script>
+	<script type="text/javascript" src="/common/front/kor/js/module/param.js"></script>
+  <script type="text/javascript" src="/common/front/kor/js/design.js"></script>
+  <script type="text/javascript" src="/common/front/kor/js/common.js?dt=20240201"></script>
+  <script type="text/javascript" src="/common/front/kor/js/cookiev.js"></script>
+  <script type="text/javascript" src="/common/front/kor/js/zoom_2014.js"></script>
+  <script type="text/javascript">
+	//############################ 접속 통계 시작 ######################################### //
+  if( !getCookie("stsDayRegist") ){
+  	
+  	$.ajax({
+  		url     : "/sts/dayRegist.do",
+  		type    : "POST",
+  		data    : { siteCd: '001000000' },
+  		success : function(data){
+  					
+  		}
+  	});		
+  	setCookie("stsDayRegist", "OK", 1);
+  	
+  }
+	//############################ 접속 통계 종료 ######################################### //
+  
+	var userId = "";
+  var userPatNo = "";
+  var userByear = "";
+  
+  
+	function checkTotalSearchForm( form ){
+		
+		if( !form.keyword.value.trim() ){
+			
+			alert("검색어를 입력해주세요.");
+			form.keyword.focus();
+			return false;
+			
+		}
+		
+		if( form.keyword.value.length < 2 ){
+			
+			alert("검색어는 2글자 이상 입력해주세요.");
+			form.keyword.focus();
+			return false;
+			
+		}
+		
+		return true;
+		
+	}
+	
+	function goRsvPage(){
+		
+		if(userId) fastReserve('', '', 'Y');
+		else location.href = "/reserve/verifyNomember.do";
+		
+	}
+	
+	function goRsvListPage(){
+		
+		if(userId) location.href = "/mypage/reserveList.do";
+		else location.href = "/reserve/noMemberReserve.do";
+		
+	}
+	
+	function goLanguage( url ){
+		
+		if( !url ) {
+			$("#siteBtn").attr("href", "javascript:alert('국가를 선택해주세요.')");
+			$("#siteBtn").removeAttr("target");
+		} else {
+			$("#siteBtn").attr("href", url);
+			$("#siteBtn").attr("target", "_blank");
+		}
+		
+	}  
+		
+	function topLayertoggle(){
+		
+		if( $("#topLayer").hasClass("hide") ){
+			
+			$("#topLayer").removeClass("hide");
+			$("#toggleTxt").text("close");
+			
+		}else{
+			
+			$("#topLayer").addClass("hide");
+			$("#toggleTxt").text("open");
+			
+		}
+		
+	}
+  </script>
+  <style type="text/css">
+  #topLayer.hide .event_check{display: none}
+  </style>
+  
+	<script type="text/javascript" src="/common/front/kor/js/aes.js"></script>
+	<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+	<script type="text/javascript">
+	function inputNumber( oThis ){
+
+		oThis.value = oThis.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
+		
+	}
+	
+	function profSearch( form ){
+		
+		if( !form.searchword.value.trim() ){
+			
+			alert( "검색어를 입력해주세요." );
+			return false;
+			
+		}
+		
+		return true;
+		
+	}
+	
+	function viewTab( idx ){
+		
+		$("#tabList li").removeClass("ac");
+		$("#tabList li a").attr("title", "");
+		$("#tabList li").eq(idx).addClass("ac");
+		$("#tabList li").eq(idx).find("a").attr("title", "선택됨");
+		$("#mainBoardList li").css("display", "none");
+		
+		if( idx == 0 ){
+			$(".mainBoard1").eq(0).css("display", "");			
+			$(".mainBoard1").eq(1).css("display", "");
+			$(".mainBoard1").eq(2).css("display", "");
+			$(".mainBoard2").eq(0).css("display", "");			
+			$(".mainBoard2").eq(1).css("display", "");			
+		}else{
+			$(".mainBoard" + idx).css("display", "");
+		}
+		
+	}
+	
+	function clkTab( e, idx ){
+		
+		if( e.pointerType == "mouse" ){
+			
+			if( idx == 1 ) location.href = '/board/commBoardNoticeList.do';
+			else if( idx == 2 ) openUrl('https://nhimc.recruiter.co.kr/app/jobnotice/list');
+			else if( idx == 3 ) location.href='/board/commBoardBidList.do'
+			
+		}
+		
+	}
+	
+	function openUrl( url ){
+		
+		window.open( url, "openUrl", "noopener" );
+		
+	}
+		
+	function checkFastResv(){
+		
+		$("#SuccessLayer").show();
+		
+		// 웹접근성
+		$("#SuccessLayer .pop_layer_basic").focus();
+	
+	}
+	
+	function sendFastResvIntro(){
+		
+		$("#SuccessLayer").hide();
+		$("#AgreeLayer").show();
+		
+		// 웹접근성
+    $("#AgreeLayer .pop_layer_basic").focus();    
+		
+	}
+	
+	function sendFastResv(){
+		
+		if( $("#fastResvAgree1:checked").length <= 0 ){
+			alert("개인정보 이용에 동의해주세요.");			
+			return;
+		}
+		
+		if( !$("#fastResvUserNm").val().trim() ){
+			alert("상담 받으실 분 이름을 입력해주세요.");
+			$("#fastResvUserNm").focus();
+			return;
+		}
+		
+		if( !$("#fastResvMobile1").val().trim() ){
+			alert("상담 받으실 전화번호 앞자리를 입력해주세요.");
+			$("#fastResvMobile1").focus();
+			return;
+		}
+		
+		if( !$("#fastResvMobile2").val().trim() ){
+			alert("상담 받으실 전화번호 가운데 자리를 입력해주세요.");
+			$("#fastResvMobile2").focus();
+			return;
+		}
+		
+		if( !$("#fastResvMobile3").val().trim() ){
+			alert("상담 받으실 전화번호 마지막 자리를 입력해주세요.");
+			$("#fastResvMobile3").focus();
+			return;
+		}
+		
+		var userNm = $("#fastResvUserNm").val();
+		var phone = $("#fastResvMobile1").val() + "-" +$("#fastResvMobile2").val() + "-" + $("#fastResvMobile3").val(); 
+		
+		$.ajax({
+			type: "POST",
+			url: "/sendFastResv.do",
+			data: { "userNm": userNm, "phone": phone },
+			success: function( result ){
+				
+				$("#fastResvUserNm").val("");
+				$("#fastResvMobile1").val("");
+				$("#fastResvMobile2").val("");
+				$("#fastResvMobile3").val("");
+				$("#fastResvAgree1").prop("checked", false);
+				
+				if( result == "Y" ){
+					$("#SuccessLayer").hide();
+					$("#AgreeLayer").hide();
+					alert("신청 완료 되었습니다.");					
+				}else{
+					alert("신청 도중 장애가 발생 하였습니다.\n재신청 바랍니다.");
+					location.reload();
+				}
+				
+			} 
+		});
+		
+	}
+	
+	$(document).ready(function(){
+		
+		// ----------------- 병원 소식 ------------------------------- //
+		viewTab(0);
+		
+		$("#tabList li").on("mouseenter focusin",function(){
+			
+			var idx = $( this ).attr( "idx" );
+			viewTab(idx);
+			
+			$("#moBoardMore").css("display", "");
+			$("#moBoardMore").attr("target", "_self");
+			$("#moBoardMore").attr("title", "");
+			
+			if( idx == 0 ) $("#moBoardMore").css("display", "none");
+			else if( idx == 1 ) $("#moBoardMore").attr("href", "/board/commBoardNoticeList.do");
+			else if( idx == 2 ) {
+				$("#moBoardMore").attr("href", "https://nhimc.recruiter.co.kr/appsite/company/index");
+				$("#moBoardMore").attr("target", "_blank");
+				$("#moBoardMore").attr("rel", "noreferrer noopener");
+				$("#moBoardMore").attr("title", "새창열림");
+			}
+			else if( idx == 3 ) $("#moBoardMore").attr("href", "/board/commBoardBidList.do");
+			
+		});
+		
+		$("#tabList > li").on("keydown",function(evt){
+			
+			if( evt.keyCode == 9 ){
+				
+				if( evt.shiftKey ){
+					
+					var idx = Number( $("#tabList .ac").attr("idx") );
+					if( idx == 0 ){
+						
+						$(".swiper-control").last().find("a").last().focus();
+						evt.preventDefault();
+						
+					}else{
+						
+						$("#tabList li").eq(idx).find("a").focus();
+						
+					}
+					
+				} else {
+				
+					$("#mainBoardList li").not(":hidden").first().find("a").focus();
+					evt.preventDefault();
+					
+				}
+				
+			}
+			
+		});
+		
+		$("#mainBoardList > li").on("keydown",function(evt){
+			
+			if( evt.keyCode == 9 ){
+				
+				// Prev
+				if( evt.shiftKey ){
+					
+					// 첫번째 LI인지 확인
+					var frt = $("#mainBoardList li").not(":hidden").first().get(0);
+					if( frt == this ){
+												
+						$("#tabList .ac").find("a").focus();
+						evt.preventDefault();
+												
+					}
+					
+				// Next
+				} else {
+				
+					// 마지막 LI인지 확인
+					var lst = $("#mainBoardList li").not(":hidden").last().get(0);
+					if( lst == this ){
+						
+						// 마지막 TAB이 아닐때만
+						var idx = $("#tabList .ac").attr("idx");
+						if( idx != "3" ){
+							$("#tabList .ac").next().find("a").focus();
+							evt.preventDefault();
+						}
+						
+					}
+					
+				}
+				
+			}
+			
+		});
+		
+		// ----------------- 병원 소식 ------------------------------- //
+		
+		
+		
+		
+		
+		// ----------------- Swiper ------------------------------- //
+		
+		$(".swiper-wrapper .swiper-slide a").on("focusin", function( evt ){
+			
+			var wrap = $( this ).parents(".swiper-wrapper").eq(0);
+			var idx = wrap.attr("idx");
+			if( idx ) {
+				
+				var idxNum = Number( idx );
+				wrap.parent().find(".btn_autoPlay").addClass('btn_play').removeClass('btn_stop');
+				wrap.parent().find(".btn_autoPlay").find("em").text("재생");					
+				swiper[idxNum-1].autoplay.stop();
+				
+				// ON 개체가 아닐때
+				if( $(this).parent().hasClass("swiper-slide-active") == false ){
+				
+					// ON개체로 Focus를 변경한다.
+					wrap.find(".swiper-slide-active a").focus();
+					
+				// ON 개체일때
+				} else {
+					
+					var oThis = this;
+					
+					// ON 개체에 이벤트를 바인딩 한다.
+					$(oThis).on("keydown",function(evt){			
+						
+						if( evt.keyCode == 9 ){						
+							$(oThis).off("keydown");		// ON개체에 부여한 이벤트를 삭제한다.
+							
+							// PREV
+							if( evt.shiftKey ){
+								$(".swiper_prev" + idxNum).focus();		// 미리 지정된 개체에 Focus
+								
+							// NEXT
+							}else{
+								$(".swiper-pagination").eq(idxNum-1).find(".swiper-pagination-bullet").first().focus();
+							}
+													
+							wrap.parent().find(".btn_autoPlay").addClass('btn_stop').removeClass('btn_play');
+							wrap.parent().find(".btn_autoPlay").find("em").text("정지");
+							swiper[idxNum-1].autoplay.start();
+							evt.preventDefault();
+							
+						}
+						
+					});					
+					
+				}
+				
+			}
+						
+		});
+		
+		// ----------------- Swiper ------------------------------- //
+		
+		
+		// 웹접근성
+    $("#SuccessLayer, #AgreeLayer").find(".btn_pop_close, .btn_cancel").on('click', function () {
+    	$('.rsrvtn_form .btn_h_40').focus();
+		});
+		
+		
+		$("#SuccessLayer .btn_cancel").keydown(function(event){
+	  	var v_keyCode = event.keyCode || event.which;
+	    if(v_keyCode == 9 && !event.shiftKey){
+		  	$("#SuccessLayer .btn_pop_close").focus();
+		 		event.preventDefault();
+	  	}
+		});
+		
+		$("#AgreeLayer .btn_cancel").keydown(function(event){
+    	var v_keyCode = event.keyCode || event.which;
+      if(v_keyCode == 9 && !event.shiftKey){
+      	$("#AgreeLayer .btn_pop_close").focus();
+				event.preventDefault();
+      }
+    });
+		
+		$("#SuccessLayer .btn_pop_close").keydown(function(event){
+	  	var v_keyCode = event.keyCode || event.which;
+	    if(v_keyCode == 9 && event.shiftKey){
+		  	$("#SuccessLayer .btn_cancel").focus();		 		
+		 		event.preventDefault();
+	  	}
+		});
+		
+		$("#AgreeLayer .btn_pop_close").keydown(function(event){
+    	var v_keyCode = event.keyCode || event.which;
+      if(v_keyCode == 9 && event.shiftKey){
+      	$("#AgreeLayer .btn_cancel").focus();
+				event.preventDefault();
+      }
+    });
+		
+		
+	});
+	
+	
+	
+	// ----------------------------------------- 로그인 -----------------------------------------
+	function loginCheckForm( form ){
+		
+		if( !form.userId.value.trim() ){
+			
+			alert( "아이디를 입력해주세요." );
+			form.userId.focus();
+			return false;
+			
+		}
+		
+		if( !form.password.value.trim() ){
+			
+			alert( "비밀번호를 입력해주세요." );
+			form.password.focus();
+			return false;
+			
+		}
+				
+		form.password.value = CryptoJS.AES.encrypt(form.password.value, passphrase);
+		
+		return true;
+		
+	}
+	
+	function naverLogin( url ){
+		
+		window.open( url, "naverLogin", "width=500, height=500, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no" );
+		
+	}
+	
+	Kakao.init("3be81911ba4ef5ff417dc9b547ee44dc");
+	function kakaoLogin(){
+	
+		Kakao.Auth.login({
+			success : function(authObj){
+				Kakao.API.request({
+					url : "/v2/user/me",
+					success : function(res){
+						//console.log(res.properties);return  false;
+						var kakaoUserId     = res.id;
+						var kakaoUserNm     = "";
+						var kakaoProfileImg = "";
+						var kakaoEmail      = "";
+						var kakaoBirthDay   = "";
+						var kakaoGender     = "";
+						if( res.properties != undefined ){
+							if( res.properties.nickname != undefined ){
+								kakaoUserNm = res.properties.nickname;
+							}else{
+								kakaoUserNm = "";
+							}
+							if( res.properties.profile_image != undefined ){
+								kakaoProfileImg = res.properties.profile_image;
+							}else{
+								kakaoProfileImg = "";
+							}
+						}
+						if( res.kakao_account != undefined && res.kakao_account != null ){
+							if( res.kakao_account.email != undefined && res.kakao_account.email != null )		kakaoEmail    = res.kakao_account.email;
+							if( res.kakao_account.birthday != undefined && res.kakao_account.birthday != null )	kakaoBirthDay = res.kakao_account.birthday;
+							if( res.kakao_account.gender != undefined && res.kakao_account.gender != null )		kakaoGender   = res.kakao_account.gender;
+						}
+						kakaoLoginResult({
+							"snsLoginType"    : "K",
+							"snsUserId"       : kakaoUserId,
+							"snsUserNm"       : kakaoUserNm,
+							"snsEmail"        : kakaoEmail,
+							"snsBirthDay"     : kakaoBirthDay,
+							"snsGender"       : kakaoGender,
+							"snsProfileImage" : kakaoProfileImg
+						});
+					},
+					fail : function(error){
+						alert("카카오 회원 정보 연동에 실패하였습니다.\n"+JSON.stringify(error));
+					}
+				});
+			},
+			fail : function(err){
+				alert("카카오 로그인 설정이 잘못되었습니다.\n"+JSON.stringify(err));
+			}
+		});
+			
+	}
+	
+	function kakaoLoginResult(json){
+		
+		var form = document.kakaoForm;
+		form.snsEmail.value = json.snsEmail;
+		form.snsId.value = json.snsUserId;
+		form.submit();
+		
+	}
+	</script>
+	<link type="text/css" rel="stylesheet" href="/common/front/kor/css/popup.css" />
+
+</head>
+
+<body class="main" oncontextmenu='return false' onselectstart='return false' ondragstart='return false'>
+
+<script type="text/javascript">
+//############################ 메뉴 통계 시작 ######################################### //
+var mainYn = "Y";
+var matchCode = "109003000000000";	
+
+// 메뉴 통계
+if( mainYn != "Y" ){
+	//if( !getCookie("stsDayMenuRegist") ){
+		
+		$.ajax({
+			url     : "/sts/dayMenuRegist.do",
+			type    : "POST",
+			data    : { siteCd: '001000000', "matchCode": matchCode },
+			success : function(data){
+				
+			}
+		});
+		//setCookie("stsDayMenuRegist", "OK", 1);
+		
+	//}
+}
+// ############################ 메뉴 통계 종료 ######################################### //
+</script>
+
+  <!-- exp. 팝업 오픈 시 클래스 : pop-->
+
+  <!-- 스킵 네비게이션 -->
+  <div class="skip_navi">
+      <a href="#contents">본문으로 가기</a>
+      <a href="#gnb">주메뉴로 가기</a>
+      <a href="#footer">카피라이트로 가기</a>
+  </div>
+  <!-- // 스킵 네비게이션 -->
+  
+  
+  
+	<div id="topLayer" class="c_body_event_top" style="display: none;">
+    <!-- exp. 클래스 hide 토글 / close, open 토글-->
+    <div class="event_w ">
+      <div class="img_w" >
+        <a href="javascript:void(0)" class="img" rel="noreferrer noopener"><img src="/common/front/kor/images/popup/img_may_20260424.jpg" alt="2026년 5월 휴진안내"></a>
+      </div>
+      <div class="btn_w">
+        <p class="event_check" style="top: 13px; right: -22px;">
+          <label for="eventCheck" style="color: #fff;"><input type="checkbox" id="eventCheck" name="eventCheck"><span style="color: #000;">오늘 하루 보지않기</span></label>
+          <a href="javascript:void(0);" onclick="fn_LayerPopClose( 'topYn', 'eventCheck', 'topLayer' );" class="event_close"><span class="skip">닫기</span></a>
+        </p>  
+      </div>
+      <div class="event_tg_w">
+        <a href="javascript: topLayertoggle()" class="event_tg">
+          <span id="toggleTxt">close</span><span class="icon"></span>
+        </a>  
+      </div> 
+    </div>      
+  </div>
+	
+		
+  <!-- wrapper -->
+  <div class="wrapper" >
+    <!-- exp. 팝업 활성화 시 (.pop )  -->
+
+    <!-- header -->
+    <header id="header" >
+      <!-- header : header box -->
+      <div class="hd_sbox in_cover">
+
+        <div class="in_w ">
+					
+          <div class="left">
+          	
+          </div>
+					
+					
+          <div class="right hd_side_util">
+          	<dl class="hd_fontSize"> <!-- 221211 : 추가 -->
+              <dt>글자크기</dt>
+              <dd><a href="javascript: Zoom.exec(1);" class="big ico " title="글자크기 크게"><span>글자크기 크게</span></a></dd>
+              <dd><a href="javascript: Zoom.exec(-1); " class="small ico  " title="글자크기 작게"><span>글자크기 작게</span></a></dd>
+            </dl>
+            
+            <ul class="hd_member">
+              
+              <li><a href="/member/joinStep00.do" class="hd_member_login"><span>회원가입</span></a></li>              
+              <li><a href="/member/login.do" class="hd_member_member"><span>로그인</span></a></li>
+               
+            </ul>
+            <div class="hd_language ">
+              <select id="langUrl" class=" w_16" title="국가(Language) 선택" onchange="goLanguage(this.value)">
+								<option value="">국가(Language)</option>
+								<option value="/eng/index.do">영어(English)</option>
+								<option value="/chi/index.do">중국어(Chinese)</option>
+								<option value="/mng/index.do">몽골어(Mongolian)</option>
+								<option value="/rus/index.do">러시아어(Russian)</option>
+								<option value="/vet/index.do">베트남어(Vietnamese)</option>							
+              </select>
+              <a id="siteBtn" href="javascript:alert('국가를 선택해주세요.')"  class="btn btn_c_g02 btn btn_s_s"><span>이동</span></a>
+            </div>
+            <div class="btn_w">
+            	
+              	<a href="/reserve/verifyNomember.do" class="btn btn_icon icon_l hd_btn_reserv"><span>온라인 진료예약</span></a>
+                            
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+      <div class="hd_box02 in_cover">
+
+        <div class="in_w ">
+
+          <h1 class="hd_logo">
+            <a href="/" class="">
+              <img src="/common/front/kor/images/comm/logo_hd.png" alt="국민건강보험 일산병원" >
+            </a>
+          </h1>
+
+          <!-- header : gnb -->
+          <nav class="gnb_wrap" >
+            <ul class="gnb" id="gnb">
+              
+              <li>
+                <a href="/conts/101001001000000.do"><span>진료예약/조회</span></a>
+
+                <div class="gnb_dep2_w" style="display:none;">
+                  <div class="in_w">
+										
+										
+                    
+
+
+
+
+
+
+
+
+
+
+
+<div class="gnb_info">
+	
+	  
+
+	  <dl class="gnb_tit">
+	    <dt><span class="t">진료예약/조회</span></dt>
+	    <dd>최상의 진료와 연구를 통해 <br>국민보건 향상을 위해 힘을 쏟겠습니다.</dd>
+	  </dl>
+	  <ul class="gnb_link">
+	  	<li><a href="javascript: fastReserve('', '', 'Y')"><span>진료예약</span></a></li>
+	  	
+		    <li><a href="/reserve/noMemberReserve.do"><span>예약조회</span></a></li>
+		  
+		  <li><a href="/conts/105006005000000.do"><span>명의 출연 의료진</span></a></li>
+	  </ul>
+
+	
+  
+</div>
+                                        
+										
+                    <ul class="gnb_menu2_list">
+
+                      
+											<li>
+                        <a href="/conts/101001001000000.do"
+                        	target="_self"
+                        	
+                        	class="">
+                        	<span>예약안내</span>
+                        </a>
+												
+												                        
+                        <ul class="gnb_menu3_list">
+                        	
+													<li><a 
+														href="/conts/101001001000000.do" 
+														target="_self"
+														
+														><span>진료예약안내</span></a></li>
+													
+													<li><a 
+														href="/conts/101001002000000.do" 
+														target="_self"
+														
+														><span>건강검진예약안내</span></a></li>
+													
+													<li><a 
+														href="/hospital/timeTable.do" 
+														target="_self"
+														
+														><span>진료시간표</span></a></li>
+													
+                        </ul>
+                        
+
+                      </li>
+                    	
+											<li>
+                        <a href="javascript: fastReserve('', '', 'Y')"
+                        	target="_self"
+                        	
+                        	class="">
+                        	<span>진료예약</span>
+                        </a>
+												
+												                        
+                        <ul class="gnb_menu3_list">
+                        	
+													<li><a 
+														href="javascript: fastReserve('', '', 'Y')" 
+														target="_self"
+														
+														><span>회원 예약</span></a></li>
+													
+													<li><a 
+														href="/reserve/verifyNomember.do" 
+														target="_self"
+														
+														><span>비회원 예약</span></a></li>
+													
+                        </ul>
+                        
+
+                      </li>
+                    	
+											<li>
+                        <a href="/mypage/reserveList.do"
+                        	target="_self"
+                        	
+                        	class="">
+                        	<span>예약조회</span>
+                        </a>
+												
+												                        
+                        <ul class="gnb_menu3_list">
+                        	
+													<li><a 
+														href="/mypage/reserveList.do" 
+														target="_self"
+														
+														><span>회원 예약 조회</span></a></li>
+													
+													<li><a 
+														href="/reserve/noMemberReserve.do" 
+														target="_self"
+														
+														><span>비회원 예약 조회</span></a></li>
+													
+                        </ul>
+                        
+
+                      </li>
+                    	
+											<li>
+                        <a href="/conts/101004002000000.do"
+                        	target="_self"
+                        	
+                        	class="">
+                        	<span>제증명발급</span>
+                        </a>
+												
+												                        
+                        <ul class="gnb_menu3_list">
+                        	
+													<li><a 
+														href="/conts/101004002000000.do" 
+														target="_self"
+														
+														><span>의무기록사본발급</span></a></li>
+													
+													<li><a 
+														href="/conts/101004003000000.do" 
+														target="_self"
+														
+														><span>의료영상CD발급</span></a></li>
+													
+													<li><a 
+														href="/conts/101004001000000.do" 
+														target="_self"
+														
+														><span>증명서</span></a></li>
+													
+													<li><a 
+														href="https://medicopy.lemonhc.com/lct_ilsan/medicopy/medicopyplugin?hcode=31100678" 
+														target="_blank"
+														rel='noreferrer noopener' title='새창열림'
+														><span>온라인발급(의무기록)</span></a></li>
+													
+													<li><a 
+														href="https://www.medcerti.com/servlet/HPINDEX?GIWANNO=093101&COMMAND=ACTIVEX" 
+														target="_blank"
+														rel='noreferrer noopener' title='새창열림'
+														><span>온라인발급(진단서,증명서)</span></a></li>
+													
+                        </ul>
+                        
+
+                      </li>
+                    	
+                    </ul>
+                    
+
+                  </div>
+                </div>
+
+              </li>
+              
+              <li>
+                <a href="/dept/deptList.do"><span>진료과/센터/클리닉</span></a>
+
+                <div class="gnb_dep2_w" style="display:none;">
+                  <div class="in_w">
+										
+										
+                    
+
+
+
+
+
+
+
+
+
+
+
+<div class="gnb_info">
+	
+	
+		
+		<dl class="gnb_tit">
+	    <dt><span class="t">진료과/센터/클리닉</span></dt>
+	    <dd>최상의 진료와 연구를 통해 <br>국민보건 향상을 위해 힘을 쏟겠습니다.</dd>
+	  </dl>
+	  <ul class="gnb_link">
+	    <li><a href="/hospital/profList.do"><span>의료진/진료과 검색</span></a></li>
+	    <li><a href="/center/deptList.do"><span>전문센터안내</span></a></li>
+	    <li><a href="/conts/105006005000000.do"><span>명의 출연 의료진</span></a></li>
+	  </ul>	
+	  
+	
+  
+</div>
+                                        
+										
+                    <ul class="gnb_menu2_list">
+
+                      
+											<li>
+                        <a href="/dept/deptList.do"
+                        	target="_self"
+                        	
+                        	class="">
+                        	<span>진료과 안내</span>
+                        </a>
+												
+																								
+												<ul class="gnb_menu3_list">
+                        	
+                        	
+                          <li><a href="/dept/profList.do?deptNo=29" target="_self"><span>가정의학과</span></a></li>
+                          
+                          <li><a href="/dept/profList.do?deptNo=7" target="_self"><span>감염내과</span></a></li>
+                          
+                          <li><a href="/dept/profList.do?deptNo=4" target="_self"><span>내분비내과</span></a></li>
+                          
+                          <li><a href="/dept/profList.do?deptNo=8" target="_self"><span>류마티스내과</span></a></li>
+                          
+                          <li><a href="/dept/profList.do?deptNo=17" target="_self"><span>마취통증의학과</span></a></li>
+                          
+                          <li><a href="/dept/profList.do?deptNo=25" target="_self"><span>방사선종양학과</span></a></li>
+                          
+                          <li><a href="/dept/profList.do?deptNo=26" target="_self"><span>병리과</span></a></li>
+                          
+                          <li><a href="/dept/profList.do?deptNo=23" target="_self"><span>비뇨의학과</span></a></li>
+                          
+                          <li><a href="/dept/profList.do?deptNo=18" target="_self"><span>산부인과</span></a></li>
+                          
+                          <li><a href="/dept/profList.do?deptNo=16" target="_self"><span>성형외과</span></a></li>
+                          
+                          <li><a href="/dept/profList.do?deptNo=19" target="_self"><span>소아청소년과</span></a></li>
+                          
+                          <li><a href="/dept/profList.do?deptNo=1" target="_self"><span>소화기내과</span></a></li>
+                          
+                          <li><a href="/dept/profList.do?deptNo=10" target="_self"><span>신경과</span></a></li>
+                          
+                          <li><a href="/dept/profList.do?deptNo=14" target="_self"><span>신경외과</span></a></li>
+                          
+                          <li><a href="/dept/profList.do?deptNo=5" target="_self"><span>신장내과</span></a></li>
+                          
+                          <li><a href="/dept/profList.do?deptNo=2" target="_self"><span>심장내과</span></a></li>
+                          
+                          <li><a href="/dept/profList.do?deptNo=15" target="_self"><span>심장혈관흉부외과</span></a></li>
+                          
+                          <li><a href="/dept/profList.do?deptNo=20" target="_self"><span>안과</span></a></li>
+                          
+                          <li><a href="/dept/profList.do?deptNo=24" target="_self"><span>영상의학과</span></a></li>
+                          
+                          <li><a href="/dept/profList.do?deptNo=12" target="_self"><span>외과</span></a></li>
+                          
+                          <li><a href="/dept/profList.do?deptNo=33" target="_self"><span>응급의학과</span></a></li>
+                          
+                          <li><a href="/dept/profList.do?deptNo=21" target="_self"><span>이비인후과</span></a></li>
+                          
+                          <li><a href="/dept/profList.do?deptNo=28" target="_self"><span>재활의학과</span></a></li>
+                          
+                          <li><a href="/dept/profList.do?deptNo=11" target="_self"><span>정신건강의학과</span></a></li>
+                          
+                          <li><a href="/dept/profList.do?deptNo=13" target="_self"><span>정형외과</span></a></li>
+                          
+                          <li><a href="/dept/profList.do?deptNo=6" target="_self"><span>종양혈액내과</span></a></li>
+                          
+                          <li><a href="/dept/profList.do?deptNo=27" target="_self"><span>진단검사의학과</span></a></li>
+                          
+                          <li><a href="/dept/profList.do?deptNo=31" target="_self"><span>치과</span></a></li>
+                          
+                          <li><a href="/dept/profList.do?deptNo=9" target="_self"><span>통합내과</span></a></li>
+                          
+                          <li><a href="/dept/profList.do?deptNo=22" target="_self"><span>피부과</span></a></li>
+                          
+                          <li><a href="/dept/profList.do?deptNo=30" target="_self"><span>핵의학과</span></a></li>
+                          
+                          <li><a href="/dept/profList.do?deptNo=3" target="_self"><span>호흡기내과</span></a></li>
+                          
+                          <li><a href="/dept/deptList.do?ptDeptNo=34" target="_self"><span>심뇌혈관질환센터</span></a></li>
+                          
+                          <li><a href="/dept/deptList.do?ptDeptNo=38" target="_self"><span>암센터</span></a></li>
+                          
+                          <li><a href="/dept/deptList.do?ptDeptNo=36" target="_self"><span>치매예방센터</span></a></li>
+                          
+                          <li><a href="/dept/profList.do?deptNo=32" target="_self"><span>통증클리닉</span></a></li>
+                          
+                          <li><a href="/dept/profList.do?deptNo=64" target="_self"><span>국가검진센터</span></a></li>
+                          
+                          <li><a href="/dept/profList.do?deptNo=65" target="_self"><span>종합검진센터</span></a></li>
+                          
+                          <li><a href="/dept/profList.do?deptNo=66" target="_self"><span>유전클리닉</span></a></li>
+                          
+                          <li><a href="/dept/profList.do?deptNo=117" target="_self"><span>중독 통합치료센터(정신)</span></a></li>
+                          
+                        	
+                        </ul>
+												
+
+                      </li>
+                    	
+											<li>
+                        <a href="/center/deptList.do"
+                        	target="_self"
+                        	
+                        	class="">
+                        	<span>전문센터안내</span>
+                        </a>
+												
+																								
+												<ul class="gnb_menu3_list">
+                        	
+                        	
+                          <li><a href="/center/deptView.do?deptNo=77" target="_self"><span>권역모자의료센터</span></a></li>
+                          
+                          <li><a href="/center/deptView.do?deptNo=68" target="_self"><span>권역응급의료센터</span></a></li>
+                          
+                          <li><a href="/center/deptView.do?deptNo=78" target="_self"><span>난임센터</span></a></li>
+                          
+                          <li><a href="/center/deptView.do?deptNo=71" target="_self"><span>당뇨병센터</span></a></li>
+                          
+                          <li><a href="/center/deptView.do?deptNo=75" target="_self"><span>소화기내시경센터</span></a></li>
+                          
+                          <li><a href="/center/deptView.do?deptNo=70" target="_self"><span>신장센터</span></a></li>
+                          
+                          <li><a href="/center/deptView.do?deptNo=67" target="_self"><span>심뇌혈관질환센터</span></a></li>
+                          
+                          <li><a href="/center/deptView.do?deptNo=76" target="_self"><span>암센터</span></a></li>
+                          
+                          <li><a href="/center/deptView.do?deptNo=72" target="_self"><span>인공관절센터</span></a></li>
+                          
+                          <li><a href="/center/deptView.do?deptNo=69" target="_self"><span>재활치료센터</span></a></li>
+                          
+                          <li><a href="/center/deptView.do?deptNo=74" target="_self"><span>중독 통합치료센터</span></a></li>
+                          
+                          <li><a href="/center/deptView.do?deptNo=73" target="_self"><span>치매예방센터</span></a></li>
+                          
+                        	
+                        </ul>
+												
+
+                      </li>
+                    	
+											<li>
+                        <a href="/clinic/deptList.do"
+                        	target="_self"
+                        	
+                        	class="">
+                        	<span>클리닉안내</span>
+                        </a>
+												
+																								
+												<ul class="gnb_menu3_list">
+                        	
+                        	
+                          <li><a href="/clinic/deptView.do?deptNo=79" target="_self"><span>갑상선암클리닉</span></a></li>
+                          
+                          <li><a href="/clinic/deptView.do?deptNo=80" target="_self"><span>갑상선클리닉</span></a></li>
+                          
+                          <li><a href="/clinic/deptView.do?deptNo=81" target="_self"><span>갱년기여성클리닉</span></a></li>
+                          
+                          <li><a href="/clinic/deptView.do?deptNo=82" target="_self"><span>골다공증클리닉</span></a></li>
+                          
+                          <li><a href="/clinic/deptView.do?deptNo=84" target="_self"><span>녹내장클리닉</span></a></li>
+                          
+                          <li><a href="/clinic/deptView.do?deptNo=85" target="_self"><span>대장항문클리닉</span></a></li>
+                          
+                          <li><a href="/clinic/deptView.do?deptNo=86" target="_self"><span>만성폐쇄성폐질환클리닉</span></a></li>
+                          
+                          <li><a href="/clinic/deptView.do?deptNo=87" target="_self"><span>망막유리체클리닉</span></a></li>
+                          
+                          <li><a href="/clinic/deptView.do?deptNo=88" target="_self"><span>발달지연클리닉</span></a></li>
+                          
+                          <li><a href="/clinic/deptView.do?deptNo=89" target="_self"><span>백내장클리닉</span></a></li>
+                          
+                          <li><a href="/clinic/deptView.do?deptNo=91" target="_self"><span>비만클리닉</span></a></li>
+                          
+                          <li><a href="/clinic/deptView.do?deptNo=92" target="_self"><span>성장비만클리닉</span></a></li>
+                          
+                          <li><a href="/clinic/deptView.do?deptNo=93" target="_self"><span>소아만성복통클리닉</span></a></li>
+                          
+                          <li><a href="/clinic/deptView.do?deptNo=94" target="_self"><span>소아알레르기클리닉</span></a></li>
+                          
+                          <li><a href="/clinic/deptView.do?deptNo=133" target="_self"><span>소아외과클리닉</span></a></li>
+                          
+                          <li><a href="/clinic/deptView.do?deptNo=95" target="_self"><span>수면클리닉</span></a></li>
+                          
+                          <li><a href="/clinic/deptView.do?deptNo=132" target="_self"><span>쌍둥이임신클리닉</span></a></li>
+                          
+                          <li><a href="/clinic/deptView.do?deptNo=111" target="_self"><span>암평생건강클리닉</span></a></li>
+                          
+                          <li><a href="/clinic/deptView.do?deptNo=98" target="_self"><span>약시클리닉</span></a></li>
+                          
+                          <li><a href="/clinic/deptView.do?deptNo=99" target="_self"><span>어르신클리닉</span></a></li>
+                          
+                          <li><a href="/clinic/deptView.do?deptNo=100" target="_self"><span>여행자클리닉</span></a></li>
+                          
+                          <li><a href="/clinic/deptView.do?deptNo=101" target="_self"><span>염증성장질환클리닉</span></a></li>
+                          
+                          <li><a href="/clinic/deptView.do?deptNo=113" target="_self"><span>오목가슴클리닉</span></a></li>
+                          
+                          <li><a href="/clinic/deptView.do?deptNo=102" target="_self"><span>유방암및질환클리닉</span></a></li>
+                          
+                          <li><a href="/clinic/deptView.do?deptNo=103" target="_self"><span>유전클리닉</span></a></li>
+                          
+                          <li><a href="/clinic/deptView.do?deptNo=104" target="_self"><span>정맥류클리닉</span></a></li>
+                          
+                          <li><a href="/clinic/deptView.do?deptNo=105" target="_self"><span>족부클리닉</span></a></li>
+                          
+                          <li><a href="/clinic/deptView.do?deptNo=106" target="_self"><span>척추클리닉</span></a></li>
+                          
+                          <li><a href="/clinic/deptView.do?deptNo=107" target="_self"><span>통증클리닉</span></a></li>
+                          
+                          <li><a href="/clinic/deptView.do?deptNo=108" target="_self"><span>투석혈관클리닉</span></a></li>
+                          
+                          <li><a href="/clinic/deptView.do?deptNo=109" target="_self"><span>파킨슨병및운동장애클리닉</span></a></li>
+                          
+                          <li><a href="/clinic/deptView.do?deptNo=110" target="_self"><span>희망둥이성장발달클리닉</span></a></li>
+                          
+                          <li><a href="/clinic/deptView.do?deptNo=112" target="_self"><span>흉터성형레이저클리닉</span></a></li>
+                          
+                          <li><a href="/clinic/deptView.do?deptNo=134" target="_self"><span>자궁경부무력증 클리닉</span></a></li>
+                          
+                        	
+                        </ul>
+												
+
+                      </li>
+                    	
+											<li>
+                        <a href="/hospital/profList.do"
+                        	target="_self"
+                        	
+                        	class="">
+                        	<span>의료진/진료과 검색</span>
+                        </a>
+												
+												
+
+                      </li>
+                    	
+                    </ul>
+                    
+
+                  </div>
+                </div>
+
+              </li>
+              
+              <li>
+                <a href="/conts/103001000000000.do"><span>진료안내</span></a>
+
+                <div class="gnb_dep2_w" style="display:none;">
+                  <div class="in_w">
+										
+										
+                    
+
+
+
+
+
+
+
+
+
+
+
+<div class="gnb_info">
+	
+	
+		
+		<dl class="gnb_tit">
+	    <dt><span class="t">진료과/센터/클리닉</span></dt>
+	    <dd>최상의 진료와 연구를 통해 <br>국민보건 향상을 위해 힘을 쏟겠습니다.</dd>
+	  </dl>
+	  <ul class="gnb_link">
+	    <li><a href="/conts/103001000000000.do"><span>외래진료안내</span></a></li>
+	    <li><a href="/conts/103002001000000.do"><span>입원절차</span></a></li>
+	  </ul>
+	  
+	
+  
+</div>
+                                        
+										
+                    <ul class="gnb_menu2_list">
+
+                      
+											<li>
+                        <a href="/conts/103001000000000.do"
+                        	target="_self"
+                        	
+                        	class="">
+                        	<span>외래진료안내</span>
+                        </a>
+												
+												
+
+                      </li>
+                    	
+											<li>
+                        <a href="/conts/103002004000000.do"
+                        	target="_self"
+                        	
+                        	class="">
+                        	<span>입퇴원안내</span>
+                        </a>
+												
+												                        
+                        <ul class="gnb_menu3_list">
+                        	
+													<li><a 
+														href="/conts/103002004000000.do" 
+														target="_self"
+														
+														><span>간호간병통합서비스 안내</span></a></li>
+													
+													<li><a 
+														href="/conts/103002001000000.do" 
+														target="_self"
+														
+														><span>입원절차</span></a></li>
+													
+													<li><a 
+														href="/conts/103002002001000.do" 
+														target="_self"
+														
+														><span>병실생활</span></a></li>
+													
+													<li><a 
+														href="/conts/103002003000000.do" 
+														target="_self"
+														
+														><span>퇴원절차</span></a></li>
+													
+                        </ul>
+                        
+
+                      </li>
+                    	
+											<li>
+                        <a href="/conts/103003000000000.do"
+                        	target="_self"
+                        	
+                        	class="">
+                        	<span>면회안내</span>
+                        </a>
+												
+												
+
+                      </li>
+                    	
+											<li>
+                        <a href="/conts/103004000000000.do"
+                        	target="_self"
+                        	
+                        	class="">
+                        	<span>응급진료안내</span>
+                        </a>
+												
+												
+
+                      </li>
+                    	
+											<li>
+                        <a href="/conts/103005000000000.do"
+                        	target="_self"
+                        	
+                        	class="">
+                        	<span>외국인진료안내</span>
+                        </a>
+												
+												
+
+                      </li>
+                    	
+											<li>
+                        <a href="/conts/103006000000000.do"
+                        	target="_self"
+                        	
+                        	class="">
+                        	<span>보험안내</span>
+                        </a>
+												
+												
+
+                      </li>
+                    	
+											<li>
+                        <a href="/conts/103007000000000.do"
+                        	target="_self"
+                        	
+                        	class="">
+                        	<span>설명간호사</span>
+                        </a>
+												
+												
+
+                      </li>
+                    	
+											<li>
+                        <a href="/hospital/treatmentList.do"
+                        	target="_self"
+                        	
+                        	class="">
+                        	<span>비급여진료비안내</span>
+                        </a>
+												
+												
+
+                      </li>
+                    	
+											<li>
+                        <a href="/conts/103009001000000.do"
+                        	target="_self"
+                        	
+                        	class="">
+                        	<span>부서안내</span>
+                        </a>
+												
+												                        
+                        <ul class="gnb_menu3_list">
+                        	
+													<li><a 
+														href="/conts/103009001000000.do" 
+														target="_self"
+														
+														><span>가정간호사업센터</span></a></li>
+													
+													<li><a 
+														href="/conts/103009002001000.do" 
+														target="_self"
+														
+														><span>약제부</span></a></li>
+													
+													<li><a 
+														href="https://www.medicalinfo.or.kr/sub/usmn000.jsp" 
+														target="_blank"
+														rel='noreferrer noopener' title='새창열림'
+														><span>의학도서실</span></a></li>
+													
+													<li><a 
+														href="/conts/103009004001000.do" 
+														target="_self"
+														
+														><span>공공의료사업부</span></a></li>
+													
+													<li><a 
+														href="/nurse/" 
+														target="_blank"
+														rel='noreferrer noopener' title='새창열림'
+														><span>간호실</span></a></li>
+													
+													<li><a 
+														href="/edu/" 
+														target="_blank"
+														rel='noreferrer noopener' title='새창열림'
+														><span>교육수련부</span></a></li>
+													
+													<li><a 
+														href="/hospice/" 
+														target="_blank"
+														rel='noreferrer noopener' title='새창열림'
+														><span>호스피스</span></a></li>
+													
+													<li><a 
+														href="/conts/103009009000000.do" 
+														target="_self"
+														
+														><span>영양관리부</span></a></li>
+													
+													<li><a 
+														href="/conts/103009010000000.do" 
+														target="_self"
+														
+														><span>장애친화 산부인과</span></a></li>
+													
+													<li><a 
+														href="/board/commBoardSmartNoticeList.do" 
+														target="_self"
+														
+														><span>스마트병원혁신부</span></a></li>
+													
+													<li><a 
+														href="/conts/103009012000000.do" 
+														target="_self"
+														
+														><span>공공어린이재활병원</span></a></li>
+													
+                        </ul>
+                        
+
+                      </li>
+                    	
+                    </ul>
+                    
+
+                  </div>
+                </div>
+
+              </li>
+              
+              <li>
+                <a href="/conts/104001000000000.do"><span>병원소개</span></a>
+
+                <div class="gnb_dep2_w" style="display:none;">
+                  <div class="in_w">
+										
+										
+                    
+
+
+
+
+
+
+
+
+
+
+
+<div class="gnb_info">
+	
+	
+		
+		<dl class="gnb_tit">
+	    <dt><span class="t">병원소개</span></dt>
+	    <dd>최상의 진료와 연구를 통해 <br>국민보건 향상을 위해 힘을 쏟겠습니다.</dd>
+	  </dl>
+	  <ul class="gnb_link">
+	    <li><a href="/conts/104002008001000.do"><span>찾아오시는 길</span></a></li>
+	    <li><a href="/conts/104003001001000.do"><span>시설 둘러보기</span></a></li>
+	  </ul>
+	  
+	
+  
+</div>
+                                        
+										
+                    <ul class="gnb_menu2_list">
+
+                      
+											<li>
+                        <a href="/conts/104001000000000.do"
+                        	target="_self"
+                        	
+                        	class="">
+                        	<span>병원장 인사말</span>
+                        </a>
+												
+												
+
+                      </li>
+                    	
+											<li>
+                        <a href="/conts/104002001000000.do"
+                        	target="_self"
+                        	
+                        	class="">
+                        	<span>병원소개</span>
+                        </a>
+												
+												                        
+                        <ul class="gnb_menu3_list">
+                        	
+													<li><a 
+														href="/conts/104002001000000.do" 
+														target="_self"
+														
+														><span>병원소개</span></a></li>
+													
+													<li><a 
+														href="/conts/104002002001000.do" 
+														target="_self"
+														
+														><span>비전</span></a></li>
+													
+													<li><a 
+														href="/conts/104002003004000.do" 
+														target="_self"
+														
+														><span>연혁</span></a></li>
+													
+													<li><a 
+														href="/conts/104002010001000.do" 
+														target="_self"
+														
+														><span>병원 발자취</span></a></li>
+													
+													<li><a 
+														href="/conts/104002004000000.do" 
+														target="_self"
+														
+														><span>조직도</span></a></li>
+													
+													<li><a 
+														href="/conts/104002005001000.do" 
+														target="_self"
+														
+														><span>HIP</span></a></li>
+													
+													<li><a 
+														href="/conts/104002006000000.do" 
+														target="_self"
+														
+														><span>일산병원 캐릭터</span></a></li>
+													
+													<li><a 
+														href="/conts/104002008001000.do" 
+														target="_self"
+														
+														><span>찾아오시는 길</span></a></li>
+													
+                        </ul>
+                        
+
+                      </li>
+                    	
+											<li>
+                        <a href="/hospital/floorList.do"
+                        	target="_self"
+                        	
+                        	class="">
+                        	<span>병원둘러보기</span>
+                        </a>
+												
+												                        
+                        <ul class="gnb_menu3_list">
+                        	
+													<li><a 
+														href="/hospital/floorList.do" 
+														target="_self"
+														
+														><span>시설 둘러보기</span></a></li>
+													
+													<li><a 
+														href="/conts/104003002000000.do" 
+														target="_self"
+														
+														><span>편의시설</span></a></li>
+													
+													<li><a 
+														href="/conts/104003003000000.do" 
+														target="_self"
+														
+														><span>종교시설</span></a></li>
+													
+                        </ul>
+                        
+
+                      </li>
+                    	
+											<li>
+                        <a href="/conts/104004000000000.do"
+                        	target="_self"
+                        	
+                        	class="">
+                        	<span>가상공간VR360° 체험</span>
+                        </a>
+												
+												
+
+                      </li>
+                    	
+											<li>
+                        <a href="/conts/104005025000000.do"
+                        	target="_self"
+                        	
+                        	class="">
+                        	<span>의료장비안내</span>
+                        </a>
+												
+												
+
+                      </li>
+                    	
+											<li>
+                        <a href="/board/commBoardNoticeList.do"
+                        	target="_self"
+                        	
+                        	class="">
+                        	<span>병원소식</span>
+                        </a>
+												
+												                        
+                        <ul class="gnb_menu3_list">
+                        	
+													<li><a 
+														href="/board/commBoardNoticeList.do" 
+														target="_self"
+														
+														><span>공지사항</span></a></li>
+													
+													<li><a 
+														href="/board/commBoardBidList.do" 
+														target="_self"
+														
+														><span>입찰정보</span></a></li>
+													
+													<li><a 
+														href="https://nhimc.recruiter.co.kr/appsite/company/index" 
+														target="_blank"
+														rel='noreferrer noopener' title='새창열림'
+														><span>채용공고</span></a></li>
+													
+													<li><a 
+														href="/board/commBoardRelationList.do" 
+														target="_self"
+														
+														><span>친인척 현황</span></a></li>
+													
+                        </ul>
+                        
+
+                      </li>
+                    	
+											<li>
+                        <a href="/conts/104008000000000.do"
+                        	target="_self"
+                        	
+                        	class="">
+                        	<span>연보</span>
+                        </a>
+												
+												
+
+                      </li>
+                    	
+											<li>
+                        <a href="/conts/104009001000000.do"
+                        	target="_self"
+                        	
+                        	class="">
+                        	<span>고객헌장</span>
+                        </a>
+												
+												                        
+                        <ul class="gnb_menu3_list">
+                        	
+													<li><a 
+														href="/conts/104009001000000.do" 
+														target="_self"
+														
+														><span>전문</span></a></li>
+													
+													<li><a 
+														href="/conts/104009002000000.do" 
+														target="_self"
+														
+														><span>핵심서비스 이행 표준</span></a></li>
+													
+													<li><a 
+														href="/conts/104009003000000.do" 
+														target="_self"
+														
+														><span>고객응대서비스 이행표준</span></a></li>
+													
+                        </ul>
+                        
+
+                      </li>
+                    	
+                    </ul>
+                    
+
+                  </div>
+                </div>
+
+              </li>
+              
+              <li>
+                <a href="/conts/105001009000000.do"><span>건강정보</span></a>
+
+                <div class="gnb_dep2_w" style="display:none;">
+                  <div class="in_w">
+										
+										
+                    
+
+
+
+
+
+
+
+
+
+
+
+<div class="gnb_info">
+	
+	
+		
+		<dl class="gnb_tit">
+	    <dt><span class="t">건강정보</span></dt>
+	    <dd>최상의 진료와 연구를 통해 <br>국민보건 향상을 위해 힘을 쏟겠습니다.</dd>
+  	</dl>
+	  <ul class="gnb_link">
+	    <li><a href="/board/disFdBoardList.do"><span>질환별 식사요법</span></a></li>
+	    <li><a href="/board/webzineBoardList2022.do"><span>사보 問安</span></a></li>
+	  </ul>
+  
+	
+  
+</div>
+                                        
+										
+                    <ul class="gnb_menu2_list">
+
+                      
+											<li>
+                        <a href="/conts/105001009000000.do"
+                        	target="_self"
+                        	
+                        	class="">
+                        	<span>건강교실</span>
+                        </a>
+												
+												                        
+                        <ul class="gnb_menu3_list">
+                        	
+													<li><a 
+														href="/conts/105001009000000.do" 
+														target="_self"
+														
+														><span>전체보기</span></a></li>
+													
+													<li><a 
+														href="/conts/105001002000000.do" 
+														target="_self"
+														
+														><span>당뇨병교실</span></a></li>
+													
+													<li><a 
+														href="/conts/105001003000000.do" 
+														target="_self"
+														
+														><span>임산부교실</span></a></li>
+													
+													<li><a 
+														href="/conts/105001007000000.do" 
+														target="_self"
+														
+														><span>만성폐쇄성질환(COPD)환자교실</span></a></li>
+													
+													<li><a 
+														href="/conts/105001008000000.do" 
+														target="_self"
+														
+														><span>암생존자 교실</span></a></li>
+													
+													<li><a 
+														href="/conts/105001010000000.do" 
+														target="_self"
+														
+														><span>폐암환자교실</span></a></li>
+													
+													<li><a 
+														href="/conts/105001011000000.do" 
+														target="_self"
+														
+														><span>혈액투석 환자교실</span></a></li>
+													
+													<li><a 
+														href="/conts/105001012000000.do" 
+														target="_self"
+														
+														><span>간암/소화기암/유방암/비뇨의학과 암수술 환자 교실</span></a></li>
+													
+                        </ul>
+                        
+
+                      </li>
+                    	
+											<li>
+                        <a href="/board/disFdBoardList.do"
+                        	target="_self"
+                        	
+                        	class="">
+                        	<span>질환별식사요법</span>
+                        </a>
+												
+												
+
+                      </li>
+                    	
+											<li>
+                        <a href="/conts/105005001000000.do"
+                        	target="_self"
+                        	
+                        	class="">
+                        	<span>감염예방관리</span>
+                        </a>
+												
+												                        
+                        <ul class="gnb_menu3_list">
+                        	
+													<li><a 
+														href="/conts/105005001000000.do" 
+														target="_self"
+														
+														><span>손씻기</span></a></li>
+													
+													<li><a 
+														href="/conts/105005002000000.do" 
+														target="_self"
+														
+														><span>호흡위생과 기침예절</span></a></li>
+													
+                        </ul>
+                        
+
+                      </li>
+                    	
+											<li>
+                        <a href="/board/webzineBoardList2026.do"
+                        	target="_self"
+                        	
+                        	class="">
+                        	<span>건강정보</span>
+                        </a>
+												
+												                        
+                        <ul class="gnb_menu3_list">
+                        	
+													<li><a 
+														href="/board/webzineBoardList2026.do" 
+														target="_self"
+														
+														><span>사보 問安</span></a></li>
+													
+													<li><a 
+														href="/healthMedia/indexPop.do" 
+														target="_blank"
+														rel='noreferrer noopener' title='새창열림'
+														><span>건강TV</span></a></li>
+													
+													<li><a 
+														href="/conts/105006005000000.do" 
+														target="_self"
+														
+														><span>EBS명의</span></a></li>
+													
+                        </ul>
+                        
+
+                      </li>
+                    	
+                    </ul>
+                    
+
+                  </div>
+                </div>
+
+              </li>
+              
+              <li>
+                <a href="/board/praiseBoardList.do"><span>환자경험</span></a>
+
+                <div class="gnb_dep2_w" style="display:none;">
+                  <div class="in_w">
+										
+										
+                    
+
+
+
+
+
+
+
+
+
+
+
+<div class="gnb_info">
+	
+	
+		
+		<dl class="gnb_tit">
+	    <dt><span class="t">환자경험</span></dt>
+	    <dd>최상의 진료와 연구를 통해 <br>국민보건 향상을 위해 힘을 쏟겠습니다.</dd>
+	  </dl>
+	  <ul class="gnb_link">
+	    <li><a href="/board/praiseBoardList.do"><span>칭찬합시다</span></a></li>
+	    <li><a href="/board/customerIntro.do"><span>고객의 소리</span></a></li>
+	  </ul>
+	  
+	
+  
+</div>
+                                        
+										
+                    <ul class="gnb_menu2_list">
+
+                      
+											<li>
+                        <a href="/board/praiseBoardList.do"
+                        	target="_self"
+                        	
+                        	class="">
+                        	<span>칭찬합시다</span>
+                        </a>
+												
+												
+
+                      </li>
+                    	
+											<li>
+                        <a href="/board/customerIntro.do"
+                        	target="_self"
+                        	
+                        	class="">
+                        	<span>고객의 소리</span>
+                        </a>
+												
+												
+
+                      </li>
+                    	
+											<li>
+                        <a href="/board/cyberReportIntro.do"
+                        	target="_self"
+                        	
+                        	class="">
+                        	<span>부정부패신고센터</span>
+                        </a>
+												
+												                        
+                        <ul class="gnb_menu3_list">
+                        	
+													<li><a 
+														href="/board/cyberReportIntro.do" 
+														target="_self"
+														
+														><span>부정부패신고센터</span></a></li>
+													
+													<li><a 
+														href="/conts/106004002000000.do" 
+														target="_self"
+														
+														><span>관련사이트</span></a></li>
+													
+                        </ul>
+                        
+
+                      </li>
+                    	
+                    </ul>
+                    
+
+                  </div>
+                </div>
+
+              </li>
+              
+              <li>
+                <a href="/conts/107001000000000.do"><span>고객과 함께</span></a>
+
+                <div class="gnb_dep2_w" style="display:none;">
+                  <div class="in_w">
+										
+										
+                    
+
+
+
+
+
+
+
+
+
+
+
+<div class="gnb_info">
+	
+	
+		
+		<dl class="gnb_tit">
+	    <dt><span class="t">고객과 함께</span></dt>
+	    <dd>최상의 진료와 연구를 통해 <br>국민보건 향상을 위해 힘을 쏟겠습니다.</dd>
+	  </dl>
+	  <p class="img01">
+	    <span></span>
+	  </p>
+	  
+	
+  
+</div>
+                                        
+										
+                    <ul class="gnb_menu2_list">
+
+                      
+											<li>
+                        <a href="/conts/107001000000000.do"
+                        	target="_self"
+                        	
+                        	class="">
+                        	<span>정보공개제도안내</span>
+                        </a>
+												
+												
+
+                      </li>
+                    	
+											<li>
+                        <a href="/conts/107002000000000.do"
+                        	target="_self"
+                        	
+                        	class="">
+                        	<span>통합공시</span>
+                        </a>
+												
+												
+
+                      </li>
+                    	
+											<li>
+                        <a href="/conts/107003001000000.do"
+                        	target="_self"
+                        	
+                        	class="">
+                        	<span>경영공시</span>
+                        </a>
+												
+												                        
+                        <ul class="gnb_menu3_list">
+                        	
+													<li><a 
+														href="/conts/107003001000000.do" 
+														target="_self"
+														
+														><span>경영공시</span></a></li>
+													
+													<li><a 
+														href="/conts/107003002000000.do" 
+														target="_self"
+														
+														><span>공시개요</span></a></li>
+													
+													<li><a 
+														href="/conts/107003003000000.do" 
+														target="_self"
+														
+														><span>경영공시 책임자 현황</span></a></li>
+													
+                        </ul>
+                        
+
+                      </li>
+                    	
+                    </ul>
+                    
+
+                  </div>
+                </div>
+
+              </li>
+
+
+
+            </ul>
+          </nav>
+          <!--// header : gnb -->
+
+          <div class="hd_side_util3">
+          	
+          	<ul class="moGnb_member m116_flex" style="display:none;"> <!-- 221222 -->          		
+              
+              <li>              	
+                <a href="/member/joinStep00.do" class="hd_member ico"><span>회원가입</span></a>                
+              </li>
+              	            
+	            
+              <li>
+              	
+                <a href="/member/login.do" class="hd_login ico"><span>로그인</span></a>
+                
+              </li>              
+            </ul>
+          	
+            <a href="javascript:void(0);" class="hd_iconBtn iconBtn_sch ">
+              <span class="ico"><em class="o">통합검색 열기</em><em class="c" style="display:none;">통합검색 닫기</em></span>
+            </a>
+            
+            <!-- top search -->				    
+				    <div class="hd_sch_box_w" style="display:none;">
+				    	<form action="/search/search.do" method="get" onsubmit="return checkTotalSearchForm( this )">
+					      <div class="hd_sch_box_bg"></div>
+					      <div class="hd_sch_box in_cover">
+					        <div class="in_w">
+					        	<div class="hd_sch_w">
+						          <h2 class="tit">통합검색</h2>
+						          <div class="hd_sch">
+						            <div class="hd_sch_ip">
+						              <input type="text" name="keyword" placeholder="검색어를 입력해주세요." title="통합검색 검색어 입력">
+						              <input type="submit" class="hd_sch_btn" title="검색버튼">
+						            </div>
+						            <div class="hd_sch_tag">
+						              <p class="t">추천검색어</p>
+						              <ul class="sch_tag_list">
+						              	
+														<li><a href="/search/search.do?keyword=전화번호">#전화번호</a></li>
+														
+														<li><a href="/search/search.do?keyword=입퇴원안내">#입퇴원안내</a></li>
+														
+														<li><a href="/search/search.do?keyword=진료시간">#진료시간</a></li>
+														
+														<li><a href="/search/search.do?keyword=진료예약">#진료예약</a></li>
+														
+														<li><a href="/search/search.do?keyword=건강검진">#건강검진</a></li>
+														
+														<li><a href="/search/search.do?keyword=제증명발급">#제증명발급</a></li>
+																
+						              </ul>
+						            </div>
+						          </div>
+						        </div>
+					        </div>
+					      </div>
+				      </form>
+				    </div>				    
+				    <!--// top search -->
+            
+            <a href="javascript:void(0);" class="hd_iconBtn iconBtn_mMenu" style="display:none;">
+              <span class="ico"><em>사이트맵 열기</em></span>
+            </a>            
+            <a href="javascript:void(0);" class="hd_iconBtn iconBtn_sitemap ">
+              <span class="ico"><em>사이트맵 열기</em></span>
+            </a>
+            
+          </div>
+
+        </div>
+
+      </div>
+      <!--// header : header box -->
+    </header>
+    <!--// header -->
+    
+    <!-- 사이트맵 -->
+	  <div id="sitemap" class="sitemap_w" style="display: none;">
+	    
+	    <h2 class="skip"><span>일산병원 메뉴</span></h2>      
+	      
+	    <div class="sitemap " >  <!-- 모바일 메뉴 ( mo_sideGnb ) / 사이트맵 ( sitemap ) /  -->      
+	
+	    	<!-- 사이트맵 header -->
+	      <div class="sitemap_top in_cover" >
+	        <div class="in_w">
+	          <a href="javascript: void(0)" class="btn_ico ico_close btn_close" title="닫기"><span>닫기 버튼</span></a>              
+	
+	          <div class="sitemap_logo">
+	            <a href="#" class="">
+	              <img src="/common/front/kor/images/comm/logo_hd.png" alt="국민건강보험 일산병원">
+	            </a> 
+	          </div>
+	          <h2><span>사이트맵</span></h2>         
+	                  
+	        </div>
+	      </div>
+	      
+	      <!-- 모바일메뉴 header -->
+	      <div class="mo_sideGnb_hd " > 
+		      <div class="moGnb_hd1 in_cover">
+		        <div class="in_w">                   
+		          <a href="javascript:void(0);" class="btn_ico ico_close btn_close" title="닫기"><span>닫기 버튼</span></a>              
+		
+		          <div class="moGnb_logo">
+		            <a href="#" class="">
+		              <img src="/common/front/kor/images/comm/logo_hd.png" alt="국민건강보험 일산병원">
+		            </a> 
+		          </div>
+		
+		          <ul class="moGnb_member">
+		            
+		            <li>
+		              <a href="/member/joinStep00.do" class="hd_member ico"><span>회원가입</span></a>
+		            </li>
+		            
+		            
+		            <li>
+		              
+		              <a href="/member/login.do" class="hd_login ico"><span>로그인</span></a>
+		              
+		            </li>              
+		          </ul>
+		        </div>
+		      </div>
+		
+		      <div class="moGnb_hd2">
+		        <dl>
+		          <dt>진료예약전화</dt>
+		          <dd>
+		            <span class="icon icon_cell"></span>
+		            <span class="num">1577-0013</span>
+		          </dd>
+		        </dl>
+		      </div>
+		
+		    </div>
+	      
+		    <div class="mo_sideGnb_cnt ">	      
+		      <div class="mo_sideCnt ">
+		        <ul id="mo_gnb" class="mo_gnb_list">
+	
+		          <li>
+		            <dl>
+		              <dt><a href="#"><span>진료예약/조회</span></a></dt>
+		              <dd>
+		              	
+		                <ul class="gnb_menu2_list">
+		
+		                  
+		                  <li>
+		                    <a href="/conts/101001001000000.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>예약안내</span>
+		                    </a>
+		
+		                    
+												<ul class="gnb_menu3_list">
+		
+		                      
+		                      <li><a 
+		                      	href="/conts/101001001000000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>진료예약안내</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/conts/101001002000000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>건강검진예약안내</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/hospital/timeTable.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>진료시간표</span></a></li>
+		                      
+		
+		                    </ul>
+												
+		                  </li>
+		                  
+		                  <li>
+		                    <a href="javascript: fastReserve('', '', 'Y')"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>진료예약</span>
+		                    </a>
+		
+		                    
+												<ul class="gnb_menu3_list">
+		
+		                      
+		                      <li><a 
+		                      	href="javascript: fastReserve('', '', 'Y')" 
+		                      	target="_self"
+		                      	
+		                      ><span>회원 예약</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/reserve/verifyNomember.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>비회원 예약</span></a></li>
+		                      
+		
+		                    </ul>
+												
+		                  </li>
+		                  
+		                  <li>
+		                    <a href="/mypage/reserveList.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>예약조회</span>
+		                    </a>
+		
+		                    
+												<ul class="gnb_menu3_list">
+		
+		                      
+		                      <li><a 
+		                      	href="/mypage/reserveList.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>회원 예약 조회</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/reserve/noMemberReserve.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>비회원 예약 조회</span></a></li>
+		                      
+		
+		                    </ul>
+												
+		                  </li>
+		                  
+		                  <li>
+		                    <a href="/conts/101004002000000.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>제증명발급</span>
+		                    </a>
+		
+		                    
+												<ul class="gnb_menu3_list">
+		
+		                      
+		                      <li><a 
+		                      	href="/conts/101004002000000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>의무기록사본발급</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/conts/101004003000000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>의료영상CD발급</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/conts/101004001000000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>증명서</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="https://medicopy.lemonhc.com/lct_ilsan/medicopy/medicopyplugin?hcode=31100678" 
+		                      	target="_blank"
+		                      	rel='noreferrer noopener' title='새창열림'
+		                      ><span>온라인발급(의무기록)</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="https://www.medcerti.com/servlet/HPINDEX?GIWANNO=093101&COMMAND=ACTIVEX" 
+		                      	target="_blank"
+		                      	rel='noreferrer noopener' title='새창열림'
+		                      ><span>온라인발급(진단서,증명서)</span></a></li>
+		                      
+		
+		                    </ul>
+												
+		                  </li>
+		                  
+		
+		                </ul>
+		                
+		              </dd>
+		            </dl>
+		          </li>
+	
+		          <li>
+		            <dl>
+		              <dt><a href="#"><span>진료과/센터/클리닉</span></a></dt>
+		              <dd>
+		              	
+		                <ul class="gnb_menu2_list">
+		
+		                  
+		                  <li>
+		                    <a href="/dept/deptList.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>진료과 안내</span>
+		                    </a>
+		
+		                    
+												<a href="/dept/deptList.do" class="a_Dlink"><span>전체보기</span></a> <!-- 221222 -->
+												<ul class="gnb_menu3_list">
+		                    	
+		                    	
+		                      <li><a href="/dept/profList.do?deptNo=29" target="_self"><span>가정의학과</span></a></li>
+		                      
+		                      <li><a href="/dept/profList.do?deptNo=7" target="_self"><span>감염내과</span></a></li>
+		                      
+		                      <li><a href="/dept/profList.do?deptNo=4" target="_self"><span>내분비내과</span></a></li>
+		                      
+		                      <li><a href="/dept/profList.do?deptNo=8" target="_self"><span>류마티스내과</span></a></li>
+		                      
+		                      <li><a href="/dept/profList.do?deptNo=17" target="_self"><span>마취통증의학과</span></a></li>
+		                      
+		                      <li><a href="/dept/profList.do?deptNo=25" target="_self"><span>방사선종양학과</span></a></li>
+		                      
+		                      <li><a href="/dept/profList.do?deptNo=26" target="_self"><span>병리과</span></a></li>
+		                      
+		                      <li><a href="/dept/profList.do?deptNo=23" target="_self"><span>비뇨의학과</span></a></li>
+		                      
+		                      <li><a href="/dept/profList.do?deptNo=18" target="_self"><span>산부인과</span></a></li>
+		                      
+		                      <li><a href="/dept/profList.do?deptNo=16" target="_self"><span>성형외과</span></a></li>
+		                      
+		                      <li><a href="/dept/profList.do?deptNo=19" target="_self"><span>소아청소년과</span></a></li>
+		                      
+		                      <li><a href="/dept/profList.do?deptNo=1" target="_self"><span>소화기내과</span></a></li>
+		                      
+		                      <li><a href="/dept/profList.do?deptNo=10" target="_self"><span>신경과</span></a></li>
+		                      
+		                      <li><a href="/dept/profList.do?deptNo=14" target="_self"><span>신경외과</span></a></li>
+		                      
+		                      <li><a href="/dept/profList.do?deptNo=5" target="_self"><span>신장내과</span></a></li>
+		                      
+		                      <li><a href="/dept/profList.do?deptNo=2" target="_self"><span>심장내과</span></a></li>
+		                      
+		                      <li><a href="/dept/profList.do?deptNo=15" target="_self"><span>심장혈관흉부외과</span></a></li>
+		                      
+		                      <li><a href="/dept/profList.do?deptNo=20" target="_self"><span>안과</span></a></li>
+		                      
+		                      <li><a href="/dept/profList.do?deptNo=24" target="_self"><span>영상의학과</span></a></li>
+		                      
+		                      <li><a href="/dept/profList.do?deptNo=12" target="_self"><span>외과</span></a></li>
+		                      
+		                      <li><a href="/dept/profList.do?deptNo=33" target="_self"><span>응급의학과</span></a></li>
+		                      
+		                      <li><a href="/dept/profList.do?deptNo=21" target="_self"><span>이비인후과</span></a></li>
+		                      
+		                      <li><a href="/dept/profList.do?deptNo=28" target="_self"><span>재활의학과</span></a></li>
+		                      
+		                      <li><a href="/dept/profList.do?deptNo=11" target="_self"><span>정신건강의학과</span></a></li>
+		                      
+		                      <li><a href="/dept/profList.do?deptNo=13" target="_self"><span>정형외과</span></a></li>
+		                      
+		                      <li><a href="/dept/profList.do?deptNo=6" target="_self"><span>종양혈액내과</span></a></li>
+		                      
+		                      <li><a href="/dept/profList.do?deptNo=27" target="_self"><span>진단검사의학과</span></a></li>
+		                      
+		                      <li><a href="/dept/profList.do?deptNo=31" target="_self"><span>치과</span></a></li>
+		                      
+		                      <li><a href="/dept/profList.do?deptNo=9" target="_self"><span>통합내과</span></a></li>
+		                      
+		                      <li><a href="/dept/profList.do?deptNo=22" target="_self"><span>피부과</span></a></li>
+		                      
+		                      <li><a href="/dept/profList.do?deptNo=30" target="_self"><span>핵의학과</span></a></li>
+		                      
+		                      <li><a href="/dept/profList.do?deptNo=3" target="_self"><span>호흡기내과</span></a></li>
+		                      
+		                      <li><a href="/dept/deptList.do?ptDeptNo=34" target="_self"><span>심뇌혈관질환센터</span></a></li>
+		                      
+		                      <li><a href="/dept/deptList.do?ptDeptNo=38" target="_self"><span>암센터</span></a></li>
+		                      
+		                      <li><a href="/dept/deptList.do?ptDeptNo=36" target="_self"><span>치매예방센터</span></a></li>
+		                      
+		                      <li><a href="/dept/profList.do?deptNo=32" target="_self"><span>통증클리닉</span></a></li>
+		                      
+		                      <li><a href="/dept/profList.do?deptNo=64" target="_self"><span>국가검진센터</span></a></li>
+		                      
+		                      <li><a href="/dept/profList.do?deptNo=65" target="_self"><span>종합검진센터</span></a></li>
+		                      
+		                      <li><a href="/dept/profList.do?deptNo=66" target="_self"><span>유전클리닉</span></a></li>
+		                      
+		                      <li><a href="/dept/profList.do?deptNo=117" target="_self"><span>중독 통합치료센터(정신)</span></a></li>
+		                      
+		                    	
+		                    </ul>
+												
+		                  </li>
+		                  
+		                  <li>
+		                    <a href="/center/deptList.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>전문센터안내</span>
+		                    </a>
+		
+		                    
+												<a href="/center/deptList.do" class="a_Dlink"><span>전체보기</span></a> <!-- 221222 -->
+												<ul class="gnb_menu3_list">
+		                    	
+		                    	
+		                      <li><a href="/center/deptView.do?deptNo=77" target="_self"><span>권역모자의료센터</span></a></li>
+		                      
+		                      <li><a href="/center/deptView.do?deptNo=68" target="_self"><span>권역응급의료센터</span></a></li>
+		                      
+		                      <li><a href="/center/deptView.do?deptNo=78" target="_self"><span>난임센터</span></a></li>
+		                      
+		                      <li><a href="/center/deptView.do?deptNo=71" target="_self"><span>당뇨병센터</span></a></li>
+		                      
+		                      <li><a href="/center/deptView.do?deptNo=75" target="_self"><span>소화기내시경센터</span></a></li>
+		                      
+		                      <li><a href="/center/deptView.do?deptNo=70" target="_self"><span>신장센터</span></a></li>
+		                      
+		                      <li><a href="/center/deptView.do?deptNo=67" target="_self"><span>심뇌혈관질환센터</span></a></li>
+		                      
+		                      <li><a href="/center/deptView.do?deptNo=76" target="_self"><span>암센터</span></a></li>
+		                      
+		                      <li><a href="/center/deptView.do?deptNo=72" target="_self"><span>인공관절센터</span></a></li>
+		                      
+		                      <li><a href="/center/deptView.do?deptNo=69" target="_self"><span>재활치료센터</span></a></li>
+		                      
+		                      <li><a href="/center/deptView.do?deptNo=74" target="_self"><span>중독 통합치료센터</span></a></li>
+		                      
+		                      <li><a href="/center/deptView.do?deptNo=73" target="_self"><span>치매예방센터</span></a></li>
+		                      
+		                    	
+		                    </ul>
+												
+		                  </li>
+		                  
+		                  <li>
+		                    <a href="/clinic/deptList.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>클리닉안내</span>
+		                    </a>
+		
+		                    
+												<a href="/clinic/deptList.do" class="a_Dlink"><span>전체보기</span></a> <!-- 221222 -->
+												<ul class="gnb_menu3_list">
+		                    	
+		                    	
+		                      <li><a href="/clinic/deptView.do?deptNo=79" target="_self"><span>갑상선암클리닉</span></a></li>
+		                      
+		                      <li><a href="/clinic/deptView.do?deptNo=80" target="_self"><span>갑상선클리닉</span></a></li>
+		                      
+		                      <li><a href="/clinic/deptView.do?deptNo=81" target="_self"><span>갱년기여성클리닉</span></a></li>
+		                      
+		                      <li><a href="/clinic/deptView.do?deptNo=82" target="_self"><span>골다공증클리닉</span></a></li>
+		                      
+		                      <li><a href="/clinic/deptView.do?deptNo=84" target="_self"><span>녹내장클리닉</span></a></li>
+		                      
+		                      <li><a href="/clinic/deptView.do?deptNo=85" target="_self"><span>대장항문클리닉</span></a></li>
+		                      
+		                      <li><a href="/clinic/deptView.do?deptNo=86" target="_self"><span>만성폐쇄성폐질환클리닉</span></a></li>
+		                      
+		                      <li><a href="/clinic/deptView.do?deptNo=87" target="_self"><span>망막유리체클리닉</span></a></li>
+		                      
+		                      <li><a href="/clinic/deptView.do?deptNo=88" target="_self"><span>발달지연클리닉</span></a></li>
+		                      
+		                      <li><a href="/clinic/deptView.do?deptNo=89" target="_self"><span>백내장클리닉</span></a></li>
+		                      
+		                      <li><a href="/clinic/deptView.do?deptNo=91" target="_self"><span>비만클리닉</span></a></li>
+		                      
+		                      <li><a href="/clinic/deptView.do?deptNo=92" target="_self"><span>성장비만클리닉</span></a></li>
+		                      
+		                      <li><a href="/clinic/deptView.do?deptNo=93" target="_self"><span>소아만성복통클리닉</span></a></li>
+		                      
+		                      <li><a href="/clinic/deptView.do?deptNo=94" target="_self"><span>소아알레르기클리닉</span></a></li>
+		                      
+		                      <li><a href="/clinic/deptView.do?deptNo=133" target="_self"><span>소아외과클리닉</span></a></li>
+		                      
+		                      <li><a href="/clinic/deptView.do?deptNo=95" target="_self"><span>수면클리닉</span></a></li>
+		                      
+		                      <li><a href="/clinic/deptView.do?deptNo=132" target="_self"><span>쌍둥이임신클리닉</span></a></li>
+		                      
+		                      <li><a href="/clinic/deptView.do?deptNo=111" target="_self"><span>암평생건강클리닉</span></a></li>
+		                      
+		                      <li><a href="/clinic/deptView.do?deptNo=98" target="_self"><span>약시클리닉</span></a></li>
+		                      
+		                      <li><a href="/clinic/deptView.do?deptNo=99" target="_self"><span>어르신클리닉</span></a></li>
+		                      
+		                      <li><a href="/clinic/deptView.do?deptNo=100" target="_self"><span>여행자클리닉</span></a></li>
+		                      
+		                      <li><a href="/clinic/deptView.do?deptNo=101" target="_self"><span>염증성장질환클리닉</span></a></li>
+		                      
+		                      <li><a href="/clinic/deptView.do?deptNo=113" target="_self"><span>오목가슴클리닉</span></a></li>
+		                      
+		                      <li><a href="/clinic/deptView.do?deptNo=102" target="_self"><span>유방암및질환클리닉</span></a></li>
+		                      
+		                      <li><a href="/clinic/deptView.do?deptNo=103" target="_self"><span>유전클리닉</span></a></li>
+		                      
+		                      <li><a href="/clinic/deptView.do?deptNo=104" target="_self"><span>정맥류클리닉</span></a></li>
+		                      
+		                      <li><a href="/clinic/deptView.do?deptNo=105" target="_self"><span>족부클리닉</span></a></li>
+		                      
+		                      <li><a href="/clinic/deptView.do?deptNo=106" target="_self"><span>척추클리닉</span></a></li>
+		                      
+		                      <li><a href="/clinic/deptView.do?deptNo=107" target="_self"><span>통증클리닉</span></a></li>
+		                      
+		                      <li><a href="/clinic/deptView.do?deptNo=108" target="_self"><span>투석혈관클리닉</span></a></li>
+		                      
+		                      <li><a href="/clinic/deptView.do?deptNo=109" target="_self"><span>파킨슨병및운동장애클리닉</span></a></li>
+		                      
+		                      <li><a href="/clinic/deptView.do?deptNo=110" target="_self"><span>희망둥이성장발달클리닉</span></a></li>
+		                      
+		                      <li><a href="/clinic/deptView.do?deptNo=112" target="_self"><span>흉터성형레이저클리닉</span></a></li>
+		                      
+		                      <li><a href="/clinic/deptView.do?deptNo=134" target="_self"><span>자궁경부무력증 클리닉</span></a></li>
+		                      
+		                    	
+		                    </ul>
+												
+		                  </li>
+		                  
+		                  <li>
+		                    <a href="/hospital/profList.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>의료진/진료과 검색</span>
+		                    </a>
+		
+		                    
+		                  </li>
+		                  
+		
+		                </ul>
+		                
+		              </dd>
+		            </dl>
+		          </li>
+	
+		          <li>
+		            <dl>
+		              <dt><a href="#"><span>진료안내</span></a></dt>
+		              <dd>
+		              	
+		                <ul class="gnb_menu2_list">
+		
+		                  
+		                  <li>
+		                    <a href="/conts/103001000000000.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>외래진료안내</span>
+		                    </a>
+		
+		                    
+		                  </li>
+		                  
+		                  <li>
+		                    <a href="/conts/103002004000000.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>입퇴원안내</span>
+		                    </a>
+		
+		                    
+												<ul class="gnb_menu3_list">
+		
+		                      
+		                      <li><a 
+		                      	href="/conts/103002004000000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>간호간병통합서비스 안내</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/conts/103002001000000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>입원절차</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/conts/103002002001000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>병실생활</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/conts/103002003000000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>퇴원절차</span></a></li>
+		                      
+		
+		                    </ul>
+												
+		                  </li>
+		                  
+		                  <li>
+		                    <a href="/conts/103003000000000.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>면회안내</span>
+		                    </a>
+		
+		                    
+		                  </li>
+		                  
+		                  <li>
+		                    <a href="/conts/103004000000000.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>응급진료안내</span>
+		                    </a>
+		
+		                    
+		                  </li>
+		                  
+		                  <li>
+		                    <a href="/conts/103005000000000.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>외국인진료안내</span>
+		                    </a>
+		
+		                    
+		                  </li>
+		                  
+		                  <li>
+		                    <a href="/conts/103006000000000.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>보험안내</span>
+		                    </a>
+		
+		                    
+		                  </li>
+		                  
+		                  <li>
+		                    <a href="/conts/103007000000000.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>설명간호사</span>
+		                    </a>
+		
+		                    
+		                  </li>
+		                  
+		                  <li>
+		                    <a href="/hospital/treatmentList.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>비급여진료비안내</span>
+		                    </a>
+		
+		                    
+		                  </li>
+		                  
+		                  <li>
+		                    <a href="/conts/103009001000000.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>부서안내</span>
+		                    </a>
+		
+		                    
+												<ul class="gnb_menu3_list">
+		
+		                      
+		                      <li><a 
+		                      	href="/conts/103009001000000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>가정간호사업센터</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/conts/103009002001000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>약제부</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="https://www.medicalinfo.or.kr/sub/usmn000.jsp" 
+		                      	target="_blank"
+		                      	rel='noreferrer noopener' title='새창열림'
+		                      ><span>의학도서실</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/conts/103009004001000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>공공의료사업부</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/nurse/" 
+		                      	target="_blank"
+		                      	rel='noreferrer noopener' title='새창열림'
+		                      ><span>간호실</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/edu/" 
+		                      	target="_blank"
+		                      	rel='noreferrer noopener' title='새창열림'
+		                      ><span>교육수련부</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/hospice/" 
+		                      	target="_blank"
+		                      	rel='noreferrer noopener' title='새창열림'
+		                      ><span>호스피스</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/conts/103009009000000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>영양관리부</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/conts/103009010000000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>장애친화 산부인과</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/board/commBoardSmartNoticeList.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>스마트병원혁신부</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/conts/103009012000000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>공공어린이재활병원</span></a></li>
+		                      
+		
+		                    </ul>
+												
+		                  </li>
+		                  
+		
+		                </ul>
+		                
+		              </dd>
+		            </dl>
+		          </li>
+	
+		          <li>
+		            <dl>
+		              <dt><a href="#"><span>병원소개</span></a></dt>
+		              <dd>
+		              	
+		                <ul class="gnb_menu2_list">
+		
+		                  
+		                  <li>
+		                    <a href="/conts/104001000000000.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>병원장 인사말</span>
+		                    </a>
+		
+		                    
+		                  </li>
+		                  
+		                  <li>
+		                    <a href="/conts/104002001000000.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>병원소개</span>
+		                    </a>
+		
+		                    
+												<ul class="gnb_menu3_list">
+		
+		                      
+		                      <li><a 
+		                      	href="/conts/104002001000000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>병원소개</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/conts/104002002001000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>비전</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/conts/104002003004000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>연혁</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/conts/104002010001000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>병원 발자취</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/conts/104002004000000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>조직도</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/conts/104002005001000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>HIP</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/conts/104002006000000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>일산병원 캐릭터</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/conts/104002008001000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>찾아오시는 길</span></a></li>
+		                      
+		
+		                    </ul>
+												
+		                  </li>
+		                  
+		                  <li>
+		                    <a href="/hospital/floorList.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>병원둘러보기</span>
+		                    </a>
+		
+		                    
+												<ul class="gnb_menu3_list">
+		
+		                      
+		                      <li><a 
+		                      	href="/hospital/floorList.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>시설 둘러보기</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/conts/104003002000000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>편의시설</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/conts/104003003000000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>종교시설</span></a></li>
+		                      
+		
+		                    </ul>
+												
+		                  </li>
+		                  
+		                  <li>
+		                    <a href="/conts/104004000000000.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>가상공간VR360° 체험</span>
+		                    </a>
+		
+		                    
+		                  </li>
+		                  
+		                  <li>
+		                    <a href="/conts/104005025000000.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>의료장비안내</span>
+		                    </a>
+		
+		                    
+		                  </li>
+		                  
+		                  <li>
+		                    <a href="/board/commBoardNoticeList.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>병원소식</span>
+		                    </a>
+		
+		                    
+												<ul class="gnb_menu3_list">
+		
+		                      
+		                      <li><a 
+		                      	href="/board/commBoardNoticeList.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>공지사항</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/board/commBoardBidList.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>입찰정보</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="https://nhimc.recruiter.co.kr/appsite/company/index" 
+		                      	target="_blank"
+		                      	rel='noreferrer noopener' title='새창열림'
+		                      ><span>채용공고</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/board/commBoardRelationList.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>친인척 현황</span></a></li>
+		                      
+		
+		                    </ul>
+												
+		                  </li>
+		                  
+		                  <li>
+		                    <a href="/conts/104008000000000.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>연보</span>
+		                    </a>
+		
+		                    
+		                  </li>
+		                  
+		                  <li>
+		                    <a href="/conts/104009001000000.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>고객헌장</span>
+		                    </a>
+		
+		                    
+												<ul class="gnb_menu3_list">
+		
+		                      
+		                      <li><a 
+		                      	href="/conts/104009001000000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>전문</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/conts/104009002000000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>핵심서비스 이행 표준</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/conts/104009003000000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>고객응대서비스 이행표준</span></a></li>
+		                      
+		
+		                    </ul>
+												
+		                  </li>
+		                  
+		
+		                </ul>
+		                
+		              </dd>
+		            </dl>
+		          </li>
+	
+		          <li>
+		            <dl>
+		              <dt><a href="#"><span>건강정보</span></a></dt>
+		              <dd>
+		              	
+		                <ul class="gnb_menu2_list">
+		
+		                  
+		                  <li>
+		                    <a href="/conts/105001009000000.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>건강교실</span>
+		                    </a>
+		
+		                    
+												<ul class="gnb_menu3_list">
+		
+		                      
+		                      <li><a 
+		                      	href="/conts/105001009000000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>전체보기</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/conts/105001002000000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>당뇨병교실</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/conts/105001003000000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>임산부교실</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/conts/105001007000000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>만성폐쇄성질환(COPD)환자교실</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/conts/105001008000000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>암생존자 교실</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/conts/105001010000000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>폐암환자교실</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/conts/105001011000000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>혈액투석 환자교실</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/conts/105001012000000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>간암/소화기암/유방암/비뇨의학과 암수술 환자 교실</span></a></li>
+		                      
+		
+		                    </ul>
+												
+		                  </li>
+		                  
+		                  <li>
+		                    <a href="/board/disFdBoardList.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>질환별식사요법</span>
+		                    </a>
+		
+		                    
+		                  </li>
+		                  
+		                  <li>
+		                    <a href="/conts/105005001000000.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>감염예방관리</span>
+		                    </a>
+		
+		                    
+												<ul class="gnb_menu3_list">
+		
+		                      
+		                      <li><a 
+		                      	href="/conts/105005001000000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>손씻기</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/conts/105005002000000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>호흡위생과 기침예절</span></a></li>
+		                      
+		
+		                    </ul>
+												
+		                  </li>
+		                  
+		                  <li>
+		                    <a href="/board/webzineBoardList2026.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>건강정보</span>
+		                    </a>
+		
+		                    
+												<ul class="gnb_menu3_list">
+		
+		                      
+		                      <li><a 
+		                      	href="/board/webzineBoardList2026.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>사보 問安</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/healthMedia/indexPop.do" 
+		                      	target="_blank"
+		                      	rel='noreferrer noopener' title='새창열림'
+		                      ><span>건강TV</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/conts/105006005000000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>EBS명의</span></a></li>
+		                      
+		
+		                    </ul>
+												
+		                  </li>
+		                  
+		
+		                </ul>
+		                
+		              </dd>
+		            </dl>
+		          </li>
+	
+		          <li>
+		            <dl>
+		              <dt><a href="#"><span>환자경험</span></a></dt>
+		              <dd>
+		              	
+		                <ul class="gnb_menu2_list">
+		
+		                  
+		                  <li>
+		                    <a href="/board/praiseBoardList.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>칭찬합시다</span>
+		                    </a>
+		
+		                    
+		                  </li>
+		                  
+		                  <li>
+		                    <a href="/board/customerIntro.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>고객의 소리</span>
+		                    </a>
+		
+		                    
+		                  </li>
+		                  
+		                  <li>
+		                    <a href="/board/cyberReportIntro.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>부정부패신고센터</span>
+		                    </a>
+		
+		                    
+												<ul class="gnb_menu3_list">
+		
+		                      
+		                      <li><a 
+		                      	href="/board/cyberReportIntro.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>부정부패신고센터</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/conts/106004002000000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>관련사이트</span></a></li>
+		                      
+		
+		                    </ul>
+												
+		                  </li>
+		                  
+		
+		                </ul>
+		                
+		              </dd>
+		            </dl>
+		          </li>
+	
+		          <li>
+		            <dl>
+		              <dt><a href="#"><span>고객과 함께</span></a></dt>
+		              <dd>
+		              	
+		                <ul class="gnb_menu2_list">
+		
+		                  
+		                  <li>
+		                    <a href="/conts/107001000000000.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>정보공개제도안내</span>
+		                    </a>
+		
+		                    
+		                  </li>
+		                  
+		                  <li>
+		                    <a href="/conts/107002000000000.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>통합공시</span>
+		                    </a>
+		
+		                    
+		                  </li>
+		                  
+		                  <li>
+		                    <a href="/conts/107003001000000.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>경영공시</span>
+		                    </a>
+		
+		                    
+												<ul class="gnb_menu3_list">
+		
+		                      
+		                      <li><a 
+		                      	href="/conts/107003001000000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>경영공시</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/conts/107003002000000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>공시개요</span></a></li>
+		                      
+		                      <li><a 
+		                      	href="/conts/107003003000000.do" 
+		                      	target="_self"
+		                      	
+		                      ><span>경영공시 책임자 현황</span></a></li>
+		                      
+		
+		                    </ul>
+												
+		                  </li>
+		                  
+		
+		                </ul>
+		                
+		              </dd>
+		            </dl>
+		          </li>
+	
+		          <li>
+		            <dl>
+		              <dt><a href="#"><span>회원서비스</span></a></dt>
+		              <dd>
+		              	
+		                <ul class="gnb_menu2_list">
+		
+		                  
+		                  <li>
+		                    <a href="/member/login.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>로그인</span>
+		                    </a>
+		
+		                    
+		                  </li>
+		                  
+		                  <li>
+		                    <a href="/member/joinStep00.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>회원가입</span>
+		                    </a>
+		
+		                    
+		                  </li>
+		                  
+		                  <li>
+		                    <a href="/member/idSearch.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>아이디찾기</span>
+		                    </a>
+		
+		                    
+		                  </li>
+		                  
+		                  <li>
+		                    <a href="/member/pwSearch.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>비밀번호찾기</span>
+		                    </a>
+		
+		                    
+		                  </li>
+		                  
+		                  <li>
+		                    <a href="/conts/108005000000000.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>개인정보 처리방침</span>
+		                    </a>
+		
+		                    
+		                  </li>
+		                  
+		                  <li>
+		                    <a href="/conts/108006000000000.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>영상정보처리기기 운영관리방침</span>
+		                    </a>
+		
+		                    
+		                  </li>
+		                  
+		                  <li>
+		                    <a href="/conts/108007000000000.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>회원약관</span>
+		                    </a>
+		
+		                    
+		                  </li>
+		                  
+		                  <li>
+		                    <a href="/conts/108008000000000.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>이메일무단수집거부</span>
+		                    </a>
+		
+		                    
+		                  </li>
+		                  
+		                  <li>
+		                    <a href="/conts/108009000000000.do"
+		                    	target="_self"
+		                    	
+		                    	class="">
+		                    	<span>환자의 권리와 의무</span>
+		                    </a>
+		
+		                    
+		                  </li>
+		                  
+		
+		                </ul>
+		                
+		              </dd>
+		            </dl>
+		          </li>
+	
+		        </ul>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+	  <!--// 사이트맵 -->
+
+		
+
+    <!-- sub contents -->
+    <div id="contents" class="contents">
+
+			
+
+      <!-- article -->
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<!-- article -->
+	<article>
+	
+		<!-- 20240328 추가및변경-->
+		<!-- sec : visual -->
+		<section class="main_vis">
+			<div class="vis_box">
+			
+				<div class="vis_pc vis_main_swiper" style="display: ;">
+	        <a href="javascript:void(0);" class="swiper_prev"></a>
+	        <div class="swiper-container main_swipe_bann_w">
+	          <ul class="swiper-wrapper">
+			
+							
+												
+								
+					      
+					      
+					      	
+					      	<li class="swiper-slide">
+			              <a href="." 
+			 								 target="_self"
+											 
+										>
+			                <img src="/_upload/banner/img_pc_visual03_20251218_1766981112769.png" alt="National Health Insurance Service Ilsan Hosptial 국민의 건강한 삶과 올바른 의료표준을 선도하는 건강보험 모델병원">
+			                <img class="mo" src="/_upload/banner/img_mo_visua03l_20251218.png" alt="National Health Insurance Service Ilsan Hosptial 국민의 건강한 삶과 올바른 의료표준을 선도하는 건강보험 모델병원">
+			              </a>
+			            </li>
+					      	
+					      
+								
+							
+												
+								
+					      
+					      
+					      	
+					      	<li class="swiper-slide">
+			              <a href="/conts/105006005000000.do" 
+			 								 target="_self"
+											 
+										>
+			                <img src="/_upload/banner/img_pc_visual02_1768884081173.jpg" alt="국민건강보험 일산병원- EBS 명의 출연 의료진 EBS의 의학 다큐멘터리 [명의]에 소개된 일산병원의 의료진을 소개합니다.">
+			                <img class="mo" src="/_upload/banner/img_m_visual_bg.jpg" alt="국민건강보험 일산병원- EBS 명의 출연 의료진 EBS의 의학 다큐멘터리 [명의]에 소개된 일산병원의 의료진을 소개합니다.">
+			              </a>
+			            </li>
+					      	
+					      
+								
+							
+							
+						</ul>
+              
+						<div class="btm_location_box">
+							<div class="btm_location_inner">
+								<div class="swiper_btm_wrap">
+									<div class="swiper-pagination"></div>
+									<div class="swiper_btn_box">
+										<div class="swiper-button-prev"></div>
+										<div class="btns">
+											<button class="btn_stop">정지</button>
+											<button class="btn_start">시작</button>
+										</div>
+										<div class="swiper-button-next"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+	        </div>
+	        <a href="javascript:void(0);" class="swiper_next"></a>	      
+      	</div>
+      	
+      	<script>
+				$(document).ready(function () {
+					var visualSwiper = new Swiper('.vis_main_swiper .main_swipe_bann_w', {
+						slidesPerView: 1,
+						effect: 'fade',
+						keyboard: true,
+						speed: 3000,
+						loop: true,
+						autoplay: {
+							delay: 5000
+						},
+						navigation: {
+							prevEl: '.vis_main_swiper .swiper-button-prev',
+							nextEl: '.vis_main_swiper .swiper-button-next'
+						},
+						pagination: {
+							el: '.vis_main_swiper .swiper-pagination'
+						}
+					});
+					
+					visualSwiper.on('transitionEnd', function () {
+						if ($('.swiper-slide.video').hasClass('swiper-slide-active') === true) {
+							document.getElementById('videoPlayer').play();
+							// document.getElementById('videoPlayer').controls = true;
+							} else {
+								document.getElementById('videoPlayer').pause();
+								document.getElementById('videoPlayer').currentTime = 0;
+								// document.getElementById('videoPlayer').controls = false;
+								}
+						});
+						
+						$(".vis_main_swiper .swiper_btm_wrap .btn_stop").click(function () {
+							visualSwiper.autoplay.stop();
+							$(this).hide();
+							$(".vis_main_swiper .swiper_btm_wrap .btn_start").css("display", "block");
+						});
+						
+						$(".vis_main_swiper .swiper_btm_wrap .btn_start").click(function () {
+							visualSwiper.autoplay.start();
+							$(this).hide();
+							$(".vis_main_swiper .swiper_btm_wrap .btn_stop").css("display", "block");
+						});
+
+					});
+				</script>
+				
+			</div>
+			<div class="in_cover">
+				<div class="in_w">
+					
+					<form action="/search/search.do" method="get" onsubmit="return checkTotalSearchForm( this )">
+						<div class="main_sch m90_block" style="display:none;">
+							<dl class="sch_w">
+							<dt>
+								국민건강보험 일산병원의 <span>궁금한점 물어보세요.</span>
+								<a href="/dept/deptList.do" class="a_link m96_block" style="display:none;"> <!-- 221222 : 추가 -->
+							<span class="icon"></span>
+							<span>진료과 보기</span>
+							</a>
+							</dt>
+							<dd> 
+								<input type="text" class="ip_main" name="keyword" placeholder="의료진/진료과/질병 등 검색" title="의료진/진료과/질병 입력 검색박스">
+								<input type="submit" class="ip_btn ip_sch" value="검색하기">
+							</dd>
+							</dl>
+					
+						</div>
+					</form>
+					
+					<div class="vis_info">
+						<div class="main_box box_bg_b">
+							<div class="in_w">
+								<div class="w">
+									<h4>온라인 진료예약</h4>
+									<p class="tit_dec">의료진 소개에서 온라인 진료예약이 가능합니다.</p>
+								</div>
+
+								<ul class="x_bann_list vert">
+									<li>
+										<a href="javascript: fastReserve('', '', 'Y')" title="새창열림"><span class="icon icon0101"></span><span class="t">진료<br>예약</span></a>
+									</li>
+									<li>
+										<a href="/thealth/request.do" target="_blank" rel="noreferrer noopener" title="새창열림"><span class="icon icon0102"></span><span class="t">건강검진<br>예약</span></a>
+									</li>
+									<li>
+										<a href="/hospital/timeTable.do"><span class="icon icon0103"></span><span class="t">진료<br>시간표</span></a>
+									</li>
+									<li>
+										<a href="/mypage/reserveList.do"><span class="icon icon0104"></span><span class="t">예약<br>조회</span></a>
+									</li>
+								</ul>
+							</div>
+
+						</div>
+						<div class="main_box rsrvtn_box">
+							<div class="rsrvtn_form">
+								<div class="ip_w">
+								<div class="rsrvtn_form_tit">
+									<h4><i class="ico_mdm"></i>첫 진료예약 상담</h4>
+								</div>
+									<a href="javascript: checkFastResv()" class="btn btn_h_40"><span class="f_flex">상담 신청</span></a>
+								</div>
+							</div>
+
+						</div>
+					
+					</div>
+				</div>
+			</div>
+		</section>
+		
+	
+	  <!-- sec : cnt  -->
+	  <section class="in_cover">
+	    <div class="in_w">
+	
+        <div class="main_sch m90_none">
+        	<form action="/search/search.do" method="get" onsubmit="return checkTotalSearchForm( this )">
+		        <dl class="sch_w">
+		          <dt>
+		          	국민건강보험 일산병원의 <span>궁금한점 물어보세요.</span>
+		          	<a href="/dept/deptList.do" class="a_link m96_block" style="display:none;"> <!-- 221222 : 추가 -->
+	                 <span class="icon"></span>
+	                 <span>진료과 보기</span>
+	               </a>
+		          </dt>
+		          <dd> 
+		            <input type="text" class="ip_main" name="keyword" placeholder="의료진/진료과/질병 등 검색" title="의료진/진료과/질병 입력 검색박스">
+		            <input type="submit" class="ip_btn ip_sch" value="검색하기">
+		          </dd>
+		        </dl>
+		        <dl class="sch_label_w">
+		          <dt>최근 자주찾는 검색어</dt>
+		          <dd class="label_w"> 
+		            							
+		            <a href="/search/search.do?keyword=전화번호">#전화번호</a>
+		            							
+		            <a href="/search/search.do?keyword=입퇴원안내">#입퇴원안내</a>
+		            							
+		            <a href="/search/search.do?keyword=진료시간">#진료시간</a>
+		            							
+		            <a href="/search/search.do?keyword=진료예약">#진료예약</a>
+		            							
+		            <a href="/search/search.do?keyword=건강검진">#건강검진</a>
+		            							
+		            <a href="/search/search.do?keyword=제증명발급">#제증명발급</a>
+		            	            
+		          </dd>
+		        </dl>
+		      </form>
+	
+	      </div>
+
+				<!-- popup -->
+				<div id="AgreeLayer" class="popup pop_layer" style="display:none;">
+					<!-- pop_layer_basic -->
+					<div class="pop_layer_basic" tabindex="0">
+						<!-- pop_header -->
+						<div class="pop_header in_cover">
+							<div class="in_w ">
+								<h2>개인정보 동의</h2>
+								<a href="javascript: $('#AgreeLayer').hide()" class="btn_pop_close"><span><em class="blind">닫기</em></span></a>
+							</div>
+						</div>
+						<!-- pop_header -->
+	
+						<!-- pop_content -->
+						<div class="pop_content in_cover">
+							<!-- pop_cnt -->
+							<div class="pop_cnt">
+								
+								<p class="p cnt_in_s alignC">
+									※ 국민건강보험 일산병원 예약 상담을 위하여<br>
+									아래의 개인정보 수집이용에 대한 내용을 자세히 읽어 보신 후<br>
+									동의 여부를 결정하여 주시기 바랍니다.
+								</p>
+								<p class="h_exp"><span>개인정보 수집에 대한 이용자 동의사항</span></p>
+								<div class="c_box_bd box_scroll" tabindex="0">
+									<div class="cnt_agreeBox">
+										수집항목 : 휴대폰 번호, 이름<br>
+										목적 : 진료 예약 진행을 위한 연락<br>
+										<span class="f_c_m">보유기간 : 예약 신청일로부터 30일까지</span><br><br>
+										귀하는 위 항목에 대하여 동의를 거부할 수 있으며,<br>
+										동의 거부 시 진료 예약 진행이 제한될 수 있습니다.
+									</div>
+								</div>
+								
+								<div class="x_box_exp">
+									<p class="tb_deco_side m76_clear"><em class="f_c_r">* 필수기재항목</em></p>
+									<div class="tb_w">
+									  <table class="tb tb_row tb_ip tb_fix tb_th_skip">
+										<caption>정보 입력 폼에 관한 표이며 연락처, 이름으로 구성되어 있습니다.</caption>
+										<colgroup>
+										  <col width="15%">
+										  <col width="35%">
+										  <col width="15%">
+										  <col width="35%">
+										</colgroup>
+										<tbody>
+											<tr>
+												<th scope="row"><span class="th_must"><em>필수 입력</em></span>이름</th>
+												<td colspan="3">
+													<h6 class="td_th" style="display:none;"><span class="th_must"><em>필수 입력</em></span>이름</h6>
+													<div>
+														<input type="text" class="w_wide" placeholder="이름" title="이름 입력" id="fastResvUserNm">
+													</div>
+												</td>
+											</tr>
+											<tr>
+												<th scope="row"><span class="th_must"><em>필수 입력</em></span>연락처</th>
+												<td colspan="3">
+												<h6 class="td_th" style="display:none;"><span class="th_must"><em>필수 입력</em></span>연락처</h6>
+													<div class="ip_phone_w ip_inline">
+														<input type="text" id="fastResvMobile1" name="fastResvMobile1" class="ip_phone phone02  w_max_15" maxlength="4" value="" title="휴대폰번호 앞자리" oninput="inputNumber(this)">
+														<span class="ip_bar">-</span> 
+														<input type="text" id="fastResvMobile2" name="fastResvMobile2" class="ip_phone phone02  w_max_15" maxlength="4" value="" title="휴대폰번호 가운데자리" oninput="inputNumber(this)">  
+														<span class="ip_bar">-</span> 
+														<input type="text" id="fastResvMobile3" name="fastResvMobile3" class="ip_phone phone03  w_max_15" maxlength="4" value="" title="휴대폰번호 뒷자리" oninput="inputNumber(this)">
+													</div>
+												</td>
+											</tr>	
+										</tbody>
+									  </table>
+									</div>
+						  
+								</div>
+								
+								<div class="x_box_exp">본 정보는 간편예약 신청에만 이용됩니다. 개인정보 이용에 동의합니다. </div>
+								<div class="x_box_ch_w chBox_st01">
+									<label for="fastResvAgree1" class="ch ch_st01"><input type="radio" id="fastResvAgree1" name="fastResvAgree"><span>동의합니다.</span></label>
+									<label for="fastResvAgree2" class="ch ch_st01"><input type="radio" id="fastResvAgree2" name="fastResvAgree"><span>동의하지 않습니다.</span></label>
+								</div>
+	
+								<div class="btn_area_btm btm_bd">
+									<a href="javascript: sendFastResv()" class="btn btn_icon btn_go"><span>상담신청</span></a>
+									<a href="javascript: $('#AgreeLayer').hide()" class="btn w_max_16 btn_cancel"><span>취소</span></a>
+								</div>
+	
+							</div>
+							<!-- // pop_cnt -->
+	
+						</div>
+						<!-- // pop_content -->
+	
+					</div>
+					<!-- pop_layer_basic -->
+	
+				</div>
+				<!-- // popup-->
+	
+				<!-- popup -->
+				<div id="SuccessLayer" class="popup pop_layer" style="display:none;">
+					<!-- pop_layer_basic -->
+					<div class="pop_layer_basic" tabindex="0">
+						<!-- pop_header -->
+						<div class="pop_header in_cover">
+							<div class="in_w ">
+								<h2>상담 신청 안내</h2>
+								<a href="javascript: $('#SuccessLayer , #AgreeLayer').hide()" class="btn_pop_close"><span><em class="blind">닫기</em></span></a>
+							</div>
+						</div>
+						<!-- pop_header -->
+	
+						<!-- pop_content -->
+						<div class="pop_content in_cover">
+							<!-- pop_cnt -->
+							<div class="pop_cnt">
+								
+								<p class="p cnt_in_s c_box_bg box_pd_20">※ 첫 진료 예약 상담은 국민건강보험 일산병원을 처음 이용하시는 고객 분들의 진료예약을 위한 상담 신청 서비스입니다.</p>
+								<p class="p cnt_in_s alignC">상담 신청하신 분들께 순차적으로 연락드립니다.<br>아래의 안내사항을 확인해 주시기 바랍니다.</p>
+	
+								<div class="cnt_in">
+									<p class="h_exp"><span>안내사항</span></p>
+									<div class="c_box_bd box_scroll x_h_20" tabindex="0">
+										<div class="cnt_agreeBox ">
+											<ul class="list_basic list_dot">
+												<li>상담시간 : 평일 08:30-17:00 (토요일, 일요일 및 공휴일 제외)<br>
+													※ 일요일, 공휴일 다음 날은 상담 신청자가 많을 경우 오후로 연락이 늦어질 수 있습니다.</li>
+												<li><strong>본 서비스는 건강검진(국가검진, 종합검진) 및 치과 진료예약은 상담이 불가합니다.</strong><br>
+	                                                    국가검진(1577-8013), 종합검진(1577-7013), 치과(031-900-0620) 문의바랍니다.</li>
+												<li>2회 이상 연결 실패시 상담 신청이 자동 취소됩니다.</li>
+												<li>인터넷, 모바일앱, 전화예약센터(1577-0013)통해서도 직접 예약이 가능 합니다.</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+	
+								<div class="btn_area_btm btm_bd">
+									<a href="javascript: sendFastResvIntro()" class="btn btn_icon btn_go"><span>확인</span></a>
+			            <a href="javascript: $('#SuccessLayer').hide()" class="btn w_max_16 btn_cancel"><span>취소</span></a>
+								</div>
+	
+							</div>
+							<!-- // pop_cnt -->
+	
+						</div>
+						<!-- // pop_content -->
+	
+					</div>
+					<!-- pop_layer_basic -->
+	
+				</div>
+				<!-- // popup -->
+
+	      <!-- cnt : block -->
+				<ul class="cnt main_block_list">
+					<li class="">
+						<div class="main_box box_custom">
+							<div class="w">
+								<h4>진료예약전화</h4>
+								<p class="x_main_custom f_flex">
+									<span class="icon icon_cell"></span>
+									<span>1577-0013</span>
+								</p>
+								<dl class="txt">
+									<dt><span>전화예약 통화시간</span></dt>
+									<dd>
+										<p>평일 : 08:30~17:30 </p>
+										<p>토 : 08:30~12:30</p>
+									</dd>
+								</dl>
+							</div>
+						</div>
+					</li>
+
+					<li>
+						<form action="/hospital/profList.do" onsubmit="return profSearch( this )" method="get">
+							<div class="main_box box02 box_bg_m box_deco deco_v">
+								<div class="w">
+									<div class="h_w h_divi ">
+										<h4>의료진/진료과 찾기</h4>
+										<span class="h_icon icon0101"></span>
+									</div>
+									<div class="f_flex">
+	
+									</div>
+									<div class="main_ip_w01">
+										<p class="ip_w">
+											<select name="deptTp" class="" title="진료과/센터/클리닉 선택">
+												<option value="003001000">진료과에서 검색</option>
+												<option value="003002000">센터에서 검색</option>
+												<option value="003003000">클리닉에서 검색</option>
+											</select>
+											<input type="text" name="searchword" placeholder="의료진/진료분야 검색" title="진료과명 검색박스" />
+										</p>
+										<p class="btn_w">
+											<input type="submit" class="ip_btn ip_sch btn_c_m swiper_prev1" value="검색하기">
+										</p>
+									</div>
+								</div>
+							</div>
+						</form>
+					</li>
+
+					<li>
+						<div class="main_box box04">
+							<div class="w">
+								<h4>제증명 발급, 오시는 길</h4>
+								<ul class="btn_list_ver2">
+									<li>
+										<a href="https://www.medcerti.com/servlet/HPINDEX?GIWANNO=093101&COMMAND=ACTIVEX" target="_blank"
+											rel="noreferrer noopener" class="btn_ver2" title="새창열림">
+											<i class="ico_shortcut_btn main_proof"></i>
+											<span class="f_flex">제증명<br>발급 </span></a>
+									</li>
+									<li>
+										<a href="https://medicopy.lemonhc.com/lct_ilsan/medicopy/medicopyplugin?hcode=31100678" target="_blank"
+											rel="noreferrer noopener" class="btn_ver2" title="새창열림">
+											<i class="ico_shortcut_btn main_medical_records"></i>
+											<span class="f_flex">의무기록<br> 발급 </span></span></a>
+									</li>
+									<li>
+										<a href="/conts/104002008001000.do" class="btn_ver2">
+											<i class="ico_shortcut_btn main_directions"></i>
+											<span class="f_flex">오시는 길<br> 바로가기 </span></a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</li>
+
+					<li>
+						<div class="main_box box_bg_b box_deco deco_v box_login">
+							<div class="w">
+								
+								
+								
+									<!-- 로그아웃(기본) -->
+									<form name="regiForm" action="/member/loginProc.do" method="post" onsubmit="return loginCheckForm( this )">
+										<div style="display:block;">
+											<div class="login_tit ">
+												<h4>로그인</h4>
+												<p class="btn_area">
+													<a href="javascript:naverLogin( 'https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=AgknbwxyXLwRGg318DG7&redirect_uri=https%3A%2F%2Fwww.nhimc.or.kr%2Fmember%2FnaverLoginPop.do&state=700513519052454704402220187319784997012&auth_type=reauthenticate' )" class="btn btn_h_30 ico_naver"><span class="skip">네이버 로그인</span></a>
+													<a href="javascript: kakaoLogin()" class="btn btn_h_30 ico_kakao"><span class="skip">카카오 로그인</span></a>
+												</p>
+											</div>
+											<div class="main_ip_w01">
+												<p class="ip_w">
+													<input type="text" name="userId" id="userId" placeholder="아이디를 입력하세요" title="아이디 입력">
+													<input type="password" name="password" placeholder="비밀번호를 입력하세요" title="비밀번호 입력" autocomplete="off">
+												</p>
+												<p class="btn_w">
+													<input type="submit" class="ip_btn ip_login btn_c_m swiper_prev1" value="로그인">
+												</p>
+											</div>              
+										</div>
+									</form>
+									<!-- // 로그아웃(기본) -->
+	
+								
+	
+							</div>
+						</div>
+					</li>
+
+					<li>
+						<div class="main_swipe_bann_w">
+							<div class="swiper main_swipe_bann">                
+							<div class="swiper-wrapper" idx="1">
+								
+								
+								
+									<div class="swiper-slide">
+										<a 
+											href="/health/" 
+											target="_blank"
+											rel='noreferrer noopener' title='새창열림'
+										>
+										<img src="/_upload/banner/KakaoTalk_20221215_152311188_1712220430978.png" alt="국가검진센터. 선택이 아닌 필수! 국가검진, 건강 100세를 위한 지름길입니다.">
+									</a>
+									</div>
+									
+								
+								
+									<div class="swiper-slide">
+										<a 
+											href="/thealth/" 
+											target="_blank"
+											rel='noreferrer noopener' title='새창열림'
+										>
+										<img src="/_upload/banner/KakaoTalk_20221215_152311188_01_1672882999061_1712221000698.png" alt="종합검진센터. 정확하고 편안한 건강검진, 평생건강을 함께하는 건강지킴이">
+									</a>
+									</div>
+									
+								
+								
+									<div class="swiper-slide">
+										<a 
+											href="https://www.nhimc.or.kr/hospice/" 
+											target="_blank"
+											rel='noreferrer noopener' title='새창열림'
+										>
+										<img src="/_upload/banner/호스피스센터_1712221027941.jpg" alt="호스피스센터. 소중한 당신을 위해 정성을 다 하겠습니다.">
+									</a>
+									</div>
+									
+										              
+								
+							</div>
+							<div class="swiper-controler">
+								<div class="swiper-pagination"></div> 
+								<div class="swiper-control ">
+								<a href="javascript:void(0);" class="ico btn_autoPlay btn_stop swiper_prev2" idx="1"><em>정지</em></a>
+								</div>
+							</div>     
+							</div> 
+							
+						</div>
+					</li>
+				
+					<li>
+						<div class="main_swipe_bann_w">
+							<div class="swiper main_swipe_bann">                
+							<div class="swiper-wrapper" idx="2">
+								
+								
+								
+									<div class="swiper-slide">
+										<a 
+											href="https://www.nhimc.or.kr/doctor/profViewPop.do?deptNo=5&profNo=793&deptYn=Y" 
+											target="_blank"
+											rel='noreferrer noopener' title='새창열림'
+										>
+										<img src="/_upload/banner/신장내과_김효정_02.jpg" alt="신장내과 김효정">
+									</a>
+									</div>
+									
+								
+								
+									<div class="swiper-slide">
+										<a 
+											href="https://www.nhimc.or.kr/doctor/profViewPop.do?deptNo=2&profNo=794&deptYn=Y" 
+											target="_blank"
+											rel='noreferrer noopener' title='새창열림'
+										>
+										<img src="/_upload/banner/심장내과_김무준_02_1776384915791.jpg" alt="심장내과 김무준">
+									</a>
+									</div>
+									
+								
+								
+									<div class="swiper-slide">
+										<a 
+											href="https://www.nhimc.or.kr/doctor/profViewPop.do?deptNo=11&profNo=798&deptYn=Y" 
+											target="_blank"
+											rel='noreferrer noopener' title='새창열림'
+										>
+										<img src="/_upload/banner/정신건강의학과_심송주.jpg" alt="정신건강의학과 심송주">
+									</a>
+									</div>
+									
+								
+								
+									<div class="swiper-slide">
+										<a 
+											href="https://www.nhimc.or.kr/doctor/profViewPop.do?deptNo=19&profNo=800&deptYn=Y" 
+											target="_blank"
+											rel='noreferrer noopener' title='새창열림'
+										>
+										<img src="/_upload/banner/소아청소년과_황종희_02.jpg" alt="소아청소년과 황종희">
+									</a>
+									</div>
+									
+								
+								
+									<div class="swiper-slide">
+										<a 
+											href="https://www.nhimc.or.kr/doctor/profViewPop.do?deptNo=12&profNo=795&deptYn=Y" 
+											target="_blank"
+											rel='noreferrer noopener' title='새창열림'
+										>
+										<img src="/_upload/banner/외과_김지수_02.jpg" alt="외과 김지수">
+									</a>
+									</div>
+									
+								
+								
+									<div class="swiper-slide">
+										<a 
+											href="https://www.nhimc.or.kr/doctor/profViewPop.do?deptNo=31&profNo=799&deptYn=Y" 
+											target="_blank"
+											rel='noreferrer noopener' title='새창열림'
+										>
+										<img src="/_upload/banner/치과_오현정_02_1776385065271.jpg" alt="치과 오현정">
+									</a>
+									</div>
+									
+								
+								
+									<div class="swiper-slide">
+										<a 
+											href="https://www.nhimc.or.kr/doctor/profViewPop.do?deptNo=13&profNo=801&deptYn=Y" 
+											target="_blank"
+											rel='noreferrer noopener' title='새창열림'
+										>
+										<img src="/_upload/banner/정형외과_박경현_02_1776385093023.jpg" alt="정형외과 박경현">
+									</a>
+									</div>
+									
+								
+								
+							</div>
+							<div class="swiper-controler">
+								<div class="swiper-pagination"></div> 
+								<div class="swiper-control ">
+								<a href="javascript:void(0);" class="ico btn_autoPlay btn_stop swiper_prev3" idx="2"><em>정지</em></a>
+								</div>
+							</div>   
+							</div> 
+						</div>
+					</li>
+
+					<li class="area2">
+						<div class="main_swipe_bann_w">
+							<div class="swiper main_swipe_bann_xl">                
+							  <div class="swiper-wrapper" idx="3">                      
+								
+								
+								  
+									<div class="swiper-slide">
+										<a 
+											href="https://www.nhimc.or.kr/board/commBoardNoticeView.do?no=11472" 
+											target="_blank"
+											rel='noreferrer noopener' title='새창열림'
+										>
+										  <img src="/_upload/banner/260427_폐기능검사_배너 (1).jpg" alt="2026년 국가건강검진 폐기능검사 추가">
+									  </a>
+									</div>
+									
+								  
+								  
+									<div class="swiper-slide">
+										<a 
+											href="https://www.nhimc.or.kr/board/commBoardNoticeView.do?no=11457" 
+											target="_blank"
+											rel='noreferrer noopener' title='새창열림'
+										>
+										  <img src="/_upload/banner/260422_5월휴진안내_배너.jpg" alt="5월 휴진 안내">
+									  </a>
+									</div>
+									
+								  
+								  
+									<div class="swiper-slide">
+										<a 
+											href="https://www.nhimc.or.kr/ilsan_news/Hello_2026_spring/index.html" 
+											target="_blank"
+											rel='noreferrer noopener' title='새창열림'
+										>
+										  <img src="/_upload/banner/260417_사보2026년봄호발행_배너01.jpg" alt="일산병원 사보 문안 2026년 봄호 발행">
+									  </a>
+									</div>
+									
+								  
+								  
+									<div class="swiper-slide">
+										<a 
+											href="https://www.nhimc.or.kr/board/commBoardNoticeView.do?no=11414" 
+											target="_blank"
+											rel='noreferrer noopener' title='새창열림'
+										>
+										  <img src="/_upload/banner/260415_보건의날경기도지사표창수상_배너.jpg" alt="제54회 보건의 날 경기도지사 표창 수상">
+									  </a>
+									</div>
+									
+								  
+								  
+									<div class="swiper-slide">
+										<a 
+											href="https://www.nhimc.or.kr/board/commBoardNoticeView.do?no=11370" 
+											target="_blank"
+											rel='noreferrer noopener' title='새창열림'
+										>
+										  <img src="/_upload/banner/260403_의료AI임상실증_배너.jpg" alt="의료 AI 임상 실증을 통해 현장 적용 가능성 확인">
+									  </a>
+									</div>
+									
+								  
+								  
+									<div class="swiper-slide">
+										<a 
+											href="https://www.nhimc.or.kr/board/commBoardNoticeView.do?no=11348" 
+											target="_blank"
+											rel='noreferrer noopener' title='새창열림'
+										>
+										  <img src="/_upload/banner/260331_병원신문보도_배너.jpg" alt="'대체 불가 공공병원' 국민건강보험 일산병원, 한계 없는 진화 예고">
+									  </a>
+									</div>
+									
+								  
+								  
+									<div class="swiper-slide">
+										<a 
+											href="https://www.nhimc.or.kr/board/commBoardNoticeView.do?no=11327" 
+											target="_blank"
+											rel='noreferrer noopener' title='새창열림'
+										>
+										  <img src="/_upload/banner/일산병원_소아정형외과진료개시_배너 (1).jpg" alt="소아정형외과 진료 4월 1일 개시">
+									  </a>
+									</div>
+									
+								  
+								  
+									<div class="swiper-slide">
+										<a 
+											href="https://www.nhimc.or.kr/board/commBoardNoticeView.do?no=11268" 
+											target="_blank"
+											rel='noreferrer noopener' title='새창열림'
+										>
+										  <img src="/_upload/banner/260317_유방암의료진홍보_배너.jpg" alt="유방암 치료부터 재건까지">
+									  </a>
+									</div>
+									
+								  
+								  
+									<div class="swiper-slide">
+										<a 
+											href="https://www.nhimc.or.kr/board/commBoardNoticeView.do?no=11258" 
+											target="_blank"
+											rel='noreferrer noopener' title='새창열림'
+										>
+										  <img src="/_upload/banner/260312_말초동맥성형술2000례달성_배너.jpg" alt="말초동맥 성형술 2000례 달성">
+									  </a>
+									</div>
+									
+								  
+								  
+									<div class="swiper-slide">
+										<a 
+											href="https://www.nhimc.or.kr/board/commBoardNoticeView.do?no=11246" 
+											target="_blank"
+											rel='noreferrer noopener' title='새창열림'
+										>
+										  <img src="/_upload/banner/260309_동아일보보도_배너 (1).jpg" alt="국민건강보험 일산병원 3차 보다 강한 2차 병원">
+									  </a>
+									</div>
+									
+								  
+								  
+									<div class="swiper-slide">
+										<a 
+											href="https://www.dailymedi.com/news/news_view.php?wr_id=932461" 
+											target="_blank"
+											rel='noreferrer noopener' title='새창열림'
+										>
+										  <img src="/_upload/banner/260106_외상진료메카보도_배너 (1).jpg" alt="외상 진료 메카 보도">
+									  </a>
+									</div>
+									
+								  
+								  
+									<div class="swiper-slide">
+										<a 
+											href="https://www.nhimc.or.kr/board/commBoardNoticeView.do?no=10867" 
+											target="_blank"
+											rel='noreferrer noopener' title='새창열림'
+										>
+										  <img src="/_upload/banner/251224_3년연속공공보건의료계획'최우수기관'선정_배너.jpg" alt="3년 연속 공공보건의료계획 '최우수 기관' 선정">
+									  </a>
+									</div>
+									
+								  
+								  
+									<div class="swiper-slide">
+										<a 
+											href="https://www.nhimc.or.kr/board/commBoardNoticeView.do?no=10827" 
+											target="_blank"
+											rel='noreferrer noopener' title='새창열림'
+										>
+										  <img src="/_upload/banner/251216_간호간병통합서비스성과평가_배너.jpg" alt="2025년 간호·간병통합서비스 성과평가 7년 연속 최고등급(S) 획득">
+									  </a>
+									</div>
+									
+								  
+								  
+									<div class="swiper-slide">
+										<a 
+											href="https://www.nhimc.or.kr/clinic/deptView.do?deptNo=133" 
+											target="_blank"
+											rel='noreferrer noopener' title='새창열림'
+										>
+										  <img src="/_upload/banner/251201_소아외과클리닉홍보_배너.jpg" alt="소아외과클리닉 개설">
+									  </a>
+									</div>
+									
+								  
+								  
+									<div class="swiper-slide">
+										<a 
+											href="https://www.nhimc.or.kr/board/commBoardNoticeView.do?no=10368" 
+											target="_blank"
+											rel='noreferrer noopener' title='새창열림'
+										>
+										  <img src="/_upload/banner/250902_다빈치SP로봇수술실개소_배너.jpg" alt="다빈치 SP 로봇 도입, 로봇수술센터 확대 개소">
+									  </a>
+									</div>
+									
+								  
+													  
+							  </div>
+							  <div class="swiper-controler">
+									<div class="swiper-pagination"></div> 
+									<div class="swiper-control ">
+									  <a href="javascript:void(0);" class="ico btn_autoPlay btn_stop" idx="3"><em>정지</em></a>
+									</div>
+							  </div>
+							  <div class="swiper-button-prev"></div>
+						  	<div class="swiper-button-next"></div>      
+							</div> 
+						</div>
+					</li>
+			
+				</ul>
+		
+				<script>
+				
+					var swiper = new Swiper('.main_swipe_bann', {
+						effect: 'fade',
+						loop: true,
+						centeredSlides: true,              
+						keyboard: true,            
+						autoplay: {
+							delay: 4000,
+							disableOnInteraction: false,
+						},   
+						pagination: {
+							el: ".swiper-pagination",
+							clickable: true,
+						}
+					});
+							
+					$('.main_swipe_bann').find('.btn_autoPlay').on('click',function(){
+					
+						var idx = Number( $(this).attr("idx") );
+						var sw = swiper[idx-1];
+						
+						if($(this).hasClass('btn_stop')){
+							$(this).addClass('btn_play').removeClass('btn_stop');
+							$(this).find("em").text("재생");
+							sw.autoplay.stop();
+						}else if($(this).hasClass('btn_play')){
+							$(this).addClass('btn_stop').removeClass('btn_play');
+							$(this).find("em").text("정지");
+							sw.autoplay.start();
+						}
+					});
+					
+					// 중간 대배너 2025-01-14
+					var swiper2 = new Swiper('.main_swipe_bann_xl', {
+						effect: 'fade',
+						loop: true,
+						centeredSlides: true,
+						keyboard: true,
+						autoplay: {
+							delay: 4000,
+							disableOnInteraction: false,
+						},
+						navigation: {
+							nextEl: '.swiper-button-next',
+							prevEl: '.swiper-button-prev',
+						},
+						pagination: {
+							el: ".swiper-pagination",
+							clickable: true,
+						},
+					});
+					
+					swiper.push(swiper2);
+					
+					$('.main_swipe_bann_xl').find('.btn_autoPlay').on('click', function () {
+
+						if ($(this).hasClass('btn_stop')) {
+							$(this).addClass('btn_play').removeClass('btn_stop');
+							$(this).find("em").text("재생");
+							swiper2.autoplay.stop();
+						} else if ($(this).hasClass('btn_play')) {
+							$(this).addClass('btn_stop').removeClass('btn_play');
+							$(this).find("em").text("정지");
+							swiper2.autoplay.start();
+						}
+					});
+			
+				</script>
+				<!-- // 20240328 추가및변경-->
+		
+				<!-- cnt : news -->
+				<div class="cnt cnt_news">
+					<h3>병원소식</h3>
+					<div class="main_h_side m102_block" style="display: none;"> <!-- 221207 추가 -->
+						<a href="#" id="moBoardMore" class="ico main_ico_more" style="display: none"><span>더보기</span></a>
+					</div>
+					
+					<div class="main_tab_w tab_w">
+						
+						<ul id="tabList" class="main_tab_list">
+							<li id="tab0" idx="0" class="ac">
+								<a href="javascript: viewTab(0)" title="선택됨"><span>전체</span><span class="icon"></span></a>
+							</li>
+							<li id="tab1" idx="1">
+								<a href="javascript: viewTab(1)" onclick="clkTab(event, 1)"><span>공지사항</span><span class="icon icon_add"></span></a>
+							</li>
+							<li id="tab2" idx="2">
+								<a href="javascript: viewTab(2)" onclick="clkTab(event, 2)"><span>채용공고</span><span class="icon icon_add"></span></a>
+							</li>
+							<li id="tab3" idx="3">
+								<a href="javascript: viewTab(3)" onclick="clkTab(event, 3)"><span>입찰정보</span><span class="icon icon_add"></span></a>
+							</li>
+						</ul>              
+						<div class="tab_cnt">
+						
+							<ul id="mainBoardList" class="main_news_list">
+							
+								
+										
+									
+								
+								<li class="mainBoard1" style="display: none">
+									<div class="news_box">
+										<div class="w">
+											<p class="tag_w">
+											<span class='tag tab_c_b'>공지</span>
+											
+											</p>
+											<p class="tit">
+												<a href="/board/commBoardNoticeView.do?no=11473" target="_self" title="">
+													개인정보의 목적 외 이용 및 제공내역('26.4.1.~4.15.)
+												</a>
+											</p>
+											
+											
+											
+											<p class="date"><span class="icon icon_date"><em class="skip">작성일</em></span><span>2026-04-28</span></p>
+										</div>
+									</div>
+								</li>
+								
+								
+										
+									
+								
+								<li class="mainBoard1" style="display: none">
+									<div class="news_box">
+										<div class="w">
+											<p class="tag_w">
+											<span class='tag tab_c_b'>공지</span>
+											
+											</p>
+											<p class="tit">
+												<a href="/board/commBoardNoticeView.do?no=11472" target="_self" title="">
+													2026년 국가건강검진 폐기능검사 추가
+												</a>
+											</p>
+											
+											
+											
+											<p class="date"><span class="icon icon_date"><em class="skip">작성일</em></span><span>2026-04-28</span></p>
+										</div>
+									</div>
+								</li>
+								
+								
+										
+									
+								
+								<li class="mainBoard1" style="display: none">
+									<div class="news_box">
+										<div class="w">
+											<p class="tag_w">
+											<span class='tag tab_c_b'>공지</span>
+											
+											</p>
+											<p class="tit">
+												<a href="/board/commBoardNoticeView.do?no=11471" target="_self" title="">
+													2026년 3월 상품권 구매내역
+												</a>
+											</p>
+											
+											
+											
+											<p class="date"><span class="icon icon_date"><em class="skip">작성일</em></span><span>2026-04-27</span></p>
+										</div>
+									</div>
+								</li>
+								
+								
+										
+									
+								
+								<li class="mainBoard3" style="display: none">
+									<div class="news_box">
+										<div class="w">
+											<p class="tag_w">
+											<span class='tag tab_c_m'>입찰</span>
+											
+											</p>
+											<p class="tit">
+												<a href="/board/commBoardBidView.do?no=11470" target="_self" title="">
+													[제안서평가위원회 결과] 홈페이지 운영 용역
+												</a>
+											</p>
+											
+											
+											
+											<p class="date"><span class="icon icon_date"><em class="skip">작성일</em></span><span>2026-04-27</span></p>
+										</div>
+									</div>
+								</li>
+								
+								
+										
+									
+								
+								<li class="mainBoard1" style="display: none">
+									<div class="news_box">
+										<div class="w">
+											<p class="tag_w">
+											<span class='tag tab_c_b'>공지</span>
+											
+											</p>
+											<p class="tit">
+												<a href="/board/commBoardNoticeView.do?no=11466" target="_self" title="">
+													종합검진센터 예방접종 프로그램 안내
+												</a>
+											</p>
+											
+											
+											
+											<p class="date"><span class="icon icon_date"><em class="skip">작성일</em></span><span>2026-04-27</span></p>
+										</div>
+									</div>
+								</li>
+								
+								
+										
+									
+								
+								<li class="mainBoard3" style="display: none">
+									<div class="news_box">
+										<div class="w">
+											<p class="tag_w">
+											<span class='tag tab_c_m'>입찰</span>
+											
+											</p>
+											<p class="tit">
+												<a href="/board/commBoardBidView.do?no=11458" target="_self" title="">
+													전동침대 34점 구매 계약
+												</a>
+											</p>
+											
+											
+											
+											<p class="date"><span class="icon icon_date"><em class="skip">작성일</em></span><span>2026-04-24</span></p>
+										</div>
+									</div>
+								</li>
+								
+								
+										
+									
+								
+								<li class="mainBoard1" style="display: none">
+									<div class="news_box">
+										<div class="w">
+											<p class="tag_w">
+											<span class='tag tab_c_b'>공지</span>
+											
+											</p>
+											<p class="tit">
+												<a href="/board/commBoardNoticeView.do?no=11457" target="_self" title="">
+													5월 휴진 안내
+												</a>
+											</p>
+											
+											
+											
+											<p class="date"><span class="icon icon_date"><em class="skip">작성일</em></span><span>2026-04-24</span></p>
+										</div>
+									</div>
+								</li>
+								
+								
+										
+									
+								
+								<li class="mainBoard3" style="display: none">
+									<div class="news_box">
+										<div class="w">
+											<p class="tag_w">
+											<span class='tag tab_c_m'>입찰</span>
+											
+											</p>
+											<p class="tit">
+												<a href="/board/commBoardBidView.do?no=11455" target="_self" title="">
+													[공고] 국민건강보험공단 일산병원 급식 위탁운영 계약
+												</a>
+											</p>
+											
+											
+											
+											<p class="date"><span class="icon icon_date"><em class="skip">작성일</em></span><span>2026-04-23</span></p>
+										</div>
+									</div>
+								</li>
+								
+								
+										
+									
+								
+								<li class="mainBoard3" style="display: none">
+									<div class="news_box">
+										<div class="w">
+											<p class="tag_w">
+											<span class='tag tab_c_m'>입찰</span>
+											
+											</p>
+											<p class="tit">
+												<a href="/board/commBoardBidView.do?no=11450" target="_self" title="">
+													[공고] 정기 의약품 공급(단가)계약(퇴장방지)
+												</a>
+											</p>
+											
+											
+											
+											<p class="date"><span class="icon icon_date"><em class="skip">작성일</em></span><span>2026-04-21</span></p>
+										</div>
+									</div>
+								</li>
+								
+								
+										
+									
+								
+								<li class="mainBoard3" style="display: none">
+									<div class="news_box">
+										<div class="w">
+											<p class="tag_w">
+											<span class='tag tab_c_m'>입찰</span>
+											
+											</p>
+											<p class="tit">
+												<a href="/board/commBoardBidView.do?no=11449" target="_self" title="">
+													[공고] 정기 의약품 공급(단가)계약
+												</a>
+											</p>
+											
+											
+											
+											<p class="date"><span class="icon icon_date"><em class="skip">작성일</em></span><span>2026-04-21</span></p>
+										</div>
+									</div>
+								</li>
+								
+								
+										
+									
+								
+								<li class="mainBoard2" style="display: none">
+									<div class="news_box">
+										<div class="w">
+											<p class="tag_w">
+											<span class='tag tab_c_r'>채용</span>
+											
+											</p>
+											<p class="tit">
+												<a href="https://nhimc.recruiter.co.kr/app/jobnotice/list" target="_blank" title="새창열림">
+													2025년 정규직(약무직) 채용 공고
+												</a>
+											</p>
+											
+											
+											
+											<p class="date"><span class="icon icon_date"><em class="skip">작성일</em></span><span>2025-08-06</span></p>
+										</div>
+									</div>
+								</li>
+								
+								
+										
+									
+								
+								<li class="mainBoard2" style="display: none">
+									<div class="news_box">
+										<div class="w">
+											<p class="tag_w">
+											<span class='tag tab_c_r'>채용</span>
+											
+											</p>
+											<p class="tit">
+												<a href="https://nhimc.recruiter.co.kr/app/jobnotice/list" target="_blank" title="새창열림">
+													2025년도 전문계약직(야간약사) 채용 공고
+												</a>
+											</p>
+											
+											
+											
+											<p class="date"><span class="icon icon_date"><em class="skip">작성일</em></span><span>2025-07-01</span></p>
+										</div>
+									</div>
+								</li>
+								
+								
+										
+									
+								
+								<li class="mainBoard2" style="display: none">
+									<div class="news_box">
+										<div class="w">
+											<p class="tag_w">
+											<span class='tag tab_c_r'>채용</span>
+											
+											</p>
+											<p class="tit">
+												<a href="https://nhimc.recruiter.co.kr/app/jobnotice/list" target="_blank" title="새창열림">
+													2025년도 의사직(전문계약직-산부인과) 채용 공고
+												</a>
+											</p>
+											
+											
+											
+											<p class="date"><span class="icon icon_date"><em class="skip">작성일</em></span><span>2025-06-30</span></p>
+										</div>
+									</div>
+								</li>
+								
+								
+										
+									
+								
+								<li class="mainBoard2" style="display: none">
+									<div class="news_box">
+										<div class="w">
+											<p class="tag_w">
+											<span class='tag tab_c_r'>채용</span>
+											
+											</p>
+											<p class="tit">
+												<a href="https://nhimc.recruiter.co.kr/app/jobnotice/list" target="_blank" title="새창열림">
+													2025년도 의사직(전문계약직-영상의학과, 산부인과) 채용 공고
+												</a>
+											</p>
+											
+											
+											
+											<p class="date"><span class="icon icon_date"><em class="skip">작성일</em></span><span>2025-06-05</span></p>
+										</div>
+									</div>
+								</li>
+								
+								
+										
+									
+								
+								<li class="mainBoard2" style="display: none">
+									<div class="news_box">
+										<div class="w">
+											<p class="tag_w">
+											<span class='tag tab_c_r'>채용</span>
+											
+											</p>
+											<p class="tit">
+												<a href="https://nhimc.recruiter.co.kr/app/jobnotice/list" target="_blank" title="새창열림">
+													2025년도 의사직(임상교수-호흡기내과) 채용 공고
+												</a>
+											</p>
+											
+											
+											
+											<p class="date"><span class="icon icon_date"><em class="skip">작성일</em></span><span>2025-06-05</span></p>
+										</div>
+									</div>
+								</li>
+								
+														
+							
+							</ul>
+						</div>
+					</div>
+				</div>
+	
+	    </div>
+	  </section>
+		<!-- // 20240328 추가및변경-->
+
+	  <!-- sec : cnt bg -->
+	  <section class="main_bg_m in_cover">
+	    <div class="in_w">
+	
+	      <!-- cnt : 건강TV -->
+	      <div class="cnt_news">
+	        <h3>건강TV</h3>
+					<div class="main_h_side m128_block" style="display: none;"> <!-- 221207 추가 -->
+						<a href="/healthMedia/indexPop.do" target="_blank" rel="noreferrer noopener" class="ico main_ico_more" title="새창열림"><span>더보기</span></a>
+						<div class="main_video_btn">
+							<span class="btn_before swiper-button-disabled" tabindex="0" role="button" aria-label="Previous slide" aria-disabled="true"></span>
+							<span class="btn_after" tabindex="0" role="button" aria-label="Next slide" aria-disabled="false"></span>
+						</div>
+					</div>
+	        <div class="swiper main_video_list_w">
+          	<ul class="swiper-wrapper main_video_list">
+	          
+		          
+			          <li class="swiper-slide">
+			            <div class="video_box">
+			              <a href="/healthMedia/viewPop.do?no=942&code=007001002" target="_blank" rel="noreferrer noopener" class="video" title="새창열림">
+			                <img src="http://img.youtube.com/vi/S9XyJhlzypM/0.jpg" alt="[180초X일산병원] 건강검진 결과 대공개! 과연 승자는?">
+			                <span class="icon_play"><em class="skip">Play</em></span>
+		                </a>
+			              <a href="/healthMedia/viewPop.do?no=942&code=007001002" target="_blank" rel="noreferrer noopener" class="tit" title="새창열림">[180초X일산병원] 건강검진 결과 대공개! 과연 승자는?</a>
+			              
+			            </div>
+			          </li>
+			        
+			          <li class="swiper-slide">
+			            <div class="video_box">
+			              <a href="/healthMedia/viewPop.do?no=1022&code=007001001" target="_blank" rel="noreferrer noopener" class="video" title="새창열림">
+			                <img src="http://img.youtube.com/vi/OOXDHZE5l6c/0.jpg" alt="[개원 26주년 기념 홍보영상] 한계를 넘는 도전, 대한민국 의료의 표준">
+			                <span class="icon_play"><em class="skip">Play</em></span>
+		                </a>
+			              <a href="/healthMedia/viewPop.do?no=1022&code=007001001" target="_blank" rel="noreferrer noopener" class="tit" title="새창열림">[개원 26주년 기념 홍보영상] 한계를 넘는 도전, 대한민국 의료의 표준</a>
+			              
+			            </div>
+			          </li>
+			        
+			          <li class="swiper-slide">
+			            <div class="video_box">
+			              <a href="/healthMedia/viewPop.do?no=1021&code=007001001" target="_blank" rel="noreferrer noopener" class="video" title="새창열림">
+			                <img src="http://img.youtube.com/vi/C9v3rUUnlWQ/0.jpg" alt="[3차보다강한2차병원] 중증·소아응급 치료부터 재활까지! 지역 필수의료를 책임지는 국민건강보험 일산병원">
+			                <span class="icon_play"><em class="skip">Play</em></span>
+		                </a>
+			              <a href="/healthMedia/viewPop.do?no=1021&code=007001001" target="_blank" rel="noreferrer noopener" class="tit" title="새창열림">[3차보다강한2차병원] 중증·소아응급 치료부터 재활까지! 지역 필수의료를 책임지는 국민건강보험 일산병원</a>
+			              
+			            </div>
+			          </li>
+			        
+			          <li class="swiper-slide">
+			            <div class="video_box">
+			              <a href="/healthMedia/viewPop.do?no=1042&code=007001002" target="_blank" rel="noreferrer noopener" class="video" title="새창열림">
+			                <img src="http://img.youtube.com/vi/W6Gwury8Rbg/0.jpg" alt="[의학채널 명답 출연-심장내과 오성진 교수] 심장 건강이 걱정된다면? 꼭 알아야 할 심장 검사 방법">
+			                <span class="icon_play"><em class="skip">Play</em></span>
+		                </a>
+			              <a href="/healthMedia/viewPop.do?no=1042&code=007001002" target="_blank" rel="noreferrer noopener" class="tit" title="새창열림">[의학채널 명답 출연-심장내과 오성진 교수] 심장 건강이 걱정된다면? 꼭 알아야 할 심장 검사 방법</a>
+			              
+			            </div>
+			          </li>
+			        
+			          <li class="swiper-slide">
+			            <div class="video_box">
+			              <a href="/healthMedia/viewPop.do?no=961&code=007001002" target="_blank" rel="noreferrer noopener" class="video" title="새창열림">
+			                <img src="http://img.youtube.com/vi/-axt-A1EXU0/0.jpg" alt="[일산체크 건강 주치의] 간단한 혈액검사로 암 진단이 가능하다?">
+			                <span class="icon_play"><em class="skip">Play</em></span>
+		                </a>
+			              <a href="/healthMedia/viewPop.do?no=961&code=007001002" target="_blank" rel="noreferrer noopener" class="tit" title="새창열림">[일산체크 건강 주치의] 간단한 혈액검사로 암 진단이 가능하다?</a>
+			              
+			            </div>
+			          </li>
+			        
+		        
+	        	</ul>
+	        </div>
+	      </div>
+	      
+	    </div>
+	  </section>
+	  	  
+	  <script>
+    var swiper_mainVideo = new Swiper(".main_video_list_w", {
+       slidesPerView: 1.5,
+       slidesPerGroup: 1,	
+       spaceBetween: 30,	
+       autoplay: false,
+       navigation: {
+         prevEl: '.main_video_btn .btn_before',
+         nextEl: '.main_video_btn .btn_after'
+       },
+       breakpoints: {
+         1280: {
+           slidesPerView: 5,
+           slidesPerGroup: 1,			  
+         },
+         1024: {
+           slidesPerView: 4,
+           slidesPerGroup: 2,			  
+         },
+         960: {
+           slidesPerView: 3.5,
+           slidesPerGroup: 2,			  
+         },
+         768: {
+           slidesPerView: 3,
+           slidesPerGroup: 2,			  
+         },
+         640: {
+           slidesPerView: 2.5,
+           slidesPerGroup: 2,			  
+         },
+         500: {
+           slidesPerView: 2,
+           slidesPerGroup: 2,			  
+         }
+       }
+     });
+ 	  </script> 
+	
+	  <section class="in_cover">
+	    <div class="in_w">
+	
+	      <!-- cnt : banner -->
+	      <ul class="main_bann_list">
+	        <li>
+	          <a href="/ref/" target="_blank" rel="noreferrer noopener" title="새창열림"><span class="icon icon0101"></span><span class="t">진료협력센터</span></a>
+	        </li>
+	        <li>
+	          <a href="/funeral/" target="_blank" rel="noreferrer noopener" title="새창열림"><span class="icon icon0102"></span><span class="t">장례식장</span></a>
+	        </li>
+	        <li>
+	          <a href="/hospice/" target="_blank" rel="noreferrer noopener" title="새창열림"><span class="icon icon0103"></span><span class="t">호스피스센터</span></a>
+	        </li>
+	        <li>
+	          <a href="/research/" target="_blank" rel="noreferrer noopener" title="새창열림"><span class="icon icon0104"></span><span class="t">연구소</span></a>
+	        </li>
+	        <li>
+	          <a href="/nurse/" target="_blank" rel="noreferrer noopener" title="새창열림"><span class="icon icon0105"></span><span class="t">간호실</span></a>
+	        </li>
+					<li>
+						<a href="/health/"><span class="icon icon0106"></span><span class="t">국가검진센터</span></a>
+					</li>
+					<li>
+						<a href="/thealth/"><span class="icon icon0107"></span><span class="t">종합검진센터</span></a>
+					</li>
+	      </ul>
+	    </div>
+	  </section>
+	</article>
+	<!--// article -->
+	
+	<div id="dmLayerPopup" class=" popup " style="display: none;"> 
+    <div class="popup_layer">
+
+      <div class="pop_swiper" style="width:360px">
+        <div class="c_event_swiper_w" >
+          <div class="swiper c_event_swiper" >
+            <div class="swiper-wrapper">
+              
+              <div class="swiper-slide pop_ie_notice " >
+                <div class="pop_bann_w">
+                  <div class="pop_img_w">
+                    <img src="/common/front/kor/images/popup/pop_ie_notice.jpg" alt="인터넷익스플로러 브라우저 관련 사용 안내. MS(마이크로소프트)사 기술지원 및 보안 업데이트 종료로 인하여
+                    국민건강보험 일산병원 홈페이지 일부기능이 원활하지 않거나
+                    다르게 보여질수 있습니다. 권장 브라우저인 크롬 브라우저 또는
+                    엣지 브라우저로 업데이트 해주시기 바랍니다.">
+                  </div>
+									
+                  <div class="btn_area_pos">
+                    <div class="btn_w">
+                      <a href="https://www.google.com/intl/ko_kr/chrome/" class="pop_btn btn1"><img src="/common/front/kor/images/popup/pop_ie_notice_btn_0101.png" alt="구글크롬 설치 바로가기"></a>
+                      <a href="https://www.microsoft.com/ko-kr/edge/download?form=MA13FJ" class="pop_btn btn2"><img src="/common/front/kor/images/popup/pop_ie_notice_btn_0102.png" alt="엣지브라우저 설치 바로가기"></a>
+                      <span class="clear"></span>
+                      <a href="javascript: fn_LayerPopClose( 'layerPopYn', 'layerCheck', 'dmLayerPopup')" class="pop_btn btn3"><img src="/common/front/kor/images/popup/pop_ie_notice_btn_0103.png" alt="확인"></a>
+                    </div>
+                  </div>
+                </div>
+              </div>    
+                   
+							
+							<div id="kor_pop1" class="swiper-slide">
+								<a href="javasctipt:void(0)">
+									<img src="/common/front/kor/images/popup/img_may_mo_20260424.jpg" alt="2026년 5월 휴진안내">
+								</a>
+							</div>
+              
+							
+            </div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+          </div>          
+        </div>	
+
+        <div class="popup_btm btm_dayCheck">
+          <form name="">
+            <label for="layerCheck" class="ch"><input type="checkbox" id="layerCheck"><span>오늘 하루 이 창을 열지 않습니다.</span></label>
+            <a href="javascript: fn_LayerPopClose( 'layerPopYn', 'layerCheck', 'dmLayerPopup')" class="btn_dayCheckClose">닫기</a>
+          </form>
+        </div>
+      </div>
+
+    </div>      
+  </div>
+  
+  <form name="kakaoForm" action="/member/kakaoLoginProc.do" method="post">
+		<input type="hidden" name="snsId" />
+		<input type="hidden" name="snsEmail" />
+	</form>
+  
+  <script type="text/javascript">
+  var popEndDateInt = 2026052601;
+  var popNowDateInt = 2026042820;
+  
+  var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);  
+  if( isMobile == false ) {
+		// Top 배너
+		// 20260102 HSM TOP배너 none
+	  var cookieTopCheck = fn_LayerPopYn("topYn");
+		if( cookieTopCheck != "N" ){		
+			$("#topLayer").css("display", "");
+		}	
+  }
+  
+	//IE 확인
+	var agent = navigator.userAgent.toLowerCase();
+	if ( (navigator.appName == 'Netscape' && agent.indexOf('trident') != -1) || (agent.indexOf("msie") != -1)) {
+		
+		var cookieCheck = fn_LayerPopYn("layerPopYn");
+		if( cookieCheck != "N" ){
+			$("#dmLayerPopup").css("display", "");
+		}
+		
+	}else{
+		//20260102 HSM 모바일 팝업 제거
+		if( isMobile == true && popEndDateInt >= popNowDateInt ) {
+			var cookieCheck = fn_LayerPopYn("layerPopYn");
+			if( cookieCheck != "N" ){
+				$(".pop_ie_notice").remove();
+				$("#dmLayerPopup").css("display", "");
+			}
+		}
+	}
+	
+	// 레이어 팝업  쿠키가져오기
+	function fn_LayerPopYn( name ){
+		var cookie = document.cookie;
+		if( document.cookie != "" ){
+			var cookie_array = cookie.split("; ");
+			for ( var index in cookie_array ){
+				var cookie_name = cookie_array[index].split("=");
+				if( cookie_name[0] == name ){
+					//console.log("["+cookie_name[0]+"]==["+cookie_name[1]+"]=================================================")
+					return cookie_name[1];
+				}
+			}
+		}
+		return;
+	}
+	
+	function fn_LayerPopClose( chkVal, chkId, layerId ){
+		var chk = $("input:checkbox[id='" + chkId + "']").is(":checked");
+		if( chk ){
+			var date = new Date();
+			date.setDate(date.getDate() + 1);
+			document.cookie = escape(chkVal) + "=" + escape('N') + "; expires=" + date.toUTCString();
+		}
+		$("#" + layerId).css({"display":"none"});
+	}
+	
+  </script>
+  
+  <script>
+  var popup_swiper = new Swiper(".c_event_swiper", {
+    slidesPerView: "auto",               
+    speed: 500,
+    centeredSlides: true,
+    autoHeight: true,
+    autoWidth: true,              
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,                
+    }/*,
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    },*/
+  });
+</script> 
+      <!--// article -->
+			
+			
+
+    </div>
+    <!--// sub content_w -->
+
+    <!-- footer -->
+    <footer id="footer">
+
+      <div class="in_cover">
+        <div class="in_w">
+          <div class="ft_left">
+            <ul class="ft_policy_list ">
+              <li><a href="/conts/108005000000000.do" class="f_c_bb">개인정보처리방침  </a></li>
+              <li><a href="/conts/108008000000000.do">이메일주소수집거부</a></li>
+              <li><a href="/conts/108009000000000.do">환자의 권리와 의무</a></li>
+              <li><a href="tel:1577-0013">진료예약전화 <strong class="b f_c_bb"> 1577-0013</strong></a></li>
+              <li><a href="/hospital/treatmentList.do">비급여진료비안내</a></li>
+            </ul>
+
+            <div class="x_divi">
+              <div class="x_left">
+                <address class="ft_address">
+                  <p class="address">(우편번호 10444) 경기도 고양시 일산동구 일산로 100 (백석 1동 1232번지) / <span>대표전화: 031-900-0114 / 팩스: 031-900-0049</span></p>            
+                </address>
+                <p class="ft_copyright">Copyright NATIONAL HEALTH INSURANCE SERVICE ILSAN HOSPITAL. <span>All Right Reserved.</span></p>
+              </div>
+              <div class="x_right">
+                <ul class="ft_certi_w">
+                  <li><img src="/common/front/kor/images/comm/ft_certLogo_01.png" alt="보건복지부 인증의료기관"  title="보건복지부 인증의료기관 "></li>
+                  <li><img src="/common/front/kor/images/comm/ft_certLogo_02_20260316.png" aria-label="과학기술정보통신부 WA(WEB접근성) 품질인증 마크, 웹와치(WebWatch) 2026.03.17 ~ 2027.03.16" alt="과학기술정보통신부"  title="과학기술정보통신부"></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="ft_right">
+            <div class="ft_familysite tg_w">
+              <h5>
+                <a href="javascript:void(0);" class="tg_btn">Family Site</a>
+              </h5>
+              <ul class="ft_familysite_list tg_cnt" style="display:none;">
+                <li><a href="http://www.nhic.or.kr/" target="_blank" title="새 창으로 보기" rel="noreferrer noopener">국민건강보험공단</a></li>
+                <li><a href="https://www.nhis.or.kr/nhis/healthin/wbhaca04500m01.do" target="_blank" title="새 창으로 보기" rel="noreferrer noopener">건강 iN</a></li>
+                <li><a href="http://www.mohw.go.kr/" target="_blank" title="새 창으로 보기" rel="noreferrer noopener">보건복지부</a></li>
+                <li><a href="http://www.goyangmaum.org/" target="_blank" title="새 창으로 보기" rel="noreferrer noopener">고양시 정신건강증진센터</a></li>
+                <li><a href="http://www.safekorea.go.kr/" target="_blank" title="새 창으로 보기" rel="noreferrer noopener">국민재난안전포털</a></li>
+              </ul>
+            </div>
+  
+            <ul class="ft_sns_w">
+              <li><a href="https://blog.naver.com/hello_health" target="_blank" class="ft_blog ico" rel="noreferrer noopener" title="새 창으로 보기"><span>일산병원 블로그</span></a></li>
+              <li style="display: none;"><a href="https://m.post.naver.com/my.nhn?memberNo=2988819" target="_blank" class="ft_naver ico" rel="noreferrer noopener" title="새 창으로 보기"><span>일산병원 네이버 포스트</span></a></li>
+              <li><a href="https://www.facebook.com/profile.php?id=100087755306536" target="_blank" class="ft_face ico" rel="noreferrer noopener" title="새 창으로 보기"><span>일산병원 페이스북</span></a></li>
+              <li><a href="https://www.youtube.com/user/nhimchellohealth/featured" target="_blank" class="ft_youtube ico" rel="noreferrer noopener" title="새 창으로 보기"><span>일산병원 유튜브</span></a></li>
+              <li><a href="https://tv.naver.com/hellohealthtv" target="_blank" class="ft_navertv ico" title="새 창으로 보기"><span>일산병원 네이버TV</span></a></li>
+              <li><a href="https://www.instagram.com/hello_health_pr/" target="_blank" class="ft_insta ico" rel="noreferrer noopener" title="새 창으로 보기"><span>일산병원 인스타그램</span></a></li>
+            </ul>
+          </div>
+        </div>        
+      </div>
+      
+    </footer>
+    <!--// footer -->
+
+  </div>
+  <!--// wrapper -->
+  
+  
+	<span itemscope="" itemtype="http://schema.org/Organization">
+		<link itemprop="url" href="https://www.nhimc.or.kr/" tabindex="-1">
+		<a itemprop="sameAs" href="https://blog.naver.com/hello_health" tabindex="-1"></a>
+		<a itemprop="sameAs" href="https://m.post.naver.com/my.nhn?memberNo=2988819" tabindex="-1"></a>
+		<a itemprop="sameAs" href="https://www.facebook.com/people/%EA%B5%AD%EB%AF%BC%EA%B1%B4%EA%B0%95%EB%B3%B4%ED%97%98%EC%9D%BC%EC%82%B0%EB%B3%91%EC%9B%90/100087755306536/" tabindex="-1"></a>
+		<a itemprop="sameAs" href="https://www.instagram.com/hello_health_pr/" tabindex="-1"></a>
+		<a itemprop="sameAs" href="https://tv.naver.com/hellohealthtv" tabindex="-1"></a>
+		<a itemprop="sameAs" href="https://www.youtube.com/user/nhimchellohealth/featured" tabindex="-1"></a>
+	</span>	
+	
+	
+  <script type="text/javascript">
+	
+	// 메뉴 타이틀	
+	//var menuNm = "개인정보수정";
+	var menuNm = $(".page_tit_w h2 span").text();
+	if( mainYn == "Y" ){
+		document.title = "국민건강보험 일산병원";
+	}else{
+		document.title = menuNm + " | 국민건강보험 일산병원";
+	}
+  </script>
+  
+  <script type="text/javascript">
+    // F12 버튼 방지
+    $(document).ready(function(){
+        $(document).bind('keydown',function(e){
+            if ( e.keyCode == 123 /* F12 */) {
+                e.preventDefault();
+                e.returnValue = false;
+            }
+        });
+    });
+    
+    // 우측 클릭 방지
+    document.onmousedown=disableclick;
+    function disableclick(event){
+        if (event.button==2) {
+            return false;
+        }
+    }
+	</script>
+  
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-TQ3073QL98"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'G-TQ3073QL98');
+	</script>
+  
+  
+</body>
+</html>

@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<title>중앙노인보호전문기관</title>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<meta property="og:type" content="website" />
+<meta property="og:title" content="중앙노인보호전문기관" />
+<meta property="og:description" content="노인학대 없는 세상 배려와 존중이 있는 세상 우리 모두 행복한 세상" />
+<meta property="og:image" content="/child/img/og-logo.png">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache"><META HTTP-EQUIV="Expires" CONTENT="-1"><meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width" />
+<meta name='title' content='중앙노인보호전문기관'>
+<meta name='subject' content='중앙노인보호전문기관'>
+<meta name='author' content='유엑스아이'>
+<meta name='copyright' content='중앙노인보호전문기관'>
+<meta name='description' content='중앙노인보호전문기관은 노인인권 정책제안 및 연구기관입니다'>
+<meta name='keywords' content='노인학대 없는 세상 배려와 존중이 있는 세상 우리 모두 행복한 세상'>
+<meta name='content-language' content='ko'>
+<link rel="canonical" href="">
+<link href='/child/css/reset.css' rel='stylesheet'>
+<link href='/child/css/font.css' rel='stylesheet'>
+<link href='/child/css/hf.css' rel='stylesheet'>
+<link href='/child/css/common.css' rel='stylesheet'>
+
+<!-- Favicon -->
+<link rel="apple-touch-icon" sizes="57x57" href="/child/img/favicon/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="/child/img/favicon/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/child/img/favicon/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="/child/img/favicon/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/child/img/favicon/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="/child/img/favicon/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="/child/img/favicon/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/child/img/favicon/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/child/img/favicon/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192"  href="/child/img/favicon/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/child/img/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/child/img/favicon/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/child/img/favicon/favicon-16x16.png">
+<link rel="manifest" href="/favicon/manifest.json">
+
+<link rel='stylesheet' href='/child/css/main.css'><link href='/child/css/member.css' rel='stylesheet'>
+<link href='/child/css/shop.css' rel='stylesheet'>
+<link href="/child/js/slick/slick.css" rel="stylesheet">
+<link href='/child/js/aos-master/dist/aos.css' rel='stylesheet'>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src='/child/js/jquery/jquery-ui.min.js'></script>
+<script src='/child/js/slick/slick.js'></script>
+<script src='/child/js/aos-master/dist/aos.js'></script>
+<script src='/child/js/script.js'></script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HG5RCB6NRW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-HG5RCB6NRW');
+</script>
+
+<script src="/adm/js/uxidev.js"></script>
+<script src="/dist/bundle.js"></script>
+<script src="/dist/vendors_bundle.js"></script>
+</head>
+<body>
+<div id="vue-app" v-cloak>
+
+<header class="header">
+    <div class="header__inner">
+        <h1 class="header__logo"><a href="/" title="홈으로 이동"><span class="blind">중앙노인보호전문기관</span></a></h1>
+        <div class="header__contents">
+            <div class="header__menu">
+                <ul class="header-menu-ul">
+                    <li>
+                        <a class="menu-link menu-toggle" href="/child/sub/about/definition.php"><h2>노인학대알기</h2></a>
+                        <ul class="sub-menu">
+                            <li><a href="/child/sub/about/definition.php">정의 및 유형</a></li>
+                            <li><a href="/child/sub/about/status.php">연도별 노인학대 현황</a></li>
+                            <li><a href="/child/sub/about/act.php">노인학대 대표적 행위</a></li>
+                            <li><a href="/child/sub/about/report.php">노인학대 신고방법</a></li>
+                            <li><a href="/child/sub/about/step.php">노인학대 개입절차</a></li>
+                            <li><a href="/child/sub/bbs/faq.php">FAQ</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="menu-link menu-toggle" href="/child/sub/bbs/edu.php?category=5ebcd6e633ce316"><h2>자료실</h2></a>
+                        <ul class="sub-menu">
+                            <li><a href="/child/sub/bbs/report.php">현황보고서 등</a></li>
+                            <li><a href="/child/sub/bbs/edu.php?category=5ebcd6e633ce316">교육자료</a></li>
+                            <li><a href="/child/sub/bbs/data.php">홍보자료</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="menu-link menu-toggle" href="/child/sub/org/intro/law.php"><h2>기관소개</h2></a>
+                        <ul class="sub-menu">
+                            <li><a href="/child/sub/org/intro/law.php">기관소개</a></li>
+                            <li><a href="/child/sub/org/work.php">노인보호전문기관 주요업무</a></li>
+                            <li><a href="/child/sub/org/status.php">전국노인보호전문기관현황</a></li>
+                            <li><a href="/child/sub/org/ambassador.php">홍보대사</a></li>
+                            <li><a href="/child/sub/org/ci.php">CI / BI / 캐릭터</a></li>
+                            <li><a href="/child/sub/org/cooperation.php">협력기관</a></li>
+                            <li><a href="/child/sub/org/sponsor.php">후원기관</a></li>
+                            <li><a href="/child/sub/org/corp_info/notice.php">기관소식</a></li>
+                            <li><a href="/child/sub/org/location.php">찾아오시는길</a></li>
+                        </ul>
+                    </li>
+                    <!-- <li>
+                        <a class="menu-link " href="/child/sub/org/intro/law.php"><h2>인트라넷</h2></a>
+                    </li> -->
+                </ul>
+            </div>
+
+            <div class="header__right">
+                                <ul class="header-link">
+                    <li><a class="button" href="https://blog.naver.com/noinboho615" target="_blank"><img src="/child/img/icon/header-sns-1.png" alt=""></a></li>
+                    <li><a class="button" href="https://www.youtube.com/channel/UCZZuga6PVYtsaxCPsbxEpTQ" target="_blank"><img src="/child/img/icon/header-sns-2.png" alt=""></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="header-fullmenu">
+        <div class="header-fullmenu__inner">
+            <ul class="header-fullmenu__col">
+                <li><a href="/child/sub/about/definition.php">정의 및 유형</a></li>
+                <li><a href="/child/sub/about/status.php">연도별 노인학대 현황</a></li>
+                <li><a href="/child/sub/about/act.php">노인학대 대표적 행위</a></li>
+                <li><a href="/child/sub/about/report.php">노인학대 신고방법</a></li>
+                <li><a href="/child/sub/about/step.php">노인학대 개입절차</a></li>
+                <li><a href="/child/sub/bbs/faq.php">FAQ</a></li>
+            </ul>
+            <ul class="header-fullmenu__col">
+                <li><a href="/child/sub/bbs/report.php">현황보고서 등</a></li>
+                <li><a href="/child/sub/bbs/edu.php?category=5ebcd6e633ce316">교육자료</a></li>
+                <li><a href="/child/sub/bbs/data.php">홍보자료</a></li>
+            </ul>
+            <ul class="header-fullmenu__col">
+                <<li><a href="/child/sub/org/intro/law.php">기관소개</a></li>
+                <li><a href="/child/sub/org/work.php">노인보호전문기관 주요업무</a></li>
+                <li><a href="/child/sub/org/status.php">전국노인보호전문기관현황</a></li>
+                <li><a href="/child/sub/org/ambassador.php">홍보대사</a></li>
+                <li><a href="/child/sub/org/ci.php">CI / BI / 캐릭터</a></li>
+                <li><a href="/child/sub/org/cooperation.php">협력기관</a></li>
+                <li><a href="/child/sub/org/sponsor.php">후원기관</a></li>
+                <li><a href="/child/sub/org/corp_info/notice.php">기관소식</a></li>
+                <li><a href="/child/sub/org/location.php">찾아오시는길</a></li>
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="mobile-menu">
+        <button class="mobile-menu__button mobile-menu__button--flip" type="button" aria-pressed="false">
+            <span></span>
+        </button>
+    </div>
+</header>
+
+
+<div class="quick-menu">
+	<div class="quick">
+		<ul class="quick-ul">
+			<li><a href=""><span></span></a></li>
+            <li><a href=""><span></span></a></li>
+		</ul>
+	</div>
+</div>
+<div id="popup">
+  
+<!--                ### 팝업 시작 ###            -->
+<script language="javascript">
+<!--
+function readCookie(cookiename)
+{
+ var Found = false;
+
+ cookiedata = document.cookie;
+ if ( cookiedata.indexOf(cookiename) >= 0 ){
+   Found = true;
+ }
+
+ return Found;
+}
+
+function setCookie( name, value, expiredays )
+{
+ var todayDate = new Date();
+ todayDate.setDate( todayDate.getDate() + expiredays );
+ document.cookie = name + "=" + escape( value ) + "; path=/; expires=" + todayDate.toGMTString() + ";"
+}
+//-->
+</script>
+<script language="javascript">
+<!--
+function popupClose68f9bda115d1a07(){
+	setCookie("popupDayClose68f9bda115d1a07", "true", 1);
+	popup68f9bda115d1a07.style.display = 'none';
+	document.getElementById("popContent68f9bda115d1a07").innerHTML="";
+}
+
+
+function popupCloses68f9bda115d1a07(){
+
+	popup68f9bda115d1a07.style.display = 'none';
+	document.getElementById("popContent68f9bda115d1a07").innerHTML="";
+}
+//-->
+</script>
+<div id="popup68f9bda115d1a07" class="popup-layer" style='left: 100px; top: 65px;'>
+	<div style="overflow: auto;width:400px; height:500px">
+		<div class="popup-layer-body" >
+			<div id="popContent68f9bda115d1a07" class="popup-layer-content"><div align="" style=""><div align="" style=""><div align="" style=""><div align="" style=""><div align="" style=""><div align="" style=""><div align="" style=""><div align="" style=""><div align="" style=""><div align="" style=""><div align="" style=""><div align="" style=""><div align="" style=""><p><img src="/adm/data/webedit/202510241503451205360181.png" title="노보 사칭 주의 안내.png">&nbsp;</p></div></div></div></div></div></div></div></div></div></div></div></div></div><p><br></p></div>
+		</div>
+	</div>
+
+	<div class="popup-layer-foot">
+		<ul class="grid">
+			<li class="grid-12">
+				<label class="check check-light" for="popup-disable68f9bda115d1a07">
+					<input id="popup-disable68f9bda115d1a07" type="checkbox" onClick="popupClose68f9bda115d1a07();" />
+					<i></i>
+					<span>오늘하루 열지않음</span>
+				</label>
+			</li><li class="grid-12">
+				<label class="check check-light" for="popup-close68f9bda115d1a07">
+					<input id="popup-close68f9bda115d1a07" type="checkbox" style="margin-right:2px;" onClick="popupCloses68f9bda115d1a07();" />
+					<i></i>
+					<button type="button" onclick="popupCloses68f9bda115d1a07();"><span>닫기</span></button>
+				</label>
+			</li>
+		</ul>
+	</div>
+</div>
+<script language="javascript">
+<!--
+if(readCookie('popupDayClose68f9bda115d1a07')){
+	popup68f9bda115d1a07.style.display = 'none';
+}
+-->
+</script>
+<script language="javascript">
+<!--
+function popupClose69d4669d9291954(){
+	setCookie("popupDayClose69d4669d9291954", "true", 1);
+	popup69d4669d9291954.style.display = 'none';
+	document.getElementById("popContent69d4669d9291954").innerHTML="";
+}
+
+
+function popupCloses69d4669d9291954(){
+
+	popup69d4669d9291954.style.display = 'none';
+	document.getElementById("popContent69d4669d9291954").innerHTML="";
+}
+//-->
+</script>
+<div id="popup69d4669d9291954" class="popup-layer" style='left: 300px; top: 300px;'>
+	<div style="overflow: auto;width:500px; height:500px">
+		<div class="popup-layer-body" onclick=window.open('http://www.navi1389.or.kr/theme/basic/html/company/06_apply.php'); style='cursor:pointer'>
+			<div id="popContent69d4669d9291954" class="popup-layer-content"><div align="" style=""><div align="" style=""><div align="" style=""><div align="" style=""><p><img src="/adm/data/webedit/20260407110614715126546.png" title="승용차 5부제.png"><br style="clear:both;">&nbsp;</p></div><p>&nbsp;</p></div><p>&nbsp;</p></div><p>&nbsp;</p></div><p><br></p></div>
+		</div>
+	</div>
+
+	<div class="popup-layer-foot">
+		<ul class="grid">
+			<li class="grid-12">
+				<label class="check check-light" for="popup-disable69d4669d9291954">
+					<input id="popup-disable69d4669d9291954" type="checkbox" onClick="popupClose69d4669d9291954();" />
+					<i></i>
+					<span>오늘하루 열지않음</span>
+				</label>
+			</li><li class="grid-12">
+				<label class="check check-light" for="popup-close69d4669d9291954">
+					<input id="popup-close69d4669d9291954" type="checkbox" style="margin-right:2px;" onClick="popupCloses69d4669d9291954();" />
+					<i></i>
+					<button type="button" onclick="popupCloses69d4669d9291954();"><span>닫기</span></button>
+				</label>
+			</li>
+		</ul>
+	</div>
+</div>
+<script language="javascript">
+<!--
+if(readCookie('popupDayClose69d4669d9291954')){
+	popup69d4669d9291954.style.display = 'none';
+}
+-->
+</script>
+<!--                ### 팝업 끝 ###            -->
+</div>
+<div id="wrap">
+    <div class="visual fade">
+        <div class="visual-slide">
+            <div class="visual-slide__image slide-5">
+                <div class="visual-slide__background"></div>
+                <div class="visual-slide__contents">
+                    <h3 class="blind">나비새김, 노인학대 예방은 함께, 신고는 즉시. 노인학대 신고상담 1577-1389</h3>
+                    <img src="/child/img/main/v5-image.png" alt="" class="desktop">
+                    <img src="/child/img/main/v5-image-mobile.png" alt="" class="mobile">
+                </div>
+            </div>
+            
+            <!-- <div class="visual-slide__image slide-3">
+                <div class="visual-slide__background"></div>
+                <div class="visual-slide__contents">
+                    <h3 class="blind"></h3>
+                    <img src="/child/img/main/v4.jpg" alt="">
+                </div>
+            </div> -->
+
+            <!-- <div class="visual-slide__image slide-2">
+                <div class="visual-slide__background"></div>
+                <div class="visual-slide__contents">
+                    <h3 class="blind">나의 마음에 나비를 새기다</h3>
+                    <img src="/child/img/main/v2-image.jpg" alt="">
+                </div>
+            </div> -->
+        </div>
+        <div class="visual-bann-area"
+            data-aos="fade-left"
+            data-aos-delay="300"
+            data-aos-duration="700"
+            data-aos-easing="ease-in-out"
+            data-aos-once="true">
+            <a class="visual-bann" href="/child/sub/about/report.php">
+                <h3 class="visual-bann__title"><strong>노인학대,</strong><br> 이럴 때 신고하세요</h3>
+                <span class="visual-bann__line"></span>
+                <p class="visual-bann__pr">노인학대 신고방법 및 <br class="pc">개입절차, 예측징후 소개</p>
+                <em class="visual-bann__button button-white-border">바로가기</em>
+            </a>
+        </div>
+    </div>
+
+
+    <section class="section1">
+        <div class="container-large">
+        	<ul class="main-link-area grid">
+                <li class="grid-6">
+                    <a class="main-link link--1" href="https://15771389.or.kr/" target="_blank">
+                        <h3 class="main-link__title">
+                            <span class="title-xsmall6 color-white weight-2">노인학대예방 및 신고의무에 관한 교육</span><br>
+                            <span class="title-small4 color-white b">온라인/자체교육 <br class="pc"/>안내 </span>
+                        </h3>
+                    </a>
+                </li><li class="grid-6">
+                    <a class="main-link link--2" href="https://noinedu.or.kr/g5/" target="_blank">
+                        <h3 class="main-link__title">
+                            <span class="title-xsmall6 color-white weight-2">노인인권</span><br>
+                            <span class="title-small4 color-white b">집합교육 신청</span>
+                        </h3>
+                        <p class="title-xsmall3 color-white weight-2">
+                            - 노인복지시설 및 재가장기요양기관 <br>&nbsp;&nbsp;종사자 대상 교육<br>
+                            - 근무 시설이 소속된 시군구 <br>&nbsp;&nbsp;교육으로 신청
+                        </p>
+                    </a>
+                </li><li class="grid-6">
+                    <a class="main-link link--3" href="https://in.kohi.or.kr/index.do" target="_blank">
+                        <h3 class="main-link__title">
+                            <span class="title-xsmall6 color-white weight-2">노인인권</span><br>
+                            <span class="title-small4 color-white b">온라인교육 신청</span>
+                        </h3>
+                        <p class="title-xsmall5 color-white weight-2">
+                            한국보건복지인재원<br/>사이버교육센터
+                        </p>
+                    </a>
+                </li><li class="grid-6">
+                    <a class="main-link link--4" href="http://www.navi1389.or.kr/" target="_blank">
+                        <h3 class="main-link__title">
+                            <span class="title-xsmall6 color-white weight-2">노인학대예방 캠페인</span><br>
+                            <span class="title-small4 color-white b">나비새김 홈페이지</span>
+                        </h3>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="section2">
+        <div class="container-large">
+            <div class="main-info-area">
+                <div class="main-board">
+                    <ul class="tab-list main-board__head">
+                        <li class="on">
+                            <span>공지사항</span>
+                        </li>
+                        <li>
+                            <span>취업제한</span>
+                        </li>
+                        <li>
+                            <span>언론보도자료</span>
+                        </li>
+                        <li>
+                            <span>채용공고</span>
+                        </li>
+                    </ul>
+                    <ul class="tab-contents">
+                        <li class="on">
+                            <a class="main-board-link" href="/child/sub/org/corp_info/notice.php">
+                                <i class="main-board__plus"></i>
+                            </a>
+                            <div class="main-board__body">
+                                <table class="bbs-main-table">
+
+<tr>
+    <th class="align-left"><a class="bbs-main__title" href="/child/sub/org/corp_info/notice.php?ptype=view&_idx=69c4ed10e240127"><span>[안내] 전국 노인보호전문기관 인권교육 2026년 4월 계획 안내</span></a></th>
+    <td class="align-right">2026.03.26</td>
+</tr>
+
+<tr>
+    <th class="align-left"><a class="bbs-main__title" href="/child/sub/org/corp_info/notice.php?ptype=view&_idx=69c38570e692f31"><span>[공고] 클라우드 기반 노인학대 사례판정 열람 누리집 구축 위탁 운영 공고...</span></a></th>
+    <td class="align-right">2026.03.25</td>
+</tr>
+
+<tr>
+    <th class="align-left"><a class="bbs-main__title" href="/child/sub/org/corp_info/notice.php?ptype=view&_idx=69bcca9361f3511"><span>대학생 서포터즈 '새김지기단 7기' 모집 결과발표</span></a></th>
+    <td class="align-right">2026.03.20</td>
+</tr>
+
+<tr>
+    <th class="align-left"><a class="bbs-main__title" href="/child/sub/org/corp_info/notice.php?ptype=view&_idx=69c24e552382e99"><span>[중앙노인보호전문기관] 2026년 1차 추경예산 공고</span></a></th>
+    <td class="align-right">2026.03.03</td>
+</tr>
+
+<tr>
+    <th class="align-left"><a class="bbs-main__title" href="/child/sub/org/corp_info/notice.php?ptype=view&_idx=69a67313e17d579"><span>대학생 서포터즈 '새김지기단 7기' 모집</span></a></th>
+    <td class="align-right">2026.03.03</td>
+</tr>
+
+</table>                            </div>
+                        </li>
+                        <li>
+                            <a class="main-board-link" href="/child/sub/org/corp_info/restriction.php">
+                                <i class="main-board__plus"></i>
+                            </a>
+                            <div class="main-board__body">
+                                <table class="bbs-main-table">
+
+</table>                            </div>
+                        </li>
+                        <li>
+                            <a class="main-board-link" href="/child/sub/org/corp_info/news.php">
+                                <i class="main-board__plus"></i>
+                            </a>
+                            <div class="main-board__body">
+                                <table class="bbs-main-table">
+
+<tr>
+    <th class="align-left"><a class="bbs-main__title" href="/child/sub/org/corp_info/news.php?ptype=view&_idx=69f043e3ec33c69"><span>70대 母 때려 숨지게 한 남매, 1심 징역형에 항소…檢도 '양형 부당' ...</span></a></th>
+    <td class="align-right">2026.04.28</td>
+</tr>
+
+<tr>
+    <th class="align-left"><a class="bbs-main__title" href="/child/sub/org/corp_info/news.php?ptype=view&_idx=69f043c1bb85338"><span>“학대에 부당 해고까지”…의혹 줄잇는 연평 공립 요양원</span></a></th>
+    <td class="align-right">2026.04.28</td>
+</tr>
+
+<tr>
+    <th class="align-left"><a class="bbs-main__title" href="/child/sub/org/corp_info/news.php?ptype=view&_idx=69eac9208e44422"><span>'前삼성가 맏사위' 임우재, 80대 할머니 감금·폭행 사건 연루 복역중</span></a></th>
+    <td class="align-right">2026.04.24</td>
+</tr>
+
+<tr>
+    <th class="align-left"><a class="bbs-main__title" href="/child/sub/org/corp_info/news.php?ptype=view&_idx=69eac909401e419"><span>코인 사기 당하자 택시기사 노렸다…새벽 흉기 든 30대 범행의 결말</span></a></th>
+    <td class="align-right">2026.04.24</td>
+</tr>
+
+<tr>
+    <th class="align-left"><a class="bbs-main__title" href="/child/sub/org/corp_info/news.php?ptype=view&_idx=69eac8f3102bd12"><span>&quot;집 밖으로 따라 나온 母, 살기 느껴져서&quot;…70대 모친...</span></a></th>
+    <td class="align-right">2026.04.24</td>
+</tr>
+
+</table>                            </div>
+                        </li>
+                        <li>
+                            <a class="main-board-link" href="/child/sub/org/corp_info/employment.php">
+                                <i class="main-board__plus"></i>
+                            </a>
+                            <div class="main-board__body">
+                                <table class="bbs-main-table">
+
+<tr>
+    <th class="align-left"><a class="bbs-main__title" href="/child/sub/org/corp_info/employment.php?ptype=view&_idx=69e5dda4a1a6821"><span>[채용공고] 중앙노인보호전문기관 직원(출산휴가 및 육아휴직 대체인력) 채용...</span></a></th>
+    <td class="align-right">2026.04.20</td>
+</tr>
+
+<tr>
+    <th class="align-left"><a class="bbs-main__title" href="/child/sub/org/corp_info/employment.php?ptype=view&_idx=69e5dd4812bff07"><span>[채용결과] 중앙노인보호전문기관 직원채용(출산휴가 및 육아휴직 대체인력) ...</span></a></th>
+    <td class="align-right">2026.04.20</td>
+</tr>
+
+<tr>
+    <th class="align-left"><a class="bbs-main__title" href="/child/sub/org/corp_info/employment.php?ptype=view&_idx=69d748915ee0408"><span>[긴급] 중앙노인보호전문기관 직원(출산휴가 및 육아휴직 대체인력)채용 공고...</span></a></th>
+    <td class="align-right">2026.04.09</td>
+</tr>
+
+<tr>
+    <th class="align-left"><a class="bbs-main__title" href="/child/sub/org/corp_info/employment.php?ptype=view&_idx=69d7347089df846"><span>[채용결과] 중앙노인보호전문기관 직원채용(출산휴가 및 육아휴직 대체인력) ...</span></a></th>
+    <td class="align-right">2026.04.09</td>
+</tr>
+
+<tr>
+    <th class="align-left"><a class="bbs-main__title" href="/child/sub/org/corp_info/employment.php?ptype=view&_idx=69d60d9cdd45085"><span>[채용결과] 중앙노인보호전문기관 직원채용(출산휴가 및 육아휴직 대체인력) ...</span></a></th>
+    <td class="align-right">2026.04.08</td>
+</tr>
+
+</table>                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="main-media">
+                    <div class="main-media__frame">
+                        <iframe width="100%" src="https://www.youtube.com/embed/qJQfqwqCas4?si=g8-A9Om84kYjvkDa" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <!-- <iframe width="100%" src="https://www.youtube.com/embed/j9fVu65HCMk" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+                        <!-- <iframe width="100%" src="https://www.youtube.com/embed/ZoOJqhgYuGE" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+                    </div>
+                    <!-- <div class="main-media__link">
+                        <a href="http://navi1389.or.kr/" title="나비새김 홈페이지" target="_blank"><img src="/child/img/main/navi-image.jpg" alt="나비새김 홈페이지"></a>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+<script>
+  var currentHost = window.location.host;
+  if (currentHost == 'noinboho.or.kr' || currentHost == 'www.noinboho.or.kr') {
+    window.location.href = 'https://noinboho1389.or.kr';
+  }
+  if(window.location.protocol == 'http:') window.location.href = 'https://noinboho1389.or.kr';
+</script>
+
+
+
+
+<script>
+window.addEventListener('load', function(){
+// Visual
+$(".visual-slide")
+.on('init',function(slick){
+    let t = $('.visual-slide .slick-dots li').length;
+    $('.visual-slide').append('<div class=""><span class="slick-page__current">01</span><span> - </span><span class="slick-page__total"></span></div>');
+    $('.slick-page__total').text('0' + t);
+    $('.slick-page').prepend('<button class="visual-prev" type="button"><span class="blind">이전 슬라이드</span></button>');
+    $('.slick-page').append('<button class="visual-next" type="button"><span class="blind">다음 슬라이드</span></button>');
+})
+.on('beforeChange',function(event, slick, currentSlide, nextSlide){
+    $('.slick-page__current').text('0' + (nextSlide + 1));
+})
+.on('afterChange',function(event, slick, currentSlide, nextSlide){
+})
+.slick({
+    lazyLoad: 'ondemand',
+    fade: true,
+    draggable: true,
+    cssEase: 'ease-in-out',
+    arrows: false,
+    dots: true,
+    infinite: true,
+    autoplay: true,
+    autoplaySpeed: 3500,
+    speed: 1000,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    pauseOnFocus: false,
+    pauseOnHover: false
+});
+
+$('.visual-prev').click(function(){
+    $(".visual-slide").slick('slickPrev');
+});
+$('.visual-next').click(function(){
+    $(".visual-slide").slick('slickNext');
+});
+
+
+}, false);
+</script>
+<view-popup ref="view-popup"></view-popup>
+<footer class="footer">
+
+    <div class="footer__inner">
+
+        <div class="footer__top">
+                <ul class="footer-link">
+                    <li class="intanet-link">
+                        <a href="/child/sub/member/login.php">
+                            <span>인트라넷</span>
+                            <img src="/child/img/icon/button-arrow.svg" alt="">
+                        </a>
+                    </li>
+                    <li><a href="/child/sub/member/privacy.php">개인정보처리방침</a></li>
+                </ul>
+        </div>
+
+        <div class="footer__bottom">
+                <ul class="footer-info">
+                    <li><span>중앙노인보호전문기관</span></li>
+                    <li><span>대표 : 이기민</span></li>
+                    <li><span>고유번호 : 107-80-07058 </span></li>
+                    <li><span>주소 : 서울특별시 영등포구 영등포로 150, A동 205~206호(생각공장 당산)</span></li>
+                    <li><span>TEL : 02-3667-1389</span></li>
+                    <li><span>FAX : 02-2634-5023</span></li>
+                    <li><span>E-mail : noinboho@hanmail.net</span></li>
+                    <li><span>COPYRIGHT(c) 중앙노인보호전문기관 ALL RIGHT RESERVED</span></li>
+                </ul>
+        </div>
+
+    </div>
+</footer>
+
+<layer-view ref="layer-view"></layer-view>
+<script>
+Vue.methods.showLayer = function(idx) {
+    Vue.app.$refs['layer-view'].status = true;
+    Vue.app.$refs['layer-view'].idx = idx;
+}
+</script>
+</div>
+
+
+
+
+
+<script>
+Vue.component('global-navigation-bar', {
+    props: {},
+    data: function(){
+        return {
+            session: {}
+        };
+    },
+    created: function(){
+        this.getSession();
+    },
+    methods: {
+        getSession: function(){
+            var component = this;
+            $.ajax({
+                url: "/components/client/user/core/ajax.php",
+                method: "get",
+                async: false,
+                data: {
+                    _controller: "session"
+                },
+                dataType: "json",
+                success: function(res){
+                    console.log(res);
+                    if(res.error) alert(res.error);
+                    else{
+                        component.session = res.session;
+                    }
+                }
+            });
+        }
+    },
+    computed: {
+        login: function(){
+            return this.session.id ? true : false;
+        }
+    }
+});
+</script>
+<script type="text/x-template" id="layer-view-template">
+    <div v-if="status" class="bbs-popup">
+        <div class="bbs-popup__inner">
+            <div class="centre">
+                <div class="inner">
+                    <div class="bbs-popup-box">
+                        <button @click="close" class="button bbs-popup-box__close"></button>
+                        <div class="bbs-popup-box__thumbnail">
+                            <div class="img"><img :src="'/adm/data/bbs/' + board.code + '/' + board.upfile1"></div>
+                        </div>
+                        <div class="bbs-popup-box__contents">
+                            <p class="model-title">{{board.subject}}</p>
+                            <ul class="model-info">
+                                <li><strong>info1</strong><span>{{board.addinfo1}}</span></li>
+                                <li><strong>info2</strong><span>{{board.addinfo2}}</span></li>
+                                <li><strong>info3</strong><span>{{board.addinfo3}}</span></li>
+                                <li><strong>info4</strong><span>{{board.addinfo4}}</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script>
+Vue.component('layer-view', {
+    template: "#layer-view-template",
+    props: {
+        status : {type : Boolean,default :false},
+        idx : {type:String,default:""}
+    },
+    data: function(){
+        return {
+            board : {}
+        };
+    },
+    created: function(){
+
+    },
+    methods: {
+        getBBS : function() {
+            var component = this;
+
+            $.ajax({
+                url : "/components/bbs/layer/core/ajax.php",
+                method : "get",
+                data : {
+                    _controller : "Board",
+                    _method : "get",
+                    _idx : component.idx
+                },
+                dataType : "json",
+                success : function(res) {
+                    if(!res.success) alert(res.message);
+                    else {
+                        component.status = true;
+                        component.board = res.Board;
+                        if(component.idx != "")
+                            document.querySelector('html').setAttribute('data-scroll', 'false');
+                    }
+                }
+            });
+
+        },
+        close : function() {
+            document.querySelector('html').removeAttribute('data-scroll');
+            this.status = false;
+            this.idx = "";
+        }
+    },
+    computed : {
+
+    },
+    watch : {
+        idx : function() {
+            this.getBBS();
+        }
+    }
+});
+</script>
+<script type="text/x-template" id="view-popup-template">
+    <div v-if="show" class="review-popup popup-on">
+        <div class="review-popup__wrap">
+            <div class="review-popup__box">
+                <button @click="closePopup" type="button" class="review-popup__close"></button>
+                <button @click="moveImage('left')" class="review-popup__prev"></button>
+                <button @click="moveImage('right')" class="review-popup__next"></button>
+                <div class="popup-view-image">
+                    <div class="centre">
+                        <div class="inner">
+                            <div class="img"><img :src="'/adm/data/review/' + photo"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script>
+Vue.component('view-popup', {
+    template: "#view-popup-template",
+    props: {
+    },
+    data: function(){
+        return {
+            idx : "",
+            index : "",
+            show : false,
+            photos : {},
+            photo : ""
+        };
+    },
+    created: function(){
+
+    },
+    methods: {
+        getReview : function() {
+            var component = this;
+            $.ajax({
+                url : "/components/admin/shop/product/review/core/ajax.php",
+                method : "get",
+                data : {
+                    _controller : "getReview",
+                    idx : component.idx
+                },
+                dataType : "json",
+                success : function(res) {
+                    if(res.error) alert(res.error);
+                    else {
+                        // component.review = res.data;
+                        var photos = JSON.parse(res.data.photos);
+                        component.photos = photos;
+                        component.photo = photos[component.index].rename;
+                        component.show = true;
+                        $('html').attr('data-popup', 'open');
+                    }
+                }
+            });
+        },
+        moveImage : function(direction) {
+            if(direction == "left") {
+                if(this.index > 0) {
+                    this.index = this.index -1;
+                    this.photo = this.photos[this.index].rename;
+                }else {
+                    alert("첫번째 사진입니다.");
+                }
+            }else {
+                var index = this.index +1;
+                if(this.photos.length > index){
+                    this.index = this.index +1;
+                    this.photo = this.photos[this.index].rename;
+                }else {
+                    alert("마지막 사진입니다.");
+                }
+            }
+        },
+        closePopup : function() {
+            this.show = false;
+            this.idx = "";
+            $('html').removeAttr('data-popup');
+        }
+    },
+    computed : {
+        idx : function() {
+            return this.idx
+        }
+    },
+    watch : {
+        idx : function() {
+            this.getReview();
+        }
+    }
+});
+</script>
+
+</body>
+</html>
+
+

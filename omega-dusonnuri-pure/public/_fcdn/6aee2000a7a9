@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<title>금융결제원 통합납부서비스</title>
+	<meta charset="euc-kr" />
+	<meta http-equiv="Cache-Control" content="no-cache">	
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Expires" content="0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="description" content="금융결제원 통합납부서비스" />
+	<meta name="keywords" content="통합납부서비스" />
+	<meta name="author" content="금융결제원" />
+	<link rel="shortcut icon" type="image/x-icon" href="/images/common/favicon.ico" />
+	<link rel="stylesheet" type="text/css" href="/css_2024/common.css?20240816" />
+	<link rel="stylesheet" type="text/css" href="/css_2024/contents.css?20240816" />
+	<link rel="stylesheet" type="text/css" href="/css_2024/main.css?20240816" />
+	<link rel="stylesheet" type="text/css" href="/css_2024/swiper.css?20240816" />
+	<script type="text/javascript" src="/js/jquery/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="/js/swiper.min.js"></script>
+	<script type="text/javascript" src="/js/common_2024.js?20240816" defer></script>
+	<script type="text/javascript" src="/js/main_2024.js?20240816" defer></script>
+	<script type="text/javascript" src="/js/popup.js??20160526"></script>
+	
+	<script type="text/javascript">
+		function isMobile() {
+			var userAgent = navigator.userAgent;
+			
+			if(userAgent.match(/iPhone|iPod|Android|Windows CE|BlackBerry|Symbian|Windows Phone|webOS|Opera Mini|Opera Mobi|POLARIS|IEMobile|lgtelecom|nokia|SonyEricsson/i) != null || userAgent.match(/LG|SAMSUNG|Samsung/) != null) {
+				return true;
+			}else{
+				return false;
+			}
+		}
+		
+		function showEventPopup() {
+			// 이벤트 시작 종료시간(yyyymmddhhmm 형태)
+			var EVENT_START = "202008100900";		// 8월 10일 09시 00분
+			var EVENT_FINISH = "202008312330";		// 8월 31일 23시 30분
+			
+			// 응모기간 검증
+			var now = new Date();
+			var year = now.getFullYear();
+			var month = (now.getMonth() + 1)
+			var date = now.getDate();
+			var hour = now.getHours();
+			var minute = now.getMinutes();
+			
+			month = (month > 9 ? '' : '0') + month;
+			date = (date > 9 ? '' : '0') + date;
+			hour = (hour > 9 ? '' : '0') + hour;
+			minute = (minute > 9 ? '' : '0') + minute;
+			
+			var yyyymmddhhmm = year + month + date + hour + minute;
+			
+			if(EVENT_START <= yyyymmddhhmm && yyyymmddhhmm <= EVENT_FINISH) {
+				var popupUrl;
+				var top = 5;
+				var left = 5;
+				var width;
+				var height;
+				
+				if(isMobile() == true) {
+					popupUrl = "/html/popup/20200810/pop_mo_200810.html";
+					width = 580;
+					height = 925;
+				} else {
+					popupUrl = "/html/popup/20200810/pop_pc_200810.html";
+					width = 670;
+					height = 474;
+				}
+				
+				left = left + width + 10;
+				
+				// 팝업 띄우는 경로
+				window.open(popupUrl, "eventPop", "width=" + width + ",height=" + height + ",top=" + top + ",left=" + (screen.availWidth - left));
+			} else {
+				return;
+			}
+		}
+		
+		$(document).ready(function() {
+			showEventPopup();
+		})
+	</script>
+</head>
+<body class="hubmain">
+	<div id="skipnavi">
+		<strong>메뉴 건너뛰기</strong>
+		<a href="#contents">본문 바로가기</a>
+		<a href="#gnb">주메뉴 바로가기</a>
+	</div>
+	<div id="wrap">
+		<div id="contents" class="gate-contents">
+			<div class="gate-wrap">
+				<div class="gate-box">
+					<div class="gate-title-box">
+						<div class="gate-logo"><img src="/images/main_2024/gate_logo_kftc_blue.png" alt="금융결제원 로고"></div>
+						<h1>
+							<span>금융결제원</span> <br> 
+							통합납부서비스
+						</h1>
+					</div>
+					<div class="gate-link-box">
+						<ul>
+							<li class="gate-card01">
+								<a href="/index.giro">
+									<span>납부고객용</span>
+									<dl>
+										<dt>인터넷지로</dt>
+										<dd>
+											지방세입금, 국고금, <br> 
+											사회보험료, 전기/전화요금, <br>  
+											일반지로요금 납부서비스
+										</dd>
+									</dl>
+									<div class="icon-box">
+										<img src="/images/main_2024/ico_gate_icon01.png" alt="" class="gate-icon">
+										<img src="/images/main_2024/ico_gate_arrow_right_44.png" alt="" class="gate-arrow">
+									</div>
+								</a>
+							</li>
+							<li class="gate-card02">
+								<a href="https://www.cardrotax.kr">
+									<span>납부고객용</span>
+									<dl>
+										<dt>카드로택스</dt>
+										<dd>
+											국세, 관세, 경찰청 과태료, <br> 
+											인지대 &middot; 송달료 <br>
+											카드 납부서비스
+										</dd>
+									</dl>
+									<div class="icon-box">
+										<img src="/images/main_2024/ico_gate_icon02.png" alt="" class="gate-icon">
+										<img src="/images/main_2024/ico_gate_arrow_right_44.png" alt="" class="gate-arrow">
+									</div>
+								</a>
+							</li>
+							<li class="gate-card03">
+								<a href="https://biz.giro.or.kr">
+									<span>납부고객용</span>
+									<dl>
+										<dt>비즈지로</dt>
+										<dd>
+											기업에서 승인 단계를 거치는 <br>
+											공과금, 지로요금 등 <br>
+											납부서비스
+										</dd>
+									</dl>
+									<div class="icon-box">
+										<img src="/images/main_2024/ico_gate_icon03.png" alt="" class="gate-icon">
+										<img src="/images/main_2024/ico_gate_arrow_right_44.png" alt="" class="gate-arrow">
+									</div>
+								</a>
+							</li>
+							<li class="gate-card04">
+								<a href="http://e-giro.giro.or.kr">
+									<span>수납기관용</span>
+									<dl>
+										<dt>이지로</dt>
+										<dd>
+											지로이용기관의 <br>
+											지로자료 송수신 서비스
+										</dd>
+									</dl>
+									<div class="icon-box">
+										<img src="/images/main_2024/ico_gate_icon04.png" alt="" class="gate-icon">
+										<img src="/images/main_2024/ico_gate_arrow_right_44.png" alt="" class="gate-arrow">
+									</div>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- footer -->
+		<div class="footer bright">
+			<div>
+				<div class="footer_top">
+					<div class="ftr_nav">
+						<a href="/girohelp/guide/guideService.do"><span>서비스 소개</span></a>
+						<a href="https://www.kftc.or.kr/footer/persInfoHub?bizCode=giro" target="_blank" class="on link"><span>개인정보처리방침</span></a>
+						<a href="/etc/provision.do"><span>이용약관</span></a>
+						<a href="https://www.kftc.or.kr/kftc_html/footer/customer_service.html" target="_blank" title="팝업창 열림" class="link"><span>고객서비스헌장</span></a>
+						<a href="https://www.kftc.or.kr/kftc_html/footer/copyright_policy.html" target="_blank" title="팝업창 열림" class="link"><span>저작권정책</span></a>
+						<!-- <a href="https://kftc.or.kr/footer/emailPrivacyInfo" target="_blank"><span>이메일무단수집거부</span></a> -->
+						<a href="https://www.kftc.or.kr/kftc_html/footer/business_partnership.html" target="_blank" ><span>사업제휴</span></a>
+						<a href="https://www.kftc.or.kr/kftc_html/footer/map.html" target="_blank" class="link"><span>오시는길</span></a>
+					</div>
+				</div>
+				<div class="footer_bottom">
+					<div class="ftr_info">
+						<div class="logo"><img src="/images/common_2024/logo_kftc_blue.png" alt="금융결제원 로고"></div>
+						<ul class="address">
+							<li>본관 : (우)04631 서울특별시 중구 퇴계로 110 (회현동3가)</li>
+							<li>분당센터 : (우)13556 경기도 성남시 분당구 정자일로213번길 9 (정자동)</li>
+						</ul>
+					</div>
+					<div class="ftr_link">
+						<!-- PC와 링크 다름. 검사 두번-->
+						<div class="familysite">
+							<button class="family_tit">패밀리사이트</button>
+							<div class="family_list" style="display: none;">
+								<div class="inner">
+									<a href="https://www.kftc.or.kr" target="_blank" title="새창으로 열기" class="option"><span>금융결제원</span></a>
+									<a href="http://www.bankpay.or.kr" target="_blank" title="새창으로 열기" tabindex="0" class="option"><span>계좌이체PG</span></a>
+									<a href="https://www.payinfo.or.kr/payinfo.html" target="_blank" title="새창으로 열기" class="option"><span>계좌정보통합관리</span></a>
+									<a href="https://www.yessign.or.kr" target="_blank" title="새창으로 열기" class="option"><span>금융인증센터</span></a>
+									<a href="http://www.buycard.or.kr" target="_blank" title="새창으로 열기" class="option"><span>물품대금결제</span></a>
+									<a href="https://www.openbanking.or.kr" target="_blank" title="새창으로 열기" class="option"><span>오픈뱅킹</span></a>
+									<a href="https://audit.kftc.or.kr" target="_blank" title="새창으로 열기" class="option"><span>기업 회계감사자료 온라인 발급</span></a>
+									<a href="http://exk.kftc.or.kr" target="_blank" title="새창으로 열기" class="option"><span>EXK(국가간ATM·송금)</span></a>
+									<a href="https://www.knote.kr" target="_blank" title="새창으로 열기" class="option"><span>어음정보센터(Knote)</span></a>
+									<a href="https://www.unote.kr/unoteIndex.html" target="_blank" title="새창으로 열기" class="option"><span>전자어음(U-note)</span></a>
+									<a href="https://biz.giro.or.kr" target="_blank" title="새창으로 열기" class="option"><span>비즈지로</span></a>
+									<a href="http://e-giro.giro.or.kr" target="_blank" title="새창으로 열기" class="option"><span>이지로</span></a>
+									<a href="https://www.giro.or.kr" target="_blank" title="새창으로 열기" class="option"><span>인터넷지로</span></a>
+									<a href="https://www.e-revenuestamp.or.kr" target="_blank" title="새창으로 열기" class="option"><span>전자수입인지</span></a>
+									<a href="https://www.cardrotax.kr" target="_blank" title="새창으로 열기" class="option"><span>카드로택스</span></a>
+									<a href="http://www.narabill.kr" target="_blank" title="새창으로 열기" class="option"><span>나라빌</span></a>
+									<a href="https://www.billingone.or.kr" target="_blank" title="새창으로 열기" class="option"><span>빌링원플러스</span></a>
+									<a href="https://www.cmsedi.or.kr/edi" target="_blank" title="새창으로 열기" class="option"><span>지로EDI</span></a>
+									<a href="http://www.kftcvan.or.kr" target="_blank" title="새창으로 열기" class="option"><span>카드VAN</span></a>
+									<a href="http://www.trusbill.kr" target="_blank" title="새창으로 열기" class="option"><span>트러스빌(전자세금계산서)</span></a>
+									<a href="https://www.cmsedi.or.kr/cms" target="_blank" title="새창으로 열기" class="option"><span>CMS</span></a>
+									<a href="https://www.cashcard.or.kr" target="_blank" title="새창으로 열기" class="option"><span>현금카드</span></a>
+									<a href="https://mydata.kftc.or.kr/web/index" target="_blank" title="새창으로 열기" class="option"><span>마이데이터 중계서비스</span></a>
+									<a href="https://algorithm.kftc.or.kr/home/main" target="_blank" title="새창으로 열기" class="option"><span>알고리즘 검증 통합포털</span></a>
+									<a href="https://www.efforum.or.kr/eforum/index.jsp" target="_blank" title="새창으로 열기" class="option"><span>전자금융포럼</span></a>
+									<a href="https://pg.kftcvan.or.kr/" target="_blank" title="새창으로 열기" class="option"><span>신용카드PG</span></a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="ftr_cs">
+						<div>
+							<h3>금융결제원 고객센터</h3>
+							<p>1577-5500<span>(평일 09:00 ~ 17:45)</span></p>
+							<div class="cs_link">
+								<a href="https://chatbot.kftc.or.kr/kftcChatbot/chatbot.do" target="_blank" onclick="window.open(this.href, '_blank', 'width=1100, height=850'); return false;">챗봇상담</a>
+								<a href="http://callcenter.kftc.or.kr/qna/qna_form.jsp?SUB_MENU=4" target="_blank" class="link">이메일 문의</a>
+								<a href="https://help.kftc.or.kr" target="_blank" class="link">원격지원</a>
+								<a href="https://callcenter.kftc.or.kr/pop_ivr.html" target="_blank" onclick="window.open(this.href, '_blank', 'width=1100, height=885'); return false;" class="cs_shorcut_04"><span>단축번호</span></a>
+							</div>
+						</div>
+					</div>
+					<div class="copyright">Copyright 2024. KFTC<i> (Korea Financial Telecommunications &amp; Clearings Institute)</i> All rights reserved.</div>
+				</div>
+			</div>
+		</div>
+		<!-- // foooter -->
+	</div>
+
+</body>
+</html>

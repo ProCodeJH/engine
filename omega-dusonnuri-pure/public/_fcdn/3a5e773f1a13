@@ -1,0 +1,37 @@
+
+
+
+
+
+
+
+
+
+
+<!-- 로그인정보-->
+
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>국민건강보험공단 장기요양보험</title>
+
+	<link rel="stylesheet" href="/npbs/assetsRenew/css/np/layout.css">
+	<link rel="stylesheet" href="/npbs/assetsRenew/css/np/krds.min.css">
+	<script type="text/javascript" src="/npbs/solution/netfunnel/js/netfunnel.js?timestamp=20230620"></script>
+
+	<script type="text/javascript">
+       function load() {
+            NetFunnel_Action({service_id:"service_2", action_id:"act_29"}, "/npbs/indexr.jsp") 
+            }
+	</script>
+</head>
+<body onload="load()">
+	<div class="splash-wrap">
+	    <img src="/npbs/assetsRenew/images/np/logo.svg" alt="국민건강보험공단 장기요양보험">
+	</div>
+	<script src="/npbs/assetsRenew/js/np/krds.min.js"></script>
+	<script src="/npbs/assetsRenew/js/np/ui.js"></script>
+</body>

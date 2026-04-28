@@ -1,0 +1,26 @@
+<meta http-equiv="refresh" content="0;url=/">
+<script>
+	window.sessionStorage.removeItem('oms_token');
+	window.localStorage.removeItem('oms_token');
+	if(localStorage.getItem('IS_AUTO_LOGOUT') == 'Y') {
+		alert("고객님의 안전한 사이트 이용을 위해 로그인 후 약 "+ localStorage.getItem('AUTO_LOGOUT_TIME') +"분 동안 서비스 이용이 없어 자동 로그아웃 되었습니다.");
+	}
+</script>
+
+<!-- BrandScope 관련 코드 -->
+<script>
+	// brandscope.js의 사용을 위해 필요한 변수를 전역으로 등록함
+	window.SITE_CODE = 'S202110144a4bf5e71c703';
+	window.TEST_SERVER = Boolean('');
+	window.UNIT_CODE = 'u202110146167fbec727a5';
+    if (typeof window.sessionStorage !== 'undefined') {
+        window.sessionStorage.removeItem('imweb_site_auth_token');
+    }
+</script>
+<script src="js/brandscope.js"></script>
+<script>
+	if(window.BrandScope !== undefined) {
+		window.BrandScope.sessionResetByLogout();
+	}
+</script>
+<!-- BrandScope 관련 코드 end -->

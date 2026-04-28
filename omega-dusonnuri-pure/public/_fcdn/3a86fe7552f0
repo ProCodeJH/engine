@@ -1,0 +1,1091 @@
+'use strict';
+var version = '202505201010';
+/**
+ * 이 파일을 수정할경우 반드시 purge 실행.
+ */
+
+window.mobileAndTabletcheck = function () {
+    var check = false;
+    (function (a) {
+        if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(a) || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0, 4))) {
+            check = true;
+        }
+    })(navigator.userAgent || navigator.vendor || window.opera);
+    return check;
+};
+
+(function () {
+    if (!window.atob) {
+        window.atob = function (b64text) { return Base64.decode(b64text); }
+        window.btoa = function (utf8text) { return Base64.encode(utf8text); }
+
+        var Base64 = {
+            keyStr      : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
+            encode      : function (input) {
+                var output = "";
+                var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+                var x = 0;
+
+                input = Base64._utf8_encode(input);
+                while (x < input.length) {
+                    chr1 = input.charCodeAt(x++);
+                    chr2 = input.charCodeAt(x++);
+                    chr3 = input.charCodeAt(x++);
+
+                    enc1 = chr1 >> 2;
+                    enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+                    enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+                    enc4 = chr3 & 63;
+
+                    if (isNaN(chr2)) {
+                        enc3 = enc4 = 64;
+                    } else if (isNaN(chr3)) {
+                        enc4 = 64;
+                    }
+
+                    output = output + this.keyStr.charAt(enc1) + this.keyStr.charAt(enc2) + this.keyStr.charAt(enc3) + this.keyStr.charAt(enc4);
+                }
+
+                return output;
+            },
+            decode      : function (input) {
+                var output = "";
+                var chr1, chr2, chr3;
+                var enc1, enc2, enc3, enc4;
+                var x = 0;
+
+                input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+                while (x < input.length) {
+                    enc1 = this.keyStr.indexOf(input.charAt(x++));
+                    enc2 = this.keyStr.indexOf(input.charAt(x++));
+                    enc3 = this.keyStr.indexOf(input.charAt(x++));
+                    enc4 = this.keyStr.indexOf(input.charAt(x++));
+
+                    chr1 = (enc1 << 2) | (enc2 >> 4);
+                    chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+                    chr3 = ((enc3 & 3) << 6) | enc4;
+
+                    output = output + String.fromCharCode(chr1);
+                    if (enc3 != 64) {
+                        output = output + String.fromCharCode(chr2);
+                    }
+
+                    if (enc4 != 64) {
+                        output = output + String.fromCharCode(chr3);
+                    }
+                }
+                output = Base64._utf8_decode(output);
+
+                return output;
+            },
+            _utf8_encode: function (string) {
+                string = string.replace(/\r\n/g, "\n");
+                var utftext = "";
+
+                for (var n = 0; n < string.length; n++) {
+                    var c = string.charCodeAt(n);
+
+                    if (c < 128) {
+                        utftext += String.fromCharCode(c);
+                    } else if ((c > 127) && (c < 2048)) {
+                        utftext += String.fromCharCode((c >> 6) | 192);
+                        utftext += String.fromCharCode((c & 63) | 128);
+                    } else {
+                        utftext += String.fromCharCode((c >> 12) | 224);
+                        utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+                        utftext += String.fromCharCode((c & 63) | 128);
+                    }
+                }
+
+                return utftext;
+            },
+            _utf8_decode: function (utftext) {
+                var string = "";
+                var x = 0;
+                var c = c1 = c2 = 0;
+
+                while (x < utftext.length) {
+                    c = utftext.charCodeAt(x);
+
+                    if (c < 128) {
+                        string += String.fromCharCode(c);
+                        x++;
+                    } else if ((c > 191) && (c < 224)) {
+                        c2 = utftext.charCodeAt(x + 1);
+                        string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+                        x += 2;
+                    } else {
+                        c2 = utftext.charCodeAt(x + 1);
+                        c3 = utftext.charCodeAt(x + 2);
+                        string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+                        x += 3;
+                    }
+                }
+
+                return string;
+            }
+        }
+    }
+}());
+
+/**
+ * APP4U-1482 : 스마트팝업
+ */
+var APP4YOU_SMART_POPUP = {
+
+    /**
+     * slickSlider 실행
+     *
+     * @param sliderParam
+     */
+    runSlickSlider: function (sliderParam) {
+
+        // EC$ 로딩이 완료되지 않았으면 재시도
+        if (typeof EC$ == 'undefined') {
+
+            console.log('EC$ Loading...');
+
+            setTimeout(function () {
+                APP4YOU_SMART_POPUP.runSlickSlider(sliderParam)
+            }, 200);
+
+            return;
+        }
+
+        (function ($) {
+
+            $(document).ready(function () {
+                try {
+
+                    // slick 플러그인 로딩이 완료되지 않았으면 재시도
+                    if (typeof $().smartPopupSlick == 'undefined') {
+
+                        console.log('slick Loading...');
+
+                        setTimeout(function () {
+                            APP4YOU_SMART_POPUP.runSlickSlider(sliderParam)
+                        }, 200);
+
+                        return;
+                    }
+
+                    // HTML 팝업인지 확인 (HTML 팝업의 targetObj는 '#app-smart-popup-slider-html-'로 시작함)
+                    var isHtmlPopup = sliderParam.targetObj.indexOf('#app-smart-popup-slider-html-') > -1;
+
+                    // 슬라이더 적용
+                    var slickOptions = {
+                        dots: isHtmlPopup ? false : true, // HTML 팝업일 경우 dots를 표시하지 않음
+                        autoplay: sliderParam.autoplay,
+                        autoplaySpeed: sliderParam.autoplaySpeed,
+                        arrows: sliderParam.arrows
+                    };
+
+                    var $targetObj = $(sliderParam.targetObj);
+
+                    // HTML 팝업일 경우 슬라이더 변경시 카운터 업데이트를 위한 이벤트 추가
+                    if (isHtmlPopup) {
+
+                        const shadowHost = document.querySelector(".app-smart-popup-container");
+                        const shadowRoot = shadowHost.shadowRoot;
+                        const innerElement = shadowRoot.querySelector('.app-smart-popup');
+                        $targetObj = $(innerElement).find(sliderParam.targetObj);
+
+                        // slick 1.8.1 버전 호환성을 위해 afterChange 또는 onAfterChange 둘 다 설정
+                        slickOptions.afterChange = function(slick, currentSlide) {
+                            // 즉시 카운터 업데이트
+                            var $counter = $(this).closest('.app-smart-popup').find('.smart-popup-counter .current');
+                            if ($counter.length > 0) {
+                                $counter.text(currentSlide + 1);
+                            }
+
+                            // 커스텀 슬라이드 변경 콜백 실행 (makePopup에서 설정한 경우)
+                            if (sliderParam.onSlideChange && typeof sliderParam.onSlideChange === 'function') {
+                                sliderParam.onSlideChange(currentSlide);
+                            }
+                        };
+
+                        slickOptions.onAfterChange = function(slick, currentSlide) {
+                            // 즉시 카운터 업데이트
+                            var $counter = $(this).closest('.app-smart-popup').find('.smart-popup-counter .current');
+                            if ($counter.length > 0) {
+                                $counter.text(currentSlide + 1);
+                            }
+
+                            // 커스텀 슬라이드 변경 콜백 실행 (makePopup에서 설정한 경우)
+                            if (sliderParam.onSlideChange && typeof sliderParam.onSlideChange === 'function') {
+                                sliderParam.onSlideChange(currentSlide);
+                            }
+                        };
+
+                        // 초기화 시에도 카운터 업데이트를 위한 이벤트 추가
+                        slickOptions.init = function(slick) {
+                            // 초기화 즉시 카운터 업데이트
+                            var $counter = $(this).closest('.app-smart-popup').find('.smart-popup-counter .current');
+                            if ($counter.length > 0) {
+                                $counter.text('1');
+                            }
+
+                            // 커스텀 초기화 콜백 실행 (makePopup에서 설정한 경우)
+                            if (sliderParam.onSlideChange && typeof sliderParam.onSlideChange === 'function') {
+                                sliderParam.onSlideChange(0);
+                            }
+                        };
+                    }
+
+                    $targetObj.smartPopupSlick(slickOptions);
+
+                    // 슬라이더 아이콘 적용 (HTML 팝업이 아닐 경우에만)
+                    if (!isHtmlPopup && sliderParam.slideButtonType === 'square') {
+                        $targetObj.find('.app-smart-popup-slider-dots').addClass('app-smart-popup-bar');
+                    }
+
+                    // APP4U-2976 : 슬라이드 설정이 완료되면 보이기
+                    $targetObj.closest('.app-smart-popup').show();
+
+                    // HTML 팝업인 경우 초기 카운터 값을 1로 설정
+                    if (isHtmlPopup) {
+                        $targetObj.closest('.app-smart-popup').find('.smart-popup-counter .current').text('1');
+                    }
+
+                    // APP4U-3023 : 마우스오버 해제시 슬라이드처리 동작하도록 추가.
+                    $targetObj.on('mouseleave', function(event){
+                        $(this).smartPopupSlick('play');
+                    });
+
+                } catch (e) {
+                    if (typeof(e) == 'object' && e.stack && window.console) {
+                        console.error(e);
+                    }
+                }
+            });
+
+        }(EC$));
+    },
+
+    /**
+     * APP4U-2852 : 팝업클릭수 갱신
+     *
+     * @param param
+     */
+    updateClickCnt: function (param) {
+
+        let sUrl = url + '/SmartPopup/browse/front';
+
+        $.ajax({
+            xhrFields    : {
+                withCredentials: true
+            },
+            data         : {
+                'params': param
+            },
+            type         : "GET",
+            url          : sUrl,
+            dataType     : 'jsonp',
+            cache        : true
+        });
+
+        return true;
+    }
+};
+
+var type = mobileAndTabletcheck() === true ? 'M' : 'P';
+var scriptPath = document.createElement('a');
+
+// ECQAUNIT-53220 : 도메인 분리
+//scriptPath.href = (document.currentScript || document.querySelector('script[src*="scriptTags"]')).src;
+scriptPath.href = app4youSmartpopupAppScripts.src;
+
+var url = scriptPath.origin || scriptPath.protocol + '//' + scriptPath.hostname;
+
+$(function () {
+    var cssId = "smartPopup";
+    var pageCode = $("meta[name='path_role']").attr('content');
+    var pageUrl = $("meta[property='og:url']").attr('content');
+
+    if (typeof pageCode === 'undefined' || typeof pageCode !== 'string') {
+        pageCode = 'MAIN';
+        if(typeof pageUrl !== 'undefined'){
+            pageCode = getPageCode(pageUrl)
+        }
+    }
+    if (!document.getElementById(cssId)) {
+        var head = document.getElementsByTagName('head')[0];
+        var link = document.createElement('link');
+        link.id = cssId;
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = url + '/SmartPopup/assets/css/front.css?vs=' + version;
+        link.media = 'all';
+        head.appendChild(link);
+
+        // APP4U-1482 : slick 슬라이더 추가
+        var slickCssUrl = url + '/SmartPopup/assets/uipack/slick/1.8.1/css/smart-popup.slick.css?vs=' + version;
+        $("head").append('<link rel="stylesheet" type="text/css" href="' + slickCssUrl + '"/>');
+
+        var slickSliderUrl = url + '/SmartPopup/assets/uipack/slick/1.8.1/js/smart-popup.slick.js?vs=' + version;
+        $("head").append('<script src="' + slickSliderUrl + '"/>');
+    }
+
+    var path = url + '/SmartPopup/tunnel/front/getPopupList';
+
+    if (typeof JSON !== "object") {
+        var script = document.createElement('script');
+        script.src = url + '/SmartPopup/assets/js/common/json2.js';
+
+        document.getElementsByTagName('body')[0].appendChild(script);
+    }
+
+    //@TODO CAFE24.SKIN_CODE 값이 없을경우 대기를 해야하는지.. (로딩 속도가 느린 사이트에서 팝업 표시가 느려지는 현상 발생할수 있음.)
+    // 스킨별 팝업설정은 외부에 공개되지 않은 기능이라 일단 무시
+
+    console.log('SKIN_CODE: ', CAFE24.SKIN_CODE);
+
+    var skinCode = CAFE24.SKIN_CODE;
+    if (typeof CAFE24.SKIN_CODE === 'undefined' || CAFE24.SKIN_CODE === null) {
+        skinCode = '';
+    }
+
+    // 팝업 리스트 조회
+    var params = window.btoa(JSON.stringify({
+        'mall_id' : CAFE24API.MALL_ID,
+        'shop_no' : CAFE24API.SHOP_NO,
+        'type'    : type,
+        'pageCode'    : pageCode,
+        'language': SHOP.getLanguage(),
+        'skin_code': skinCode
+    }));
+
+    // AJAX 요청 중복 방지
+    if (window.SMART_POPUP_AJAX_LOADING) {
+        return;
+    }
+    window.SMART_POPUP_AJAX_LOADING = true;
+
+    try {
+        $.ajax({
+            xhrFields    : {
+                withCredentials: true
+            },
+            data         : {
+                'mall_id': CAFE24API.MALL_ID,
+                'params': params
+            },
+            type         : "GET",
+            url          : path,
+            dataType     : 'jsonp',
+            jsonpCallback: 'makePopup',
+            cache        : true,
+            complete     : function() {
+                // 요청 완료 후 플래그 해제
+                window.SMART_POPUP_AJAX_LOADING = false;
+            }
+        });
+    } catch (e) {
+        window.SMART_POPUP_AJAX_LOADING = false;
+    }
+
+    document.body.addEventListener('click', function (event) {
+        var element = event.target;
+        var className = element.className;
+        if (typeof className !== 'string' || className === '') {
+            return;
+        }
+        var classList = className.split(' ');
+        if (classList.indexOf('smart-popup-close') >= 0) {
+            var popup = element.parentNode.parentNode;
+            if (popup.className.split(' ').indexOf('app-smart-popup') >= 0) {
+                if (classList.indexOf('smart-popup-today') >= 0) {
+                    setSmartPopupCookie('SmartPopup_' + CAFE24API.MALL_ID + '_' + element.getAttribute('data-popup-no'), 'done', 1);
+                } else if (classList.indexOf('smart-popup-week') >= 0) {
+                    setSmartPopupCookie('SmartPopup_' + CAFE24API.MALL_ID + '_' + element.getAttribute('data-popup-no'), 'done', 7);
+                }
+
+                popup.style.visibility = 'hidden';
+                popup.style.display = 'none';
+
+                // 모든 HTML 팝업이 닫혔는지 확인
+                var allClosed = true;
+                var visiblePopups = document.querySelectorAll('.app-smart-popup');
+                for (var i = 0; i < visiblePopups.length; i++) {
+                    // display: none이 아닌 팝업이 하나라도 있으면 모두 닫힌 것이 아님
+                    if (visiblePopups[i].style.display !== 'none' && visiblePopups[i].style.visibility !== 'hidden') {
+                        allClosed = false;
+                        break;
+                    }
+                }
+
+                // 모든 팝업이 닫혔을 때만 dimmed 제거
+                if (allClosed) {
+                    var dimmed = document.querySelector('.app-smart-popup-dimmed');
+                    if (dimmed) {
+                        dimmed.classList.remove('active');
+                        setTimeout(function() {
+                            if (dimmed.parentNode) {
+                                dimmed.parentNode.removeChild(dimmed);
+                            }
+                        }, 300);
+                    }
+                    document.body.classList.remove('active');
+                }
+            }
+        }
+    });
+});
+
+function setSmartPopupCookie(name, value, expiredays) {
+    var todayDate = new Date();
+    todayDate.setDate(todayDate.getDate() + expiredays);
+    document.cookie = name + "=" + escape(value) + "; path=/; expires=" + todayDate.toGMTString() + ";"
+}
+
+function makePopup(response) {
+    //console.log(response); 
+    if (response.result === true) {
+        // 이미 생성된 팝업 ID 추적 (전역 변수 초기화)
+        if (!window.CREATED_POPUP_IDS) {
+            window.CREATED_POPUP_IDS = [];
+        }
+        var current = new Date();
+        var zindex = 2147483647;
+        var result = response.data.list;
+        var result_html = response.data.list_html || [];
+        var config = response.data.config;
+        var marginLeft = 10;
+        var marginTop = 10;
+        var maxHeight = 10;
+        var innerWidth = window.innerWidth
+            || document.documentElement.clientWidth
+            || document.body.clientWidth;
+
+        var maxSize = 1000;
+        var btnGroupHeight = 61;
+
+        var body = document.getElementsByTagName('body')[0];
+        var closeBtnProto = document.createElement('button');
+        closeBtnProto.className = 'smart-popup-close';
+        // 이미지인 경우 팝업 정보
+        for (var idx = 0; idx < result.length; idx++) {
+            var item = result[idx];
+            
+            // 이미 생성된 팝업인지 체크
+            if (window.CREATED_POPUP_IDS.indexOf('img_' + item.popup_manage_no) >= 0) {
+                continue;
+            }
+            
+            if (document.cookie.indexOf('SmartPopup_' + CAFE24API.MALL_ID + '_' + item.popup_manage_no) >= 0) {
+                continue;
+            }
+            
+            // 팝업 생성 ID 등록
+            window.CREATED_POPUP_IDS.push('img_' + item.popup_manage_no);
+
+            /*if (item.use_during === 'T') {
+                var start = new Date(item.start_datetime);
+                var end = new Date(item.end_datetime);
+
+                if (current < start || current > end) {
+                    continue;
+                }
+            }*/
+            var popup = document.createElement('div');
+            popup.className = 'app-smart-popup';
+            popup.style.zIndex = (zindex - idx).toString();
+
+            // APP4U-1482 : 가장 큰 이미지 사이즈에 맞춤
+            var orgWidth = item.image_max_size.width;
+            var orgHeight = item.image_max_size.height;
+
+            var ratio = 1.0;
+            var width = orgWidth;
+
+            if (config.use_overlap === 'F' && type === 'P') {
+
+                if (width > maxSize) {
+                    width = maxSize;
+                    ratio = width / orgWidth;
+                }
+                var height = orgHeight * ratio;
+                /*if (height > maxSize) {
+                    height = maxSize;
+                    ratio = height / orgHeight;
+                    width = orgWidth * ratio;
+                }*/
+
+                if (marginLeft + width + 20 < innerWidth) {
+                    popup.style.marginLeft = marginLeft.toString() + 'px';
+                    popup.style.marginTop = marginTop.toString() + 'px';
+                    marginLeft += width + 14;
+
+                } else {
+                    popup.style.marginLeft = '10px';
+                    popup.style.marginTop = maxHeight + 'px';
+                    marginLeft = 24 + width;
+                    marginTop = maxHeight;
+                }
+
+                // ECQAUNIT-51128 : 팝업 이미지 겹쳐보이지 않게 처리 순서 변경
+                if (maxHeight < marginTop + height + btnGroupHeight + 12) {
+                    maxHeight = marginTop + height + btnGroupHeight + 12;
+                }
+            }
+
+            var popupBody = document.createElement('div');
+
+            // 슬라이드 사용인 경우
+            if (item.is_slide == 'T') {
+
+                let slideImageWidth = item.image_max_size.width;
+
+                popupBody.className = 'app-smart-popup-slider';
+                popupBody.id = 'app-smart-popup-slider-' + idx;
+
+                if (type === 'P') {
+
+                    // pc 인경우 위에서 계산된 가로길이를 사용
+                    // ECQAUNIT-51186 : 슬라이더 크기도 이미지 최대 사이즈와 동일하게 제한 (pc 일경우 1000 px)
+                    if (width > 1000) {
+                        width = 1000;
+                    }
+                    slideImageWidth = width;
+                } else {
+                    // 모바일인 경우 화면크기를 넘지않게 표시
+                    if (width > innerWidth) {
+                        slideImageWidth = innerWidth - 20;
+                    }
+                }
+
+                popupBody.style.width = slideImageWidth.toString() + 'px';
+
+                // APP4U-2976 : 슬라이드 설정이 완료될때까지 표시하지 않음. (border 도 표시하지 않게 하기 위해)
+                popup.style.display = 'none';
+            }
+
+            for (var imgIdx = 0; imgIdx < item.popup_image_list.length; imgIdx++) {
+
+                // 이미지 영역
+                var popupImageBody = document.createElement('div');
+                popupImageBody.className = 'smart-popup-img';
+
+                // 이미지 정보 취득
+                var imgInfo = item.popup_image_list[imgIdx];
+
+                var img = document.createElement('img');
+                img.src = imgInfo.image_path;
+                img.style.maxWidth = (type === 'P') ? '1000px' : '100%';
+
+                if (imgInfo.use_link === 'T') {
+                    var link = document.createElement('a');
+
+                    // APP4U-2852 : URL 상대경로 허용
+                    // link.href = url + '/SmartPopup/browse/front/?params=' + imgInfo.params;
+                    link.href = imgInfo.link_url;
+                    link.setAttribute("onclick","APP4YOU_SMART_POPUP.updateClickCnt('" + imgInfo.params + "');");
+
+                    if (imgInfo.link_type === 'N') {
+                        link.target = '_blank';
+                    }
+                    link.appendChild(img);
+                    popupImageBody.appendChild(link);
+                } else {
+                    popupImageBody.appendChild(img);
+                }
+
+                popupBody.appendChild(popupImageBody);
+
+                // 슬라이드 사용안함일경우 이미지 한개만 추가
+                if (item.is_slide != 'T') {
+                    break;
+                }
+            }
+
+            var during = document.createElement('button');
+            during.type = 'button';
+            during.className = 'smart-popup-close';
+            during.setAttribute('data-popup-no', item.popup_manage_no);
+            during.innerText = item.cookie_msg;
+            during.className += ' smart-popup-' + item.class_name;
+            var btnGroup = document.createElement('div');
+            btnGroup.className = 'smart-popup-btns';
+            var closeBtn = closeBtnProto.cloneNode(true);
+            closeBtn.innerText = item.close_btn;
+
+            btnGroup.appendChild(during);
+            btnGroup.appendChild(closeBtn.cloneNode(true));
+
+            popup.appendChild(popupBody);
+            popup.appendChild(btnGroup);
+            body.appendChild(popup);
+
+            // 슬라이더 사용인 경우
+            if (item.is_slide == 'T') {
+
+                var sliderParam = {
+                    targetObj    : '#app-smart-popup-slider-' + idx,
+                    scriptHost   : url,
+                    autoplay     : true,
+                    autoplaySpeed: item.slide_pause * 1000,
+                    slideButtonType : item.slide_button_type,
+                    arrows       : false
+                };
+
+                // slickSlider 실행
+                APP4YOU_SMART_POPUP.runSlickSlider(sliderParam);
+            }
+        }
+
+        if (result_html.length > 0) {
+            makeHtmlPopup(response)
+        }
+
+        postProcess();
+    }
+}
+
+function makeHtmlPopup(response) {
+    var zindex = 2147483647;
+    var result = response.data.list;
+    var result_html = response.data.list_html || [];
+    // popup_html 기간 체크는 백엔드에서 수행 (current_time 제거됨)
+
+    var body = document.getElementsByTagName('body')[0];
+
+    var image_count = result.length;
+    // HTML 팝업 처리
+    for (var idx = 0; idx < result_html.length; idx++) {
+        var item = result_html[idx];
+        
+        // 이미 생성된 팝업인지 체크 (전역 변수 초기화)
+        if (!window.CREATED_POPUP_IDS) {
+            window.CREATED_POPUP_IDS = [];
+        }
+        
+        if (window.CREATED_POPUP_IDS.indexOf('html_' + item.popup_manage_no) >= 0) {
+            continue;
+        }
+        
+        if (document.cookie.indexOf('SmartPopup_' + CAFE24API.MALL_ID + '_' + item.popup_manage_no) >= 0) {
+            continue;
+        }
+        
+        // 팝업 생성 ID 등록
+        window.CREATED_POPUP_IDS.push('html_' + item.popup_manage_no);
+
+        // body 아래에 shadow DOM 컨테이너 생성
+        var shadowContainer = document.createElement('div');
+        shadowContainer.className = 'app-smart-popup-container';
+
+        // 스타일 데이터를 객체로 관리하고, 마지막에 일괄 적용합니다.
+        var baseCss = {
+            'all': 'initial',
+            'height': 'auto',
+            'width': 'auto',
+            'box-sizing': 'border-box',
+            'display': 'block',
+            'position': 'fixed',
+            'overflow': 'hidden',
+            'z-index': (zindex - image_count - idx).toString(),
+            'transform': 'translateY(120%)',
+            'transition': 'transform 0.6s ease-out',
+            'transition-delay': '1s'
+        };
+
+        var mobileCss = {
+            'bottom': '0',
+            'left': '0',
+            'right': '0',
+            'max-width': '440px',
+            'border': '0',
+            'border-radius': '12px 12px 0 0',
+            'box-shadow': 'none'
+        };
+
+        var pcCss = {
+            'top': 'auto',
+            'bottom': '30px',
+            'left': '40px',
+            'right': 'auto',
+            'min-width': '360px',
+            'max-width': '391px',
+            'margin': '0 auto',
+            'border': '1px solid #f0f0f0',
+            'border-radius': '24px',
+            'box-shadow': '0px 4px 12px 0px rgba(0, 0, 0, 0.10)'
+        };
+
+        // 적용할 스타일을 하나의 객체로 합칩니다.
+        var containerCss = Object.assign({}, baseCss, (type === 'M' ? mobileCss : pcCss));
+
+        // 각 스타일을 shadowContainer에 일괄 적용
+        Object.keys(containerCss).forEach(function(key) {
+            shadowContainer.style.setProperty(key, containerCss[key], 'important');
+        });
+
+        var shadowRoot = shadowContainer.attachShadow({ mode: 'open' });
+
+        // shadowRoot에 CSS 파일들 로드
+        var frontCssLink = document.createElement('link');
+        frontCssLink.rel = 'stylesheet';
+        frontCssLink.type = 'text/css';
+        frontCssLink.href = url + '/SmartPopup/assets/css/front.css?vs=202505201010';
+
+        var slickCssLink = document.createElement('link');
+        slickCssLink.rel = 'stylesheet';
+        slickCssLink.type = 'text/css';
+        slickCssLink.href = url + '/SmartPopup/assets/uipack/slick/1.8.1/css/smart-popup.slick.css?vs=202505201010';
+
+        shadowRoot.appendChild(frontCssLink);
+        shadowRoot.appendChild(slickCssLink);
+
+        var popup = document.createElement('div');
+        popup.style.setProperty('all', 'initial', 'important');
+        popup.style.setProperty('box-sizing', 'border-box', 'important');
+        popup.style.setProperty('display', 'block', 'important');
+
+        popup.className = 'app-smart-popup pro ';
+        // 모바일일 경우 mobile 클래스 추가
+        if (type === 'M') {
+            popup.classList.add('mobile');
+        }
+
+        // HTML 팝업에서 슬라이드 기능 지원
+        if (item.popup_html_list && item.popup_html_list.length > 0) {
+            // 슬라이더 컨테이너 생성
+            var sliderContainer = document.createElement('div');
+            sliderContainer.className = 'app-smart-popup-slider';
+            sliderContainer.id = 'app-smart-popup-slider-html-' + idx;
+            var slide_count = item.popup_html_list.length;
+
+            // 각 HTML 아이템 추가
+            for (var htmlIdx = 0; htmlIdx < item.popup_html_list.length; htmlIdx++) {
+                var htmlItem = item.popup_html_list[htmlIdx];
+
+                // popup_html 기간 체크는 백엔드에서 수행되므로 프론트에서는 체크하지 않음
+                // 서버에서 기간 외 항목은 이미 필터링되어 응답에 포함되지 않음
+
+                var itemDiv = document.createElement('div');
+                itemDiv.className = 'smart-popup-item';
+
+                // 모바일/PC에 따라 다른 HTML 콘텐츠 출력
+                if (type === 'M' && htmlItem.html_mobile) {
+                    itemDiv.innerHTML = htmlItem.html_mobile;
+                } else {
+                    itemDiv.innerHTML = htmlItem.html;
+                }
+
+                                // HTML 내의 모든 a 태그를 찾아서 클릭 이벤트 추가 (중첩된 a 태그는 가장 상위 하나에만 이벤트 추가)
+                var anchorElements = itemDiv.getElementsByTagName('a');
+                var processedAnchors = []; // 이미 처리된 a 태그들을 추적
+
+                for (var anchorIdx = 0; anchorIdx < anchorElements.length; anchorIdx++) {
+                    var anchor = anchorElements[anchorIdx];
+
+                    // 현재 a 태그가 이미 처리된 a 태그의 하위 요소인지 확인
+                    var isChildOfProcessedAnchor = false;
+                    for (var processedIdx = 0; processedIdx < processedAnchors.length; processedIdx++) {
+                        var processedAnchor = processedAnchors[processedIdx];
+                        if (processedAnchor.contains(anchor)) {
+                            isChildOfProcessedAnchor = true;
+                            break;
+                        }
+                    }
+
+                    // 현재 a 태그가 다른 a 태그의 하위 요소인지 확인
+                    var isChildOfAnotherAnchor = false;
+                    var parentElement = anchor.parentElement;
+
+                    while (parentElement && parentElement !== itemDiv) {
+                        if (parentElement.tagName === 'A') {
+                            isChildOfAnotherAnchor = true;
+                            break;
+                        }
+                        parentElement = parentElement.parentElement;
+                    }
+
+                    // 상위 a 태그이고, 이미 처리된 a 태그의 하위가 아닌 경우에만 클릭 이벤트 추가
+                    if (!isChildOfAnotherAnchor && !isChildOfProcessedAnchor) {
+                        anchor.setAttribute("onclick", "APP4YOU_SMART_POPUP.updateClickCnt('" + htmlItem.params + "');");
+                        processedAnchors.push(anchor); // 처리된 a 태그 목록에 추가
+                    }
+                }
+                sliderContainer.appendChild(itemDiv);
+            }
+
+            // 전시할 배너가 없는 경우 건너뜀
+            if (slide_count < 1) {
+                continue;
+            }
+
+            // 슬라이더 컨테이너를 팝업에 추가
+            popup.appendChild(sliderContainer);
+
+            // 버튼 그룹 생성
+            var btnGroup = document.createElement('div');
+            btnGroup.className = 'smart-popup-btns';
+
+            // 오늘 하루 보지 않기 버튼
+            var optionBtn = document.createElement('button');
+            optionBtn.type = 'button';
+            optionBtn.className = 'smart-popup-close smart-popup-today';
+            optionBtn.setAttribute('data-popup-no', item.popup_manage_no);
+            optionBtn.innerText = item.cookie_msg || '오늘 하루 보지 않기';
+
+            // 닫기 버튼
+            var closeBtn = document.createElement('button');
+            closeBtn.type = 'button';
+            closeBtn.className = 'smart-popup-close';
+            closeBtn.innerText = item.close_btn || '닫기';
+
+            btnGroup.appendChild(optionBtn);
+            btnGroup.appendChild(closeBtn);
+
+            // 카운터 추가 - 팝업의 상단에 위치시킴
+            // 실제 화면에 표시될 항목 수 계산 (날짜 체크로 필터링된 후)
+            //var itemCount = sliderContainer.querySelectorAll('.smart-popup-item').length;
+            var itemCount = slide_count;
+            if (itemCount > 1) {
+                // 카운터 요소 생성 - smart-popup.slick.css의 smart-popup-counter 클래스 사용
+                var counter = document.createElement('div');
+                counter.className = 'smart-popup-counter';
+                counter.innerHTML = '<span class="current">1</span> / ' + itemCount;
+                popup.appendChild(counter);
+            }
+
+            // 버튼 그룹을 팝업에 추가
+            popup.appendChild(btnGroup);
+
+            // 화면에 추가
+            shadowRoot.appendChild(popup);
+            body.appendChild(shadowContainer);
+
+            // 요청한 스크립트 적용 - 이미지 팝업과 동일한 방식으로 슬라이더 실행
+            // HTML 팝업 슬라이더 파라미터 설정
+            var sliderParam = {
+                targetObj: '#app-smart-popup-slider-html-' + idx,
+                scriptHost: url,
+                autoplay: true,
+                autoplaySpeed: item.slide_pause * 1000 || 3000,
+                slideButtonType: item.slide_button_type || 'circle',
+                arrows: false,
+                dots: false
+            };
+
+            // 카운터 업데이트 관련 전역 변수 생성
+            if (itemCount > 1) {
+                // 팝업에 고유 ID 할당
+                var popupId = 'smart-popup-' + item.popup_manage_no;
+                popup.id = popupId;
+
+                // 전역 변수에 카운터 정보 저장
+                window['SMART_POPUP_COUNTER_' + popupId] = {
+                    popupId: popupId,
+                    totalSlides: itemCount,
+                    currentSlide: 0
+                };
+
+                // 슬라이더 이벤트 핸들러 등록을 위한 함수
+                var setupSliderEvents = function(sliderId, popupId) {
+                    // 일정 시간 후 실행 (슬라이더가 완전히 초기화된 후)
+                    setTimeout(function() {
+                        try {
+                            const shadowHost = document.querySelector(".app-smart-popup-container");
+                            const shadowRoot = shadowHost.shadowRoot;
+                            // 슬라이더 컨테이너 요소 선택
+                            var sliderEl = shadowRoot.getElementById(sliderId);
+                            if (!sliderEl) return;
+
+                            // 슬라이더 요소에 이벤트 리스너 직접 추가
+                            sliderEl.addEventListener('click', function() {
+                                setTimeout(updateCounter, 100);
+                            });
+
+                            // 모바일 터치 이벤트 처리
+                            if (type === 'M') {
+                                sliderEl.addEventListener('touchend', function() {
+                                    setTimeout(updateCounter, 300);
+                                });
+                            }
+
+                            // 카운터 업데이트 함수
+                            function updateCounter() {
+                                try {
+                                    var currentSlide = EC$(sliderEl).smartPopupSlick('slickCurrentSlide') || 0;
+                                    var popupEl = shadowRoot.getElementById(popupId);
+                                    var counterEl = popupEl ? popupEl.querySelector('.smart-popup-counter .current') : null;
+
+                                    if (counterEl) {
+                                        counterEl.textContent = (currentSlide + 1);
+                                    }
+                                } catch (e) {
+                                    console.log('슬라이더 카운터 업데이트 오류', e);
+                                }
+                            }
+
+                            // 자동 업데이트 타이머 설정 (보험용)
+                            var counterInterval = setInterval(function() {
+                                if (shadowRoot.getElementById(popupId)) {
+                                    updateCounter();
+                                } else {
+                                    clearInterval(counterInterval);
+                                }
+                            }, 1000);
+
+                        } catch (e) {
+                            console.log('슬라이더 이벤트 설정 오류', e);
+                        }
+                    }, 500);
+                };
+
+                // 슬라이더 실행 후 이벤트 핸들러 설정
+                APP4YOU_SMART_POPUP.runSlickSlider(sliderParam);
+                setupSliderEvents('app-smart-popup-slider-html-' + idx, popupId);
+            } else {
+                // 단일 슬라이드인 경우 그냥 실행
+                APP4YOU_SMART_POPUP.runSlickSlider(sliderParam);
+            }
+
+            setTimeout(function() {
+                body.classList.add('active');
+            }, 100);
+        } else {
+            body.appendChild(shadowContainer);
+        }
+
+        function setHtmlPopupEvent(){
+            const shadowHost = document.querySelector(".app-smart-popup-container");
+            if (shadowHost) {
+                const shadowRoot = shadowHost.shadowRoot;
+                const innerElement = shadowRoot.querySelector('.app-smart-popup');
+                innerElement.addEventListener('click', function (event) {
+                    var element = event.target;
+                    var className = element.className;
+                    if (typeof className !== 'string' || className === '') {
+                        return;
+                    }
+                    var classList = className.split(' ');
+                    if (classList.indexOf('smart-popup-close') >= 0) {
+                        var popup = element.parentNode.parentNode;
+                        if (popup.className.split(' ').indexOf('app-smart-popup') >= 0) {
+                            // HTML 팝업에서도 쿠키 설정 로직 추가
+                            if (classList.indexOf('smart-popup-today') >= 0) {
+                                setSmartPopupCookie('SmartPopup_' + CAFE24API.MALL_ID + '_' + element.getAttribute('data-popup-no'), 'done', 1);
+                            } else if (classList.indexOf('smart-popup-week') >= 0) {
+                                setSmartPopupCookie('SmartPopup_' + CAFE24API.MALL_ID + '_' + element.getAttribute('data-popup-no'), 'done', 7);
+                            }
+                            
+                            shadowHost.style.setProperty('visibility', 'hidden', 'important');
+                            shadowHost.style.setProperty('display', 'none', 'important');
+
+                            // 모든 HTML 팝업이 닫혔는지 확인
+                            var allClosed = true;
+                            var visiblePopups = innerElement;
+                            for (var i = 0; i < visiblePopups.length; i++) {
+                                // display: none이 아닌 팝업이 하나라도 있으면 모두 닫힌 것이 아님
+                                if (visiblePopups[i].style.display !== 'none' && visiblePopups[i].style.visibility !== 'hidden') {
+                                    allClosed = false;
+                                    break;
+                                }
+                            }
+
+                            // 모든 팝업이 닫혔을 때만 dimmed 제거
+                            if (allClosed) {
+                                var dimmed = document.querySelector('.app-smart-popup-dimmed');
+                                if (dimmed) {
+                                    dimmed.classList.remove('active');
+                                    setTimeout(function() {
+                                        if (dimmed.parentNode) {
+                                            dimmed.parentNode.removeChild(dimmed);
+                                        }
+                                    }, 300);
+                                }
+                                document.body.classList.remove('active');
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        setHtmlPopupEvent();
+
+        // 일반 HTML 팝업에도 애니메이션 효과 적용 (모바일에서만)
+        if (type === 'M') {
+            var dimmed = document.createElement('div');
+            dimmed.className = 'app-smart-popup-dimmed';
+
+            // 스타일 데이터를 객체로 관리하고, 마지막에 일괄 적용합니다.
+            var dimmedCss = {
+                'all': 'initial',
+                'position': 'fixed',
+                'top': '0',
+                'left': '0',
+                'width': '100%',
+                'height': '100%',
+                'background-color': 'rgba(0, 0, 0, 0.5)',
+                'opacity': '0',
+                'z-index': '998',
+                'transition': 'opacity 0.6s ease-out',
+                'transition-delay': '1s'
+            };
+
+            // 각 스타일을 shadowContainer에 일괄 적용
+            Object.keys(dimmedCss).forEach(function(key) {
+                dimmed.style.setProperty(key, dimmedCss[key], 'important');
+            });
+            body.appendChild(dimmed);
+
+            // 페이지 로드 후 애니메이션 효과로 dimmed 표시
+            setTimeout(function() {
+                dimmed.style.setProperty('opacity', '1', 'important');
+            }, 500);
+        }
+
+        // 애니메이션 효과로 팝업 표시
+        setTimeout(function() {
+            shadowContainer.style.setProperty('transform', 'translateY(0)', 'important');
+        }, 500);
+
+        break;
+    }
+}
+
+
+function postProcess() {
+    var popupList = document.getElementsByClassName('app-smart-popup');
+
+    for (var idx = 0; idx < popupList.length; idx++) {
+        var element = popupList[idx];
+    }
+}
+
+function getPageCode(url){
+    if (url.indexOf('product/list.html') >=0 || (url.indexOf('display') === -1 && url.indexOf('category') >= 0)) {
+        return 'PRODUCT_LIST';
+    }
+    if (url.indexOf('product/detail.html') >=0 || (url.indexOf('category') >=0 && url.indexOf('display') >= 0)) {
+        return 'PRODUCT_DETAIL';
+    }
+    if (url.indexOf('order/basket.html') >=0 ) {
+        return 'ORDER_BASKET';
+    }
+    if (url.indexOf('order/orderform.html') >=0 ) {
+        return 'ORDER_ORDERFORM';
+    }
+    if (url.indexOf('order/order_result.html') >=0 ) {
+        return 'ORDER_ORDERRESULT';
+    }
+
+    if (url.indexOf('board/index.html') >=0 ) {
+        return 'BOARD_MAIN';
+    }
+    if (url.indexOf('board/product/list.html') >=0 ) {
+        return 'BOARD_PRODUCT_LIST';
+    }
+    if (url.indexOf('myshop/index.html') >=0 ) {
+        return 'MYSHOP_MAIN';
+    }
+    if (url.indexOf('product/project.html') >=0 ) {
+        return 'PRODUCT_PROJECT';
+    }
+
+    return 'MAIN';
+}

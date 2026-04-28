@@ -1,0 +1,1368 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE HTML>
+<html lang="ko">
+<head>
+	<meta name="googlebot" content="noindex,nofollow" />
+	<meta name="google-site-verification" content="uFcrfQTJ9R3miQWabAs9zAoPXi9xcXP9USZ3Xcrerto" />
+	<title>국민건강보험 서울요양원</title>
+	<meta charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<meta http-equiv="Content-Script-Type" content="text/javascript" />
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta http-equiv="Expires" content="-1">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="No-Cache">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<link rel="shortcut icon" href="/sgcf/common/images/favicon.png" type="image/png" />
+	
+
+
+<link type="text/css" href="/sgcf/common/css/common.css" media='all' rel='stylesheet' />
+<link type="text/css" href="/sgcf/common/css/font-awesome.css" media='all' rel='stylesheet' />
+<link type="text/css" href="/sgcf/common/css/slick.css" media='all' rel='stylesheet' />
+
+
+<link type="text/css" href="/sgcf/common/css/jquery-ui.min.css" media='all' rel='stylesheet' />
+<link type="text/css" href="/sgcf/common/css/main.css" media='all' rel='stylesheet' />
+<link type="text/css" href="/sgcf/common/css/sub.css" media='all' rel='stylesheet' />
+
+	<script type="text/javascript" src="/sgcf/common/js/jquery-1.12.4.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="/sgcf/common/js/html5.js"></script>
+	<![endif]-->
+</head>
+<body class="__popup-open">
+	<div class="skip"><a href="#contents">컨텐츠바로가기</a></div>
+	<div class="wrap">
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+	var blackArr = new Array('innerhtml',
+							 'javascript','onmousewheel','onactive','onfocusout',
+							 'expression','charset','ondataavailable','oncut','onkeyup',
+							 'applet','document','onafteripudate','onclick','onkeypress',
+							 /*'meta',*/'onmousedown','onchange','onload',
+							 'xml','onbeforeactivate','onbeforecut','onbounce',
+							 'blink','append','onbeforecopy','ondbclick','onmouseenter',
+							 'binding','onbeforedeactivate','ondeactivate','onmouseout',
+							 'alert','ondatasetchaged','ondrag','onmouseover',
+							 'script','msgbox','cnbeforeprint','ondragend','onsubmit',
+							 /*'embed',*//*'refresh',*/'cnbeforepaste','ondragenter','onmouseend',
+							 /*'void',*/'onbeforeeditfocus','ondragleave','onresizestart',
+							 /*'iframe',*/'cookie','onbeforeuload','ondragover','onuload',
+							 /*'frame',*/'href','onbeforeupdate','ondragstart','onselectstart',
+							 'frameset','onpaste','onpropertychange','ondrop','onreset',
+							 'ilayer','onresize','ondatasetcomplete','onerror','onmove',
+							 'onselect','oncellchange','onfinish','onstop',
+							 'bgsound','onlayoutcomplete','onfocus','onrowexit',
+							 'onblur','onselectionchange','vbscript','onerrorupdate',
+							 'onbefore','onstart','onrowsinserted','onkeydown','onfilterchage',
+							 'onmouseup','onfocusin','oncontrolselected','onrowsdelete','onlosecapture',
+							 'onrowenter','onhelp','onreadystatechange','onmouseleave','onmousemove',
+							 'oncontextmenu');
+
+	function checkSearch(){
+		var clik = 0;
+		var sch_word = $("#searchKeyword-pc").val();
+		var mb_or_pc = 0;
+
+		if(sch_word==""){
+			sch_word = $("#searchKeyword-mobile").val();
+			mb_or_pc = 1;
+		}
+		for(var i = 0;i<blackArr.length;i++){
+			if(sch_word.toLowerCase().match(blackArr[i]) != null){
+				alert(blackArr[i]+" 는 사용하실 수 없습니다.");
+				if (mb_or_pc) {
+					$('#searchKeyword-mobile').focus();
+				} else {
+					$('#searchKeyword-pc').focus();
+				}
+				clik=1;
+			}
+		}
+		if(clik == 1){
+			return false;
+		}else{
+			return true;
+		}
+	}
+</script>
+
+<header id="header">
+	<h1><a href="/sgcf/">국민건강보험 서울요양원</a></h1>
+	<div class="rightBox pc">
+		
+			<ul>
+				<li><a href="/sgcf/login.jsp">로그인</a></li>
+				<li><a href="/sgcf/sitemap/sitemap/">사이트맵</a></li>
+			</ul>
+		
+		
+
+		<!--<div class="searchBox">
+			<form name="fsearchbox" method="get" action="/sgcf/search/searchResult/" onsubmit="return checkSearch();">
+				<fieldset>
+					<legend>검색</legend>
+					<input name="searchKeyword" id="searchKeyword-pc" type="text" title="검색어 입력">
+					<input type="submit" value="검색하기">
+				</fieldset>
+			</form>
+		</div><!-- searhBox -->
+	</div><!-- rightBox -->
+
+	
+		<a href="/sgcf/login.jsp" class="mobile btn-login">로그인</a>
+	
+	
+	<button class="mobile btn-nav">메뉴</button>
+</header>
+<nav class="nav">
+	<div class="mobile nav-top">
+		<div class="mobile mobile-search-area">
+          <div class="search-wrap">
+              <div class="search-area">
+                  <form method="get" id="searchform" name="searchform" action="/sgcf/search/searchResult/" onsubmit="return checkSearch();">
+                      <fieldset>
+                          <legend>검색</legend>
+                          <div class="span12 form-search">
+                              <p class="select-box">
+                                  <label for="searchCondition">통합검색</label>
+                                  <select name="searchCondition" id="searchCondition" title="검색 분류 선택">
+                                      <option value="">통합검색</option>
+                                  </select>
+                              </p>
+                              <label for="searchKeyword" class="blind">검색어</label>
+                              <input type="text" name="searchKeyword" id="searchKeyword-mobile" value="" style="ime-mode:active;" class="input-medium search-query">
+                              <button type="submit" class="btn">검색</button>
+                          </div>
+                      </fieldset>
+                  </form>
+              </div>
+          </div>
+      </div><!-- 	search-area -->
+		<button class="btn-close">메뉴닫기</button>
+	</div>
+	<h2 class="blind">카테고리 메뉴</h2>
+	<ul id="topmenu">
+		
+			
+			
+			
+			
+		<!--
+/**
+ *@version 3.2.0.1
+ **/ 
+-->
+
+
+	<li class="Inb01"><a href="/sgcf/introduce">요양원 소개</a>
+		
+			<div class="nav-2deps">
+               <p class="mobile nav-tit">요양원 소개</p>
+				<ul>
+					
+						<li class="sub1_1">
+							
+								<a href="/sgcf/introduce/introduce01;jsessionid=139239460AC5C3FAE980A8028B7B0559" title="인사말">인사말</a>
+							
+							
+						</li>
+					
+						<li class="sub1_2">
+							
+								<a href="/sgcf/introduce/overview;jsessionid=139239460AC5C3FAE980A8028B7B0559" title="시설개요 및 현황">시설개요 및 현황</a>
+							
+							
+						</li>
+					
+						<li class="sub1_3">
+							
+								<a href="/sgcf/introduce/introduce03;jsessionid=139239460AC5C3FAE980A8028B7B0559" title="조직도">조직도</a>
+							
+							
+						</li>
+					
+						<li class="sub1_4">
+							
+								<a href="/sgcf/introduce/introduce05;jsessionid=139239460AC5C3FAE980A8028B7B0559" title="경영공시">경영공시</a>
+							
+							
+						</li>
+					
+						<li class="sub1_5">
+							
+								<a href="/sgcf/introduce/introduce04;jsessionid=139239460AC5C3FAE980A8028B7B0559" title="제도소개">제도소개</a>
+							
+							
+						</li>
+					
+						<li class="sub1_6">
+							
+								<a href="/sgcf/introduce/introduce06;jsessionid=139239460AC5C3FAE980A8028B7B0559" title="찾아오시는 길">찾아오시는 길</a>
+							
+							
+						</li>
+					
+				</ul>
+			</div>
+		
+	</li>
+
+		
+			
+			
+			
+			
+		<!--
+/**
+ *@version 3.2.0.1
+ **/ 
+-->
+
+
+	<li class="Inb02"><a href="/sgcf/service">서비스 안내</a>
+		
+			<div class="nav-2deps">
+               <p class="mobile nav-tit">서비스 안내</p>
+				<ul>
+					
+						<li class="sub2_1">
+							
+								<a href="/sgcf/service/facility;jsessionid=139239460AC5C3FAE980A8028B7B0559" title="요양시설">요양시설</a>
+							
+							
+						</li>
+					
+						<li class="sub2_2">
+							
+								<a href="/sgcf/service/ProtectCenter;jsessionid=139239460AC5C3FAE980A8028B7B0559" title="주·야간보호센터">주·야간보호센터</a>
+							
+							
+						</li>
+					
+						<li class="sub2_3">
+							
+								<a href="/sgcf/service/HomeVisit;jsessionid=139239460AC5C3FAE980A8028B7B0559" title="가정방문급여">가정방문급여</a>
+							
+							
+						</li>
+					
+						<li class="sub2_4">
+							
+								<a href="/sgcf/service/WeeklyMenus;jsessionid=139239460AC5C3FAE980A8028B7B0559" title="주간식단표">주간식단표</a>
+							
+							
+						</li>
+					
+				</ul>
+			</div>
+		
+	</li>
+
+		
+			
+			
+			
+			
+		<!--
+/**
+ *@version 3.2.0.1
+ **/ 
+-->
+
+
+	<li class="Inb03"><a href="/sgcf/ResidentsGuide">이용안내</a>
+		
+			<div class="nav-2deps">
+               <p class="mobile nav-tit">이용안내</p>
+				<ul>
+					
+						<li class="sub3_1">
+							
+								<a href="/sgcf/ResidentsGuide/infoguide;jsessionid=139239460AC5C3FAE980A8028B7B0559" title="이용방법">이용방법</a>
+							
+							
+						</li>
+					
+						<li class="sub3_2">
+							
+								<a href="/sgcf/ResidentsGuide/costguide;jsessionid=139239460AC5C3FAE980A8028B7B0559" title="비용안내">비용안내</a>
+							
+							
+						</li>
+					
+						<li class="sub3_3">
+							
+								<a href="/sgcf/ResidentsGuide/ResidentsStatus;jsessionid=139239460AC5C3FAE980A8028B7B0559" title="이용현황">이용현황</a>
+							
+							
+						</li>
+					
+						<li class="sub3_4">
+							
+								<a href="/sgcf/ResidentsGuide/WaitingList;jsessionid=139239460AC5C3FAE980A8028B7B0559" title="대기자명단">대기자명단</a>
+							
+							
+						</li>
+					
+				</ul>
+			</div>
+		
+	</li>
+
+		
+			
+			
+			
+			
+		<!--
+/**
+ *@version 3.2.0.1
+ **/ 
+-->
+
+
+	<li class="Inb04"><a href="/sgcf/SGCFNews">요양원 소식</a>
+		
+			<div class="nav-2deps">
+               <p class="mobile nav-tit">요양원 소식</p>
+				<ul>
+					
+						<li class="sub4_1">
+							
+								<a href="/sgcf/SGCFNews/News;jsessionid=139239460AC5C3FAE980A8028B7B0559" title="새소식">새소식</a>
+							
+							
+						</li>
+					
+						<li class="sub4_2">
+							
+								<a href="/sgcf/SGCFNews/Notice;jsessionid=139239460AC5C3FAE980A8028B7B0559" title="공지사항">공지사항</a>
+							
+							
+						</li>
+					
+						<li class="sub4_3">
+							
+								<a href="/sgcf/SGCFNews/PressReleases;jsessionid=139239460AC5C3FAE980A8028B7B0559" title="보도자료">보도자료</a>
+							
+							
+						</li>
+					
+						<li class="sub4_4">
+							
+								<a href="/sgcf/SGCFNews/Gallery;jsessionid=139239460AC5C3FAE980A8028B7B0559" title="갤러리(요양)">갤러리(요양)</a>
+							
+							
+						</li>
+					
+						<li class="sub4_5">
+							
+								<a href="/sgcf/SGCFNews/ProtectCenter;jsessionid=139239460AC5C3FAE980A8028B7B0559" title="갤러리(주야간보호)">갤러리(주야간보호)</a>
+							
+							
+						</li>
+					
+						<li class="sub4_6">
+							
+								<a href="/sgcf/SGCFNews/DataBoard;jsessionid=139239460AC5C3FAE980A8028B7B0559" title="일반자료실">일반자료실</a>
+							
+							
+						</li>
+					
+						<li class="sub4_7">
+							
+								<a href="/sgcf/SGCFNews/FAQ;jsessionid=139239460AC5C3FAE980A8028B7B0559" title="자주묻는질문">자주묻는질문</a>
+							
+							
+						</li>
+					
+						<li class="sub4_8">
+							
+								<a href="/sgcf/SGCFNews/Recruit;jsessionid=139239460AC5C3FAE980A8028B7B0559" title="채용정보">채용정보</a>
+							
+							
+						</li>
+					
+						<li class="sub4_9">
+							
+								<a href="/sgcf/SGCFNews/BidNotice;jsessionid=139239460AC5C3FAE980A8028B7B0559" title="공고(입찰)">공고(입찰)</a>
+							
+							
+						</li>
+					
+				</ul>
+			</div>
+		
+	</li>
+
+		
+			
+			
+			
+			
+		<!--
+/**
+ *@version 3.2.0.1
+ **/ 
+-->
+
+
+	<li class="Inb05"><a href="/sgcf/LoveShare">사랑나눔</a>
+		
+			<div class="nav-2deps">
+               <p class="mobile nav-tit">사랑나눔</p>
+				<ul>
+					
+						<li class="sub5_1">
+							
+								<a href="/sgcf/LoveShare/Volunteer;jsessionid=139239460AC5C3FAE980A8028B7B0559" title="자원봉사">자원봉사</a>
+							
+							
+						</li>
+					
+						<li class="sub5_2">
+							
+								<a href="/sgcf/LoveShare/Sponsor;jsessionid=139239460AC5C3FAE980A8028B7B0559" title="후원안내">후원안내</a>
+							
+							
+						</li>
+					
+				</ul>
+			</div>
+		
+	</li>
+
+	</ul>
+	<div class="pc nav_bg"><span></span></div>
+</nav>
+
+		<section id="contents">
+			<article class="big_bnr">
+				<div class="visual" >
+                  
+					<!--
+/**
+ *@version 3.2.0.1
+ **/ 
+-->
+
+<ul class="visual-slider" id="pc_slider">
+  
+  <li id="ITEM0012_li">	
+  							
+  <div class="bnr-txt">
+								마음까지 보살피는<br>
+								서울요양원
+							</div>
+							<span class="bnr-img">
+								<picture>
+									<!--[if IE 9]><video style="display:none;"><![endif]-->
+									<source srcset="/sgcf/common/img/20161111153226889.jpg" media="(min-width: 521px)">
+									<source srcset="/sgcf/common/images/main/visual_m_02.jpg" media="(min-width: 200px)">
+									<!--[if IE 9]></video><![endif]-->
+									<img src="/sgcf/common/img/20161111153226889.jpg" alt="key visual">
+								</picture>
+							</span>			
+  
+  	
+    </li>
+  	
+</ul>
+                  
+					
+				</div>
+			</article><!-- big_bnr -->
+
+			<!-- .menu -->
+			<article class="menu">
+				<h3 class="blind">퀵메뉴</h3>
+				<ul>
+					<li><a href="/sgcf/ResidentsGuide/infoguide/">입소안내</a></li>
+					<li><a href="/sgcf/ResidentsGuide/WaitingList/">대기자명단</a></li>
+					<li><a href="/sgcf/SGCFNews/Recruit/RecruitNotice/">채용정보</a></li>
+					<li><a href="/sgcf/LoveShare/Volunteer/VolunteerWork/">자원봉사안내</a></li>
+					<li><a href="/sgcf/LoveShare/Sponsor/SponsorWork/">후원안내</a></li>
+					<li><a href=" /sgcf/Mypage/ResidentsNotice/Note_list/">보호자서비스</a></li>
+					<!-- <li><a href="#popupParentApply" id="btnPopupParentApply">보호자서비스</a></li> -->
+					<li><a href="/sgcf/introduce/introduce06/">찾아오시는길</a></li>
+				</ul>
+			</article>
+			<!-- //.menu -->
+			<!-- .article-wrap -->
+			<div class="article-wrap">
+				<div class="inner">
+					<article class="notice">
+						<h3 class="blind">게시판  메뉴</h3>
+						<ul class="tab-style">
+							<li class="on"><a href="#notice" data-role="0">공지사항</a></li>
+							<li><a href="#news" data-role="1">요양원소식</a></li>
+							<li><a href="#datalist" data-role="2">보도자료</a></li>
+						</ul>
+						<!-- tab-con -->
+						<div class="tab-con" id="notice"  style="display:block;">
+							
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+	
+		
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+<h4 class="blind">공지사항</h4>
+<ul>
+
+<li>
+<a href="/sgcf/SGCFNews/Notice/?boardId=bbs_0000000000000007&amp;mode=view&amp;cntId=335" class="title">서울요양원 입소시설 이용대기자 현황(2026.04.01.현재)</a>
+<span class="date">2026.04.01</span>
+</li>
+
+<li>
+<a href="/sgcf/SGCFNews/Notice/?boardId=bbs_0000000000000007&amp;mode=view&amp;cntId=334" class="title">2025년 국민건강보험공단 서울요양원(입소시설,재가복지센터)세입세출 결산서</a>
+<span class="date">2026.03.31</span>
+</li>
+
+<li>
+<a href="/sgcf/SGCFNews/Notice/?boardId=bbs_0000000000000007&amp;mode=view&amp;cntId=333" class="title">2026년 4월 서울요양원 마을별 면회일정표</a>
+<span class="date">2026.03.25</span>
+</li>
+
+<li>
+<a href="/sgcf/SGCFNews/Notice/?boardId=bbs_0000000000000007&amp;mode=view&amp;cntId=331" class="title">서울요양원 입소시설 이용대기자 현황(26.02.28.현재)</a>
+<span class="date">2026.03.04</span>
+</li>
+
+<li>
+<a href="/sgcf/SGCFNews/Notice/?boardId=bbs_0000000000000007&amp;mode=view&amp;cntId=330" class="title">2026년 3월 서울요양원 마을별 면회일정표</a>
+<span class="date">2026.02.24</span>
+</li>
+
+<li>
+<a href="/sgcf/SGCFNews/Notice/?boardId=bbs_0000000000000007&amp;mode=view&amp;cntId=329" class="title">직원 채용공고(2026.1.19.공고) 최종 합격자 발표</a>
+<span class="date">2026.02.10</span>
+</li>
+
+<li>
+<a href="/sgcf/SGCFNews/Notice/?boardId=bbs_0000000000000007&amp;mode=view&amp;cntId=328" class="title">서울요양원 입소시설 이용대기자 명단-2026.01.31.현재</a>
+<span class="date">2026.02.05</span>
+</li>
+
+</ul>
+	
+	
+
+
+
+
+							<a href="/sgcf/SGCFNews/Notice/" class="btn-style btn-more">공지사항 더보기</a>
+						</div>
+						<!-- tab-con -->
+						<div class="tab-con" id="news">
+							
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+	
+		
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+<h4 class="blind">요양원 소식</h4>
+<ul>
+
+<li>
+<a href="/sgcf/SGCFNews/News/?boardId=bbs_0000000000000020&amp;mode=view&amp;cntId=110" class="title">MBC &#039;생방송 오늘아침&#039; 사랑채 방영 안내</a>
+<span class="date">2026.02.24</span>
+</li>
+
+<li>
+<a href="/sgcf/SGCFNews/News/?boardId=bbs_0000000000000020&amp;mode=view&amp;cntId=109" class="title">서울특별시 장기요양요원지원센터와 업무협약 체결</a>
+<span class="date">2026.02.12</span>
+</li>
+
+<li>
+<a href="/sgcf/SGCFNews/News/?boardId=bbs_0000000000000020&amp;mode=view&amp;cntId=108" class="title">한국치매가족협회와의 업무협약 체결</a>
+<span class="date">2025.10.20</span>
+</li>
+
+<li>
+<a href="/sgcf/SGCFNews/News/?boardId=bbs_0000000000000020&amp;mode=view&amp;cntId=107" class="title">(주)복지유니온 부설 한국고령친화식품연구소와 MOU 체결</a>
+<span class="date">2025.09.18</span>
+</li>
+
+<li>
+<a href="/sgcf/SGCFNews/News/?boardId=bbs_0000000000000020&amp;mode=view&amp;cntId=106" class="title">꼭 필요한 돌봄과 따뜻한 동행- 영상자료</a>
+<span class="date">2025.05.20</span>
+</li>
+
+<li>
+<a href="/sgcf/SGCFNews/News/?boardId=bbs_0000000000000020&amp;mode=view&amp;cntId=105" class="title">강남구치매안심센터와 MOU체결</a>
+<span class="date">2025.04.14</span>
+</li>
+
+<li>
+<a href="/sgcf/SGCFNews/News/?boardId=bbs_0000000000000020&amp;mode=view&amp;cntId=104" class="title">수서종합사회복지관 MOU체결</a>
+<span class="date">2025.03.27</span>
+</li>
+
+</ul>
+	
+	
+
+
+
+
+							<a href="/sgcf/SGCFNews/News/" class="btn-style btn-more">요양원소식 더보기</a>
+						</div>
+						<!-- tab-con -->
+						<div class="tab-con" id="datalist">
+							
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+	
+		
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+<h4 class="blind">보도자료</h4>
+<ul>
+
+<li>
+<a href="/sgcf/SGCFNews/PressReleases/?boardId=bbs_0000000000000008&amp;mode=view&amp;cntId=51" class="title">한국웰에이징협회-국민건강보험공단 서울요양원, 존엄한 노년을 위한 업무협약 체결</a>
+<span class="date">2026.04.28</span>
+</li>
+
+<li>
+<a href="/sgcf/SGCFNews/PressReleases/?boardId=bbs_0000000000000008&amp;mode=view&amp;cntId=50" class="title">안창호 인권위원장, 서울요양원 방문 &#034;초고령사회 노인인권 점검&#034;</a>
+<span class="date">2026.03.27</span>
+</li>
+
+<li>
+<a href="/sgcf/SGCFNews/PressReleases/?boardId=bbs_0000000000000008&amp;mode=view&amp;cntId=49" class="title">건보공단 서울요양원 &#034;삶의 마지막까지 가족과 함께합니다&#034; (한국경제 2025.12.29. 보도자료)</a>
+<span class="date">2026.01.05</span>
+</li>
+
+<li>
+<a href="/sgcf/SGCFNews/PressReleases/?boardId=bbs_0000000000000008&amp;mode=view&amp;cntId=48" class="title">국민건강보험공단 서울요양원, &#039;존엄한 임종돌봄 실천&#039;을 위한 공동세미나 개최</a>
+<span class="date">2025.10.17</span>
+</li>
+
+<li>
+<a href="/sgcf/SGCFNews/PressReleases/?boardId=bbs_0000000000000008&amp;mode=view&amp;cntId=47" class="title">구윤철 부총리 겸 기획재정부 장관, 추석연휴 마지막날 서울요양원 방문</a>
+<span class="date">2025.10.10</span>
+</li>
+
+<li>
+<a href="/sgcf/SGCFNews/PressReleases/?boardId=bbs_0000000000000008&amp;mode=view&amp;cntId=46" class="title">제29회 노인의 날 기념 서울요양원 김강수 원장 대통령상 표창</a>
+<span class="date">2025.10.10</span>
+</li>
+
+<li>
+<a href="/sgcf/SGCFNews/PressReleases/?boardId=bbs_0000000000000008&amp;mode=view&amp;cntId=45" class="title">국민건강보험공단 서울요양원 주야간보호, 어버이날 행사 개최</a>
+<span class="date">2025.05.12</span>
+</li>
+
+</ul>
+	
+	
+
+
+
+
+							<a href="/sgcf/SGCFNews/PressReleases/" class="btn-style btn-more">보도자료 더보기</a>
+						</div>
+						<!-- tab-con -->
+					</article>
+					<!-- notice -->
+					<!-- .cscenter -->
+					<article class="cscenter">
+						<h3 class="blind">배너 알림</h3>
+						<div class="banner-slider">
+                         	<!--
+/**
+ *@version 3.2.0.1
+ **/ 
+-->
+<ul>		
+  		
+</ul>
+						</div>
+					</article>
+					<!-- //.cscenter -->
+				</div>
+			</div>
+			<!-- //.article-wrap -->
+			<!-- .article-wrap -->
+			<div class="article-wrap bg-gray">
+				<div class="inner">
+					<article class="activity">
+						<h3>활동사진</h3>
+						<div class="photo-slider">
+							
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+	
+		
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+<ul>
+
+<li>
+<div class="thumbnail">
+<a href="/sgcf/SGCFNews/Gallery/?boardId=bbs_0000000000000009&amp;mode=view&amp;cntId=377"><img src="/board/file/bbs_0000000000000009/377/FILE_000000000002837/MGMT_0000000070_20260403105057571.jpg;jsessionid=139239460AC5C3FAE980A8028B7B0559" alt="003.jpg 이미지입니다." /></a>
+</div>
+</li>
+
+<li>
+<div class="thumbnail">
+<a href="/sgcf/SGCFNews/Gallery/?boardId=bbs_0000000000000009&amp;mode=view&amp;cntId=376"><img src="/board/file/bbs_0000000000000009/376/FILE_000000000002819/MGMT_0000000070_20260306153407482.jpg;jsessionid=139239460AC5C3FAE980A8028B7B0559" alt="2026년 3월 가정통신문 관련된 이미지 입니다" /></a>
+</div>
+</li>
+
+<li>
+<div class="thumbnail">
+<a href="/sgcf/SGCFNews/Gallery/?boardId=bbs_0000000000000009&amp;mode=view&amp;cntId=375"><img src="/board/file/bbs_0000000000000009/375/FILE_000000000002812/MGMT_0000000070_20260213150238723.jpg;jsessionid=139239460AC5C3FAE980A8028B7B0559" alt="2026년 2월 가정통신문 관련된 이미지 입니다" /></a>
+</div>
+</li>
+
+</ul>
+	
+	
+
+
+
+
+						</div>
+						<a href="/sgcf/SGCFNews/Gallery/" class="btn-more">더보기</a>
+					</article><!-- activity -->
+					<article class="facilities">
+						<h3>서울요양원 시설안내</h3>
+						
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+	
+		
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+<ul>
+
+<li>
+<div class="thumbnail">
+<a href="/sgcf/introduce/overview/photos/?boardId=bbs_0000000000000019&amp;mode=view&amp;cntId=43"><img src="/board/file/bbs_0000000000000019/43/FILE_000000000000465/MGMT_0000000070_20170109164148923.jpg;jsessionid=139239460AC5C3FAE980A8028B7B0559" alt="서울요양원 전경 관련된 이미지 입니다" /></a>
+</div>
+</li>
+
+<li>
+<div class="thumbnail">
+<a href="/sgcf/introduce/overview/photos/?boardId=bbs_0000000000000019&amp;mode=view&amp;cntId=42"><img src="/board/file/bbs_0000000000000019/42/FILE_000000000000495/MGMT_0000000070_20170120181102899.jpg;jsessionid=139239460AC5C3FAE980A8028B7B0559" alt="서울요양원 전경 관련된 이미지 입니다" /></a>
+</div>
+</li>
+
+<li>
+<div class="thumbnail">
+<a href="/sgcf/introduce/overview/photos/?boardId=bbs_0000000000000019&amp;mode=view&amp;cntId=41"><img src="/board/file/bbs_0000000000000019/41/FILE_000000000000505/MGMT_0000000070_20170123095310414.jpg;jsessionid=139239460AC5C3FAE980A8028B7B0559" alt="주야간보호센터 관련된 이미지 입니다" /></a>
+</div>
+</li>
+
+</ul>
+	
+	
+
+
+
+
+						<a href="/sgcf/introduce/overview/photos/" class="btn-style btn-more">더보기</a>
+					</article><!-- facilities -->
+				</div>
+			</div>
+			<!-- //.article-wrap -->
+		</section>
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<footer id="footer">
+			<address class="footer-address">
+              <ul class="footer-menu">
+					<li><a title="새 창" onclick="window.open(this.href,'popup','width=750,height=600,toolbar=0');return false;" href="/sgcf/footer menu/footer menu01" target="_blank">개인정보처리방침 </a></li>
+					<li><a title="새 창" onclick="window.open(this.href,'popup','width=750,height=600,toolbar=0');return false;" href="/sgcf/footer menu/footer menu 02" target="_blank">영상정보처리기기 운영·관리 지침</a></li>
+				</ul>              
+              
+				<p><span>(우) 06366 서울시 강남구 헌릉로 590길 50 (세곡동 520번지)</span> <span>TEL : 02-2160-1000 FAX : 02-6919-2598</span></p>
+				<p><span>Copyright © http://www.서울요양원.kr. All rights reserved.</span></p>
+			</address>
+			<dl class="f_menu pc">
+				<dt><button>관련사이트 바로가기</button></dt>
+				<dd><a title="새 창" href="http://www.nhic.or.kr/" target="_blank">국민건강보험</a></dd>
+				<dd><a title="새 창" href="http://www.longtermcare.or.kr/" target="_blank">노인장기요양보험</a></dd>
+				<dd><a title="새 창" href="http://www.nhimc.or.kr/" target="_blank">일산병원</a></dd>
+				<dd><a title="새 창" href="http://www.mw.go.kr/" target="_blank">보건복지부</a></dd>
+				<dd><a title="새 창" href="http://medi.nhis.or.kr/" target="_blank">요양기관정보마당</a></dd>
+				<dd><a title="새 창" href="http://hi.nhis.or.kr/" target="_blank">건강in</a></dd>
+                <dd><a title="새 창" href="https://www.safekorea.go.kr/" target="_blank">행정안전부 국민재난안전포털</a></dd>
+			</dl>
+		</footer>
+
+      	
+	</div><!-- wrap -->
+
+	<!-- 보호자 등록 신청 -->
+  <!--
+	<div class="mask"></div>
+	<div class="popup parentapply" id="popupParentApply">
+		<form id="clientApplyform">
+			<input type="hidden" id="clientEmail" name="clientEmail" />
+			<div class="pop-top">
+				보호자 등록 신청
+				<button class="btn-close">닫기</button>
+			</div>
+			<div class="pop-con">
+				<div class="txt">
+					보호자 등록 신청은 현재 서울요양원에 입소중인 어르신의 보호자만<p class="pc"></p>
+					신청이 가능합니다. 입소대기자나 퇴소한 입소자의 보호자는 자동<p class="pc"></p>
+					탈퇴처리 됩니다.
+				</div>
+				<div class="boxtxt">
+					신청 후 관리자 승인을 통해 보호자 가입이 완료 됩니다. 승인 기간은<p class="pc"></p>
+					1 ~ 2일정도 소요 되며 승인 결과는 입력해 주신 이메일로 통보 되오니<p class="pc"></p>
+					이메일 주소를 정확히 입력해 주세요.
+				</div>
+				<ul class="write-box">
+					<li>
+						<label for="clientId">아이디</label>
+						<input type="text" id="clientId" name="clientId" maxlength="12"/>
+						<p>* 아이디는 영문, 숫자 조합으로 6자 이상 12자 이내로 기입해주세요.</p>
+					</li>
+					<li>
+						<label for="clientPw">비밀번호</label>
+						<input type="password" id="clientPw" name="clientPw" maxlength="16"/>
+						<p>* 비밀번호는 영문, 숫자,특수문자 조합으로 10자 이상 16자 이내로 기입해주세요.</p>
+					</li>
+					<li>
+						<label for="clientPw2">비밀번호확인</label>
+						<input type="password" id="clientPw2" name="clientPw2" maxlength="16"/>
+					</li>
+					<li>
+						<label for="email1">이메일</label>
+						<input type="text" id="email1" name="email1" class="mail01"/>&nbsp;&nbsp;@&nbsp;&nbsp;
+						<input type="text" id="email2" name="email2" class="mail02"/>
+					</li>
+					<li>
+						<label for="clientNm">보호자 성함</label>
+						<input type="text" id="clientNm" name="clientNm" maxlength="20"/>
+					</li>
+					<li>
+						<label for="elderNm">입소자성함</label>
+						<input type="text" id="elderNm" name="elderNm" maxlength="20"/>
+					</li>
+				</ul>
+				<div class="btn-area">
+					<a href="#" id="btnApply" class="btn-apply" onclick="goApply();return false;">신청하기</a>
+				</div>
+			</div>
+		</form>
+	</div>
+-->
+	<!-- //보호자 등록 신청 -->
+
+  <!-- 재가신청 팝업 -->
+  <style type="text/css">
+	.popWrap{ width: 600px; height: 625px; margin: 0}
+	.pop_bottom{ background: url("/sgcf/common/img/20180515131358412.gif") repeat-x; }
+	.pop_bottom.btm{ position: absolute; width: 600px;}
+	.pop_bottom dl{ background: url("/sgcf/common/img/20180515131536312.gif") no-repeat 0 0; height: 25px; }
+	.pop_bottom dt{ float: left; line-height: 25px; padding-left: 10px; }
+	.pop_bottom dd{ float: right; }
+	.pop_bottom dt img, .pop_bottom dt input{ vertical-align: middle; }
+
+	/* addPopup style */
+	.popup.parentapply {width:400px; height:auto; display:block; position:absolute; top:70px; left:28%; margin: 0 0 0 -300px; -webkit-box-shadow : 1px 1px 10px rgba(0,0,0,0.5); box-shadow : 1px 1px 10px rgba(0,0,0,0.5); z-index:300;}
+	.popup.parentapply .pop-con {padding:0; border:0; width:auto;}
+	.popup.parentapply .popWrap {width:auto; height:auto;}
+	.popup.parentapply .popWrap > div {display:inline-block; width:99%;}
+	.popup.parentapply .popWrap > div > img {width:99%; height:auto;}
+	.popup.parentapply .pop_bottom.btm {position:static; width:100%;}
+	.popup.parentapply .pop_bottom.btm > dl {margin:0; padding:0; overflow:hidden;}
+	.popup.parentapply .pop_bottom.btm > dl > dt > input {width:13px;height:13px;-webkit-appearance: checkbox; vertical-align:middle;}
+	.popup.parentapply .pop_bottom.btm > dl > dt > label {font-size:12px; color:#b3b3b3; vertical-align:middle;}
+	@media screen and (max-width:799px){
+		.popup.parentapply {top:60px;}
+	}
+	@media screen and (max-width:640px){
+		.popup.parentapply {width: 96%; left:2%; right:2%; margin: 0; height: auto; min-width:300px;}
+	}
+    
+    	/* addPopup style */
+	.popup.parentapply1 {width:650px; height:auto; display:block; position:absolute; top:70px; left:50%; margin: 0 0 0 -300px; -webkit-box-shadow : 1px 1px 10px rgba(0,0,0,0.5); box-shadow : 1px 1px 10px rgba(0,0,0,0.5); z-index:300;}
+	.popup.parentapply1 .pop-con1 {padding:0; border:0; width:auto;}
+	.popup.parentapply1 .popWrap {width:auto; height:auto;}
+	.popup.parentapply1 .popWrap > div {display:inline-block; width:100%;}
+	.popup.parentapply1 .popWrap > div > img {width:100%; height:auto;}-->
+	.popup.parentapply1 .pop_bottom.btm {position:static; width:100%;}
+	.popup.parentapply1 .pop_bottom.btm > dl {margin:0; padding:0; overflow:hidden;}
+	.popup.parentapply1 .pop_bottom.btm > dl > dt > input {width:13px;height:13px;-webkit-appearance: checkbox; vertical-align:middle;}
+	.popup.parentapply1 .pop_bottom.btm > dl > dt > label {font-size:12px; color:#b3b3b3; vertical-align:middle;}
+	@media screen and (max-width:799px){
+		.popup.parentapply1 {top:60px;}
+	}
+	@media screen and (max-width:640px){
+		.popup.parentapply1 {width: 96%; left:2%; right:2%; margin: 0; height: auto; min-width:300px;}
+	}
+
+	.popup.parentapply2 {width:386px; height:auto; display:block; position:absolute; top:70px; left:85%; margin: 0 0 0 -300px; -webkit-box-shadow : 1px 1px 10px rgba(0,0,0,0.5); box-shadow : 1px 1px 10px rgba(0,0,0,0.5); z-index:300;}
+	.popup.parentapply2 .pop-con1 {padding:0; border:0; width:auto;}
+	.popup.parentapply2 .popWrap {width:auto; height:auto;}
+	.popup.parentapply2 .popWrap > div {display:inline-block; width:99%;}
+	.popup.parentapply2 .popWrap > div > img {width:80%; height:auto;}-->
+	.popup.parentapply2 .pop_bottom.btm {position:static; width:100%;}
+	.popup.parentapply2 .pop_bottom.btm > dl {margin:0; padding:0; overflow:hidden;}
+	.popup.parentapply2 .pop_bottom.btm > dl > dt > input {width:13px;height:13px;-webkit-appearance: checkbox; vertical-align:middle;}
+	.popup.parentapply2 .pop_bottom.btm > dl > dt > label {font-size:12px; color:#b3b3b3; vertical-align:middle;}
+	@media screen and (max-width:799px){
+		.popup.parentapply2 {top:60px;}
+	}
+	@media screen and (max-width:640px){
+		.popup.parentapply2 {width: 96%; left:2%; right:2%; margin: 0; height: auto; min-width:300px;}
+	}
+
+</style>
+  <!--
+<div class="popup parentapply" id="popup_1" style="display: none;">
+	<div class="pop-con">
+		<div class="popWrap">
+			<div><img src="/sgcf/common/img/20180803202405925.png" alt="18.6월부터 국민건강보험공단 서울요양원에서 가정방문서비스를 실시합니다." usemap="#newmap"></div>
+			 <map id="newmap" name="newmap">
+				<area shape="rect" coords="12,275,288,580" href="http://www.서울요양원.kr/sgcf/SGCFNews/Notice/?boardId=bbs_0000000000000007&mode=view&cntId=82" alt="방문요양.목욕.간호 어르신 모집" />
+				<area shape="rect" coords="306,275,583,580" href="http://www.서울요양원.kr/sgcf/SGCFNews/Recruit/RecruitNotice/?boardId=bbs_0000000000000011&mode=view&cntId=70&category=&pageIdx=" alt="방문요양.목욕 요양보호사 모집" />
+			</map>
+			<div class="pop_bottom btm">
+				<dl>
+					<dt>
+						<input id="popup_1_day" type="checkbox" value="Y"/>
+						<label for="popup_1_day">오늘 하루 창 그만 보기</label>
+					</dt>
+                  <dd><button id="popup_1_close"><img src="/sgcf/common/img/20180515131443626.jpg" alt="창 닫기"/></button></dd>
+				</dl>			
+			</div>
+		</div>
+	</div>
+</div>
+     --> 
+ 
+ <!--<div class="popup parentapply" id="popup_1" style="display: none;">
+	<div class="pop-con">
+		<div class="popWrap">
+          <div><a href="/upload/board/bbs_0000000000000007/20231206/20231206110011790.mp4" target="_parent"><img src="/sgcf/common/img/231206.jpg", 'width=50, height=1200'><a>
+		  <img src="/sgcf/common/img/231206.jpg" alt="" />
+		  </div>
+          <div class="pop_bottom btm">
+				<dl>
+					<dt>
+						<input id="popup_1_day" type="checkbox" value="Y"/>
+						<label for="popup_1_day">오늘 하루 창 그만 보기</label>
+					</dt>
+                  <dd><button id="popup_1_close"><img src="/sgcf/common/img/20180515131443626.jpg" alt="창 닫기"/></button></dd>
+				</dl>			
+			</div>
+      	</div>
+   </div>	
+</div>-->
+
+
+  <div class="popup parentapply" id="popup_1" style="display: none;">
+	<div class="pop-con">
+		<div class="popWrap">
+          <div><img src="/sgcf/common/img/250410.gif" alt="" /></div>
+          <div class="pop_bottom btm">
+				<dl>
+					<dt>
+						<input id="popup_1_day" type="checkbox" value="Y"/>
+						<label for="popup_1_day">오늘 하루 창 그만 보기</label>
+					</dt>
+                  <dd><button id="popup_1_close"><img src="/sgcf/common/img/20180515131443626.jpg" alt="창 닫기"/></button></dd>
+				</dl>			
+			</div>
+      	</div>
+   </div>	
+</div>
+
+   <div class="popup parentapply1" id="popup_2" style="display: none;">
+	<div class="pop-con1">
+		<div class="popWrap">
+          <div>
+			<img src="/sgcf/common/img/260312.jpg" alt="" />
+	  </div>
+          <div class="pop_bottom btm">
+				<dl>
+					<dt>
+						<input id="popup_2_day" type="checkbox" value="Y"/>
+						<label for="popup_2_day">오늘 하루 창 그만 보기</label>
+					</dt>
+                  <dd><button id="popup_2_close"><img src="/sgcf/common/img/20180515131443626.jpg" alt="창 닫기"/></button></dd>
+				</dl>			
+			</div>
+      	</div>
+   </div>	
+</div>
+<div class="popup parentapply2" id="popup_3" style="display: none;">
+	<div class="pop-con1">
+		<div class="popWrap">
+          <div><a href='/cms/getFile.do?file=20250402094904424.pdf&orgname=2025년 서울요양원 사전연명의료의향서 세부운영 계획서.pdf&mgmtId=MGMT_0000000236&siteId=SITE_00001&filePath=sgcf/common/file/&count=Y'>
+		  <img src="/sgcf/common/img/25041401_1.JPG" alt="" /></div></a>
+		  
+          <div class="pop_bottom btm">
+				<dl>
+					<dt>
+						<input id="popup_3_day" type="checkbox" value="Y"/>
+						<label for="popup_3_day">오늘 하루 창 그만 보기</label>
+					</dt>
+                  <dd><button id="popup_3_close"><img src="/sgcf/common/img/20180515131443626.jpg" alt="창 닫기"/></button></dd>
+				</dl>			
+			</div>
+      	</div>
+   </div>	
+</div>
+
+	<!-- script -->
+	
+
+
+<script type="text/javascript" src="/sgcf/common/js/kakao.min.js"></script>
+<script type="text/javascript" src="/sgcf/common/js/slick.min.js"></script>
+<script type="text/javascript" src="/sgcf/common/js/Jnit_print.js"></script>
+<script type="text/javascript" src="/sgcf/common/js/jquery-ui.custom.js"></script>
+<script type="text/javascript" src="/sgcf/common/js/menu.js"></script>
+<script type="text/javascript" src="/sgcf/common/js/TweenMax.min.js"></script>
+<script type="text/javascript" src="/sgcf/common/js/common.js"></script>
+<script type="text/javascript" src="/sgcf/common/js/mapresize.js"></script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+	<script type="text/javascript">
+		$(function(){
+      
+      		 var p1c = $.cookie( 'popup_1_day' ) !== 'hidden';
+      		 var p2c = $.cookie( 'popup_2_day' ) !== 'hidden';
+			 var p3c = $.cookie( 'popup_3_day' ) !== 'hidden';
+             $( '#popup_1' ).toggle( p1c );
+             $( '#popup_2' ).toggle( p2c );
+			 $( '#popup_3' ).toggle( p3c );
+      
+      		 $( '#popup_1_close, #popup_2_close, #popup_3_close' ).click( function () {
+      			var close = $( this );
+      			var popup = close.closest( '.popup' );
+      			var isCookie = popup.find( 'input:checkbox' ).is(':checked');
+      			if ( isCookie ) {
+      				$.cookie( close.attr( 'id' ).replace( 'close', 'day' ), 'hidden', {expires : 1});
+      			}
+      			popup.hide();
+      		});
+      		
+			// 보호자등록신청 팝업 오픈
+			$('#btnPopupParentApply').on('click',function(e){
+				e.preventDefault();
+				$('body').addClass('__popup-open');
+			});
+			// 보호자등록신청 팝업 닫기
+			$('.popup .btn-close, .mask').on('click',function(e){
+				e.preventDefault();
+				$('body').removeClass('__popup-open');
+			});
+
+			// 슬라이더
+			$('.visual-slider').slick({
+				dots: true,
+				arrows:true,
+				mobileFirst:true,
+				infinite: true,
+				autoplay: true,
+				autoplaySpeed: 3000,
+				slidesToShow: 1,
+				nextArrow: '<button class="bnr-next"></button>',
+				prevArrow: '<button class="bnr-prev"></button>'
+			});
+			$('.visual-slider .slick-dots').append('<li><button class="btn-slider-stop">정지</button></li><li><button class="btn-slider-play" style="display:none">재생</button></li>');
+			$(document).on('click','.visual-slider .btn-slider-stop',function(){
+				$('.visual-slider .btn-slider-play').show();
+				$(this).hide();
+				$('.visual-slider').slick('slickPause');
+			}).on('click','.visual-slider .btn-slider-play',function(){
+				$('.visual-slider .btn-slider-stop').show();
+				$(this).hide();
+				$('.visual-slider').slick('slickPlay');
+			});
+			$('.banner-slider > ul').slick({
+				dots: true,
+				arrows:false,
+				mobileFirst:true,
+				infinite: true,
+				autoplay: true,
+				autoplaySpeed: 3000,
+				slidesToShow: 1
+			});
+			$('.banner-slider .slick-dots').append('<li><button class="btn-slider-stop">정지</button></li><li><button class="btn-slider-play" style="display:none">재생</button></li>');
+			$(document).on('click','.banner-slider .btn-slider-stop',function(){
+				$('.banner-slider .btn-slider-play').show();
+				$(this).hide();
+				$('.banner-slider > ul').slick('slickPause');
+			}).on('click','.banner-slider .btn-slider-play',function(){
+				$('.banner-slider .btn-slider-stop').show();
+				$(this).hide();
+				$('.banner-slider > ul').slick('slickPlay');
+			});
+			$('.photo-slider > ul').slick({
+				dots: true,
+				arrows:false,
+				mobileFirst:true,
+				infinite: true,
+				autoplay: true,
+				autoplaySpeed: 3000,
+				slidesToShow: 1
+			});
+			$('.photo-slider .slick-dots').append('<li><button class="btn-slider-stop">정지</button></li><li><button class="btn-slider-play" style="display:none">재생</button></li>');
+			$(document).on('click','.photo-slider .btn-slider-stop',function(){
+				$('.photo-slider .btn-slider-play').show();
+				$(this).hide();
+				$('.photo-slider > ul').slick('slickPause');
+			}).on('click','.photo-slider .btn-slider-play',function(){
+				$('.photo-slider .btn-slider-stop').show();
+				$(this).hide();
+				$('.photo-slider > ul').slick('slickPlay');
+			});
+      
+			$('#popup_1 img').rwdImageMaps();
+
+		});
+		function goApply(){
+			if($('#clientId').val() == ''){
+				alert('아이디를 입력해 주세요.');
+				$('#clientId').focus();
+				return false;
+			}
+			if($('#clientPw').val() == ''){
+				alert('비밀번호를 입력해 주세요.');
+				$('#clientPw').focus();
+				return false;
+			}
+			if($('#clientPw').val() != $('#clientPw2').val()){
+				alert('비밀번호와 비밀번호 확인이 다릅니다.');
+				$('#clientPw').focus();
+				return false;
+			}
+			if($('#email1').val() == ''||$('#email2').val() == ''){
+				alert('이메일을 입력해 주세요.');
+				$('#email1').focus();
+				return false;
+			}
+			$('#clientEmail').val($('#email1').val() + '@' + $('#email2').val());
+
+			if($('#clientNm').val() == ''){
+				alert('보호자성함을 입력해 주세요.');
+				$('#clientNm').focus();
+				return false;
+			}
+			if($('#elderNm').val() == ''){
+				alert('입소자성함을 입력해 주세요.');
+				$('#elderNm').focus();
+				return false;
+			}
+
+			if(confirm("신청하시겟습니까?")){
+				$('#btnApply').hide();
+				$.ajax({
+					type:"post",
+					url:"/jnit/api/confirm/insert.do;jsessionid=139239460AC5C3FAE980A8028B7B0559",
+					data:$('#clientApplyform').serialize(),
+					dataType : "json"
+				}).done(function(data){
+					if(data.isSuccess == true){
+						alert("정상적으로 신청되었습니다. 승인기간은 1~2일정도 소요됩니다.");
+						location.reload();
+					}else{
+						alert(data.msg);
+						$('#btnApply').show();
+					}
+				});
+			}
+		}
+	</script>
+     
+</body>
+</html>
