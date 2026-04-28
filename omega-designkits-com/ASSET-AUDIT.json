@@ -1,0 +1,128 @@
+{
+  "determination": "REVIEW",
+  "stats": {
+    "totalFiles": 13,
+    "totalBytes": 35867,
+    "sourceCount": 2,
+    "sourceBytes": 1892,
+    "sourcePct": 15.4,
+    "sourceBytePct": 5.3,
+    "byCategory": {
+      "document": 1,
+      "other": 4,
+      "stylesheet": 2,
+      "script": 6
+    }
+  },
+  "inventory": {
+    "SOURCE_DERIVED": {
+      "count": 2,
+      "bytes": 1892,
+      "topItems": [
+        {
+          "path": "_fcdn/307103d27b4f.com",
+          "size": 1097,
+          "ext": ".com"
+        },
+        {
+          "path": "_fcdn/c175229a2e86",
+          "size": 795,
+          "ext": ""
+        }
+      ]
+    },
+    "LICENSED_REGENERATED": {
+      "count": 7,
+      "bytes": 22742,
+      "topItems": [
+        {
+          "path": "sigma-motion.css",
+          "size": 2429,
+          "ext": ".css"
+        },
+        {
+          "path": "sigma-runtime.js",
+          "size": 5228,
+          "ext": ".js"
+        },
+        {
+          "path": "_fcdn/4014351c181b.js",
+          "size": 292,
+          "ext": ".js"
+        },
+        {
+          "path": "_fcdn/4d919887b955.js",
+          "size": 292,
+          "ext": ".js"
+        },
+        {
+          "path": "_fcdn/5ea3b62795fc.js",
+          "size": 292,
+          "ext": ".js"
+        },
+        {
+          "path": "_fcdn/a6f02d043b63.js",
+          "size": 292,
+          "ext": ".js"
+        },
+        {
+          "path": "_fcdn/c7c603a0db98.css",
+          "size": 13917,
+          "ext": ".css"
+        }
+      ]
+    },
+    "PLATFORM_NEUTRAL": {
+      "count": 0,
+      "bytes": 0,
+      "topItems": []
+    },
+    "USER_AUTHORED": {
+      "count": 4,
+      "bytes": 11233,
+      "topItems": [
+        {
+          "path": "index.html",
+          "size": 9168,
+          "ext": ".html"
+        },
+        {
+          "path": "robots.txt",
+          "size": 67,
+          "ext": ".txt"
+        },
+        {
+          "path": "sitemap.xml",
+          "size": 159,
+          "ext": ".xml"
+        },
+        {
+          "path": "sw.js",
+          "size": 1839,
+          "ext": ".js"
+        }
+      ]
+    },
+    "UNKNOWN": {
+      "count": 0,
+      "bytes": 0,
+      "topItems": []
+    }
+  },
+  "topSourceDerived": [
+    {
+      "path": "_fcdn/307103d27b4f.com",
+      "size": 1097,
+      "ext": ".com",
+      "category": "other",
+      "swapCandidate": "manual review"
+    },
+    {
+      "path": "_fcdn/c175229a2e86",
+      "size": 795,
+      "ext": "",
+      "category": "other",
+      "swapCandidate": "manual review"
+    }
+  ]
+}

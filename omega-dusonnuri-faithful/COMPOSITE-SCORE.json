@@ -2,7 +2,7 @@
   "partial": {
     "http": 100,
     "korean": 100,
-    "visual": 54.06,
+    "visual": 50.55,
     "motion": 79.5,
     "a11y": 100,
     "seo": 100,
@@ -19,8 +19,8 @@
     "http": 0.05,
     "identifier": 0.05
   },
-  "composite": 82.8,
+  "composite": 81.8,
   "interpretation": "PRODUCTION_CAUTION",
   "binaryScore": 100,
-  "improvement": -17.2
+  "improvement": -18.2
 }

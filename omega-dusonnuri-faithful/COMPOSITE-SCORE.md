@@ -1,22 +1,22 @@
 # COMPOSITE-SCORE — Weighted Production Score (Paradigm 134)
 
-Generated: 2026-04-28T10:17:32.170Z
+Generated: 2026-04-28T10:21:17.237Z
 Project: C:\Users\dg020\Desktop\작업\projects\engine\omega-dusonnuri-faithful
 Source: https://www.dusonnuri.co.kr/
 
 ## Composite Score
 
-### **82.8%** — PRODUCTION_CAUTION
+### **81.8%** — PRODUCTION_CAUTION
 
 Binary score (8 stages): 100%
-Composite (weighted partial): **82.8%**
-Improvement: -17.2%p
+Composite (weighted partial): **81.8%**
+Improvement: -18.2%p
 
 ## Per-Stage Partial Scores
 
 | Stage | Partial | Weight | Contribution |
 |---|---|---|---|
-| visual | 54.06% | 30% | 16.2 |
+| visual | 50.55% | 30% | 15.2 |
 | license | 100% | 15% | 15.0 |
 | motion | 79.5% | 15% | 11.9 |
 | korean | 100% | 10% | 10.0 |
@@ -24,7 +24,7 @@ Improvement: -17.2%p
 | seo | 100% | 10% | 10.0 |
 | http | 100% | 5% | 5.0 |
 | identifier | 94% | 5% | 4.7 |
-| **Total** | — | 100% | **82.8** |
+| **Total** | — | 100% | **81.8** |
 
 ## Interpretation
 
