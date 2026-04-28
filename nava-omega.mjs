@@ -34,6 +34,7 @@ import crypto from "node:crypto";
 import { fileURLToPath } from "node:url";
 import puppeteer from "puppeteer";
 import { decoupleProject } from "./sigma-decouple.mjs";
+import { fuseOmegaWithSigma } from "./sigma-omega-fusion.mjs";
 
 const ARGS = process.argv.slice(2);
 const URL_ARG = ARGS.find(a => /^https?:\/\//.test(a));
@@ -424,6 +425,14 @@ npm start
 console.log(`  emitted: index.html (${finalHtml.length} bytes), sw.js, package.json, README.md`);
 
 await browser.close();
+
+// ─── Ω.6.5 — Fusion: assets template + CERT-CLEAN-OMEGA 자동 ─────────
+console.log(`[Ω.6.5] FUSION ${el()}`);
+try {
+  const fusion = fuseOmegaWithSigma(projDir, { sourceUrl: URL_ARG });
+  console.log(`  ${fusion.determination} — mirror ${fusion.licenseAudit.mirrorRatio}% / identifiers F=${fusion.licenseAudit.framerIdentifiersRemaining}+W=${fusion.licenseAudit.webflowIdentifiersRemaining}+X=${fusion.licenseAudit.wixIdentifiersRemaining}`);
+  console.log(`  slots: ${Object.keys(fusion.assets.tokens).length} tokens / ${Object.keys(fusion.assets.images).length} images / ${Object.keys(fusion.assets.links).length} links → assets.template.json + CERT-CLEAN-OMEGA.md`);
+} catch (e) { console.log(`  fusion: ${e.message.slice(0, 80)}`); }
 
 // ─── Ω.7 VERIFY (optional) ──────────────────────────────────────────
 let verifyResult = null;
