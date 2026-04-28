@@ -143,19 +143,20 @@ export async function verifyCascade(projDir, opts = {}) {
       // P140 Layout Lock — apply full deterministic stack symmetrically
       const { applyDeterministicStack } = await import("./sigma-layout-lock.mjs");
 
-      // P144 Layout Match + P149 Multi-State + P150 Sectional
+      // P144 Layout Match + P149 Multi-State + P150 Sectional + P163 Role Identity
       const { scoreLayoutMatch } = await import("./sigma-layout-match.mjs");
       const { captureMultiStateLayoutScore, scoreSectionalMatch } = await import("./sigma-multistate-capture.mjs");
+      const { EXTRACT_ROLE_IDENTITY_JS, scoreRoleIdentity } = await import("./sigma-element-identity.mjs");
 
       try {
         await page.goto(sourceUrl, { waitUntil: "networkidle2", timeout: 30000 });
         await new Promise(r => setTimeout(r, 2000));
-        // Capture pre-state screenshot first (for pixel comparison)
         await applyDeterministicStack(page, { settleMs: 700 });
         const srcShot = await page.screenshot({ type: "png" });
         fs.writeFileSync(srcPath, srcShot);
-        // P149 — multi-state DOM capture (scroll positions, lazy-mount)
         const srcMultiState = await captureMultiStateLayoutScore(page).catch(() => ({ union: [], states: [] }));
+        // P163 — role identity capture
+        const srcRoleIdentity = await page.evaluate(EXTRACT_ROLE_IDENTITY_JS).catch(() => ({ roleCounts: {}, elements: [] }));
 
         await page.goto(`http://localhost:${port}/`, { waitUntil: "networkidle2", timeout: 30000 });
         await new Promise(r => setTimeout(r, 3000));
@@ -163,6 +164,7 @@ export async function verifyCascade(projDir, opts = {}) {
         const cloneShot = await page.screenshot({ type: "png" });
         fs.writeFileSync(clonePath, cloneShot);
         const cloneMultiState = await captureMultiStateLayoutScore(page).catch(() => ({ union: [], states: [] }));
+        const cloneRoleIdentity = await page.evaluate(EXTRACT_ROLE_IDENTITY_JS).catch(() => ({ roleCounts: {}, elements: [] }));
 
         // 4-layer pixel-based (P102)
         const { visualValidate } = await import("./sigma-visual-validator.mjs");
@@ -174,14 +176,21 @@ export async function verifyCascade(projDir, opts = {}) {
         // P150 sectional match (header/hero/main/footer 영역별 + IoU 친화)
         const sectional = scoreSectionalMatch(srcMultiState.union, cloneMultiState.union);
 
-        // P149 new composite weights: pixel/pHash/SSIM/hist 50% + layout 20% + sectional 30%
+        // P163 — Role Identity score
+        const roleIdentity = scoreRoleIdentity(srcRoleIdentity, cloneRoleIdentity);
+
+        // P163 new composite weights:
+        //   pixel/pHash/SSIM/hist 30% (cross-env variability tolerated)
+        //   layout/sectional 30%
+        //   role-identity 40% ★ 새 paradigm 우세 (기능적 등가)
         const newComposite = +(
-          r.pixelMatchPct * 0.10 +
-          r.pHashSimilarity * 0.10 +
-          r.ssim * 100 * 0.10 +
-          r.histSimilarity * 0.20 +
-          layoutScore.score * 0.20 +
-          sectional.score * 0.30
+          r.pixelMatchPct * 0.05 +
+          r.pHashSimilarity * 0.05 +
+          r.ssim * 100 * 0.05 +
+          r.histSimilarity * 0.15 +
+          layoutScore.score * 0.10 +
+          sectional.score * 0.20 +
+          roleIdentity.score * 0.40
         ).toFixed(2);
 
         visualStage = {
@@ -197,11 +206,12 @@ export async function verifyCascade(projDir, opts = {}) {
           histogram: r.histSimilarity,
           layout: layoutScore.score,
           sectional: sectional.score,
-          sectionalDetail: sectional.detail,
+          roleIdentity: roleIdentity.score,
+          roleIdentityMatched: `${roleIdentity.matchedWeight}/${roleIdentity.totalSrcWeight}`,
+          srcRoleElements: roleIdentity.srcElements,
+          cloneRoleElements: roleIdentity.cloneElements,
           srcUnionCount: srcMultiState.union.length,
           cloneUnionCount: cloneMultiState.union.length,
-          srcStates: srcMultiState.states.length,
-          cloneStates: cloneMultiState.states.length,
           sizeMismatch: r.sizeMismatch,
           comparedSize: r.comparedSize,
           legacyComposite4: r.confidence,
