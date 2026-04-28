@@ -64,6 +64,9 @@ const CSR_WAIT_MS = parseInt(flagVal("--csr-wait") || "0", 10);
 // v110.7 multi-route crawl — 사이트 전체 페이지 한 명령 (default ON)
 const NO_CRAWL = hasFlag("--no-crawl");
 const MAX_ROUTES = parseInt(flagVal("--max-routes") || "30", 10);
+// v110.8 deep mode — 재귀 route discovery + retry + 강화 extraction
+const DEEP_MODE = hasFlag("--deep");
+const MAX_RETRY = DEEP_MODE ? 3 : 1;
 
 const projDir = path.resolve(OUTPUT);
 fs.mkdirSync(projDir, { recursive: true });
@@ -236,6 +239,9 @@ if (!NO_CRAWL) {
   const routesToCrawl = [...allRoutes].filter(r => r !== rootPath).slice(0, MAX_ROUTES - 1);
   console.log(`  crawling ${routesToCrawl.length} additional routes (max ${MAX_ROUTES})`);
 
+  // v110.8 deep mode: 재귀 route discovery — sub-route의 sub-route까지
+  const subRouteHtmls = []; // for level-2 link discovery
+
   for (let i = 0; i < routesToCrawl.length; i++) {
     const route = routesToCrawl[i];
     const routeUrl = origin + route;
@@ -261,7 +267,6 @@ if (!NO_CRAWL) {
       }).catch(() => {});
       await new Promise(r => setTimeout(r, 800));
 
-      // Try raw HTML too (SSR might have more content than hydrated)
       let rawRoute = "";
       try {
         const rr = await fetch(routeUrl, {
@@ -275,13 +280,49 @@ if (!NO_CRAWL) {
       } catch {}
 
       const hydrated = await rp.content();
-      // Use richer HTML
       htmlByRoute[route] = (rawRoute.length > hydrated.length * 0.7) ? rawRoute : hydrated;
+      if (DEEP_MODE) subRouteHtmls.push(htmlByRoute[route]);
       console.log(`  [${i + 1}/${routesToCrawl.length}] ${route} → ${htmlByRoute[route].length} bytes`);
 
       await rp.close();
     } catch (e) {
       console.log(`  [${i + 1}/${routesToCrawl.length}] ${route} FAIL: ${String(e.message || e).slice(0, 60)}`);
+    }
+  }
+
+  // v110.8 Deep mode level-2 — sub-route의 sub-route까지 재귀
+  if (DEEP_MODE && subRouteHtmls.length > 0) {
+    console.log(`[Ω.1.7] DEEP RECURSION ${el()} — level-2 link discovery`);
+    const newRoutes = new Set();
+    for (const html of subRouteHtmls) {
+      for (const m of html.matchAll(/href\s*=\s*["']([^"']+)["']/gi)) {
+        let h = decodeHtmlEntities(m[1]);
+        if (!h || h.startsWith("#") || h.startsWith("mailto:") || h.startsWith("tel:") || h.startsWith("javascript:")) continue;
+        let p = null;
+        if (h.startsWith("/") && !h.startsWith("//")) p = h;
+        else if (h.startsWith(origin)) p = h.slice(origin.length) || "/";
+        else continue;
+        p = p.split("?")[0].split("#")[0];
+        if (/\.(jpg|jpeg|png|gif|pdf|js|css|woff2?|svg|webp|xml|json)(\?|$)/i.test(p)) continue;
+        if (p && p.length < 100 && !allRoutes.has(p)) newRoutes.add(p);
+      }
+    }
+    const remaining = MAX_ROUTES - Object.keys(htmlByRoute).length;
+    const level2Routes = [...newRoutes].slice(0, remaining);
+    console.log(`  ${newRoutes.size} new routes from sub-pages, crawling ${level2Routes.length}`);
+    for (let i = 0; i < level2Routes.length; i++) {
+      const route = level2Routes[i];
+      try {
+        const rp = await browser.newPage();
+        await rp.setViewport(VIEWPORT);
+        await rp.goto(origin + route, { waitUntil: "networkidle2", timeout: 30000 });
+        await new Promise(r => setTimeout(r, 600));
+        htmlByRoute[route] = await rp.content();
+        console.log(`  [L2 ${i + 1}/${level2Routes.length}] ${route} → ${htmlByRoute[route].length} bytes`);
+        await rp.close();
+      } catch (e) {
+        console.log(`  [L2 ${i + 1}/${level2Routes.length}] ${route} FAIL: ${String(e.message || e).slice(0, 60)}`);
+      }
     }
   }
 }
@@ -330,32 +371,37 @@ let totalBytes = 0;
 let failed = 0;
 
 const downloadAsset = async (absUrl) => {
-  try {
-    const fname = urlToFilename(absUrl);
-    const dest = path.join(fcdnDir, fname);
-    const localPath = `/_fcdn/${fname}`;
-    if (fs.existsSync(dest)) {
-      urlMap.set(absUrl, localPath);
-      mirrored++;
-      totalBytes += fs.statSync(dest).size;
-      return;
-    }
-    const resp = await fetch(absUrl, {
-      headers: {
-        "User-Agent": "Mozilla/5.0 NavaOmega/1.0",
-        "Referer": URL_ARG,
-      },
-      signal: AbortSignal.timeout(15000),
-    });
-    if (!resp.ok) { failed++; return; }
-    const buf = Buffer.from(await resp.arrayBuffer());
-    fs.writeFileSync(dest, buf);
+  const fname = urlToFilename(absUrl);
+  const dest = path.join(fcdnDir, fname);
+  const localPath = `/_fcdn/${fname}`;
+  if (fs.existsSync(dest)) {
     urlMap.set(absUrl, localPath);
     mirrored++;
-    totalBytes += buf.length;
-  } catch {
-    failed++;
+    totalBytes += fs.statSync(dest).size;
+    return;
   }
+  // v110.8 retry with Referer variation (CORS / hotlink 우회)
+  const referers = [URL_ARG, "", new URL(absUrl).origin + "/"];
+  for (let attempt = 0; attempt < MAX_RETRY; attempt++) {
+    const referer = referers[attempt % referers.length];
+    try {
+      const headers = { "User-Agent": "Mozilla/5.0 NavaOmega/1.0" };
+      if (referer) headers["Referer"] = referer;
+      const resp = await fetch(absUrl, {
+        headers,
+        signal: AbortSignal.timeout(15000),
+      });
+      if (resp.ok) {
+        const buf = Buffer.from(await resp.arrayBuffer());
+        fs.writeFileSync(dest, buf);
+        urlMap.set(absUrl, localPath);
+        mirrored++;
+        totalBytes += buf.length;
+        return;
+      }
+    } catch {}
+  }
+  failed++;
 };
 
 // Concurrent download (8 at a time)
