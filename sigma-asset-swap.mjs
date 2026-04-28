@@ -175,26 +175,32 @@ export function swapAssets(projDir, opts = {}) {
             result.byCategory.image++;
           } else if (cat === "stylesheet") {
             // P158 fix: aggressive=false 시 CSS 보존 (layout/visual 살림)
+            // pathMap은 실제 swap된 경우만 추가 (license honest 측정)
             if (aggressive && !dryRun) {
               fs.writeFileSync(full, `/* sigma-asset-swap placeholder for ${rel} */\n`);
               result.swapped++;
               result.swappedBytes += stat.size;
               result.byCategory.stylesheet++;
+              result.pathMap[rel] = rel;
             } else {
               result.skipped++;
               result.byCategory.stylesheet++;
+              // CSS preserved → SOURCE_DERIVED 그대로 (정직 측정)
             }
+            continue;  // pathMap 외부 추가 skip
           } else if (cat === "script") {
-            // P158 fix: aggressive=false 시 JS 보존 (animation/motion 살림)
             if (aggressive && !dryRun) {
               fs.writeFileSync(full, `// sigma-asset-swap placeholder for ${rel}\n;`);
               result.swapped++;
               result.swappedBytes += stat.size;
               result.byCategory.script++;
+              result.pathMap[rel] = rel;
             } else {
               result.skipped++;
               result.byCategory.script++;
+              // JS preserved → SOURCE_DERIVED 그대로
             }
+            continue;
           } else if (cat === "font") {
             if (!dryRun) fs.unlinkSync(full);
             result.swapped++;

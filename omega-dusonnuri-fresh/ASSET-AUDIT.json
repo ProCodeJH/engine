@@ -1,0 +1,159 @@
+{
+  "determination": "PASS",
+  "stats": {
+    "totalFiles": 767,
+    "totalBytes": 777862414,
+    "sourceCount": 0,
+    "sourceBytes": 0,
+    "sourcePct": 0,
+    "sourceBytePct": 0,
+    "byCategory": {
+      "document": 27,
+      "script": 195,
+      "other": 183,
+      "image": 315,
+      "stylesheet": 47
+    }
+  },
+  "inventory": {
+    "SOURCE_DERIVED": {
+      "count": 0,
+      "bytes": 0,
+      "topItems": []
+    },
+    "LICENSED_REGENERATED": {
+      "count": 742,
+      "bytes": 762471067,
+      "topItems": [
+        {
+          "path": "_fcdn/0052ef5a8693.js",
+          "size": 1449829,
+          "ext": ".js"
+        },
+        {
+          "path": "_fcdn/00a9d3ab02a0",
+          "size": 3600362,
+          "ext": ""
+        },
+        {
+          "path": "_fcdn/017a2983059d",
+          "size": 1449829,
+          "ext": ""
+        },
+        {
+          "path": "_fcdn/01fd65d2679b.js",
+          "size": 1449829,
+          "ext": ".js"
+        },
+        {
+          "path": "_fcdn/022a98083bce",
+          "size": 956016,
+          "ext": ""
+        },
+        {
+          "path": "_fcdn/0263435d3c5a.jpg",
+          "size": 69,
+          "ext": ".jpg"
+        },
+        {
+          "path": "_fcdn/028728a34519.js",
+          "size": 1449829,
+          "ext": ".js"
+        },
+        {
+          "path": "_fcdn/02c3f0110a95",
+          "size": 1449829,
+          "ext": ""
+        },
+        {
+          "path": "_fcdn/02cbf5422745.png",
+          "size": 69,
+          "ext": ".png"
+        },
+        {
+          "path": "_fcdn/02cf0ed66bd3.js",
+          "size": 956016,
+          "ext": ".js"
+        }
+      ]
+    },
+    "PLATFORM_NEUTRAL": {
+      "count": 0,
+      "bytes": 0,
+      "topItems": []
+    },
+    "USER_AUTHORED": {
+      "count": 2,
+      "bytes": 1248997,
+      "topItems": [
+        {
+          "path": "index.html",
+          "size": 1247153,
+          "ext": ".html"
+        },
+        {
+          "path": "sw.js",
+          "size": 1844,
+          "ext": ".js"
+        }
+      ]
+    },
+    "UNKNOWN": {
+      "count": 23,
+      "bytes": 14142350,
+      "topItems": [
+        {
+          "path": "11/index.html",
+          "size": 54929,
+          "ext": ".html"
+        },
+        {
+          "path": "33/index.html",
+          "size": 361728,
+          "ext": ".html"
+        },
+        {
+          "path": "34/index.html",
+          "size": 552901,
+          "ext": ".html"
+        },
+        {
+          "path": "44/index.html",
+          "size": 198813,
+          "ext": ".html"
+        },
+        {
+          "path": "49/index.html",
+          "size": 530880,
+          "ext": ".html"
+        },
+        {
+          "path": "center/index.html",
+          "size": 696503,
+          "ext": ".html"
+        },
+        {
+          "path": "Company/index.html",
+          "size": 678626,
+          "ext": ".html"
+        },
+        {
+          "path": "css/custom.cm/index.html",
+          "size": 15204,
+          "ext": ".html"
+        },
+        {
+          "path": "Dusonnuristory/index.html",
+          "size": 530706,
+          "ext": ".html"
+        },
+        {
+          "path": "FAQ/index.html",
+          "size": 587888,
+          "ext": ".html"
+        }
+      ]
+    }
+  },
+  "topSourceDerived": []
+}

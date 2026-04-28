@@ -1,0 +1,26 @@
+{
+  "partial": {
+    "http": 100,
+    "korean": 100,
+    "visual": 52.04,
+    "motion": 25,
+    "a11y": 98,
+    "seo": 75,
+    "identifier": 94,
+    "license": 100
+  },
+  "weights": {
+    "visual": 0.3,
+    "license": 0.15,
+    "motion": 0.15,
+    "korean": 0.1,
+    "a11y": 0.1,
+    "seo": 0.1,
+    "http": 0.05,
+    "identifier": 0.05
+  },
+  "composite": 71.4,
+  "interpretation": "MANUAL_REVIEW",
+  "binaryScore": 87.5,
+  "improvement": -16.1
+}
