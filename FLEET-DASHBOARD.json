@@ -1,0 +1,2366 @@
+{
+  "siteCount": 8,
+  "composedCount": 1,
+  "auditedCount": 8,
+  "avgComposite": 86.7,
+  "avgVisual": 81.8,
+  "avgSourcePct": 96.3,
+  "sites": [
+    {
+      "name": "omega-designkits-com",
+      "dir": "C:\\Users\\dg020\\Desktop\\작업\\projects\\engine\\omega-designkits-com",
+      "audit": {
+        "determination": "FAIL",
+        "stats": {
+          "totalFiles": 9,
+          "totalBytes": 822643,
+          "sourceCount": 7,
+          "sourceBytes": 820300,
+          "sourcePct": 77.8,
+          "sourceBytePct": 99.7,
+          "byCategory": {
+            "document": 1,
+            "script": 5,
+            "other": 2,
+            "stylesheet": 1
+          }
+        },
+        "inventory": {
+          "SOURCE_DERIVED": {
+            "count": 7,
+            "bytes": 820300,
+            "topItems": [
+              {
+                "path": "_fcdn/307103d27b4f.com",
+                "size": 1097,
+                "ext": ".com"
+              },
+              {
+                "path": "_fcdn/4014351c181b.js",
+                "size": 104464,
+                "ext": ".js"
+              },
+              {
+                "path": "_fcdn/4d919887b955.js",
+                "size": 0,
+                "ext": ".js"
+              },
+              {
+                "path": "_fcdn/5ea3b62795fc.js",
+                "size": 0,
+                "ext": ".js"
+              },
+              {
+                "path": "_fcdn/a6f02d043b63.js",
+                "size": 699563,
+                "ext": ".js"
+              },
+              {
+                "path": "_fcdn/c175229a2e86",
+                "size": 795,
+                "ext": ""
+              },
+              {
+                "path": "_fcdn/c7c603a0db98.css",
+                "size": 14381,
+                "ext": ".css"
+              }
+            ]
+          },
+          "LICENSED_REGENERATED": {
+            "count": 0,
+            "bytes": 0,
+            "topItems": []
+          },
+          "PLATFORM_NEUTRAL": {
+            "count": 0,
+            "bytes": 0,
+            "topItems": []
+          },
+          "USER_AUTHORED": {
+            "count": 2,
+            "bytes": 2343,
+            "topItems": [
+              {
+                "path": "index.html",
+                "size": 504,
+                "ext": ".html"
+              },
+              {
+                "path": "sw.js",
+                "size": 1839,
+                "ext": ".js"
+              }
+            ]
+          },
+          "UNKNOWN": {
+            "count": 0,
+            "bytes": 0,
+            "topItems": []
+          }
+        },
+        "topSourceDerived": [
+          {
+            "path": "_fcdn/a6f02d043b63.js",
+            "size": 699563,
+            "ext": ".js",
+            "category": "script",
+            "swapCandidate": "sigma-runtime own implementation"
+          },
+          {
+            "path": "_fcdn/4014351c181b.js",
+            "size": 104464,
+            "ext": ".js",
+            "category": "script",
+            "swapCandidate": "sigma-runtime own implementation"
+          },
+          {
+            "path": "_fcdn/c7c603a0db98.css",
+            "size": 14381,
+            "ext": ".css",
+            "category": "stylesheet",
+            "swapCandidate": "Tailwind regeneration via sigma-style-cluster"
+          },
+          {
+            "path": "_fcdn/307103d27b4f.com",
+            "size": 1097,
+            "ext": ".com",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/c175229a2e86",
+            "size": 795,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/4d919887b955.js",
+            "size": 0,
+            "ext": ".js",
+            "category": "script",
+            "swapCandidate": "sigma-runtime own implementation"
+          },
+          {
+            "path": "_fcdn/5ea3b62795fc.js",
+            "size": 0,
+            "ext": ".js",
+            "category": "script",
+            "swapCandidate": "sigma-runtime own implementation"
+          }
+        ]
+      }
+    },
+    {
+      "name": "omega-lusion-co",
+      "dir": "C:\\Users\\dg020\\Desktop\\작업\\projects\\engine\\omega-lusion-co",
+      "audit": {
+        "determination": "FAIL",
+        "stats": {
+          "totalFiles": 127,
+          "totalBytes": 19527711,
+          "sourceCount": 125,
+          "sourceBytes": 19418822,
+          "sourcePct": 98.4,
+          "sourceBytePct": 99.4,
+          "byCategory": {
+            "document": 1,
+            "script": 2,
+            "other": 61,
+            "image": 55,
+            "font": 6,
+            "video": 1,
+            "stylesheet": 1
+          }
+        },
+        "inventory": {
+          "SOURCE_DERIVED": {
+            "count": 125,
+            "bytes": 19418822,
+            "topItems": [
+              {
+                "path": "_fcdn/00cd8b424119.xml",
+                "size": 58598,
+                "ext": ".xml"
+              },
+              {
+                "path": "_fcdn/013658bdfb57.jpg",
+                "size": 93072,
+                "ext": ".jpg"
+              },
+              {
+                "path": "_fcdn/043132063ca9.ogg",
+                "size": 6651,
+                "ext": ".ogg"
+              },
+              {
+                "path": "_fcdn/04767289e024.woff2",
+                "size": 1600,
+                "ext": ".woff2"
+              },
+              {
+                "path": "_fcdn/0d0c4ab1d1b2",
+                "size": 906655,
+                "ext": ""
+              },
+              {
+                "path": "_fcdn/0eec8eebb6ca.buf",
+                "size": 2564,
+                "ext": ".buf"
+              },
+              {
+                "path": "_fcdn/0f7b28b796b9.webp",
+                "size": 244766,
+                "ext": ".webp"
+              },
+              {
+                "path": "_fcdn/0fab57d2f2aa",
+                "size": 341,
+                "ext": ""
+              },
+              {
+                "path": "_fcdn/116625191028.webp",
+                "size": 6472,
+                "ext": ".webp"
+              },
+              {
+                "path": "_fcdn/12b5d911548f",
+                "size": 255100,
+                "ext": ""
+              }
+            ]
+          },
+          "LICENSED_REGENERATED": {
+            "count": 0,
+            "bytes": 0,
+            "topItems": []
+          },
+          "PLATFORM_NEUTRAL": {
+            "count": 0,
+            "bytes": 0,
+            "topItems": []
+          },
+          "USER_AUTHORED": {
+            "count": 2,
+            "bytes": 108889,
+            "topItems": [
+              {
+                "path": "index.html",
+                "size": 107822,
+                "ext": ".html"
+              },
+              {
+                "path": "sw.js",
+                "size": 1067,
+                "ext": ".js"
+              }
+            ]
+          },
+          "UNKNOWN": {
+            "count": 0,
+            "bytes": 0,
+            "topItems": []
+          }
+        },
+        "topSourceDerived": [
+          {
+            "path": "_fcdn/249e57ec89eb.mp4",
+            "size": 4980580,
+            "ext": ".mp4",
+            "category": "video",
+            "swapCandidate": "Pexels CC0 or removal"
+          },
+          {
+            "path": "_fcdn/898d941d6445.js",
+            "size": 1251779,
+            "ext": ".js",
+            "category": "script",
+            "swapCandidate": "sigma-runtime own implementation"
+          },
+          {
+            "path": "_fcdn/0d0c4ab1d1b2",
+            "size": 906655,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/553dc3e2025b.exr",
+            "size": 602702,
+            "ext": ".exr",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/9f5524165fb4.ogg",
+            "size": 475936,
+            "ext": ".ogg",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/a145ab4b881d",
+            "size": 473333,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/af54e40725e4.webp",
+            "size": 460660,
+            "ext": ".webp",
+            "category": "image",
+            "swapCandidate": "Unsplash CC0 (search by visual similarity) or AI-generated equivalent"
+          },
+          {
+            "path": "_fcdn/3c9202470d68.webp",
+            "size": 436250,
+            "ext": ".webp",
+            "category": "image",
+            "swapCandidate": "Unsplash CC0 (search by visual similarity) or AI-generated equivalent"
+          },
+          {
+            "path": "_fcdn/9440b1690d37.png",
+            "size": 409573,
+            "ext": ".png",
+            "category": "image",
+            "swapCandidate": "Unsplash CC0 (search by visual similarity) or AI-generated equivalent"
+          },
+          {
+            "path": "_fcdn/52211c1cf526.buf",
+            "size": 363860,
+            "ext": ".buf",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/390d5ded7046.webp",
+            "size": 357692,
+            "ext": ".webp",
+            "category": "image",
+            "swapCandidate": "Unsplash CC0 (search by visual similarity) or AI-generated equivalent"
+          },
+          {
+            "path": "_fcdn/6831b4f3fb3c.webp",
+            "size": 356024,
+            "ext": ".webp",
+            "category": "image",
+            "swapCandidate": "Unsplash CC0 (search by visual similarity) or AI-generated equivalent"
+          },
+          {
+            "path": "_fcdn/bab5aa4dabbd.webp",
+            "size": 354148,
+            "ext": ".webp",
+            "category": "image",
+            "swapCandidate": "Unsplash CC0 (search by visual similarity) or AI-generated equivalent"
+          },
+          {
+            "path": "_fcdn/eaf6fd66213a.buf",
+            "size": 336188,
+            "ext": ".buf",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/14590244ef3a.webp",
+            "size": 330450,
+            "ext": ".webp",
+            "category": "image",
+            "swapCandidate": "Unsplash CC0 (search by visual similarity) or AI-generated equivalent"
+          },
+          {
+            "path": "_fcdn/67c4bd9aa24e.buf",
+            "size": 312576,
+            "ext": ".buf",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/c5a52e038c80",
+            "size": 302990,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/b5c9946ec3bc.buf",
+            "size": 282676,
+            "ext": ".buf",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/76e869e85013.webp",
+            "size": 276990,
+            "ext": ".webp",
+            "category": "image",
+            "swapCandidate": "Unsplash CC0 (search by visual similarity) or AI-generated equivalent"
+          },
+          {
+            "path": "_fcdn/627c00d875bd.webp",
+            "size": 276006,
+            "ext": ".webp",
+            "category": "image",
+            "swapCandidate": "Unsplash CC0 (search by visual similarity) or AI-generated equivalent"
+          }
+        ]
+      }
+    },
+    {
+      "name": "omega-teamevople-kr",
+      "dir": "C:\\Users\\dg020\\Desktop\\작업\\projects\\engine\\omega-teamevople-kr",
+      "audit": {
+        "determination": "FAIL",
+        "stats": {
+          "totalFiles": 496,
+          "totalBytes": 72972326,
+          "sourceCount": 494,
+          "sourceBytes": 72436772,
+          "sourcePct": 99.6,
+          "sourceBytePct": 99.3,
+          "byCategory": {
+            "document": 1,
+            "script": 31,
+            "font": 321,
+            "image": 119,
+            "other": 23,
+            "video": 1
+          }
+        },
+        "inventory": {
+          "SOURCE_DERIVED": {
+            "count": 494,
+            "bytes": 72436772,
+            "topItems": [
+              {
+                "path": "_fcdn/0048398b3355.woff2",
+                "size": 163748,
+                "ext": ".woff2"
+              },
+              {
+                "path": "_fcdn/01611b0ebbe1.woff2",
+                "size": 7028,
+                "ext": ".woff2"
+              },
+              {
+                "path": "_fcdn/026ae0ae7c14.png",
+                "size": 7215,
+                "ext": ".png"
+              },
+              {
+                "path": "_fcdn/04a4615e5832",
+                "size": 164,
+                "ext": ""
+              },
+              {
+                "path": "_fcdn/04c3a236d6fa.png",
+                "size": 718213,
+                "ext": ".png"
+              },
+              {
+                "path": "_fcdn/057b9171e1bc.woff2",
+                "size": 7480,
+                "ext": ".woff2"
+              },
+              {
+                "path": "_fcdn/05aecd81f0f1.woff2",
+                "size": 7540,
+                "ext": ".woff2"
+              },
+              {
+                "path": "_fcdn/05b5a2451150.woff2",
+                "size": 7052,
+                "ext": ".woff2"
+              },
+              {
+                "path": "_fcdn/0612ffbc9fb8.woff2",
+                "size": 4832,
+                "ext": ".woff2"
+              },
+              {
+                "path": "_fcdn/0631552587ae.png",
+                "size": 71519,
+                "ext": ".png"
+              }
+            ]
+          },
+          "LICENSED_REGENERATED": {
+            "count": 0,
+            "bytes": 0,
+            "topItems": []
+          },
+          "PLATFORM_NEUTRAL": {
+            "count": 0,
+            "bytes": 0,
+            "topItems": []
+          },
+          "USER_AUTHORED": {
+            "count": 2,
+            "bytes": 535554,
+            "topItems": [
+              {
+                "path": "index.html",
+                "size": 534483,
+                "ext": ".html"
+              },
+              {
+                "path": "sw.js",
+                "size": 1071,
+                "ext": ".js"
+              }
+            ]
+          },
+          "UNKNOWN": {
+            "count": 0,
+            "bytes": 0,
+            "topItems": []
+          }
+        },
+        "topSourceDerived": [
+          {
+            "path": "_fcdn/3576abdee7c7.svg",
+            "size": 6102437,
+            "ext": ".svg",
+            "category": "image",
+            "swapCandidate": "Heroicons / Lucide (MIT) or regenerated"
+          },
+          {
+            "path": "_fcdn/0c39a26a015b.mp4",
+            "size": 4144843,
+            "ext": ".mp4",
+            "category": "video",
+            "swapCandidate": "Pexels CC0 or removal"
+          },
+          {
+            "path": "_fcdn/61575f7b9a92.png",
+            "size": 3530281,
+            "ext": ".png",
+            "category": "image",
+            "swapCandidate": "Unsplash CC0 (search by visual similarity) or AI-generated equivalent"
+          },
+          {
+            "path": "_fcdn/5f44c9bceeec",
+            "size": 1565390,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/68350fcc51fa.png",
+            "size": 1563898,
+            "ext": ".png",
+            "category": "image",
+            "swapCandidate": "Unsplash CC0 (search by visual similarity) or AI-generated equivalent"
+          },
+          {
+            "path": "_fcdn/e2548e78abb3.png",
+            "size": 1321503,
+            "ext": ".png",
+            "category": "image",
+            "swapCandidate": "Unsplash CC0 (search by visual similarity) or AI-generated equivalent"
+          },
+          {
+            "path": "_fcdn/d89febe748dd.woff",
+            "size": 1134300,
+            "ext": ".woff",
+            "category": "font",
+            "swapCandidate": "Pretendard / Noto Sans KR (OFL)"
+          },
+          {
+            "path": "_fcdn/84c384ac970c.woff",
+            "size": 1129800,
+            "ext": ".woff",
+            "category": "font",
+            "swapCandidate": "Pretendard / Noto Sans KR (OFL)"
+          },
+          {
+            "path": "_fcdn/3101917d2726.woff",
+            "size": 1129620,
+            "ext": ".woff",
+            "category": "font",
+            "swapCandidate": "Pretendard / Noto Sans KR (OFL)"
+          },
+          {
+            "path": "_fcdn/ea77d86669ad.woff",
+            "size": 1126268,
+            "ext": ".woff",
+            "category": "font",
+            "swapCandidate": "Pretendard / Noto Sans KR (OFL)"
+          },
+          {
+            "path": "_fcdn/71e703a9b0fb.woff",
+            "size": 1123696,
+            "ext": ".woff",
+            "category": "font",
+            "swapCandidate": "Pretendard / Noto Sans KR (OFL)"
+          },
+          {
+            "path": "_fcdn/82810623fb0f.woff",
+            "size": 1117204,
+            "ext": ".woff",
+            "category": "font",
+            "swapCandidate": "Pretendard / Noto Sans KR (OFL)"
+          },
+          {
+            "path": "_fcdn/10c6ac30d906.woff",
+            "size": 1115060,
+            "ext": ".woff",
+            "category": "font",
+            "swapCandidate": "Pretendard / Noto Sans KR (OFL)"
+          },
+          {
+            "path": "_fcdn/0ea6ee1f3282.woff",
+            "size": 1104104,
+            "ext": ".woff",
+            "category": "font",
+            "swapCandidate": "Pretendard / Noto Sans KR (OFL)"
+          },
+          {
+            "path": "_fcdn/1a52de4a0df1.png",
+            "size": 1092326,
+            "ext": ".png",
+            "category": "image",
+            "swapCandidate": "Unsplash CC0 (search by visual similarity) or AI-generated equivalent"
+          },
+          {
+            "path": "_fcdn/1e6f5718e953.woff",
+            "size": 1073072,
+            "ext": ".woff",
+            "category": "font",
+            "swapCandidate": "Pretendard / Noto Sans KR (OFL)"
+          },
+          {
+            "path": "_fcdn/5b207751268e.woff2",
+            "size": 985360,
+            "ext": ".woff2",
+            "category": "font",
+            "swapCandidate": "Pretendard / Noto Sans KR (OFL)"
+          },
+          {
+            "path": "_fcdn/ba9fbd561578.png",
+            "size": 906844,
+            "ext": ".png",
+            "category": "image",
+            "swapCandidate": "Unsplash CC0 (search by visual similarity) or AI-generated equivalent"
+          },
+          {
+            "path": "_fcdn/754c7073d7dc.png",
+            "size": 899229,
+            "ext": ".png",
+            "category": "image",
+            "swapCandidate": "Unsplash CC0 (search by visual similarity) or AI-generated equivalent"
+          },
+          {
+            "path": "_fcdn/1467dd9587e0.mjs",
+            "size": 897950,
+            "ext": ".mjs",
+            "category": "script",
+            "swapCandidate": "sigma-runtime own implementation"
+          }
+        ]
+      }
+    },
+    {
+      "name": "omega-webflow-com",
+      "dir": "C:\\Users\\dg020\\Desktop\\작업\\projects\\engine\\omega-webflow-com",
+      "audit": {
+        "determination": "FAIL",
+        "stats": {
+          "totalFiles": 389,
+          "totalBytes": 84670977,
+          "sourceCount": 387,
+          "sourceBytes": 84156477,
+          "sourcePct": 99.5,
+          "sourceBytePct": 99.4,
+          "byCategory": {
+            "document": 4,
+            "script": 62,
+            "other": 165,
+            "image": 135,
+            "font": 10,
+            "stylesheet": 6,
+            "video": 7
+          }
+        },
+        "inventory": {
+          "SOURCE_DERIVED": {
+            "count": 387,
+            "bytes": 84156477,
+            "topItems": [
+              {
+                "path": "_fcdn/00b9b8ad06af.js",
+                "size": 1214,
+                "ext": ".js"
+              },
+              {
+                "path": "_fcdn/00deb7f88ea7",
+                "size": 347857,
+                "ext": ""
+              },
+              {
+                "path": "_fcdn/010dcd17fb84.webp",
+                "size": 55488,
+                "ext": ".webp"
+              },
+              {
+                "path": "_fcdn/01172cf8491c",
+                "size": 205327,
+                "ext": ""
+              },
+              {
+                "path": "_fcdn/01e890235f3f",
+                "size": 397425,
+                "ext": ""
+              },
+              {
+                "path": "_fcdn/02f84ab362fe.svg",
+                "size": 2446,
+                "ext": ".svg"
+              },
+              {
+                "path": "_fcdn/02fc013cfe0e.webp",
+                "size": 86308,
+                "ext": ".webp"
+              },
+              {
+                "path": "_fcdn/034f0e3829c9",
+                "size": 437998,
+                "ext": ""
+              },
+              {
+                "path": "_fcdn/0435162b58a1",
+                "size": 333760,
+                "ext": ""
+              },
+              {
+                "path": "_fcdn/04574b126ff8",
+                "size": 1447,
+                "ext": ""
+              }
+            ]
+          },
+          "LICENSED_REGENERATED": {
+            "count": 0,
+            "bytes": 0,
+            "topItems": []
+          },
+          "PLATFORM_NEUTRAL": {
+            "count": 0,
+            "bytes": 0,
+            "topItems": []
+          },
+          "USER_AUTHORED": {
+            "count": 2,
+            "bytes": 514500,
+            "topItems": [
+              {
+                "path": "index.html",
+                "size": 513431,
+                "ext": ".html"
+              },
+              {
+                "path": "sw.js",
+                "size": 1069,
+                "ext": ".js"
+              }
+            ]
+          },
+          "UNKNOWN": {
+            "count": 0,
+            "bytes": 0,
+            "topItems": []
+          }
+        },
+        "topSourceDerived": [
+          {
+            "path": "_fcdn/d7aa105e1565.js",
+            "size": 13271362,
+            "ext": ".js",
+            "category": "script",
+            "swapCandidate": "sigma-runtime own implementation"
+          },
+          {
+            "path": "_fcdn/ba910f24465f.mp4",
+            "size": 2064454,
+            "ext": ".mp4",
+            "category": "video",
+            "swapCandidate": "Pexels CC0 or removal"
+          },
+          {
+            "path": "_fcdn/8de1d1234ba6.mp4",
+            "size": 1661229,
+            "ext": ".mp4",
+            "category": "video",
+            "swapCandidate": "Pexels CC0 or removal"
+          },
+          {
+            "path": "_fcdn/9d5c0769b681",
+            "size": 1636936,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/11bf7c24ccc1",
+            "size": 1304140,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/43445ca7cad9.mp4",
+            "size": 1211185,
+            "ext": ".mp4",
+            "category": "video",
+            "swapCandidate": "Pexels CC0 or removal"
+          },
+          {
+            "path": "_fcdn/4df8cc1a2642.mp4",
+            "size": 1181211,
+            "ext": ".mp4",
+            "category": "video",
+            "swapCandidate": "Pexels CC0 or removal"
+          },
+          {
+            "path": "_fcdn/5a656b193d57.mp4",
+            "size": 1118386,
+            "ext": ".mp4",
+            "category": "video",
+            "swapCandidate": "Pexels CC0 or removal"
+          },
+          {
+            "path": "_fcdn/11ab73154c85",
+            "size": 994868,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/427d99fda6ec",
+            "size": 927107,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/1e6a7692906f",
+            "size": 906364,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/5fa256b09943.mp4",
+            "size": 767769,
+            "ext": ".mp4",
+            "category": "video",
+            "swapCandidate": "Pexels CC0 or removal"
+          },
+          {
+            "path": "_fcdn/b7e42645ca2e.mp4",
+            "size": 696461,
+            "ext": ".mp4",
+            "category": "video",
+            "swapCandidate": "Pexels CC0 or removal"
+          },
+          {
+            "path": "_fcdn/202e4076b156",
+            "size": 664112,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/42eb21f7e3b4",
+            "size": 664112,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/9384a03222e1",
+            "size": 637106,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/9ae8f1e59da1",
+            "size": 635499,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/d97bce91eb43",
+            "size": 634671,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/35a2894af6e9",
+            "size": 605733,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/aace3d9a5ee0.js",
+            "size": 603457,
+            "ext": ".js",
+            "category": "script",
+            "swapCandidate": "sigma-runtime own implementation"
+          }
+        ]
+      }
+    },
+    {
+      "name": "omega-www-awwwards-com",
+      "dir": "C:\\Users\\dg020\\Desktop\\작업\\projects\\engine\\omega-www-awwwards-com",
+      "audit": {
+        "determination": "FAIL",
+        "stats": {
+          "totalFiles": 248,
+          "totalBytes": 65899194,
+          "sourceCount": 246,
+          "sourceBytes": 65571693,
+          "sourcePct": 99.2,
+          "sourceBytePct": 99.5,
+          "byCategory": {
+            "document": 5,
+            "script": 17,
+            "image": 81,
+            "other": 142,
+            "video": 2,
+            "font": 1
+          }
+        },
+        "inventory": {
+          "SOURCE_DERIVED": {
+            "count": 246,
+            "bytes": 65571693,
+            "topItems": [
+              {
+                "path": "_fcdn/03947e1ea3f0.js",
+                "size": 150649,
+                "ext": ".js"
+              },
+              {
+                "path": "_fcdn/041b48c3787a.svg",
+                "size": 48518,
+                "ext": ".svg"
+              },
+              {
+                "path": "_fcdn/04f07cac6d4a",
+                "size": 218642,
+                "ext": ""
+              },
+              {
+                "path": "_fcdn/055ef9cc35c1",
+                "size": 74,
+                "ext": ""
+              },
+              {
+                "path": "_fcdn/06b732bdf63f",
+                "size": 304176,
+                "ext": ""
+              },
+              {
+                "path": "_fcdn/0760c2405445",
+                "size": 149047,
+                "ext": ""
+              },
+              {
+                "path": "_fcdn/07a22d229199",
+                "size": 247946,
+                "ext": ""
+              },
+              {
+                "path": "_fcdn/086caf66957c.png",
+                "size": 588,
+                "ext": ".png"
+              },
+              {
+                "path": "_fcdn/09dfa75ba3c2",
+                "size": 247911,
+                "ext": ""
+              },
+              {
+                "path": "_fcdn/0a156f900c28",
+                "size": 411766,
+                "ext": ""
+              }
+            ]
+          },
+          "LICENSED_REGENERATED": {
+            "count": 0,
+            "bytes": 0,
+            "topItems": []
+          },
+          "PLATFORM_NEUTRAL": {
+            "count": 0,
+            "bytes": 0,
+            "topItems": []
+          },
+          "USER_AUTHORED": {
+            "count": 2,
+            "bytes": 327501,
+            "topItems": [
+              {
+                "path": "index.html",
+                "size": 326427,
+                "ext": ".html"
+              },
+              {
+                "path": "sw.js",
+                "size": 1074,
+                "ext": ".js"
+              }
+            ]
+          },
+          "UNKNOWN": {
+            "count": 0,
+            "bytes": 0,
+            "topItems": []
+          }
+        },
+        "topSourceDerived": [
+          {
+            "path": "_fcdn/dc460af1b126.mp4",
+            "size": 4032454,
+            "ext": ".mp4",
+            "category": "video",
+            "swapCandidate": "Pexels CC0 or removal"
+          },
+          {
+            "path": "_fcdn/cd6a129e3b49",
+            "size": 2056785,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/9a2a8f720df3.js",
+            "size": 2038749,
+            "ext": ".js",
+            "category": "script",
+            "swapCandidate": "sigma-runtime own implementation"
+          },
+          {
+            "path": "_fcdn/3222a8f28bab",
+            "size": 1722871,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/9886e49be558",
+            "size": 1251764,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/c6649ddd2fc9",
+            "size": 1002607,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/65bcf4953629",
+            "size": 906773,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/c8eb0479e588.js",
+            "size": 873081,
+            "ext": ".js",
+            "category": "script",
+            "swapCandidate": "sigma-runtime own implementation"
+          },
+          {
+            "path": "_fcdn/a0ce2041ac6e.jpg",
+            "size": 650969,
+            "ext": ".jpg",
+            "category": "image",
+            "swapCandidate": "Unsplash CC0 (search by visual similarity) or AI-generated equivalent"
+          },
+          {
+            "path": "_fcdn/844b925429e5.jpg",
+            "size": 639266,
+            "ext": ".jpg",
+            "category": "image",
+            "swapCandidate": "Unsplash CC0 (search by visual similarity) or AI-generated equivalent"
+          },
+          {
+            "path": "_fcdn/338bdc49969a",
+            "size": 613664,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/4ac7466a805d",
+            "size": 610962,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/ee277f4dba8b",
+            "size": 609860,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/9dfea97fbd3a",
+            "size": 608915,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/e79ccea0c2ea",
+            "size": 608249,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/7b24fbc57106",
+            "size": 608025,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/1d4d101aca16",
+            "size": 604456,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/67480e6085ad",
+            "size": 604181,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/6dc023228b15",
+            "size": 600249,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/b21176b16aab",
+            "size": 599049,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          }
+        ]
+      }
+    },
+    {
+      "name": "omega-www-dusonnuri-co-kr",
+      "dir": "C:\\Users\\dg020\\Desktop\\작업\\projects\\engine\\omega-www-dusonnuri-co-kr",
+      "composite": {
+        "partial": {
+          "http": 100,
+          "korean": 100,
+          "visual": 81.77,
+          "motion": 80,
+          "a11y": 100,
+          "seo": 100,
+          "identifier": 94,
+          "license": 70
+        },
+        "weights": {
+          "visual": 0.3,
+          "license": 0.15,
+          "motion": 0.15,
+          "korean": 0.1,
+          "a11y": 0.1,
+          "seo": 0.1,
+          "http": 0.05,
+          "identifier": 0.05
+        },
+        "composite": 86.7,
+        "interpretation": "PRODUCTION_CAUTION",
+        "binaryScore": 100,
+        "improvement": -13.3
+      },
+      "audit": {
+        "determination": "FAIL",
+        "stats": {
+          "totalFiles": 553,
+          "totalBytes": 87257640,
+          "sourceCount": 535,
+          "sourceBytes": 76675774,
+          "sourcePct": 96.7,
+          "sourceBytePct": 87.9,
+          "byCategory": {
+            "document": 17,
+            "other": 133,
+            "script": 130,
+            "image": 198,
+            "font": 35,
+            "stylesheet": 40
+          }
+        },
+        "inventory": {
+          "SOURCE_DERIVED": {
+            "count": 535,
+            "bytes": 76675774,
+            "topItems": [
+              {
+                "path": "_fcdn/0052ef5a8693.js",
+                "size": 50738,
+                "ext": ".js"
+              },
+              {
+                "path": "_fcdn/00a9d3ab02a0",
+                "size": 559396,
+                "ext": ""
+              },
+              {
+                "path": "_fcdn/02c3f0110a95",
+                "size": 323931,
+                "ext": ""
+              },
+              {
+                "path": "_fcdn/0303c7b5eda9.jpg",
+                "size": 78749,
+                "ext": ".jpg"
+              },
+              {
+                "path": "_fcdn/039d36208a14",
+                "size": 471822,
+                "ext": ""
+              },
+              {
+                "path": "_fcdn/044d362268bf.js",
+                "size": 3756,
+                "ext": ".js"
+              },
+              {
+                "path": "_fcdn/046138aa86bf",
+                "size": 315,
+                "ext": ""
+              },
+              {
+                "path": "_fcdn/047abb2e704a.woff2",
+                "size": 24748,
+                "ext": ".woff2"
+              },
+              {
+                "path": "_fcdn/050038357968.js",
+                "size": 18836,
+                "ext": ".js"
+              },
+              {
+                "path": "_fcdn/05053570b487.jpg",
+                "size": 20906,
+                "ext": ".jpg"
+              }
+            ]
+          },
+          "LICENSED_REGENERATED": {
+            "count": 0,
+            "bytes": 0,
+            "topItems": []
+          },
+          "PLATFORM_NEUTRAL": {
+            "count": 0,
+            "bytes": 0,
+            "topItems": []
+          },
+          "USER_AUTHORED": {
+            "count": 4,
+            "bytes": 1250703,
+            "topItems": [
+              {
+                "path": "index.html",
+                "size": 1247790,
+                "ext": ".html"
+              },
+              {
+                "path": "robots.txt",
+                "size": 72,
+                "ext": ".txt"
+              },
+              {
+                "path": "sitemap.xml",
+                "size": 997,
+                "ext": ".xml"
+              },
+              {
+                "path": "sw.js",
+                "size": 1844,
+                "ext": ".js"
+              }
+            ]
+          },
+          "UNKNOWN": {
+            "count": 14,
+            "bytes": 9331163,
+            "topItems": [
+              {
+                "path": "11/index.html",
+                "size": 55006,
+                "ext": ".html"
+              },
+              {
+                "path": "33/index.html",
+                "size": 362141,
+                "ext": ".html"
+              },
+              {
+                "path": "34/index.html",
+                "size": 552979,
+                "ext": ".html"
+              },
+              {
+                "path": "center/index.html",
+                "size": 696708,
+                "ext": ".html"
+              },
+              {
+                "path": "Company/index.html",
+                "size": 678831,
+                "ext": ".html"
+              },
+              {
+                "path": "FAQ/index.html",
+                "size": 587977,
+                "ext": ".html"
+              },
+              {
+                "path": "greeting/index.html",
+                "size": 696708,
+                "ext": ".html"
+              },
+              {
+                "path": "homecare/index.html",
+                "size": 752505,
+                "ext": ".html"
+              },
+              {
+                "path": "index/index.html",
+                "size": 1196588,
+                "ext": ".html"
+              },
+              {
+                "path": "notice/index.html",
+                "size": 552980,
+                "ext": ".html"
+              }
+            ]
+          }
+        },
+        "topSourceDerived": [
+          {
+            "path": "_fcdn/a1990df87ea4.php",
+            "size": 1564095,
+            "ext": ".php",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/88472353b2f4.php",
+            "size": 1546080,
+            "ext": ".php",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/75941ccf7a41.js",
+            "size": 1472850,
+            "ext": ".js",
+            "category": "script",
+            "swapCandidate": "sigma-runtime own implementation"
+          },
+          {
+            "path": "_fcdn/d47abe6cdbbe.js",
+            "size": 1222042,
+            "ext": ".js",
+            "category": "script",
+            "swapCandidate": "sigma-runtime own implementation"
+          },
+          {
+            "path": "_fcdn/61e437e7f182.js",
+            "size": 1213406,
+            "ext": ".js",
+            "category": "script",
+            "swapCandidate": "sigma-runtime own implementation"
+          },
+          {
+            "path": "_fcdn/c45ed01ba4b4",
+            "size": 1213108,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/53f43d9feade",
+            "size": 1187531,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/ee6dc469cda7",
+            "size": 1187439,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/190524626ebc",
+            "size": 1187417,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/0fd7fb07be6e",
+            "size": 1180743,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/3bb919904a23",
+            "size": 1164666,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/0d97451edda4",
+            "size": 1149279,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/fda0cf53f03a",
+            "size": 1140547,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/9271d5b0da41",
+            "size": 1109668,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/a8cede421c5e",
+            "size": 1102376,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/1ef4b5ead916",
+            "size": 958766,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/db4855ab8e75",
+            "size": 922470,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/dbb7cc7e0510",
+            "size": 911614,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/0722195f049b.png",
+            "size": 906733,
+            "ext": ".png",
+            "category": "image",
+            "swapCandidate": "Unsplash CC0 (search by visual similarity) or AI-generated equivalent"
+          },
+          {
+            "path": "_fcdn/d3e9eff185cd.png",
+            "size": 895560,
+            "ext": ".png",
+            "category": "image",
+            "swapCandidate": "Unsplash CC0 (search by visual similarity) or AI-generated equivalent"
+          }
+        ]
+      }
+    },
+    {
+      "name": "omega-www-framer-com",
+      "dir": "C:\\Users\\dg020\\Desktop\\작업\\projects\\engine\\omega-www-framer-com",
+      "audit": {
+        "determination": "FAIL",
+        "stats": {
+          "totalFiles": 933,
+          "totalBytes": 417909971,
+          "sourceCount": 931,
+          "sourceBytes": 416356563,
+          "sourcePct": 99.8,
+          "sourceBytePct": 99.6,
+          "byCategory": {
+            "document": 1,
+            "script": 129,
+            "other": 192,
+            "image": 241,
+            "font": 355,
+            "video": 15
+          }
+        },
+        "inventory": {
+          "SOURCE_DERIVED": {
+            "count": 931,
+            "bytes": 416356563,
+            "topItems": [
+              {
+                "path": "_fcdn/00d08a8b69be",
+                "size": 381,
+                "ext": ""
+              },
+              {
+                "path": "_fcdn/011d8356e19a.mjs",
+                "size": 528,
+                "ext": ".mjs"
+              },
+              {
+                "path": "_fcdn/012b248c4872.gif",
+                "size": 45,
+                "ext": ".gif"
+              },
+              {
+                "path": "_fcdn/01611b0ebbe1.woff2",
+                "size": 7028,
+                "ext": ".woff2"
+              },
+              {
+                "path": "_fcdn/01922951d0b6.jpg",
+                "size": 71206,
+                "ext": ".jpg"
+              },
+              {
+                "path": "_fcdn/01b838994646",
+                "size": 1012446,
+                "ext": ""
+              },
+              {
+                "path": "_fcdn/01c63a647726.mjs",
+                "size": 1734,
+                "ext": ".mjs"
+              },
+              {
+                "path": "_fcdn/01ca0f9bbb87.jpg",
+                "size": 25969,
+                "ext": ".jpg"
+              },
+              {
+                "path": "_fcdn/01d4d5170552.woff2",
+                "size": 6712,
+                "ext": ".woff2"
+              },
+              {
+                "path": "_fcdn/027b0425636f.jpg",
+                "size": 17970,
+                "ext": ".jpg"
+              }
+            ]
+          },
+          "LICENSED_REGENERATED": {
+            "count": 0,
+            "bytes": 0,
+            "topItems": []
+          },
+          "PLATFORM_NEUTRAL": {
+            "count": 0,
+            "bytes": 0,
+            "topItems": []
+          },
+          "USER_AUTHORED": {
+            "count": 2,
+            "bytes": 1553408,
+            "topItems": [
+              {
+                "path": "index.html",
+                "size": 1552336,
+                "ext": ".html"
+              },
+              {
+                "path": "sw.js",
+                "size": 1072,
+                "ext": ".js"
+              }
+            ]
+          },
+          "UNKNOWN": {
+            "count": 0,
+            "bytes": 0,
+            "topItems": []
+          }
+        },
+        "topSourceDerived": [
+          {
+            "path": "_fcdn/8c847f55d267.exe",
+            "size": 133223832,
+            "ext": ".exe",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/c3da76b7b6fe.zip",
+            "size": 121951583,
+            "ext": ".zip",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/c27cbf520986.json",
+            "size": 7870813,
+            "ext": ".json",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/988b61a58ce6.json",
+            "size": 7870806,
+            "ext": ".json",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/5888c26f846e",
+            "size": 3072607,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/6e34a62119d3",
+            "size": 3072607,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/aab4b351f257",
+            "size": 3072607,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/b57b5e06dabd",
+            "size": 3072607,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/bdc9367f64c5",
+            "size": 3072607,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/dd8fb17aca78",
+            "size": 2644662,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/5ffea4ffbd63",
+            "size": 2209842,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/c102af3338c9",
+            "size": 2120913,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/b99b6a12274d",
+            "size": 2106581,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/05cc15d85d63",
+            "size": 1999184,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/f518ea5b7cc0",
+            "size": 1994708,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/f97dce73faa1",
+            "size": 1892261,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/26543fdcaf19",
+            "size": 1820313,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/15f90843de38",
+            "size": 1663788,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/d6402c24fbb3",
+            "size": 1577736,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/19db81918006",
+            "size": 1557662,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          }
+        ]
+      }
+    },
+    {
+      "name": "omega-www-wix-com",
+      "dir": "C:\\Users\\dg020\\Desktop\\작업\\projects\\engine\\omega-www-wix-com",
+      "audit": {
+        "determination": "FAIL",
+        "stats": {
+          "totalFiles": 462,
+          "totalBytes": 99261320,
+          "sourceCount": 460,
+          "sourceBytes": 97837976,
+          "sourcePct": 99.6,
+          "sourceBytePct": 98.6,
+          "byCategory": {
+            "document": 2,
+            "script": 122,
+            "other": 175,
+            "image": 61,
+            "font": 81,
+            "stylesheet": 21
+          }
+        },
+        "inventory": {
+          "SOURCE_DERIVED": {
+            "count": 460,
+            "bytes": 97837976,
+            "topItems": [
+              {
+                "path": "_fcdn/01277e3062cf",
+                "size": 1259596,
+                "ext": ""
+              },
+              {
+                "path": "_fcdn/01ad8a88a194",
+                "size": 35,
+                "ext": ""
+              },
+              {
+                "path": "_fcdn/01de9e09707f",
+                "size": 1161425,
+                "ext": ""
+              },
+              {
+                "path": "_fcdn/0370d2727332.jpg",
+                "size": 21275,
+                "ext": ".jpg"
+              },
+              {
+                "path": "_fcdn/0432771adae2.woff2",
+                "size": 24768,
+                "ext": ".woff2"
+              },
+              {
+                "path": "_fcdn/04eb4f985b6b.woff2",
+                "size": 24768,
+                "ext": ".woff2"
+              },
+              {
+                "path": "_fcdn/053a0035c723.woff2",
+                "size": 17084,
+                "ext": ".woff2"
+              },
+              {
+                "path": "_fcdn/055fa53d9b27.js",
+                "size": 5867,
+                "ext": ".js"
+              },
+              {
+                "path": "_fcdn/0561d0b1cc85",
+                "size": 43,
+                "ext": ""
+              },
+              {
+                "path": "_fcdn/057feb93e145",
+                "size": 43,
+                "ext": ""
+              }
+            ]
+          },
+          "LICENSED_REGENERATED": {
+            "count": 0,
+            "bytes": 0,
+            "topItems": []
+          },
+          "PLATFORM_NEUTRAL": {
+            "count": 0,
+            "bytes": 0,
+            "topItems": []
+          },
+          "USER_AUTHORED": {
+            "count": 2,
+            "bytes": 1423344,
+            "topItems": [
+              {
+                "path": "index.html",
+                "size": 1422275,
+                "ext": ".html"
+              },
+              {
+                "path": "sw.js",
+                "size": 1069,
+                "ext": ".js"
+              }
+            ]
+          },
+          "UNKNOWN": {
+            "count": 0,
+            "bytes": 0,
+            "topItems": []
+          }
+        },
+        "topSourceDerived": [
+          {
+            "path": "_fcdn/d9b3444317f1",
+            "size": 2431278,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/f4de506f52a9",
+            "size": 2365379,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/2f6fa79623c8",
+            "size": 2322434,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/f499c6168261",
+            "size": 2295332,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/aa5d9bab80ce",
+            "size": 2099026,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/c3f717ea5c60",
+            "size": 2086039,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/3591956178da",
+            "size": 2006456,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/2ce81f7aec35",
+            "size": 1774965,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/f5237b352f4c",
+            "size": 1765685,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/aea4466454f1",
+            "size": 1576346,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/7fa6cc918312",
+            "size": 1439106,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/ffd99bb6ce0d",
+            "size": 1433531,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/65ea5f159799",
+            "size": 1393404,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/530a7f935d19",
+            "size": 1390096,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/0b4bf5413769",
+            "size": 1374941,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/af8735b3beb9",
+            "size": 1349987,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/7a878e02b68b",
+            "size": 1304643,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/f4c9710211d2",
+            "size": 1284675,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/680acd1e6c71",
+            "size": 1274759,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/5cea56e9ae21",
+            "size": 1263053,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          }
+        ]
+      }
+    }
+  ],
+  "ranked": [
+    {
+      "name": "omega-www-dusonnuri-co-kr",
+      "dir": "C:\\Users\\dg020\\Desktop\\작업\\projects\\engine\\omega-www-dusonnuri-co-kr",
+      "composite": {
+        "partial": {
+          "http": 100,
+          "korean": 100,
+          "visual": 81.77,
+          "motion": 80,
+          "a11y": 100,
+          "seo": 100,
+          "identifier": 94,
+          "license": 70
+        },
+        "weights": {
+          "visual": 0.3,
+          "license": 0.15,
+          "motion": 0.15,
+          "korean": 0.1,
+          "a11y": 0.1,
+          "seo": 0.1,
+          "http": 0.05,
+          "identifier": 0.05
+        },
+        "composite": 86.7,
+        "interpretation": "PRODUCTION_CAUTION",
+        "binaryScore": 100,
+        "improvement": -13.3
+      },
+      "audit": {
+        "determination": "FAIL",
+        "stats": {
+          "totalFiles": 553,
+          "totalBytes": 87257640,
+          "sourceCount": 535,
+          "sourceBytes": 76675774,
+          "sourcePct": 96.7,
+          "sourceBytePct": 87.9,
+          "byCategory": {
+            "document": 17,
+            "other": 133,
+            "script": 130,
+            "image": 198,
+            "font": 35,
+            "stylesheet": 40
+          }
+        },
+        "inventory": {
+          "SOURCE_DERIVED": {
+            "count": 535,
+            "bytes": 76675774,
+            "topItems": [
+              {
+                "path": "_fcdn/0052ef5a8693.js",
+                "size": 50738,
+                "ext": ".js"
+              },
+              {
+                "path": "_fcdn/00a9d3ab02a0",
+                "size": 559396,
+                "ext": ""
+              },
+              {
+                "path": "_fcdn/02c3f0110a95",
+                "size": 323931,
+                "ext": ""
+              },
+              {
+                "path": "_fcdn/0303c7b5eda9.jpg",
+                "size": 78749,
+                "ext": ".jpg"
+              },
+              {
+                "path": "_fcdn/039d36208a14",
+                "size": 471822,
+                "ext": ""
+              },
+              {
+                "path": "_fcdn/044d362268bf.js",
+                "size": 3756,
+                "ext": ".js"
+              },
+              {
+                "path": "_fcdn/046138aa86bf",
+                "size": 315,
+                "ext": ""
+              },
+              {
+                "path": "_fcdn/047abb2e704a.woff2",
+                "size": 24748,
+                "ext": ".woff2"
+              },
+              {
+                "path": "_fcdn/050038357968.js",
+                "size": 18836,
+                "ext": ".js"
+              },
+              {
+                "path": "_fcdn/05053570b487.jpg",
+                "size": 20906,
+                "ext": ".jpg"
+              }
+            ]
+          },
+          "LICENSED_REGENERATED": {
+            "count": 0,
+            "bytes": 0,
+            "topItems": []
+          },
+          "PLATFORM_NEUTRAL": {
+            "count": 0,
+            "bytes": 0,
+            "topItems": []
+          },
+          "USER_AUTHORED": {
+            "count": 4,
+            "bytes": 1250703,
+            "topItems": [
+              {
+                "path": "index.html",
+                "size": 1247790,
+                "ext": ".html"
+              },
+              {
+                "path": "robots.txt",
+                "size": 72,
+                "ext": ".txt"
+              },
+              {
+                "path": "sitemap.xml",
+                "size": 997,
+                "ext": ".xml"
+              },
+              {
+                "path": "sw.js",
+                "size": 1844,
+                "ext": ".js"
+              }
+            ]
+          },
+          "UNKNOWN": {
+            "count": 14,
+            "bytes": 9331163,
+            "topItems": [
+              {
+                "path": "11/index.html",
+                "size": 55006,
+                "ext": ".html"
+              },
+              {
+                "path": "33/index.html",
+                "size": 362141,
+                "ext": ".html"
+              },
+              {
+                "path": "34/index.html",
+                "size": 552979,
+                "ext": ".html"
+              },
+              {
+                "path": "center/index.html",
+                "size": 696708,
+                "ext": ".html"
+              },
+              {
+                "path": "Company/index.html",
+                "size": 678831,
+                "ext": ".html"
+              },
+              {
+                "path": "FAQ/index.html",
+                "size": 587977,
+                "ext": ".html"
+              },
+              {
+                "path": "greeting/index.html",
+                "size": 696708,
+                "ext": ".html"
+              },
+              {
+                "path": "homecare/index.html",
+                "size": 752505,
+                "ext": ".html"
+              },
+              {
+                "path": "index/index.html",
+                "size": 1196588,
+                "ext": ".html"
+              },
+              {
+                "path": "notice/index.html",
+                "size": 552980,
+                "ext": ".html"
+              }
+            ]
+          }
+        },
+        "topSourceDerived": [
+          {
+            "path": "_fcdn/a1990df87ea4.php",
+            "size": 1564095,
+            "ext": ".php",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/88472353b2f4.php",
+            "size": 1546080,
+            "ext": ".php",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/75941ccf7a41.js",
+            "size": 1472850,
+            "ext": ".js",
+            "category": "script",
+            "swapCandidate": "sigma-runtime own implementation"
+          },
+          {
+            "path": "_fcdn/d47abe6cdbbe.js",
+            "size": 1222042,
+            "ext": ".js",
+            "category": "script",
+            "swapCandidate": "sigma-runtime own implementation"
+          },
+          {
+            "path": "_fcdn/61e437e7f182.js",
+            "size": 1213406,
+            "ext": ".js",
+            "category": "script",
+            "swapCandidate": "sigma-runtime own implementation"
+          },
+          {
+            "path": "_fcdn/c45ed01ba4b4",
+            "size": 1213108,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/53f43d9feade",
+            "size": 1187531,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/ee6dc469cda7",
+            "size": 1187439,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/190524626ebc",
+            "size": 1187417,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/0fd7fb07be6e",
+            "size": 1180743,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/3bb919904a23",
+            "size": 1164666,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/0d97451edda4",
+            "size": 1149279,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/fda0cf53f03a",
+            "size": 1140547,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/9271d5b0da41",
+            "size": 1109668,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/a8cede421c5e",
+            "size": 1102376,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/1ef4b5ead916",
+            "size": 958766,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/db4855ab8e75",
+            "size": 922470,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/dbb7cc7e0510",
+            "size": 911614,
+            "ext": "",
+            "category": "other",
+            "swapCandidate": "manual review"
+          },
+          {
+            "path": "_fcdn/0722195f049b.png",
+            "size": 906733,
+            "ext": ".png",
+            "category": "image",
+            "swapCandidate": "Unsplash CC0 (search by visual similarity) or AI-generated equivalent"
+          },
+          {
+            "path": "_fcdn/d3e9eff185cd.png",
+            "size": 895560,
+            "ext": ".png",
+            "category": "image",
+            "swapCandidate": "Unsplash CC0 (search by visual similarity) or AI-generated equivalent"
+          }
+        ]
+      }
+    }
+  ]
+}
