@@ -23,9 +23,11 @@ export function emitMotionRoot(extracted, projDir) {
   const orchestration = extracted.animOrchestration || {};
   const scrollDriven = extracted.scrollDrivenAnimations || {};
 
-  // Detect what motion libs to include
+  // Detect what motion libs to include — default ON (자체 모션 자현 정책)
+  // sections 있으면 GSAP 필요 (data-motion-fadeIn 등 작동 위해)
+  const hasSections = (extracted.sections?.length || 0) > 0;
   const useLenis = motionHints.hasLenis !== false; // default ON for smoothness
-  const useGsap = animations.length > 0 || scrollTrajectory.length > 0 ||
+  const useGsap = hasSections || animations.length > 0 || scrollTrajectory.length > 0 ||
                   motionHints.hasGSAP || scrollDriven.scrollTimelineCount > 0;
   const useCountUp = (motionHints.numericHeadings?.length || 0) > 0;
 

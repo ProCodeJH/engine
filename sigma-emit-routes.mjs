@@ -73,9 +73,7 @@ export default function Page() {
     <main className="sigma-route" data-route="${route.replace(/"/g, '\\"')}">
       <article className="max-w-4xl mx-auto px-6 py-16 space-y-8">
         <header>
-          <h1 className="text-4xl font-bold tracking-tight">
-            ${useOriginalText ? escapeJSX(data.h1 || "") : `{{ROUTE_${routeSlug.toUpperCase()}_H1}}`}
-          </h1>
+          <h1 className="text-4xl font-bold tracking-tight">{${useOriginalText ? JSON.stringify(escapeJSX(data.h1 || "")) : JSON.stringify(`{{ROUTE_${routeSlug.toUpperCase()}_H1}}`)}}</h1>
         </header>
 ${headingTokens.slice(1).map((h, i) => `        <h2 className="text-2xl font-semibold mt-12">{${JSON.stringify(h)}}</h2>`).join("\n")}
 ${paragraphTokens.map((p, i) => `        <p className="leading-relaxed text-base opacity-90">{${JSON.stringify(p)}}</p>`).join("\n")}

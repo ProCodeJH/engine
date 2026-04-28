@@ -45,16 +45,20 @@ export async function captureMultiViewport(page, cdp, extracted, opts = {}) {
       await page.setViewport({ width: vp.width, height: vp.height });
 
       if (RELOAD_PER_VP) {
-        await page.reload({ waitUntil: "networkidle2", timeout: RELOAD_TIMEOUT });
-        // v110.2 fix: page null guard — reload 후 document.body가 아직 안 만들어진 timing
-        await new Promise(r => setTimeout(r, 800));
-        await page.evaluate(async () => {
-          if (!document.body) return;
-          const h = document.body.scrollHeight || 0;
-          if (h === 0) return;
-          for (let y = 0; y < h; y += 400) { window.scrollTo(0, y); await new Promise(r => setTimeout(r, 80)); }
-          window.scrollTo(0, 0);
-        }).catch(() => {});
+        try {
+          await page.reload({ waitUntil: "networkidle2", timeout: RELOAD_TIMEOUT });
+        } catch {}
+        // v110.5 fix: 더 긴 wait + 강한 guard
+        await new Promise(r => setTimeout(r, 1500));
+        try {
+          await page.evaluate(async () => {
+            if (!document || !document.body) return;
+            const h = document.body.scrollHeight || 0;
+            if (h === 0) return;
+            for (let y = 0; y < h; y += 400) { window.scrollTo(0, y); await new Promise(r => setTimeout(r, 80)); }
+            window.scrollTo(0, 0);
+          });
+        } catch {}
       } else {
         await new Promise(r => setTimeout(r, 1000));
       }
@@ -109,6 +113,7 @@ export async function captureMultiViewport(page, cdp, extracted, opts = {}) {
 
 async function captureViewportSignature(page) {
   return page.evaluate(() => {
+    if (!document || !document.body) return { sectionCount: 0, sections: [], navStructure: { navInlineCount: 0, hamburgerVisible: false, drawerVisible: false }, docHeight: 0, bodyDisplay: "block", layoutSignature: "" };
     const sections = [...document.querySelectorAll("section, header, footer, main > div, [class*='section'], [class*='hero']")]
       .filter(el => el.getBoundingClientRect().height >= 80)
       .slice(0, 30)

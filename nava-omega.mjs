@@ -58,6 +58,8 @@ const VIEWPORT = (() => {
 })();
 const SKIP_VERIFY = hasFlag("--skip-verify");
 const VERBOSE = hasFlag("--verbose");
+// v110.5 CSR-wait — pure SPA (designkits 같은 사이트) 잡기
+const CSR_WAIT_MS = parseInt(flagVal("--csr-wait") || "0", 10);
 
 const projDir = path.resolve(OUTPUT);
 fs.mkdirSync(projDir, { recursive: true });
@@ -141,6 +143,24 @@ try {
 // Puppeteer load for asset graph + post-hydration HTML
 try {
   await page.goto(URL_ARG, { waitUntil: "networkidle2", timeout: 60000 });
+
+  // v110.5 CSR-wait: pure SPA hydration stability (designkits 같은 사이트)
+  if (CSR_WAIT_MS > 0) {
+    console.log(`  CSR-wait ${CSR_WAIT_MS}ms (hydration stability)...`);
+    await page.evaluate(async (maxMs) => {
+      let lastChange = Date.now();
+      const observer = new MutationObserver(() => { lastChange = Date.now(); });
+      observer.observe(document.body, { childList: true, subtree: true, characterData: true, attributes: true });
+      const start = Date.now();
+      const stableMs = 2000;
+      while (Date.now() - start < maxMs) {
+        await new Promise(r => setTimeout(r, 200));
+        if (Date.now() - lastChange > stableMs) break;
+      }
+      observer.disconnect();
+    }, CSR_WAIT_MS);
+  }
+
   await page.evaluate(async () => {
     const h = document.body.scrollHeight;
     for (let y = 0; y < h; y += 600) { window.scrollTo(0, y); await new Promise(r => setTimeout(r, 80)); }
@@ -165,11 +185,16 @@ for (const req of capturedRequests) {
   if (req.status >= 200 && req.status < 400) assetUrls.add(req.url);
 }
 
-// From hydrated HTML — extract URLs in src/href/url()
+// From hydrated HTML — extract URLs in src/href/url() + dynamic imports
 const urlRegexes = [
-  /(?:src|href|poster|data-src)\s*=\s*["']([^"']+)["']/gi,
+  /(?:src|href|poster|data-src|srcset)\s*=\s*["']([^"']+)["']/gi,
   /url\(\s*["']?([^"')]+)["']?\s*\)/gi,
   /"(https?:\/\/[^"\s]+\.(?:js|mjs|css|png|jpg|jpeg|webp|svg|woff2?|ttf|otf|json|gif|mp4|webm))"/gi,
+  // v110.5 dynamic import — import("https://...") + import('...')
+  /import\s*\(\s*["'](https?:\/\/[^"']+)["']\s*\)/gi,
+  /from\s+["'](https?:\/\/[^"']+)["']/gi,
+  // import maps
+  /"(https?:\/\/[^"]+\.(?:js|mjs))"\s*:/gi,
 ];
 for (const re of urlRegexes) {
   for (const m of hydratedHtml.matchAll(re)) {
