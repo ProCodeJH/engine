@@ -7,7 +7,7 @@
     "a11y": 98,
     "seo": 75,
     "identifier": 94,
-    "license": 30
+    "license": 100
   },
   "weights": {
     "visual": 0.3,
@@ -19,8 +19,8 @@
     "http": 0.05,
     "identifier": 0.05
   },
-  "composite": 64.2,
+  "composite": 74.7,
   "interpretation": "MANUAL_REVIEW",
   "binaryScore": 87.5,
-  "improvement": -23.3
+  "improvement": -12.8
 }
