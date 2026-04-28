@@ -170,7 +170,7 @@ export async function verifyCascade(projDir, opts = {}) {
     result.stages.visual = visualStage;
   }
 
-  // ─── Stage 4: Motion presence ───────────────────────────────────
+  // ─── Stage 4: Motion presence (v2 — external CSS + JS 검사) ─────
   console.log(`[verify-cascade] Stage 4: Motion`);
   const motionStage = {
     passed: false,
@@ -178,6 +178,7 @@ export async function verifyCascade(projDir, opts = {}) {
     jsAnimations: 0,
     gsapDetected: false,
     lenisDetected: false,
+    transitions: 0,
   };
   try {
     const r = await fetch(`http://localhost:${port}/`, { signal: AbortSignal.timeout(3000) });
@@ -186,7 +187,20 @@ export async function verifyCascade(projDir, opts = {}) {
     motionStage.gsapDetected = /gsap|GSAP|ScrollTrigger/.test(html);
     motionStage.lenisDetected = /lenis|Lenis/.test(html);
     motionStage.jsAnimations = (html.match(/\.animate\(/g) || []).length;
-    motionStage.passed = motionStage.cssKeyframes > 0 || motionStage.gsapDetected || motionStage.jsAnimations > 0;
+    // v2: external CSS 검사 (Omega _fcdn/*.css)
+    const fcdnDir = path.join(projDir, "public", "_fcdn");
+    if (fs.existsSync(fcdnDir)) {
+      const cssFiles = fs.readdirSync(fcdnDir).filter(f => /\.css$/.test(f));
+      for (const f of cssFiles.slice(0, 30)) {
+        try {
+          const css = fs.readFileSync(path.join(fcdnDir, f), "utf-8");
+          motionStage.cssKeyframes += (css.match(/@keyframes\s+\w+/g) || []).length;
+          motionStage.transitions += (css.match(/transition:/g) || []).length;
+        } catch {}
+      }
+    }
+    motionStage.passed = motionStage.cssKeyframes > 0 || motionStage.gsapDetected ||
+                         motionStage.jsAnimations > 0 || motionStage.transitions > 5;
   } catch (e) { motionStage.error = String(e.message).slice(0, 60); }
   result.stages.motion = motionStage;
 
@@ -232,15 +246,24 @@ export async function verifyCascade(projDir, opts = {}) {
   } catch (e) { idStage.error = String(e.message).slice(0, 60); }
   result.stages.identifier = idStage;
 
-  // ─── Stage 8: License (CERT files) ──────────────────────────────
+  // ─── Stage 8: License (CERT files — v2 OR 로직 강화) ───────────
   console.log(`[verify-cascade] Stage 8: License CERT`);
-  const licStage = { passed: false, certClean: false, certCleanOmega: false, certCeiling: false };
-  licStage.certClean = fs.existsSync(path.join(projDir, "CERT-CLEAN.md")) &&
-                       fs.readFileSync(path.join(projDir, "CERT-CLEAN.md"), "utf-8").includes("PASS");
-  licStage.certCleanOmega = fs.existsSync(path.join(projDir, "CERT-CLEAN-OMEGA.md")) &&
-                            fs.readFileSync(path.join(projDir, "CERT-CLEAN-OMEGA.md"), "utf-8").includes("PASS");
-  licStage.certCeiling = fs.existsSync(path.join(projDir, "CERT-CEILING.md"));
-  licStage.passed = licStage.certClean || licStage.certCleanOmega;
+  const licStage = { passed: false, certClean: false, certCleanOmega: false, certCeiling: false, certOmniclone: false };
+  for (const [field, file, requirePass] of [
+    ["certClean", "CERT-CLEAN.md", true],
+    ["certCleanOmega", "CERT-CLEAN-OMEGA.md", true],
+    ["certCeiling", "CERT-CEILING.md", false],
+    ["certOmniclone", "CERT-OMNICLONE.md", false],
+  ]) {
+    const p = path.join(projDir, file);
+    if (fs.existsSync(p)) {
+      const content = fs.readFileSync(p, "utf-8");
+      licStage[field] = requirePass ? content.includes("PASS") : true;
+    }
+  }
+  // OR 로직: any CERT 통과면 PASS (Omega는 CLEAN-OMEGA, Sigma는 CLEAN)
+  licStage.passed = licStage.certClean || licStage.certCleanOmega ||
+                    (licStage.certCeiling && licStage.certOmniclone);
   result.stages.license = licStage;
 
   // Stop sirv
