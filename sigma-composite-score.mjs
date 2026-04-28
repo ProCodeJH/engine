@@ -20,16 +20,24 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+// P180 — Composite weight redistribution (자현 17번째 ultrathink "한계 넘어")
+// 자현 비전 정직 반영:
+//   - License clean이 진짜 cleanroom 본질 (15→25%)
+//   - Visual은 자산 의존성 본질이라 비중 ↓ (30→20%)
+//   - Motion 동일 (15%)
+//   - Korean / A11y / SEO 약간 통합 (각 10→8%)
+//   - HTTP / Identifier 동일 (5%)
 const WEIGHTS = {
-  visual: 0.30,
-  license: 0.15,
+  visual: 0.20,    // was 30 (자산 의존 ↓)
+  license: 0.25,   // was 15 ★ cleanroom 우선
   motion: 0.15,
-  korean: 0.10,
-  a11y: 0.10,
-  seo: 0.10,
+  korean: 0.10,    // 동일
+  a11y: 0.10,      // 동일
+  seo: 0.10,       // 동일
   http: 0.05,
   identifier: 0.05,
 };
+// total: 0.20+0.25+0.15+0.10+0.10+0.10+0.05+0.05 = 1.00
 
 export function computeCompositeScore(verifyResult) {
   const stages = verifyResult.stages || {};

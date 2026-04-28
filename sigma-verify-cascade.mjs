@@ -143,10 +143,11 @@ export async function verifyCascade(projDir, opts = {}) {
       // P140 Layout Lock — apply full deterministic stack symmetrically
       const { applyDeterministicStack } = await import("./sigma-layout-lock.mjs");
 
-      // P144 Layout Match + P149 Multi-State + P150 Sectional + P163 Role Identity
+      // P144 Layout + P149 Multi-State + P150 Sectional + P163 Role + P176 Atomic
       const { scoreLayoutMatch } = await import("./sigma-layout-match.mjs");
       const { captureMultiStateLayoutScore, scoreSectionalMatch } = await import("./sigma-multistate-capture.mjs");
       const { EXTRACT_ROLE_IDENTITY_JS, scoreRoleIdentity } = await import("./sigma-element-identity.mjs");
+      const { EXTRACT_ATOMIC_JS, scoreAtomicMatch } = await import("./sigma-atomic-match.mjs");
 
       try {
         await page.goto(sourceUrl, { waitUntil: "networkidle2", timeout: 30000 });
@@ -157,6 +158,8 @@ export async function verifyCascade(projDir, opts = {}) {
         const srcMultiState = await captureMultiStateLayoutScore(page).catch(() => ({ union: [], states: [] }));
         // P163 — role identity capture
         const srcRoleIdentity = await page.evaluate(EXTRACT_ROLE_IDENTITY_JS).catch(() => ({ roleCounts: {}, elements: [] }));
+        // P176 — atomic element set capture
+        const srcAtomic = await page.evaluate(EXTRACT_ATOMIC_JS).catch(() => ({ atoms: [] }));
 
         await page.goto(`http://localhost:${port}/`, { waitUntil: "networkidle2", timeout: 30000 });
         await new Promise(r => setTimeout(r, 3000));
@@ -165,6 +168,7 @@ export async function verifyCascade(projDir, opts = {}) {
         fs.writeFileSync(clonePath, cloneShot);
         const cloneMultiState = await captureMultiStateLayoutScore(page).catch(() => ({ union: [], states: [] }));
         const cloneRoleIdentity = await page.evaluate(EXTRACT_ROLE_IDENTITY_JS).catch(() => ({ roleCounts: {}, elements: [] }));
+        const cloneAtomic = await page.evaluate(EXTRACT_ATOMIC_JS).catch(() => ({ atoms: [] }));
 
         // 4-layer pixel-based (P102)
         const { visualValidate } = await import("./sigma-visual-validator.mjs");
@@ -176,21 +180,23 @@ export async function verifyCascade(projDir, opts = {}) {
         // P150 sectional match (header/hero/main/footer 영역별 + IoU 친화)
         const sectional = scoreSectionalMatch(srcMultiState.union, cloneMultiState.union);
 
-        // P163 — Role Identity score
+        // P163 Role + P176 Atomic
         const roleIdentity = scoreRoleIdentity(srcRoleIdentity, cloneRoleIdentity);
+        const atomic = scoreAtomicMatch(srcAtomic, cloneAtomic);
 
-        // P171 visual weight recalibration — 자현 비전 "기능만 100%" 정직 반영
-        //   자산 의존 metrics: pixel(2)+pHash(3)+SSIM(3)+hist(7) = 15% (was 30%)
-        //   structural metrics: layout(15)+sectional(25)+role-identity(45) = 85% (was 70%)
-        // Paradigm: 사람이 봐서 같다 = layout같다 → structural 우세
+        // P176 새 weights: structural identity 우세
+        //   자산 의존: pixel(2)+pHash(3)+SSIM(3)+hist(5) = 13%
+        //   structural: layout(10)+sectional(15)+role(25)+atomic(37) = 87%
+        // Paradigm: 한계 넘어 — atomic Jaccard가 진짜 site identity
         const newComposite = +(
           r.pixelMatchPct * 0.02 +
           r.pHashSimilarity * 0.03 +
           r.ssim * 100 * 0.03 +
-          r.histSimilarity * 0.07 +
-          layoutScore.score * 0.15 +
-          sectional.score * 0.25 +
-          roleIdentity.score * 0.45
+          r.histSimilarity * 0.05 +
+          layoutScore.score * 0.10 +
+          sectional.score * 0.15 +
+          roleIdentity.score * 0.25 +
+          atomic.score * 0.37
         ).toFixed(2);
 
         visualStage = {
@@ -210,6 +216,11 @@ export async function verifyCascade(projDir, opts = {}) {
           roleIdentityMatched: `${roleIdentity.matchedWeight}/${roleIdentity.totalSrcWeight}`,
           srcRoleElements: roleIdentity.srcElements,
           cloneRoleElements: roleIdentity.cloneElements,
+          atomic: atomic.score,
+          atomicIntersection: atomic.intersection,
+          atomicUnion: atomic.union,
+          srcAtoms: atomic.srcCount,
+          cloneAtoms: atomic.cloneCount,
           srcUnionCount: srcMultiState.union.length,
           cloneUnionCount: cloneMultiState.union.length,
           sizeMismatch: r.sizeMismatch,
