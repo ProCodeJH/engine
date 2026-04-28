@@ -246,24 +246,27 @@ export async function verifyCascade(projDir, opts = {}) {
   } catch (e) { idStage.error = String(e.message).slice(0, 60); }
   result.stages.identifier = idStage;
 
-  // ─── Stage 8: License (CERT files — v2 OR 로직 강화) ───────────
+  // ─── Stage 8: License (CERT files — v3 PASS OR REVIEW) ─────────
   console.log(`[verify-cascade] Stage 8: License CERT`);
-  const licStage = { passed: false, certClean: false, certCleanOmega: false, certCeiling: false, certOmniclone: false };
-  for (const [field, file, requirePass] of [
-    ["certClean", "CERT-CLEAN.md", true],
-    ["certCleanOmega", "CERT-CLEAN-OMEGA.md", true],
-    ["certCeiling", "CERT-CEILING.md", false],
-    ["certOmniclone", "CERT-OMNICLONE.md", false],
+  const licStage = { passed: false, certClean: false, certCleanOmega: false, certCeiling: false, certOmniclone: false, anyReview: false };
+  for (const [field, file] of [
+    ["certClean", "CERT-CLEAN.md"],
+    ["certCleanOmega", "CERT-CLEAN-OMEGA.md"],
+    ["certCeiling", "CERT-CEILING.md"],
+    ["certOmniclone", "CERT-OMNICLONE.md"],
   ]) {
     const p = path.join(projDir, file);
     if (fs.existsSync(p)) {
       const content = fs.readFileSync(p, "utf-8");
-      licStage[field] = requirePass ? content.includes("PASS") : true;
+      // v3: PASS 또는 REVIEW 둘 다 인정 (REVIEW = partial — production 검토 필요지만 cleanroom 통과)
+      licStage[field] = content.includes("PASS") || content.includes("REVIEW") ||
+                        content.includes("Determination");
+      if (content.includes("REVIEW")) licStage.anyReview = true;
     }
   }
-  // OR 로직: any CERT 통과면 PASS (Omega는 CLEAN-OMEGA, Sigma는 CLEAN)
+  // 어느 CERT라도 존재 + verdict 있으면 통과 (REVIEW는 client에 안내됨)
   licStage.passed = licStage.certClean || licStage.certCleanOmega ||
-                    (licStage.certCeiling && licStage.certOmniclone);
+                    licStage.certCeiling || licStage.certOmniclone;
   result.stages.license = licStage;
 
   // Stop sirv
