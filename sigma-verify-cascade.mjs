@@ -179,18 +179,18 @@ export async function verifyCascade(projDir, opts = {}) {
         // P163 — Role Identity score
         const roleIdentity = scoreRoleIdentity(srcRoleIdentity, cloneRoleIdentity);
 
-        // P163 new composite weights:
-        //   pixel/pHash/SSIM/hist 30% (cross-env variability tolerated)
-        //   layout/sectional 30%
-        //   role-identity 40% ★ 새 paradigm 우세 (기능적 등가)
+        // P171 visual weight recalibration — 자현 비전 "기능만 100%" 정직 반영
+        //   자산 의존 metrics: pixel(2)+pHash(3)+SSIM(3)+hist(7) = 15% (was 30%)
+        //   structural metrics: layout(15)+sectional(25)+role-identity(45) = 85% (was 70%)
+        // Paradigm: 사람이 봐서 같다 = layout같다 → structural 우세
         const newComposite = +(
-          r.pixelMatchPct * 0.05 +
-          r.pHashSimilarity * 0.05 +
-          r.ssim * 100 * 0.05 +
-          r.histSimilarity * 0.15 +
-          layoutScore.score * 0.10 +
-          sectional.score * 0.20 +
-          roleIdentity.score * 0.40
+          r.pixelMatchPct * 0.02 +
+          r.pHashSimilarity * 0.03 +
+          r.ssim * 100 * 0.03 +
+          r.histSimilarity * 0.07 +
+          layoutScore.score * 0.15 +
+          sectional.score * 0.25 +
+          roleIdentity.score * 0.45
         ).toFixed(2);
 
         visualStage = {
