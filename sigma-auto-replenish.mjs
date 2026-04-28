@@ -28,6 +28,7 @@ import { swapMirrorToProcedural } from "./sigma-procedural-asset.mjs";
 import { enrichMirrorA11y } from "./sigma-a11y-enrich.mjs";
 import { lockMirrorCarousels } from "./sigma-carousel-lock.mjs";
 import { revealMirrorAnimations } from "./sigma-reveal-animations.mjs";
+import { enhanceOmegaProject } from "./sigma-omega-enhance.mjs";
 
 export async function autoReplenishConverge(projDir, opts = {}) {
   const sourceUrl = opts.sourceUrl;
@@ -87,6 +88,8 @@ NAVA Auto-Replenish Convergence — Paradigm 158
   // Step 2: Apply enrichment + determinism stack (always safe to re-apply)
   console.log(`\n━━━ Step 2: A11y + Determinism stack ━━━`);
   await step("A11y enrich", () => enrichMirrorA11y(projDir));
+  // P165 — SEO restoration (sitemap.xml + robots.txt + JSON-LD via omega-enhance)
+  await step("Omega enhance (SEO)", () => enhanceOmegaProject(projDir));
   await step("Carousel lock", () => lockMirrorCarousels(projDir));
   await step("Reveal animations", () => revealMirrorAnimations(projDir));
 
