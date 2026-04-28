@@ -61,6 +61,9 @@ const SKIP_VERIFY = hasFlag("--skip-verify");
 const VERBOSE = hasFlag("--verbose");
 // v110.5 CSR-wait — pure SPA (designkits 같은 사이트) 잡기
 const CSR_WAIT_MS = parseInt(flagVal("--csr-wait") || "0", 10);
+// v110.7 multi-route crawl — 사이트 전체 페이지 한 명령 (default ON)
+const NO_CRAWL = hasFlag("--no-crawl");
+const MAX_ROUTES = parseInt(flagVal("--max-routes") || "30", 10);
 
 const projDir = path.resolve(OUTPUT);
 fs.mkdirSync(projDir, { recursive: true });
@@ -175,10 +178,117 @@ try {
 const hydratedHtml = await page.content();
 console.log(`  hydrated HTML: ${hydratedHtml.length} bytes`);
 
+// ─── Ω.1.5 ROUTE DISCOVERY — sitemap + internal links (multi-route) ──
+const origin = new URL(URL_ARG).origin;
+const htmlByRoute = {};
+const rootPath = (new URL(URL_ARG).pathname || "/");
+htmlByRoute[rootPath] = hydratedHtml;
+
+const allRoutes = new Set([rootPath]);
+
+if (!NO_CRAWL) {
+  console.log(`[Ω.1.5] ROUTE DISCOVERY ${el()}`);
+
+  // Sitemap.xml + sitemap_index.xml
+  for (const sm of ["/sitemap.xml", "/sitemap_index.xml", "/sitemap-index.xml"]) {
+    try {
+      const r = await fetch(origin + sm, { signal: AbortSignal.timeout(8000) });
+      if (r.ok) {
+        const xml = await r.text();
+        for (const m of xml.matchAll(/<loc>([^<]+)<\/loc>/g)) {
+          if (m[1].startsWith(origin)) {
+            try {
+              const p = new URL(m[1]).pathname;
+              if (!/\.(jpg|jpeg|png|gif|pdf|js|css|woff2?|svg|webp|xml|json)(\?|$)/i.test(p)) {
+                allRoutes.add(p);
+              }
+            } catch {}
+          }
+        }
+      }
+    } catch {}
+  }
+
+  // Internal links from rendered DOM (root page) — fallback to raw HTML
+  const linkSrcs = [hydratedHtml, rawHtml];
+  for (const src of linkSrcs) {
+    if (!src) continue;
+    for (const m of src.matchAll(/href\s*=\s*["']([^"']+)["']/gi)) {
+      let h = decodeHtmlEntities(m[1]);
+      if (!h || h.startsWith("#") || h.startsWith("mailto:") || h.startsWith("tel:") || h.startsWith("javascript:")) continue;
+      // Normalize to path
+      let p = null;
+      if (h.startsWith("/") && !h.startsWith("//")) p = h;
+      else if (h.startsWith(origin)) p = h.slice(origin.length) || "/";
+      else continue;
+      // Strip query/hash
+      p = p.split("?")[0].split("#")[0];
+      // Filter assets
+      if (/\.(jpg|jpeg|png|gif|pdf|js|css|woff2?|svg|webp|xml|json|ico|mp4|webm|zip)(\?|$)/i.test(p)) continue;
+      if (p && p.length < 100) allRoutes.add(p);
+    }
+  }
+
+  console.log(`  ${allRoutes.size} routes discovered (sitemap + internal links)`);
+
+  // ─── Ω.1.6 MULTI-ROUTE CAPTURE ───────────────────────────────────────
+  console.log(`[Ω.1.6] MULTI-ROUTE CAPTURE ${el()}`);
+  const routesToCrawl = [...allRoutes].filter(r => r !== rootPath).slice(0, MAX_ROUTES - 1);
+  console.log(`  crawling ${routesToCrawl.length} additional routes (max ${MAX_ROUTES})`);
+
+  for (let i = 0; i < routesToCrawl.length; i++) {
+    const route = routesToCrawl[i];
+    const routeUrl = origin + route;
+    try {
+      const rp = await browser.newPage();
+      await rp.setViewport(VIEWPORT);
+      const rcdp = await rp.target().createCDPSession();
+      await rcdp.send("Network.enable");
+      rcdp.on("Network.responseReceived", (evt) => {
+        capturedRequests.push({
+          url: evt.response.url,
+          mimeType: evt.response.mimeType,
+          status: evt.response.status,
+        });
+      });
+
+      await rp.goto(routeUrl, { waitUntil: "networkidle2", timeout: 30000 });
+      await rp.evaluate(async () => {
+        if (!document.body) return;
+        const h = document.body.scrollHeight || 0;
+        for (let y = 0; y < h; y += 600) { window.scrollTo(0, y); await new Promise(r => setTimeout(r, 60)); }
+        window.scrollTo(0, 0);
+      }).catch(() => {});
+      await new Promise(r => setTimeout(r, 800));
+
+      // Try raw HTML too (SSR might have more content than hydrated)
+      let rawRoute = "";
+      try {
+        const rr = await fetch(routeUrl, {
+          headers: {
+            "User-Agent": "Mozilla/5.0 NavaOmega/1.0",
+            "Accept-Language": "ko-KR,ko;q=0.9,en;q=0.8",
+          },
+          signal: AbortSignal.timeout(15000),
+        });
+        if (rr.ok) rawRoute = await rr.text();
+      } catch {}
+
+      const hydrated = await rp.content();
+      // Use richer HTML
+      htmlByRoute[route] = (rawRoute.length > hydrated.length * 0.7) ? rawRoute : hydrated;
+      console.log(`  [${i + 1}/${routesToCrawl.length}] ${route} → ${htmlByRoute[route].length} bytes`);
+
+      await rp.close();
+    } catch (e) {
+      console.log(`  [${i + 1}/${routesToCrawl.length}] ${route} FAIL: ${String(e.message || e).slice(0, 60)}`);
+    }
+  }
+}
+
 // ─── Ω.2 MODULE GRAPH — collect all asset URLs ───────────────────────
 console.log(`[Ω.2] MODULE GRAPH ${el()}`);
 
-const origin = new URL(URL_ARG).origin;
 const assetUrls = new Set();
 
 // From CDP captured network requests
@@ -186,25 +296,26 @@ for (const req of capturedRequests) {
   if (req.status >= 200 && req.status < 400) assetUrls.add(req.url);
 }
 
-// From hydrated HTML — extract URLs in src/href/url() + dynamic imports
+// From hydrated HTML (root + ALL routes) — extract URLs
 const urlRegexes = [
   /(?:src|href|poster|data-src|srcset)\s*=\s*["']([^"']+)["']/gi,
   /url\(\s*["']?([^"')]+)["']?\s*\)/gi,
   /"(https?:\/\/[^"\s]+\.(?:js|mjs|css|png|jpg|jpeg|webp|svg|woff2?|ttf|otf|json|gif|mp4|webm))"/gi,
-  // v110.5 dynamic import — import("https://...") + import('...')
   /import\s*\(\s*["'](https?:\/\/[^"']+)["']\s*\)/gi,
   /from\s+["'](https?:\/\/[^"']+)["']/gi,
-  // import maps
   /"(https?:\/\/[^"]+\.(?:js|mjs))"\s*:/gi,
 ];
-for (const re of urlRegexes) {
-  for (const m of hydratedHtml.matchAll(re)) {
-    const u = decodeHtmlEntities(m[1]);
-    if (!u || u.startsWith("data:") || u.startsWith("javascript:") || u.startsWith("#")) continue;
-    try {
-      const abs = new URL(u, URL_ARG).toString();
-      assetUrls.add(abs);
-    } catch {}
+// Scan all collected route HTMLs (not just root)
+for (const [routePath, html] of Object.entries(htmlByRoute)) {
+  for (const re of urlRegexes) {
+    for (const m of html.matchAll(re)) {
+      const u = decodeHtmlEntities(m[1]);
+      if (!u || u.startsWith("data:") || u.startsWith("javascript:") || u.startsWith("#")) continue;
+      try {
+        const abs = new URL(u, URL_ARG).toString();
+        assetUrls.add(abs);
+      } catch {}
+    }
   }
 }
 
@@ -284,8 +395,16 @@ function rewriteContent(content) {
   return { content: out, rewrites };
 }
 
-const { content: rewrittenHtml, rewrites: htmlRewrites } = rewriteContent(hydratedHtml);
-console.log(`  HTML rewrites: ${htmlRewrites}`);
+// Rewrite ALL routes (multi-route)
+const rewrittenByRoute = {};
+let htmlRewrites = 0;
+for (const [routePath, html] of Object.entries(htmlByRoute)) {
+  const { content, rewrites } = rewriteContent(html);
+  rewrittenByRoute[routePath] = content;
+  htmlRewrites += rewrites;
+}
+console.log(`  HTML rewrites (${Object.keys(rewrittenByRoute).length} routes): ${htmlRewrites}`);
+const rewrittenHtml = rewrittenByRoute[rootPath] || hydratedHtml;
 
 // Also rewrite mirrored JS/CSS files (for nested url() / import() refs)
 let jsRewrites = 0, cssRewrites = 0;
@@ -369,7 +488,7 @@ fs.writeFileSync(path.join(projDir, "public", "sw.js"), swCode);
 // ─── Ω.6 STATIC EMIT — index.html + package.json ────────────────────
 console.log(`[Ω.6] STATIC EMIT ${el()}`);
 
-// Inject SW registration into HTML
+// Inject SW registration into HTML (used by injectSwAndBase below)
 const swRegistration = `
 <script>
   if ("serviceWorker" in navigator) {
@@ -377,15 +496,39 @@ const swRegistration = `
   }
 </script>
 </head>`;
-let finalHtml = rewrittenHtml.replace(/<\/head>/i, swRegistration);
-if (!finalHtml.includes("<base ")) {
-  // Add base href to ensure relative paths work
-  finalHtml = finalHtml.replace(/<head>/i, `<head>\n<base href="/">`);
-}
 
 const publicDir = path.join(projDir, "public");
 fs.mkdirSync(publicDir, { recursive: true });
-fs.writeFileSync(path.join(publicDir, "index.html"), finalHtml);
+
+// Multi-route emit: root → public/index.html, /greeting → public/greeting/index.html, ...
+function injectSwAndBase(html) {
+  let h = html.replace(/<\/head>/i, swRegistration);
+  if (!h.includes("<base ")) {
+    h = h.replace(/<head>/i, `<head>\n<base href="/">`);
+  }
+  return h;
+}
+
+let routesEmitted = 0;
+for (const [routePath, content] of Object.entries(rewrittenByRoute)) {
+  const finalRouteHtml = injectSwAndBase(content);
+  if (routePath === "/" || routePath === rootPath) {
+    fs.writeFileSync(path.join(publicDir, "index.html"), finalRouteHtml);
+  } else {
+    const cleanPath = routePath.replace(/^\//, "").replace(/\/$/, "");
+    if (!cleanPath || cleanPath.length > 100) continue;
+    const routeDir = path.join(publicDir, ...cleanPath.split("/"));
+    try {
+      fs.mkdirSync(routeDir, { recursive: true });
+      fs.writeFileSync(path.join(routeDir, "index.html"), finalRouteHtml);
+      routesEmitted++;
+    } catch (e) {
+      console.log(`  emit ${routePath}: ${e.message.slice(0, 60)}`);
+    }
+  }
+}
+console.log(`  multi-route emit: 1 root + ${routesEmitted} sub-routes → public/{slug}/index.html`);
+const finalHtml = injectSwAndBase(rewrittenHtml);  // for compat below
 
 // package.json — sirv-cli serves static
 fs.writeFileSync(path.join(projDir, "package.json"), JSON.stringify({
