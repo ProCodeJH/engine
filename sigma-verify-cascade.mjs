@@ -124,46 +124,51 @@ export async function verifyCascade(projDir, opts = {}) {
   }
   result.stages.korean = koreanStage;
 
-  // ─── Stage 3: Visual diff (skipped if no sourceUrl) ─────────────
+  // ─── Stage 3: Visual diff v4 — P102 Composite Validator ─────────
   if (sourceUrl) {
-    console.log(`[verify-cascade] Stage 3: Visual diff vs ${sourceUrl}`);
-    let visualStage = { passed: false, viewports: {} };
+    console.log(`[verify-cascade] Stage 3: Visual diff (P102 composite) vs ${sourceUrl}`);
+    let visualStage = { passed: false, composite: 0 };
     try {
       const puppeteer = (await import("puppeteer")).default;
       const browser = await puppeteer.launch({ headless: "new", args: ["--no-sandbox"] });
-      const viewports = [
-        { name: "desktop", width: 1920, height: 1080 },
-      ];
-      for (const vp of viewports) {
-        const page = await browser.newPage();
-        await page.setViewport({ width: vp.width, height: vp.height });
-        try {
-          await page.goto(sourceUrl, { waitUntil: "networkidle2", timeout: 25000 });
-          await new Promise(r => setTimeout(r, 1500));
-          const srcShot = await page.screenshot({ type: "png" });
+      const page = await browser.newPage();
+      await page.setViewport({ width: 1920, height: 1080 });
 
-          await page.goto(`http://localhost:${port}/`, { waitUntil: "networkidle2", timeout: 25000 });
-          await new Promise(r => setTimeout(r, 1500));
-          const cloneShot = await page.screenshot({ type: "png" });
+      const verifyDir = path.join(projDir, ".verify");
+      fs.mkdirSync(verifyDir, { recursive: true });
+      const srcPath = path.join(verifyDir, "source.png");
+      const clonePath = path.join(verifyDir, "clone.png");
+      const diffPath = path.join(verifyDir, "diff.png");
 
-          const { default: pixelmatch } = await import("pixelmatch");
-          const { PNG } = await import("pngjs");
-          const a = PNG.sync.read(srcShot);
-          const b = PNG.sync.read(cloneShot);
-          if (a.width === b.width && a.height === b.height) {
-            const diff = new PNG({ width: a.width, height: a.height });
-            const mis = pixelmatch(a.data, b.data, diff.data, a.width, a.height, { threshold: 0.1, alpha: 0.3 });
-            const matchPct = +((1 - mis / (a.width * a.height)) * 100).toFixed(2);
-            visualStage.viewports[vp.name] = { matchPct, mismatched: mis, total: a.width * a.height };
-          }
-        } catch (e) {
-          visualStage.viewports[vp.name] = { error: String(e.message).slice(0, 60) };
-        }
-        await page.close();
+      try {
+        await page.goto(sourceUrl, { waitUntil: "networkidle2", timeout: 30000 });
+        await new Promise(r => setTimeout(r, 2000));
+        const srcShot = await page.screenshot({ type: "png" });
+        fs.writeFileSync(srcPath, srcShot);
+
+        await page.goto(`http://localhost:${port}/`, { waitUntil: "networkidle2", timeout: 30000 });
+        await new Promise(r => setTimeout(r, 3000));  // 더 긴 wait — sirv full load
+        const cloneShot = await page.screenshot({ type: "png" });
+        fs.writeFileSync(clonePath, cloneShot);
+
+        // Use P102 visual-validator (4-layer composite)
+        const { visualValidate } = await import("./sigma-visual-validator.mjs");
+        const r = await visualValidate(srcPath, clonePath, { diffPath });
+        visualStage = {
+          passed: r.confidence >= 50,  // ACCEPTABLE bar
+          composite: r.confidence,
+          interpretation: r.interpretation,
+          pixelMatch: r.pixelMatchPct,
+          pHash: r.pHashSimilarity,
+          ssim: +(r.ssim * 100).toFixed(2),
+          histogram: r.histSimilarity,
+          sizeMismatch: r.sizeMismatch,
+          comparedSize: r.comparedSize,
+        };
+      } catch (e) {
+        visualStage.error = String(e.message).slice(0, 80);
       }
       await browser.close();
-      const desktop = visualStage.viewports.desktop;
-      visualStage.passed = desktop && desktop.matchPct && desktop.matchPct >= 60;
     } catch (e) {
       visualStage.error = String(e.message).slice(0, 80);
     }
@@ -318,7 +323,7 @@ export async function verifyCascade(projDir, opts = {}) {
     "|---|---|---|",
     `| 1. HTTP routes | ${ok(result.stages.http.passed)} | ${result.stages.http.routes200}/${result.stages.http.routesChecked} routes 200 |`,
     `| 2. Korean content | ${ok(result.stages.korean.passed)} | korean=${result.stages.korean.koreanFound} lorem=${result.stages.korean.loremFound} workAbout=${result.stages.korean.workAboutFound} |`,
-    result.stages.visual ? `| 3. Visual diff | ${ok(result.stages.visual.passed)} | desktop ${result.stages.visual.viewports?.desktop?.matchPct || "?"}% |` : "| 3. Visual diff | ⏭ | (no source URL) |",
+    result.stages.visual ? `| 3. Visual diff | ${ok(result.stages.visual.passed)} | composite ${result.stages.visual.composite || "?"}% (${result.stages.visual.interpretation || "ERROR"}) — pxl=${result.stages.visual.pixelMatch || "?"} pHash=${result.stages.visual.pHash || "?"} ssim=${result.stages.visual.ssim || "?"} hist=${result.stages.visual.histogram || "?"} |` : "| 3. Visual diff | ⏭ | (no source URL) |",
     `| 4. Motion | ${ok(result.stages.motion.passed)} | css=${result.stages.motion.cssKeyframes} gsap=${result.stages.motion.gsapDetected} js=${result.stages.motion.jsAnimations} |`,
     `| 5. A11y | ${ok(result.stages.a11y.passed)} | missing-alt=${result.stages.a11y.missingAlt} skip=${result.stages.a11y.hasSkipLink} |`,
     `| 6. SEO | ${ok(result.stages.seo.passed)} | title=${result.stages.seo.hasTitle} og=${result.stages.seo.hasOG} jsonLd=${result.stages.seo.hasJsonLd} sitemap=${result.stages.seo.hasSitemap} |`,
