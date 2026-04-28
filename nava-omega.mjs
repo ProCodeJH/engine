@@ -547,11 +547,18 @@ const publicDir = path.join(projDir, "public");
 fs.mkdirSync(publicDir, { recursive: true });
 
 // Multi-route emit: root → public/index.html, /greeting → public/greeting/index.html, ...
+// P135 Carousel Lock + P136 Reveal Animations auto-inject
+const { injectCarouselLockHtml } = await import("./sigma-carousel-lock.mjs").catch(() => ({ injectCarouselLockHtml: x => x }));
+const { injectRevealHtml } = await import("./sigma-reveal-animations.mjs").catch(() => ({ injectRevealHtml: x => x }));
+
 function injectSwAndBase(html) {
   let h = html.replace(/<\/head>/i, swRegistration);
   if (!h.includes("<base ")) {
     h = h.replace(/<head>/i, `<head>\n<base href="/">`);
   }
+  // P135+P136 — every emitted route gets carousel lock + force reveal
+  h = injectCarouselLockHtml(h);
+  h = injectRevealHtml(h);
   return h;
 }
 

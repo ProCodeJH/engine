@@ -140,14 +140,26 @@ export async function verifyCascade(projDir, opts = {}) {
       const clonePath = path.join(verifyDir, "clone.png");
       const diffPath = path.join(verifyDir, "diff.png");
 
+      // P135 Carousel Lock + P136 Force-Reveal — deterministic capture
+      const { CAROUSEL_LOCK_JS } = await import("./sigma-carousel-lock.mjs");
+      const { REVEAL_JS } = await import("./sigma-reveal-animations.mjs");
+
       try {
         await page.goto(sourceUrl, { waitUntil: "networkidle2", timeout: 30000 });
         await new Promise(r => setTimeout(r, 2000));
+        // Lock carousels + freeze animations + force reveal on SOURCE
+        await page.evaluate(CAROUSEL_LOCK_JS).catch(() => {});
+        await page.evaluate(REVEAL_JS).catch(() => {});
+        await new Promise(r => setTimeout(r, 500));  // settle after lock+reveal
         const srcShot = await page.screenshot({ type: "png" });
         fs.writeFileSync(srcPath, srcShot);
 
         await page.goto(`http://localhost:${port}/`, { waitUntil: "networkidle2", timeout: 30000 });
         await new Promise(r => setTimeout(r, 3000));  // 더 긴 wait — sirv full load
+        // Same on CLONE (mirror has injected scripts but re-run for race safety)
+        await page.evaluate(CAROUSEL_LOCK_JS).catch(() => {});
+        await page.evaluate(REVEAL_JS).catch(() => {});
+        await new Promise(r => setTimeout(r, 500));
         const cloneShot = await page.screenshot({ type: "png" });
         fs.writeFileSync(clonePath, cloneShot);
 
