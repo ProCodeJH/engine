@@ -1,6 +1,6 @@
 # CERT-VERIFICATION-CASCADE — Paradigm 73
 
-**Issued**: 2026-04-28T10:08:58.630Z
+**Issued**: 2026-04-28T10:11:55.720Z
 **Project**: `C:\Users\dg020\Desktop\작업\projects\engine\omega-dusonnuri-faithful`
 **Source**: `https://www.dusonnuri.co.kr/`
 **Overall score**: **100%** (8/8 stages passed)
@@ -12,7 +12,7 @@
 | 1. HTTP routes | ✅ | 20/20 routes 200 |
 | 2. Korean content | ✅ | korean=true lorem=false workAbout=false |
 | 3. Visual diff | ✅ | composite 54.34% (POOR) — pxl=53.52 pHash=46.88 ssim=77.39 hist=70.9 |
-| 4. Motion | ✅ | css=0 gsap=true js=1 |
+| 4. Motion | ✅ | css=15 gsap=true js=1 |
 | 5. A11y | ✅ | missing-alt=0 skip=true |
 | 6. SEO | ✅ | title=true og=true jsonLd=true sitemap=true |
 | 7. Identifier sweep | ✅ | framer=3 wix=0 webflow=0 |

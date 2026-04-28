@@ -3,7 +3,7 @@
     "http": 100,
     "korean": 100,
     "visual": 54.34,
-    "motion": 47.5,
+    "motion": 79.5,
     "a11y": 100,
     "seo": 100,
     "identifier": 94,
@@ -19,8 +19,8 @@
     "http": 0.05,
     "identifier": 0.05
   },
-  "composite": 78.1,
+  "composite": 82.9,
   "interpretation": "PRODUCTION_CAUTION",
   "binaryScore": 100,
-  "improvement": -21.9
+  "improvement": -17.1
 }
