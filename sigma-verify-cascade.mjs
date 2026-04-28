@@ -232,7 +232,8 @@ export async function verifyCascade(projDir, opts = {}) {
     const html = await r.text();
     const imgs = [...html.matchAll(/<img(?![^>]*\salt=)/g)];
     a11yStage.missingAlt = imgs.length;
-    a11yStage.hasSkipLink = /skip[-\s]*to[-\s]*content/i.test(html);
+    // Skip-link: English "skip to content" OR Korean "본문 바로가기" both valid
+    a11yStage.hasSkipLink = /skip[-\s]*to[-\s]*content/i.test(html) || /본문\s*바로\s*가기/.test(html);
     a11yStage.hasAriaLabel = /aria-label=/.test(html);
     a11yStage.passed = a11yStage.missingAlt === 0 && a11yStage.hasSkipLink;
   } catch (e) { a11yStage.error = String(e.message).slice(0, 60); }

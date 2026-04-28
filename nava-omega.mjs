@@ -547,20 +547,23 @@ const publicDir = path.join(projDir, "public");
 fs.mkdirSync(publicDir, { recursive: true });
 
 // Multi-route emit: root → public/index.html, /greeting → public/greeting/index.html, ...
-// P135 Carousel + P136 Reveal + P137 Media — auto-inject for all emitted routes
+// P135 Carousel + P136 Reveal + P137 Media + P138 A11y — auto-inject all routes
 const { injectCarouselLockHtml } = await import("./sigma-carousel-lock.mjs").catch(() => ({ injectCarouselLockHtml: x => x }));
 const { injectRevealHtml } = await import("./sigma-reveal-animations.mjs").catch(() => ({ injectRevealHtml: x => x }));
 const { injectMediaDeterminismHtml } = await import("./sigma-media-determinism.mjs").catch(() => ({ injectMediaDeterminismHtml: x => x }));
+const { enrichA11y } = await import("./sigma-a11y-enrich.mjs").catch(() => ({ enrichA11y: x => ({ html: x, result: {} }) }));
 
 function injectSwAndBase(html) {
   let h = html.replace(/<\/head>/i, swRegistration);
   if (!h.includes("<base ")) {
     h = h.replace(/<head>/i, `<head>\n<base href="/">`);
   }
-  // P135+P136+P137 — every emitted route gets full deterministic capture stack
+  // P135+P136+P137 — deterministic capture stack
   h = injectCarouselLockHtml(h);
   h = injectRevealHtml(h);
   h = injectMediaDeterminismHtml(h);
+  // P138 — WCAG landmark roles + bilingual skip-link
+  h = enrichA11y(h).html;
   return h;
 }
 
