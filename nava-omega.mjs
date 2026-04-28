@@ -547,18 +547,20 @@ const publicDir = path.join(projDir, "public");
 fs.mkdirSync(publicDir, { recursive: true });
 
 // Multi-route emit: root → public/index.html, /greeting → public/greeting/index.html, ...
-// P135 Carousel Lock + P136 Reveal Animations auto-inject
+// P135 Carousel + P136 Reveal + P137 Media — auto-inject for all emitted routes
 const { injectCarouselLockHtml } = await import("./sigma-carousel-lock.mjs").catch(() => ({ injectCarouselLockHtml: x => x }));
 const { injectRevealHtml } = await import("./sigma-reveal-animations.mjs").catch(() => ({ injectRevealHtml: x => x }));
+const { injectMediaDeterminismHtml } = await import("./sigma-media-determinism.mjs").catch(() => ({ injectMediaDeterminismHtml: x => x }));
 
 function injectSwAndBase(html) {
   let h = html.replace(/<\/head>/i, swRegistration);
   if (!h.includes("<base ")) {
     h = h.replace(/<head>/i, `<head>\n<base href="/">`);
   }
-  // P135+P136 — every emitted route gets carousel lock + force reveal
+  // P135+P136+P137 — every emitted route gets full deterministic capture stack
   h = injectCarouselLockHtml(h);
   h = injectRevealHtml(h);
+  h = injectMediaDeterminismHtml(h);
   return h;
 }
 
