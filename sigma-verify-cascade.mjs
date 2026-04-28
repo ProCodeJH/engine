@@ -54,10 +54,13 @@ export async function verifyCascade(projDir, opts = {}) {
   let sirvProcess;
   let sirvBin;
   try {
-    // Find sirv binary in project or sibling
+    // Find sirv binary — Windows .CMD or Unix
+    const isWin = process.platform === "win32";
+    const ext = isWin ? ".CMD" : "";
     const candidates = [
-      path.join(projDir, "node_modules", ".bin", "sirv"),
-      path.join(projDir, "..", "omega-teamevople-kr", "node_modules", ".bin", "sirv"),
+      path.join(projDir, "node_modules", ".bin", `sirv${ext}`),
+      path.join(projDir, "..", "omega-teamevople-kr", "node_modules", ".bin", `sirv${ext}`),
+      path.join(projDir, "..", "node_modules", ".bin", `sirv${ext}`),
     ];
     for (const c of candidates) {
       if (fs.existsSync(c)) { sirvBin = c; break; }
@@ -66,7 +69,7 @@ export async function verifyCascade(projDir, opts = {}) {
 
   let httpStage = { passed: false, routesChecked: 0, routes200: 0, errors: [] };
   if (sirvBin && fs.existsSync(path.join(projDir, "public"))) {
-    sirvProcess = spawn(sirvBin, ["public", "--port", String(port), "--quiet"], { cwd: projDir });
+    sirvProcess = spawn(sirvBin, ["public", "--port", String(port), "--quiet"], { cwd: projDir, shell: true });
     // Wait for ready
     for (let i = 0; i < 15; i++) {
       try {
