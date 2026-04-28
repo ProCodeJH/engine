@@ -47,6 +47,9 @@ import { anonymizeLinks as __sigmaAnonymizeLinks } from "./sigma-anonymize-links
 import { rehydrateText as __sigmaRehydrateText } from "./sigma-text-rehydrate.mjs";
 // v110.4 자체 모션 emit (Lenis + GSAP, framer-motion 의존 0 — feedback-copyright)
 import { emitMotionRoot as __sigmaEmitMotion } from "./sigma-emit-motion.mjs";
+// v110.9 Mutation Timeline — 시간 흐름 모션 capture + 재생 (모션 100% 근접)
+import { captureMutationTimeline as __sigmaMutationTimeline } from "./sigma-mutation-timeline.mjs";
+import { emitMutationReplay as __sigmaEmitMutationReplay } from "./sigma-emit-mutation-replay.mjs";
 
 // ═══ MOTION PRESETS ═══════════════════════════════════════════════════
 // Named durations + eases prevent the engine from embedding verbatim
@@ -6184,6 +6187,10 @@ try { await __sigmaMultiViewport(page, cdp, extracted, {
 try { await __sigmaDeepCrawl(page, cdp, extracted, url, { maxRoutes: 10, respectRobots: true }); }
 catch (e) { console.log(`  v103-1 deep crawl: ${e.message.slice(0, 80)}`); }
 
+// v110.9 Mutation Timeline — 시간 흐름 모션 capture (8초간 record + scroll + hover)
+try { await __sigmaMutationTimeline(page, cdp, extracted, { recordMs: 8000, maxEntries: 3000 }); }
+catch (e) { console.log(`  v110.9 mutation timeline: ${e.message.slice(0, 80)}`); }
+
 // browser.close() can hang indefinitely after v67's HeapProfiler +
 // Input.dispatchMouseEvent + SystemInfo interactions leave stale CDP
 // state. Race it against a 15s timeout; on timeout, SIGKILL the Chrome
@@ -9155,6 +9162,12 @@ try {
   const rm = __sigmaEmitMotion(extracted, projDir);
   console.log(`  v110.4 motion: Lenis=${rm.libsInjected.lenis} GSAP=${rm.libsInjected.gsap} stagger=${rm.config.baseStagger} sticky=${rm.config.hasSticky} parallax=${rm.config.hasParallax} (Block tags +${rm.blockTagsAdded})`);
 } catch (e) { console.log(`  v110.4 motion: ${e.message.slice(0, 80)}`); }
+
+// v110.9 MutationReplay — 시간 흐름 DOM 변화 자체 React 재생
+try {
+  const rmr = __sigmaEmitMutationReplay(extracted, projDir);
+  if (rmr.emitted > 0) console.log(`  v110.9 mutation-replay: ${rmr.mutationsKept}/${rmr.mutationsTotal} mutations → MutationReplay.tsx`);
+} catch (e) { console.log(`  v110.9 mutation-replay: ${e.message.slice(0, 80)}`); }
 
 // v108-1 Three.js scene reconstruction (mesh + material + light 정확 재구성)
 try {
