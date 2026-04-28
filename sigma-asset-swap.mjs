@@ -130,18 +130,25 @@ function categorize(ext) {
 }
 
 // ─── Swap engine ───────────────────────────────────────────────
+//
+// IMPORTANT: CSS/JS preserve mode (P158 fix)
+// CSS와 JS는 license risk 낮음 (디자이너 저작물 아니라 행동 코드).
+// 이걸 비우면 layout + animation 박살 → visual/motion 점수 폭락.
+// 그래서 default = preserve. opts.aggressive=true 시만 CSS/JS 비움.
 export function swapAssets(projDir, opts = {}) {
   const publicDir = path.join(projDir, "public");
   if (!fs.existsSync(publicDir)) return { error: "public/ not found" };
 
-  const dryRun = opts.dryRun !== false; // default DRY-RUN for safety
+  const dryRun = opts.dryRun !== false;
+  const aggressive = opts.aggressive === true;  // CSS/JS 비우기 (default false)
   const result = {
     mode: dryRun ? "DRY_RUN" : "EXECUTE",
+    aggressive,
     swapped: 0,
     swappedBytes: 0,
     skipped: 0,
     byCategory: { image: 0, stylesheet: 0, script: 0, font: 0, video: 0, audio: 0, server: 0, other: 0 },
-    pathMap: {}, // old path → new path
+    pathMap: {},
   };
 
   function walk(dir, prefix = "") {
@@ -167,19 +174,27 @@ export function swapAssets(projDir, opts = {}) {
             result.swappedBytes += stat.size;
             result.byCategory.image++;
           } else if (cat === "stylesheet") {
-            if (!dryRun) {
+            // P158 fix: aggressive=false 시 CSS 보존 (layout/visual 살림)
+            if (aggressive && !dryRun) {
               fs.writeFileSync(full, `/* sigma-asset-swap placeholder for ${rel} */\n`);
+              result.swapped++;
+              result.swappedBytes += stat.size;
+              result.byCategory.stylesheet++;
+            } else {
+              result.skipped++;
+              result.byCategory.stylesheet++;
             }
-            result.swapped++;
-            result.swappedBytes += stat.size;
-            result.byCategory.stylesheet++;
           } else if (cat === "script") {
-            if (!dryRun) {
+            // P158 fix: aggressive=false 시 JS 보존 (animation/motion 살림)
+            if (aggressive && !dryRun) {
               fs.writeFileSync(full, `// sigma-asset-swap placeholder for ${rel}\n;`);
+              result.swapped++;
+              result.swappedBytes += stat.size;
+              result.byCategory.script++;
+            } else {
+              result.skipped++;
+              result.byCategory.script++;
             }
-            result.swapped++;
-            result.swappedBytes += stat.size;
-            result.byCategory.script++;
           } else if (cat === "font") {
             if (!dryRun) fs.unlinkSync(full);
             result.swapped++;
