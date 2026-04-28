@@ -140,13 +140,13 @@ export async function getImageInfo(title) {
   return null;
 }
 
-// ─── Match by category ────────────────────────────────────────
+// ─── Match by category (English + Korean keywords) ───────────
 const CATEGORY_KEYWORDS = {
-  hero: ["landscape", "panorama photography", "city skyline", "abstract pattern"],
-  photos: ["nature", "cityscape", "interior design", "minimalist"],
+  hero: ["landscape", "panorama photography", "city skyline", "Seoul Korea", "Korean countryside", "abstract pattern"],
+  photos: ["nature photography", "people portrait", "interior design", "Korean nature", "minimalist photo", "elderly people"],
   logos: ["abstract logo", "geometric shape", "monogram"],
-  icons: ["icon", "symbol", "pictogram"],
-  decorative: ["pattern", "texture", "ornament"],
+  icons: ["icon", "symbol", "pictogram", "interface icon"],
+  decorative: ["pattern texture", "Korean traditional pattern", "ornament", "geometric texture"],
 };
 
 // ─── Fill brand-kit with PD/CC0 images ────────────────────────
