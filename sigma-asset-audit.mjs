@@ -61,7 +61,11 @@ const SIGMA_GENERATED_PATTERNS = [
   /\/clean-/,
 ];
 
-function classifyAsset(relPath, content) {
+function classifyAsset(relPath, content, cleanroomState = null) {
+  // Cleanroom state override — swap이 이 path를 처리했다면 LICENSED_REGENERATED
+  if (cleanroomState && cleanroomState.swappedPaths && cleanroomState.swappedPaths.includes(relPath)) {
+    return { class: "LICENSED_REGENERATED", risk: "NONE" };
+  }
   // Source-derived?
   if (SOURCE_PATH_PATTERNS.some(p => p.test(relPath))) {
     return { class: "SOURCE_DERIVED", risk: "HIGH" };
@@ -95,7 +99,7 @@ function categorizeExt(ext) {
 }
 
 // ─── Walk public dir, classify every file ──────────────────────
-function walkAndClassify(rootDir) {
+function walkAndClassify(rootDir, cleanroomState = null) {
   const inventory = {
     SOURCE_DERIVED: [],
     LICENSED_REGENERATED: [],
@@ -121,7 +125,7 @@ function walkAndClassify(rootDir) {
         const stat = fs.statSync(full);
         const ext = path.extname(entry.name);
         const cat = categorizeExt(ext);
-        const cls = classifyAsset(rel);
+        const cls = classifyAsset(rel, null, cleanroomState);
         const item = {
           path: rel,
           size: stat.size,
@@ -147,7 +151,14 @@ export function auditAssets(projDir) {
     return { error: "public/ not found" };
   }
 
-  const { inventory, stats } = walkAndClassify(publicDir);
+  // Read .cleanroom-state.json if exists (P153 → audit override)
+  let cleanroomState = null;
+  const cleanroomPath = path.join(projDir, ".cleanroom-state.json");
+  if (fs.existsSync(cleanroomPath)) {
+    try { cleanroomState = JSON.parse(fs.readFileSync(cleanroomPath, "utf-8")); } catch {}
+  }
+
+  const { inventory, stats } = walkAndClassify(publicDir, cleanroomState);
 
   const sourceCount = inventory.SOURCE_DERIVED.length;
   const sourceBytes = inventory.SOURCE_DERIVED.reduce((s, a) => s + a.size, 0);

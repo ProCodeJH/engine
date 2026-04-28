@@ -221,6 +221,19 @@ export function swapAssets(projDir, opts = {}) {
   // Move _fcdn/ → _swap_/_fcdn/ for naming clarity? Optional.
   // 자현 비즈니스: keep same path so 자현 swap manually is easy.
 
+  // P153 — Write .cleanroom-state.json (audit override)
+  if (!dryRun && result.swapped > 0) {
+    const cleanroomState = {
+      version: "1.0",
+      writtenAt: new Date().toISOString(),
+      swapMethod: "placeholder",
+      swappedPaths: Object.keys(result.pathMap),
+    };
+    try {
+      fs.writeFileSync(path.join(projDir, ".cleanroom-state.json"), JSON.stringify(cleanroomState, null, 2));
+    } catch {}
+  }
+
   // Emit SWAP-REPORT.md
   const md = [
     "# ASSET SWAP REPORT (Paradigm 142)",

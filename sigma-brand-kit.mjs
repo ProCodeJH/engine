@@ -189,6 +189,20 @@ export function swapWithBrandKit(projDir, opts = {}) {
   }
   walk(publicDir);
 
+  // P153 — Write .cleanroom-state.json (audit이 swap된 path를 LICENSED_REGENERATED 인식)
+  if (!dryRun && result.swapped > 0) {
+    const cleanroomState = {
+      version: "1.0",
+      writtenAt: new Date().toISOString(),
+      swapMethod: "brand-kit",
+      brandKitDir,
+      swappedPaths: Object.keys(result.swapMap),
+    };
+    try {
+      fs.writeFileSync(path.join(projDir, ".cleanroom-state.json"), JSON.stringify(cleanroomState, null, 2));
+    } catch {}
+  }
+
   // Emit BRAND-KIT-SWAP-REPORT.md
   const md = [
     "# BRAND KIT SWAP REPORT (Paradigm 147)",
