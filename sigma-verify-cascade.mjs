@@ -143,34 +143,61 @@ export async function verifyCascade(projDir, opts = {}) {
       // P140 Layout Lock — apply full deterministic stack symmetrically
       const { applyDeterministicStack } = await import("./sigma-layout-lock.mjs");
 
+      // P144 Layout Match — paradigm shift from pixel→block measurement
+      const { EXTRACT_LAYOUT_JS, scoreLayoutMatch } = await import("./sigma-layout-match.mjs");
+
       try {
         await page.goto(sourceUrl, { waitUntil: "networkidle2", timeout: 30000 });
         await new Promise(r => setTimeout(r, 2000));
-        // SOURCE: CSS + JS stack (was JS-only before — caused asymmetry)
         await applyDeterministicStack(page, { settleMs: 700 });
         const srcShot = await page.screenshot({ type: "png" });
         fs.writeFileSync(srcPath, srcShot);
+        const srcBoxes = await page.evaluate(EXTRACT_LAYOUT_JS).catch(() => []);
 
         await page.goto(`http://localhost:${port}/`, { waitUntil: "networkidle2", timeout: 30000 });
-        await new Promise(r => setTimeout(r, 3000));  // 더 긴 wait — sirv full load
-        // CLONE: same stack (mirror has inline but re-apply for race safety + symmetry)
+        await new Promise(r => setTimeout(r, 3000));
         await applyDeterministicStack(page, { settleMs: 700 });
         const cloneShot = await page.screenshot({ type: "png" });
         fs.writeFileSync(clonePath, cloneShot);
+        const cloneBoxes = await page.evaluate(EXTRACT_LAYOUT_JS).catch(() => []);
 
-        // Use P102 visual-validator (4-layer composite)
+        // 4-layer pixel-based (P102)
         const { visualValidate } = await import("./sigma-visual-validator.mjs");
         const r = await visualValidate(srcPath, clonePath, { diffPath });
+
+        // 5th layer: P144 layout match (block-level perceptual identity)
+        const layoutScore = scoreLayoutMatch(srcBoxes, cloneBoxes);
+
+        // P144 new composite weights: pixel/pHash/SSIM/hist 60% + layout 40%
+        // (was: pixel 30 + pHash 25 + SSIM 25 + hist 20 = 100)
+        // (new: pixel 10 + pHash 15 + SSIM 15 + hist 20 + layout 40)
+        const newComposite = +(
+          r.pixelMatchPct * 0.10 +
+          r.pHashSimilarity * 0.15 +
+          r.ssim * 100 * 0.15 +
+          r.histSimilarity * 0.20 +
+          layoutScore.score * 0.40
+        ).toFixed(2);
+
         visualStage = {
-          passed: r.confidence >= 50,  // ACCEPTABLE bar
-          composite: r.confidence,
-          interpretation: r.interpretation,
+          passed: newComposite >= 50,
+          composite: newComposite,
+          interpretation: newComposite >= 90 ? "EXCELLENT" :
+                          newComposite >= 75 ? "GOOD" :
+                          newComposite >= 60 ? "ACCEPTABLE" :
+                          newComposite >= 40 ? "POOR" : "BAD",
           pixelMatch: r.pixelMatchPct,
           pHash: r.pHashSimilarity,
           ssim: +(r.ssim * 100).toFixed(2),
           histogram: r.histSimilarity,
+          layout: layoutScore.score,
+          layoutMatchPct: layoutScore.matchPct,
+          layoutMatched: `${layoutScore.matchedCount}/${layoutScore.totalSource}`,
+          layoutAvgDist: layoutScore.avgDist,
           sizeMismatch: r.sizeMismatch,
           comparedSize: r.comparedSize,
+          // legacy 4-layer (참고)
+          legacyComposite4: r.confidence,
         };
       } catch (e) {
         visualStage.error = String(e.message).slice(0, 80);

@@ -89,8 +89,12 @@ export function computeCompositeScore(verifyResult) {
     partial.identifier = +(Math.max(0, 100 - total * 2)).toFixed(1);
   } else partial.identifier = 0;
 
-  // License — PASS=100, REVIEW=70, exists=50, none=0
-  if (stages.license) {
+  // License — P145 True Cleanroom: audit 기반 (정직), fallback omega-fusion (관대)
+  if (verifyResult._auditOverride) {
+    // P141 audit determination 우선 (정직 측정)
+    const det = verifyResult._auditOverride.determination;
+    partial.license = det === "PASS" ? 100 : det === "REVIEW" ? 70 : 30;
+  } else if (stages.license) {
     const l = stages.license;
     if (l.passed) partial.license = l.anyReview ? 70 : 100;
     else if (l.certClean || l.certCleanOmega || l.certCeiling || l.certOmniclone) partial.license = 50;
@@ -137,7 +141,22 @@ if (isMain) {
     const flagVal = (n) => { const i = process.argv.indexOf(n); return i >= 0 && i + 1 < process.argv.length ? process.argv[i + 1] : null; };
     const sourceUrl = flagVal("--source-url");
     const port = parseInt(flagVal("--port") || "3150", 10);
+    const strictLicense = process.argv.includes("--strict-license");
+
     const r = await mod.verifyCascade(projDir, { sourceUrl, port });
+
+    // P145 True Cleanroom: --strict-license 시 audit 결과로 license 재계산
+    if (strictLicense) {
+      try {
+        const { auditAssets } = await import("./sigma-asset-audit.mjs");
+        const audit = auditAssets(projDir);
+        if (!audit.error) {
+          r._auditOverride = audit;
+          console.log(`[strict-license] audit=${audit.determination} sourcePct=${audit.stats.sourcePct}%`);
+        }
+      } catch (e) { console.log(`[strict-license] failed: ${e.message}`); }
+    }
+
     const c = computeCompositeScore(r);
 
     const lines = [
