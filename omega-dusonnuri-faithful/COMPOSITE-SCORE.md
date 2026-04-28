@@ -1,30 +1,30 @@
 # COMPOSITE-SCORE — Weighted Production Score (Paradigm 134)
 
-Generated: 2026-04-28T09:56:03.465Z
+Generated: 2026-04-28T10:09:25.663Z
 Project: C:\Users\dg020\Desktop\작업\projects\engine\omega-dusonnuri-faithful
 Source: https://www.dusonnuri.co.kr/
 
 ## Composite Score
 
-### **74.7%** — MANUAL_REVIEW
+### **78.1%** — PRODUCTION_CAUTION
 
-Binary score (8 stages): 87.5%
-Composite (weighted partial): **74.7%**
-Improvement: -12.8%p
+Binary score (8 stages): 100%
+Composite (weighted partial): **78.1%**
+Improvement: -21.9%p
 
 ## Per-Stage Partial Scores
 
 | Stage | Partial | Weight | Contribution |
 |---|---|---|---|
-| visual | 51.94% | 30% | 15.6 |
+| visual | 54.34% | 30% | 16.3 |
 | license | 100% | 15% | 15.0 |
 | motion | 47.5% | 15% | 7.1 |
 | korean | 100% | 10% | 10.0 |
-| a11y | 98% | 10% | 9.8 |
-| seo | 75% | 10% | 7.5 |
+| a11y | 100% | 10% | 10.0 |
+| seo | 100% | 10% | 10.0 |
 | http | 100% | 5% | 5.0 |
 | identifier | 94% | 5% | 4.7 |
-| **Total** | — | 100% | **74.7** |
+| **Total** | — | 100% | **78.1** |
 
 ## Interpretation
 
@@ -36,7 +36,4 @@ Improvement: -12.8%p
 
 ## 자현 비즈니스 결정
 
-🔧 추가 paradigm 적용 권장:
-
-  - visual (51.94%) — Vision P2 또는 자현 자산 swap
-  - motion (47.5%) — sigma-animation-graph
+⚠ DEPLOY caution — client에 안내
