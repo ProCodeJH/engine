@@ -1,0 +1,27 @@
+{
+  "owner": "자현 (Jahyeon)",
+  "version": "1.1",
+  "assetSource": "Wikimedia Commons (PD/CC0)",
+  "lastUpdated": "2026-04-28T07:16:02.502Z",
+  "categories": {
+    "hero": [
+      "images/hero/hero-146b7f15.png",
+      "images/hero/hero-1cd9c4bf.jpg",
+      "images/hero/hero-385e80e5.jpg",
+      "images/hero/hero-85e35025.jpg"
+    ],
+    "photos": [
+      "images/photos/photos-116e3759.jpg",
+      "images/photos/photos-7301eed2.jpg",
+      "images/photos/photos-a5573329.jpg"
+    ],
+    "logos": [
+      "images/logos/logos-70d54cea.png",
+      "images/logos/logos-a1f99b8a.gif",
+      "images/logos/logos-c04ca338.png",
+      "images/logos/logos-dfca622e.png"
+    ],
+    "icons": [],
+    "decorative": []
+  }
+}

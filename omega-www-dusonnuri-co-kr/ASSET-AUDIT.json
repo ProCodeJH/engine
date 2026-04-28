@@ -1,0 +1,169 @@
+{
+  "determination": "PASS",
+  "stats": {
+    "totalFiles": 512,
+    "totalBytes": 10618205,
+    "sourceCount": 0,
+    "sourceBytes": 0,
+    "sourcePct": 0,
+    "sourceBytePct": 0,
+    "byCategory": {
+      "document": 17,
+      "other": 127,
+      "script": 130,
+      "image": 198,
+      "stylesheet": 40
+    }
+  },
+  "inventory": {
+    "SOURCE_DERIVED": {
+      "count": 0,
+      "bytes": 0,
+      "topItems": []
+    },
+    "LICENSED_REGENERATED": {
+      "count": 494,
+      "bytes": 36339,
+      "topItems": [
+        {
+          "path": "_fcdn/0052ef5a8693.js",
+          "size": 59,
+          "ext": ".js"
+        },
+        {
+          "path": "_fcdn/00a9d3ab02a0",
+          "size": 100,
+          "ext": ""
+        },
+        {
+          "path": "_fcdn/02c3f0110a95",
+          "size": 100,
+          "ext": ""
+        },
+        {
+          "path": "_fcdn/0303c7b5eda9.jpg",
+          "size": 69,
+          "ext": ".jpg"
+        },
+        {
+          "path": "_fcdn/039d36208a14",
+          "size": 99,
+          "ext": ""
+        },
+        {
+          "path": "_fcdn/044d362268bf.js",
+          "size": 59,
+          "ext": ".js"
+        },
+        {
+          "path": "_fcdn/046138aa86bf",
+          "size": 99,
+          "ext": ""
+        },
+        {
+          "path": "_fcdn/050038357968.js",
+          "size": 59,
+          "ext": ".js"
+        },
+        {
+          "path": "_fcdn/05053570b487.jpg",
+          "size": 69,
+          "ext": ".jpg"
+        },
+        {
+          "path": "_fcdn/05c717af7c1e.css",
+          "size": 62,
+          "ext": ".css"
+        }
+      ]
+    },
+    "PLATFORM_NEUTRAL": {
+      "count": 0,
+      "bytes": 0,
+      "topItems": []
+    },
+    "USER_AUTHORED": {
+      "count": 4,
+      "bytes": 1250703,
+      "topItems": [
+        {
+          "path": "index.html",
+          "size": 1247790,
+          "ext": ".html"
+        },
+        {
+          "path": "robots.txt",
+          "size": 72,
+          "ext": ".txt"
+        },
+        {
+          "path": "sitemap.xml",
+          "size": 997,
+          "ext": ".xml"
+        },
+        {
+          "path": "sw.js",
+          "size": 1844,
+          "ext": ".js"
+        }
+      ]
+    },
+    "UNKNOWN": {
+      "count": 14,
+      "bytes": 9331163,
+      "topItems": [
+        {
+          "path": "11/index.html",
+          "size": 55006,
+          "ext": ".html"
+        },
+        {
+          "path": "33/index.html",
+          "size": 362141,
+          "ext": ".html"
+        },
+        {
+          "path": "34/index.html",
+          "size": 552979,
+          "ext": ".html"
+        },
+        {
+          "path": "center/index.html",
+          "size": 696708,
+          "ext": ".html"
+        },
+        {
+          "path": "Company/index.html",
+          "size": 678831,
+          "ext": ".html"
+        },
+        {
+          "path": "FAQ/index.html",
+          "size": 587977,
+          "ext": ".html"
+        },
+        {
+          "path": "greeting/index.html",
+          "size": 696708,
+          "ext": ".html"
+        },
+        {
+          "path": "homecare/index.html",
+          "size": 752505,
+          "ext": ".html"
+        },
+        {
+          "path": "index/index.html",
+          "size": 1196588,
+          "ext": ".html"
+        },
+        {
+          "path": "notice/index.html",
+          "size": 552980,
+          "ext": ".html"
+        }
+      ]
+    }
+  },
+  "topSourceDerived": []
+}
