@@ -54,11 +54,13 @@ node sigma-engine.mjs https://www.dusonnuri.co.kr/ \
 - **P144** Layout Box Match (pixel→block)
 - **P150** Sectional Match (header/hero/main/footer)
 
-### Tier 5 — Cleanroom Path (license 100%)
+### Tier 5 — Cleanroom Path (license 100%, 0원)
 - **P138** A11y Enrich v2 (WCAG landmarks)
 - **P142** Asset Swap (placeholder, no external API)
 - **P146** Pure Cleanroom (workflow integration)
 - **P147** Brand Kit Auto-Swap (자현 자산 통합)
+- **P153** Self-Replenishing Brand Kit (mirror→placeholder 자동 추출)
+- **P154** Procedural Asset Synthesis (SVG gradient + shapes, 0원, 100% sigma-owned)
 
 ### Tier 6 — Autonomous (자율 도달)
 - **P148** Convergence Loop v2 (honest measurement based)
@@ -132,14 +134,17 @@ P149-P152: 85% 완성  ← 현재
 
 ---
 
-## 🚧 남은 paradigm (로드맵)
+## 🚧 남은 paradigm (로드맵, 0원 우선)
 
-- **P153** Cross-Browser Render Lock (Chromium + Firefox 평균)
-- **P154** Generative AI Replacement (Stable Diffusion + ControlNet)
-- **P155** Form Mock Backend (POST endpoint mocks)
-- **P156** WebSocket/SSE Replay (live data record)
-- **P157** Custom Domain Auto-Map (자현 brand domain)
-- **P158** A/B Variant Lock (cookie/localStorage 결정성)
+- **P155** Local Ollama Integration (LLaVA caption, 자현 PC)
+- **P156** Wikimedia Commons CC0 Crawler (public domain images, 무료 API)
+- **P157** Cross-Browser Render Lock (Chromium + Firefox 평균)
+- **P158** Form Mock Backend (POST endpoint mocks)
+- **P159** WebSocket/SSE Replay (live data record)
+- **P160** Custom Domain Auto-Map (자현 brand domain)
+
+(외부 paid API 후보 — 자현 결정 필요):
+- Generative AI Replacement (Stable Diffusion 외부 서비스, 돈 듦) — 자현 명시 거절
 
 ---
 
