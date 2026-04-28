@@ -24,6 +24,15 @@ import https from "node:https";
 import crypto from "node:crypto";
 import { fileURLToPath } from "node:url";
 
+// ─── Throttle: respect Wikimedia rate limits (anonymous max ~10/s) ─
+let lastCall = 0;
+async function throttle(ms = 1200) {
+  const now = Date.now();
+  const wait = ms - (now - lastCall);
+  if (wait > 0) await new Promise(r => setTimeout(r, wait));
+  lastCall = Date.now();
+}
+
 // ─── Fetch JSON (no external lib) ──────────────────────────────
 function fetchJson(url, opts = {}) {
   return new Promise((resolve, reject) => {
@@ -78,6 +87,7 @@ function downloadFile(url, targetPath, opts = {}) {
 
 // ─── Search Wikimedia Commons ──────────────────────────────────
 export async function searchCommons(keyword, opts = {}) {
+  await throttle();
   const limit = Math.min(opts.limit || 10, 50);
   const url = `https://commons.wikimedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(keyword + " filetype:bitmap")}&srnamespace=6&format=json&srlimit=${limit}`;
 
@@ -95,6 +105,7 @@ export async function searchCommons(keyword, opts = {}) {
 
 // ─── Get image info (url + license + dimensions) ──────────────
 export async function getImageInfo(title) {
+  await throttle();
   const url = `https://commons.wikimedia.org/w/api.php?action=query&prop=imageinfo&iiprop=url|extmetadata|size|mime&format=json&titles=${encodeURIComponent(title)}`;
 
   try {
