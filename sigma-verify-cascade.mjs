@@ -140,29 +140,21 @@ export async function verifyCascade(projDir, opts = {}) {
       const clonePath = path.join(verifyDir, "clone.png");
       const diffPath = path.join(verifyDir, "diff.png");
 
-      // P135 Carousel + P136 Reveal + P137 Media — deterministic capture
-      const { CAROUSEL_LOCK_JS } = await import("./sigma-carousel-lock.mjs");
-      const { REVEAL_JS } = await import("./sigma-reveal-animations.mjs");
-      const { MEDIA_DETERMINISM_JS } = await import("./sigma-media-determinism.mjs");
+      // P140 Layout Lock — apply full deterministic stack symmetrically
+      const { applyDeterministicStack } = await import("./sigma-layout-lock.mjs");
 
       try {
         await page.goto(sourceUrl, { waitUntil: "networkidle2", timeout: 30000 });
         await new Promise(r => setTimeout(r, 2000));
-        // Lock carousels + freeze animations + reveal hidden + pause media on SOURCE
-        await page.evaluate(CAROUSEL_LOCK_JS).catch(() => {});
-        await page.evaluate(REVEAL_JS).catch(() => {});
-        await page.evaluate(MEDIA_DETERMINISM_JS).catch(() => {});
-        await new Promise(r => setTimeout(r, 700));  // settle after triple-lock
+        // SOURCE: CSS + JS stack (was JS-only before — caused asymmetry)
+        await applyDeterministicStack(page, { settleMs: 700 });
         const srcShot = await page.screenshot({ type: "png" });
         fs.writeFileSync(srcPath, srcShot);
 
         await page.goto(`http://localhost:${port}/`, { waitUntil: "networkidle2", timeout: 30000 });
         await new Promise(r => setTimeout(r, 3000));  // 더 긴 wait — sirv full load
-        // Same on CLONE (mirror has injected scripts but re-run for race safety)
-        await page.evaluate(CAROUSEL_LOCK_JS).catch(() => {});
-        await page.evaluate(REVEAL_JS).catch(() => {});
-        await page.evaluate(MEDIA_DETERMINISM_JS).catch(() => {});
-        await new Promise(r => setTimeout(r, 700));
+        // CLONE: same stack (mirror has inline but re-apply for race safety + symmetry)
+        await applyDeterministicStack(page, { settleMs: 700 });
         const cloneShot = await page.screenshot({ type: "png" });
         fs.writeFileSync(clonePath, cloneShot);
 
