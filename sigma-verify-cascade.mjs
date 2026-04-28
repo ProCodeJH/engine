@@ -143,40 +143,45 @@ export async function verifyCascade(projDir, opts = {}) {
       // P140 Layout Lock — apply full deterministic stack symmetrically
       const { applyDeterministicStack } = await import("./sigma-layout-lock.mjs");
 
-      // P144 Layout Match — paradigm shift from pixel→block measurement
-      const { EXTRACT_LAYOUT_JS, scoreLayoutMatch } = await import("./sigma-layout-match.mjs");
+      // P144 Layout Match + P149 Multi-State + P150 Sectional
+      const { scoreLayoutMatch } = await import("./sigma-layout-match.mjs");
+      const { captureMultiStateLayoutScore, scoreSectionalMatch } = await import("./sigma-multistate-capture.mjs");
 
       try {
         await page.goto(sourceUrl, { waitUntil: "networkidle2", timeout: 30000 });
         await new Promise(r => setTimeout(r, 2000));
+        // Capture pre-state screenshot first (for pixel comparison)
         await applyDeterministicStack(page, { settleMs: 700 });
         const srcShot = await page.screenshot({ type: "png" });
         fs.writeFileSync(srcPath, srcShot);
-        const srcBoxes = await page.evaluate(EXTRACT_LAYOUT_JS).catch(() => []);
+        // P149 — multi-state DOM capture (scroll positions, lazy-mount)
+        const srcMultiState = await captureMultiStateLayoutScore(page).catch(() => ({ union: [], states: [] }));
 
         await page.goto(`http://localhost:${port}/`, { waitUntil: "networkidle2", timeout: 30000 });
         await new Promise(r => setTimeout(r, 3000));
         await applyDeterministicStack(page, { settleMs: 700 });
         const cloneShot = await page.screenshot({ type: "png" });
         fs.writeFileSync(clonePath, cloneShot);
-        const cloneBoxes = await page.evaluate(EXTRACT_LAYOUT_JS).catch(() => []);
+        const cloneMultiState = await captureMultiStateLayoutScore(page).catch(() => ({ union: [], states: [] }));
 
         // 4-layer pixel-based (P102)
         const { visualValidate } = await import("./sigma-visual-validator.mjs");
         const r = await visualValidate(srcPath, clonePath, { diffPath });
 
-        // 5th layer: P144 layout match (block-level perceptual identity)
-        const layoutScore = scoreLayoutMatch(srcBoxes, cloneBoxes);
+        // P144 layout match (single-state, legacy)
+        const layoutScore = scoreLayoutMatch(srcMultiState.union, cloneMultiState.union);
 
-        // P144 new composite weights: pixel/pHash/SSIM/hist 60% + layout 40%
-        // (was: pixel 30 + pHash 25 + SSIM 25 + hist 20 = 100)
-        // (new: pixel 10 + pHash 15 + SSIM 15 + hist 20 + layout 40)
+        // P150 sectional match (header/hero/main/footer 영역별 + IoU 친화)
+        const sectional = scoreSectionalMatch(srcMultiState.union, cloneMultiState.union);
+
+        // P149 new composite weights: pixel/pHash/SSIM/hist 50% + layout 20% + sectional 30%
         const newComposite = +(
           r.pixelMatchPct * 0.10 +
-          r.pHashSimilarity * 0.15 +
-          r.ssim * 100 * 0.15 +
+          r.pHashSimilarity * 0.10 +
+          r.ssim * 100 * 0.10 +
           r.histSimilarity * 0.20 +
-          layoutScore.score * 0.40
+          layoutScore.score * 0.20 +
+          sectional.score * 0.30
         ).toFixed(2);
 
         visualStage = {
@@ -191,12 +196,14 @@ export async function verifyCascade(projDir, opts = {}) {
           ssim: +(r.ssim * 100).toFixed(2),
           histogram: r.histSimilarity,
           layout: layoutScore.score,
-          layoutMatchPct: layoutScore.matchPct,
-          layoutMatched: `${layoutScore.matchedCount}/${layoutScore.totalSource}`,
-          layoutAvgDist: layoutScore.avgDist,
+          sectional: sectional.score,
+          sectionalDetail: sectional.detail,
+          srcUnionCount: srcMultiState.union.length,
+          cloneUnionCount: cloneMultiState.union.length,
+          srcStates: srcMultiState.states.length,
+          cloneStates: cloneMultiState.states.length,
           sizeMismatch: r.sizeMismatch,
           comparedSize: r.comparedSize,
-          // legacy 4-layer (참고)
           legacyComposite4: r.confidence,
         };
       } catch (e) {
