@@ -112,8 +112,8 @@ function regenerateCss(tokens, blocks, opts = {}) {
     "/* === Sigma-Owned Rules (selector-preserved, content regenerated) === */",
   ];
 
-  // Limit to first ~200 selectors to avoid huge files
-  const limit = opts.maxSelectors || 200;
+  // P161 — visual faithful: selector limit 2000 (was 200, only 1.3% covered)
+  const limit = opts.maxSelectors || 2000;
   for (const block of blocks.slice(0, limit)) {
     // Simplified rules: only essential layout + color
     // Filter out complex original rules, keep selectors + minimal style
@@ -127,20 +127,50 @@ function regenerateCss(tokens, blocks, opts = {}) {
 }
 
 function simplifyRules(rules, tokens) {
-  // Pick essential properties: display, position, color, background, font-size, padding, margin, border
+  // P161 — Visual Faithful: 확장된 properties (visual decoration 보존)
   const essentialProps = [
+    // Layout
     "display", "position", "top", "right", "bottom", "left",
-    "color", "background-color", "background",
-    "font-size", "font-weight", "font-family", "line-height",
-    "padding", "margin", "border", "border-radius",
-    "width", "height", "max-width", "min-height",
-    "flex", "justify-content", "align-items", "gap",
-    "opacity", "z-index",
+    "width", "height", "max-width", "max-height", "min-width", "min-height",
+    "overflow", "overflow-x", "overflow-y", "visibility", "z-index", "float", "clear",
+    // Flex / Grid
+    "flex", "flex-direction", "flex-wrap", "flex-grow", "flex-shrink", "flex-basis",
+    "justify-content", "align-items", "align-content", "align-self", "gap", "row-gap", "column-gap",
+    "grid", "grid-template-columns", "grid-template-rows", "grid-column", "grid-row", "grid-area",
+    // Spacing
+    "padding", "padding-top", "padding-right", "padding-bottom", "padding-left",
+    "margin", "margin-top", "margin-right", "margin-bottom", "margin-left",
+    // Color / Background
+    "color", "background", "background-color", "background-image",
+    "background-size", "background-position", "background-repeat", "background-attachment",
+    "background-blend-mode",
+    // Typography
+    "font", "font-family", "font-size", "font-weight", "font-style", "font-variant",
+    "line-height", "letter-spacing", "word-spacing", "text-align", "text-decoration",
+    "text-transform", "text-shadow", "text-overflow", "white-space", "vertical-align",
+    // Borders
+    "border", "border-top", "border-right", "border-bottom", "border-left",
+    "border-width", "border-style", "border-color", "border-radius",
+    "border-top-left-radius", "border-top-right-radius",
+    "border-bottom-left-radius", "border-bottom-right-radius",
+    // Visual decoration (P161 핵심 추가)
+    "box-shadow", "outline", "outline-color", "outline-style", "outline-offset",
+    "filter", "backdrop-filter", "mix-blend-mode",
+    "transform", "transform-origin", "transform-style",
+    "transition", "transition-duration", "transition-timing-function", "transition-delay",
+    "animation", "animation-name", "animation-duration", "animation-timing-function",
+    "animation-delay", "animation-iteration-count", "animation-direction", "animation-fill-mode",
+    "opacity",
+    // List / Cursor
+    "list-style", "list-style-type", "list-style-position", "cursor", "pointer-events",
+    "user-select", "resize",
+    // Misc
+    "object-fit", "object-position", "aspect-ratio",
   ];
 
   const keep = [];
   for (const prop of essentialProps) {
-    const re = new RegExp(`(?:^|;)\\s*${prop}\\s*:\\s*([^;]+)`, "i");
+    const re = new RegExp(`(?:^|;|^|\\s)${prop.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&')}\\s*:\\s*([^;]+)`, "i");
     const m = rules.match(re);
     if (m) keep.push(`${prop}: ${m[1].trim()}`);
   }
