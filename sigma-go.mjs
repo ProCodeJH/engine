@@ -31,6 +31,9 @@ import { recordClickStates, applyClickStates } from "./sigma-click-state.mjs";
 import { applyFormMock } from "./sigma-form-mock.mjs";
 import { buildSpaBundle, applySpaRouter } from "./sigma-spa-routes.mjs";
 import { applyCompression } from "./sigma-style-compress.mjs";
+import { applyServiceWorker } from "./sigma-service-worker.mjs";
+import { applyMirrorLazyLoad } from "./sigma-image-lazy.mjs";
+import { applyCookieBanner } from "./sigma-cookie-banner.mjs";
 
 function urlToSlug(url) {
   return url
@@ -187,6 +190,45 @@ export async function go(sourceUrl, opts = {}) {
     }
   }
 
+  // ═══ Step 6f: Service Worker / PWA (P203) ═══
+  if (opts.sw) {
+    console.log(`\n━━━ Step 6f: Service Worker + PWA (P203) ━━━`);
+    try {
+      const r = applyServiceWorker(outputDir, { siteName: opts.siteName, themeColor: opts.themeColor });
+      log.push({ step: "Service Worker", ok: true });
+      console.log(`  ✅ /sw.js + /manifest.json (offline + API mock + PWA install)`);
+    } catch (e) {
+      log.push({ step: "Service Worker", ok: false, error: e.message });
+      console.log(`  ❌ ${e.message}`);
+    }
+  }
+
+  // ═══ Step 6g: Image Lazy Load (P208) ═══
+  if (opts.lazy) {
+    console.log(`\n━━━ Step 6g: Image Lazy Load (P208) ━━━`);
+    try {
+      const r = applyMirrorLazyLoad(outputDir);
+      log.push({ step: "Image Lazy", ok: true, lazy: r.totalLazy });
+      console.log(`  ✅ ${r.totalLazy} imgs lazy + ${r.totalHighPriority} fetchpriority=high (LCP)`);
+    } catch (e) {
+      log.push({ step: "Image Lazy", ok: false, error: e.message });
+      console.log(`  ❌ ${e.message}`);
+    }
+  }
+
+  // ═══ Step 6h: Cookie Consent Banner (P216) ═══
+  if (opts.cookieBanner) {
+    console.log(`\n━━━ Step 6h: GDPR Cookie Banner (P216) ━━━`);
+    try {
+      const r = applyCookieBanner(outputDir);
+      log.push({ step: "Cookie Banner", ok: true, files: r.files?.length });
+      console.log(`  ✅ GDPR consent banner (Korean text)`);
+    } catch (e) {
+      log.push({ step: "Cookie Banner", ok: false, error: e.message });
+      console.log(`  ❌ ${e.message}`);
+    }
+  }
+
   // ═══ Step 7 (optional): Brand-Kit Swap (P189) ═══
   if (opts.brandKit) {
     console.log(`\n━━━ Step 5/5: Brand-Kit Swap (P189) ━━━`);
@@ -272,6 +314,9 @@ if (isMain) {
     formMock: process.argv.includes("--form") || all,
     spa: process.argv.includes("--spa") || all,
     compress: process.argv.includes("--compress") || all,
+    sw: process.argv.includes("--sw") || all,
+    lazy: process.argv.includes("--lazy") || all,
+    cookieBanner: process.argv.includes("--cookie-banner") || all,
   }).then(r => {
     if (r.error) { console.error(`\n[sigma-go] ${r.error}`); process.exit(1); }
     console.log(`\n🎯 [sigma-go] DONE in ${r.duration}s`);
