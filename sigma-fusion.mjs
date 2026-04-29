@@ -67,6 +67,11 @@ import { applyCompression } from "./sigma-style-compress.mjs";
 // ─── Phase 11: Post (audit) ───────────────────────────────────
 import { auditMirror } from "./sigma-a11y-audit.mjs";
 
+// ─── Visual Strength (P302+P304+P305+P306) ─────────────────────
+import { capturePseudoStyles, applyPseudoStyles } from "./sigma-pseudo-element.mjs";
+import { applyBackgroundInline } from "./sigma-bg-inline.mjs";
+import { applyFontSelfHost } from "./sigma-font-host.mjs";
+
 function urlToSlug(url) {
   return url.replace(/^https?:\/\//, "").replace(/\/$/, "")
             .replace(/[^a-z0-9]/gi, "-").toLowerCase();
@@ -135,6 +140,11 @@ export async function fusion(sourceUrl, opts = {}) {
     const records = await safeAsync("API Replay Record (P207)", () => recordApiCalls(sourceUrl), log);
     if (records) safeSync("API Replay Apply", () => applyApiReplay(outputDir, records), log);
   }
+
+  // P302 Pseudo-Element Capture (visual strength)
+  const pseudoCaptures = await safeAsync("Pseudo-Element Capture (P302)",
+    () => capturePseudoStyles(sourceUrl), log);
+  if (pseudoCaptures) safeSync("Pseudo Apply", () => applyPseudoStyles(outputDir, pseudoCaptures), log);
 
   // ═══════════════════════════════════════════════════════════
   // PHASE 2 — INTERACTION (살아있음)
@@ -222,6 +232,13 @@ export async function fusion(sourceUrl, opts = {}) {
     log.push({ step: "Brand-Kit Swap", skipped: true });
     console.log(`  ⏭ Brand-Kit Swap (no --brand-kit)`);
   }
+
+  // ═══════════════════════════════════════════════════════════
+  // PHASE 9b — VISUAL STRENGTH (P304 + P305 — after assets captured)
+  // ═══════════════════════════════════════════════════════════
+  console.log(`\n━━━ PHASE 9b: VISUAL STRENGTH ━━━`);
+  safeSync("Background Image Inline (P304)", () => applyBackgroundInline(outputDir), log);
+  await safeAsync("Web Font Self-Host (P305)", () => applyFontSelfHost(outputDir), log);
 
   // ═══════════════════════════════════════════════════════════
   // PHASE 10 — OPTIMIZATION (last after all inject)
