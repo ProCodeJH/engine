@@ -25,6 +25,8 @@ import { applyHybridMotion } from "./sigma-hybrid-frozen.mjs";
 import { enrichMirrorA11y } from "./sigma-a11y-enrich.mjs";
 import { enhanceOmegaProject } from "./sigma-omega-enhance.mjs";
 import { swapWithBrandKit } from "./sigma-brand-kit.mjs";
+import { recordTimeline, applyTimelineToMirror } from "./sigma-timeline-record.mjs";
+import { recordHoverStates, applyHoverStates } from "./sigma-hover-states.mjs";
 
 function urlToSlug(url) {
   return url
@@ -98,7 +100,35 @@ export async function go(sourceUrl, opts = {}) {
     console.log(`  ❌ ${e.message}`);
   }
 
-  // ═══ Step 5 (optional): Brand-Kit Swap (P189) ═══
+  // ═══ Step 5: Animation Timeline (P191) — opt-in via --timeline ═══
+  if (opts.timeline) {
+    console.log(`\n━━━ Step 5: Animation Timeline Recording (P191) ━━━`);
+    try {
+      const tl = await recordTimeline(sourceUrl);
+      const apply = applyTimelineToMirror(outputDir, tl.timeline);
+      log.push({ step: "Timeline", ok: true, frames: tl.diffedFrames });
+      console.log(`  ✅ ${tl.diffedFrames}/${tl.rawFrames} frames recorded → motion exact replay`);
+    } catch (e) {
+      log.push({ step: "Timeline", ok: false, error: e.message });
+      console.log(`  ❌ ${e.message}`);
+    }
+  }
+
+  // ═══ Step 6: Hover States (P192) — opt-in via --hover ═══
+  if (opts.hover) {
+    console.log(`\n━━━ Step 6: Hover States Recording (P192) ━━━`);
+    try {
+      const states = await recordHoverStates(sourceUrl);
+      const apply = applyHoverStates(outputDir, states);
+      log.push({ step: "Hover States", ok: true, count: states.length });
+      console.log(`  ✅ ${states.length} reactive hover states`);
+    } catch (e) {
+      log.push({ step: "Hover States", ok: false, error: e.message });
+      console.log(`  ❌ ${e.message}`);
+    }
+  }
+
+  // ═══ Step 7 (optional): Brand-Kit Swap (P189) ═══
   if (opts.brandKit) {
     console.log(`\n━━━ Step 5/5: Brand-Kit Swap (P189) ━━━`);
     try {
@@ -170,8 +200,16 @@ if (isMain) {
   const flagVal = (n) => { const i = process.argv.indexOf(n); return i >= 0 && i + 1 < process.argv.length ? process.argv[i + 1] : null; };
   const output = flagVal("--output");
   const brandKit = flagVal("--brand-kit");
+  const timeline = process.argv.includes("--timeline");
+  const hover = process.argv.includes("--hover");
+  const all = process.argv.includes("--all");
 
-  go(sourceUrl, { output, brandKit }).then(r => {
+  go(sourceUrl, {
+    output,
+    brandKit,
+    timeline: timeline || all,
+    hover: hover || all,
+  }).then(r => {
     if (r.error) { console.error(`\n[sigma-go] ${r.error}`); process.exit(1); }
     console.log(`\n🎯 [sigma-go] DONE in ${r.duration}s`);
     console.log(`   Output: ${r.outputDir}`);
