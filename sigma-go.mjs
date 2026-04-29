@@ -24,6 +24,7 @@ import { frozenMirror } from "./sigma-frozen-mirror.mjs";
 import { applyHybridMotion } from "./sigma-hybrid-frozen.mjs";
 import { enrichMirrorA11y } from "./sigma-a11y-enrich.mjs";
 import { enhanceOmegaProject } from "./sigma-omega-enhance.mjs";
+import { swapWithBrandKit } from "./sigma-brand-kit.mjs";
 
 function urlToSlug(url) {
   return url
@@ -87,7 +88,7 @@ export async function go(sourceUrl, opts = {}) {
   }
 
   // ═══ Step 4: SEO restoration (P165) ═══
-  console.log(`\n━━━ Step 4/4: SEO restoration (P165) ━━━`);
+  console.log(`\n━━━ Step 4/${opts.brandKit ? 5 : 4}: SEO restoration (P165) ━━━`);
   try {
     const r = enhanceOmegaProject(outputDir);
     log.push({ step: "SEO restoration", ok: true });
@@ -95,6 +96,19 @@ export async function go(sourceUrl, opts = {}) {
   } catch (e) {
     log.push({ step: "SEO restoration", ok: false, error: e.message });
     console.log(`  ❌ ${e.message}`);
+  }
+
+  // ═══ Step 5 (optional): Brand-Kit Swap (P189) ═══
+  if (opts.brandKit) {
+    console.log(`\n━━━ Step 5/5: Brand-Kit Swap (P189) ━━━`);
+    try {
+      const r = swapWithBrandKit(outputDir, { brandKitDir: opts.brandKit, dryRun: false });
+      log.push({ step: "Brand-Kit Swap", ok: true, swapped: r.swapped });
+      console.log(`  ✅ ${r.swapped} files swapped → license auto-PASS`);
+    } catch (e) {
+      log.push({ step: "Brand-Kit Swap", ok: false, error: e.message });
+      console.log(`  ❌ ${e.message}`);
+    }
   }
 
   // ═══ Final Cert ═══
@@ -155,8 +169,9 @@ if (isMain) {
   }
   const flagVal = (n) => { const i = process.argv.indexOf(n); return i >= 0 && i + 1 < process.argv.length ? process.argv[i + 1] : null; };
   const output = flagVal("--output");
+  const brandKit = flagVal("--brand-kit");
 
-  go(sourceUrl, { output }).then(r => {
+  go(sourceUrl, { output, brandKit }).then(r => {
     if (r.error) { console.error(`\n[sigma-go] ${r.error}`); process.exit(1); }
     console.log(`\n🎯 [sigma-go] DONE in ${r.duration}s`);
     console.log(`   Output: ${r.outputDir}`);

@@ -45,16 +45,26 @@ export async function frozenMirror(sourceUrl, outputDir, opts = {}) {
   const page = await browser.newPage();
   await page.setViewport({ width: 1920, height: 1080 });
 
-  // Asset capture
+  // Asset capture — P187 v2: ALL responses (not just whitelisted ext)
   const assets = new Map();
+  const cssTexts = new Map();
   page.on("response", async (res) => {
     try {
       if (res.status() !== 200) return;
       const url = res.url();
-      if (!ASSET_EXT_REGEX.test(url)) return;
+      // Capture all asset-like (image/font/css/js/media) — P187 expanded
+      const isAsset = ASSET_EXT_REGEX.test(url) ||
+                      /\.(woff|woff2|ttf|otf|eot)/.test(url) ||  // fonts always
+                      url.includes("font") ||
+                      res.headers()["content-type"]?.match(/(image|font|css|application\/javascript)/i);
+      if (!isAsset) return;
       const buf = await res.buffer();
       if (buf.length === 0) return;
       assets.set(url, buf);
+      // Track CSS for url() recursion
+      if (/\.css/.test(url) || res.headers()["content-type"]?.includes("text/css")) {
+        cssTexts.set(url, buf.toString("utf-8"));
+      }
     } catch {}
   });
 
@@ -117,6 +127,35 @@ export async function frozenMirror(sourceUrl, outputDir, opts = {}) {
 
   // Get full DOM
   const html = await page.evaluate(() => document.documentElement.outerHTML);
+
+  // P187 v2: Recursively fetch CSS url() assets (fonts, images, etc.)
+  console.log(`[frozen] P187 — recursively capturing CSS url() assets...`);
+  const fetchedUrls = new Set([...assets.keys()]);
+  const urlsToFetch = new Set();
+  for (const [cssUrl, cssText] of cssTexts) {
+    const urlMatches = [...cssText.matchAll(/url\(\s*['"]?([^'")\s]+)['"]?\s*\)/g)];
+    for (const m of urlMatches) {
+      const ref = m[1];
+      if (ref.startsWith("data:") || ref.startsWith("#")) continue;
+      try {
+        const fullUrl = new URL(ref, cssUrl).href;
+        if (!fetchedUrls.has(fullUrl)) urlsToFetch.add(fullUrl);
+      } catch {}
+    }
+  }
+  console.log(`  ${urlsToFetch.size} additional url() refs to fetch`);
+  let cssAssetCount = 0;
+  for (const url of urlsToFetch) {
+    try {
+      const r = await page.goto(url, { waitUntil: "domcontentloaded", timeout: 8000 }).catch(() => null);
+      if (r && r.ok()) {
+        const buf = await r.buffer();
+        if (buf.length > 0) { assets.set(url, buf); cssAssetCount++; }
+      }
+    } catch {}
+  }
+  console.log(`  ${cssAssetCount} CSS assets captured`);
+
   await browser.close();
 
   // Strip script tags + suspicious inline JS attributes
