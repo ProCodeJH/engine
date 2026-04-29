@@ -27,6 +27,8 @@ import { enhanceOmegaProject } from "./sigma-omega-enhance.mjs";
 import { swapWithBrandKit } from "./sigma-brand-kit.mjs";
 import { recordTimeline, applyTimelineToMirror } from "./sigma-timeline-record.mjs";
 import { recordHoverStates, applyHoverStates } from "./sigma-hover-states.mjs";
+import { recordClickStates, applyClickStates } from "./sigma-click-state.mjs";
+import { applyFormMock } from "./sigma-form-mock.mjs";
 
 function urlToSlug(url) {
   return url
@@ -128,6 +130,33 @@ export async function go(sourceUrl, opts = {}) {
     }
   }
 
+  // ═══ Step 6b: Click States (P199) ═══
+  if (opts.clickStates) {
+    console.log(`\n━━━ Step 6b: Click States Recording (P199) ━━━`);
+    try {
+      const states = await recordClickStates(sourceUrl);
+      const apply = applyClickStates(outputDir, states);
+      log.push({ step: "Click States", ok: true, count: states.length });
+      console.log(`  ✅ ${states.length} click triggers (modal/dropdown/accordion)`);
+    } catch (e) {
+      log.push({ step: "Click States", ok: false, error: e.message });
+      console.log(`  ❌ ${e.message}`);
+    }
+  }
+
+  // ═══ Step 6c: Form Mock (P200) ═══
+  if (opts.formMock) {
+    console.log(`\n━━━ Step 6c: Form Mock Backend (P200) ━━━`);
+    try {
+      const r = applyFormMock(outputDir);
+      log.push({ step: "Form Mock", ok: true, files: r.files?.length });
+      console.log(`  ✅ Forms 살아있음 (toast notification + AJAX mock)`);
+    } catch (e) {
+      log.push({ step: "Form Mock", ok: false, error: e.message });
+      console.log(`  ❌ ${e.message}`);
+    }
+  }
+
   // ═══ Step 7 (optional): Brand-Kit Swap (P189) ═══
   if (opts.brandKit) {
     console.log(`\n━━━ Step 5/5: Brand-Kit Swap (P189) ━━━`);
@@ -209,6 +238,8 @@ if (isMain) {
     brandKit,
     timeline: timeline || all,
     hover: hover || all,
+    clickStates: process.argv.includes("--click") || all,
+    formMock: process.argv.includes("--form") || all,
   }).then(r => {
     if (r.error) { console.error(`\n[sigma-go] ${r.error}`); process.exit(1); }
     console.log(`\n🎯 [sigma-go] DONE in ${r.duration}s`);
