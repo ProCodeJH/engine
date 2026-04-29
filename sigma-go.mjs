@@ -29,6 +29,8 @@ import { recordTimeline, applyTimelineToMirror } from "./sigma-timeline-record.m
 import { recordHoverStates, applyHoverStates } from "./sigma-hover-states.mjs";
 import { recordClickStates, applyClickStates } from "./sigma-click-state.mjs";
 import { applyFormMock } from "./sigma-form-mock.mjs";
+import { buildSpaBundle, applySpaRouter } from "./sigma-spa-routes.mjs";
+import { applyCompression } from "./sigma-style-compress.mjs";
 
 function urlToSlug(url) {
   return url
@@ -157,6 +159,34 @@ export async function go(sourceUrl, opts = {}) {
     }
   }
 
+  // ═══ Step 6d: SPA Routes (P201) — internal navigation ═══
+  if (opts.spa) {
+    console.log(`\n━━━ Step 6d: SPA Navigation Hijack (P201) ━━━`);
+    try {
+      const bundle = await buildSpaBundle(sourceUrl, outputDir, { maxRoutes: opts.maxRoutes || 12 });
+      const apply = applySpaRouter(outputDir, bundle.bundle);
+      log.push({ step: "SPA Routes", ok: true, captured: bundle.captured });
+      console.log(`  ✅ ${bundle.captured}/${bundle.discovered} routes captured → SPA navigation`);
+    } catch (e) {
+      log.push({ step: "SPA Routes", ok: false, error: e.message });
+      console.log(`  ❌ ${e.message}`);
+    }
+  }
+
+  // ═══ Step 6e: Style Compression (P202) — size optimization ═══
+  if (opts.compress) {
+    console.log(`\n━━━ Step 6e: Style Compression (P202) ━━━`);
+    try {
+      const r = applyCompression(outputDir);
+      const ratio = r.totalBefore > 0 ? Math.round((1 - r.totalAfter / r.totalBefore) * 100) : 0;
+      log.push({ step: "Compression", ok: true, ratio });
+      console.log(`  ✅ ${(r.totalBefore / 1024).toFixed(1)} → ${(r.totalAfter / 1024).toFixed(1)}KB (${ratio}% saved)`);
+    } catch (e) {
+      log.push({ step: "Compression", ok: false, error: e.message });
+      console.log(`  ❌ ${e.message}`);
+    }
+  }
+
   // ═══ Step 7 (optional): Brand-Kit Swap (P189) ═══
   if (opts.brandKit) {
     console.log(`\n━━━ Step 5/5: Brand-Kit Swap (P189) ━━━`);
@@ -240,6 +270,8 @@ if (isMain) {
     hover: hover || all,
     clickStates: process.argv.includes("--click") || all,
     formMock: process.argv.includes("--form") || all,
+    spa: process.argv.includes("--spa") || all,
+    compress: process.argv.includes("--compress") || all,
   }).then(r => {
     if (r.error) { console.error(`\n[sigma-go] ${r.error}`); process.exit(1); }
     console.log(`\n🎯 [sigma-go] DONE in ${r.duration}s`);
