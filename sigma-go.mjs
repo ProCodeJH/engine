@@ -34,6 +34,13 @@ import { applyCompression } from "./sigma-style-compress.mjs";
 import { applyServiceWorker } from "./sigma-service-worker.mjs";
 import { applyMirrorLazyLoad } from "./sigma-image-lazy.mjs";
 import { applyCookieBanner } from "./sigma-cookie-banner.mjs";
+import { applyMirror as applyCriticalCss } from "./sigma-critical-css.mjs";
+import { buildSitemap } from "./sigma-sitemap-auto.mjs";
+import { buildSearchIndex } from "./sigma-search-index.mjs";
+import { applyFontSubset } from "./sigma-font-subset.mjs";
+import { applyWebSocketMock } from "./sigma-websocket-mock.mjs";
+import { applySkeleton } from "./sigma-skeleton-screen.mjs";
+import { applyOgDynamic } from "./sigma-og-dynamic.mjs";
 
 function urlToSlug(url) {
   return url
@@ -229,6 +236,76 @@ export async function go(sourceUrl, opts = {}) {
     }
   }
 
+  // ═══ Step 6i: Critical CSS + Resource Hints (P209) ═══
+  if (opts.critical) {
+    console.log(`\n━━━ Step 6i: Critical CSS + Resource Hints (P209) ━━━`);
+    try {
+      const r = applyCriticalCss(outputDir);
+      log.push({ step: "Critical Hints", ok: true, hints: r.totalHints });
+      console.log(`  ✅ ${r.totalHints} hints (preconnect/preload/dns-prefetch)`);
+    } catch (e) { log.push({ step: "Critical Hints", ok: false, error: e.message }); }
+  }
+
+  // ═══ Step 6j: Font Subset (P210) ═══
+  if (opts.fontSubset) {
+    console.log(`\n━━━ Step 6j: Font Unicode Range Subset (P210) ━━━`);
+    try {
+      const r = applyFontSubset(outputDir);
+      log.push({ step: "Font Subset", ok: true, chars: r.uniqueChars });
+      console.log(`  ✅ ${r.uniqueChars} unique chars, ${r.ranges} ranges → lazy fetch`);
+    } catch (e) { log.push({ step: "Font Subset", ok: false, error: e.message }); }
+  }
+
+  // ═══ Step 6k: WebSocket Mock (P221) ═══
+  if (opts.wsMock) {
+    console.log(`\n━━━ Step 6k: WebSocket + SSE Mock (P221) ━━━`);
+    try {
+      const r = applyWebSocketMock(outputDir);
+      log.push({ step: "WS Mock", ok: true, files: r.files?.length });
+      console.log(`  ✅ Real-time site (chat/dashboard) crash 방지`);
+    } catch (e) { log.push({ step: "WS Mock", ok: false, error: e.message }); }
+  }
+
+  // ═══ Step 6l: Skeleton Loading (P244) ═══
+  if (opts.skeleton) {
+    console.log(`\n━━━ Step 6l: Skeleton Loading Screen (P244) ━━━`);
+    try {
+      const r = applySkeleton(outputDir);
+      log.push({ step: "Skeleton", ok: true, files: r.files?.length });
+      console.log(`  ✅ Loading skeleton + shimmer + auto fade`);
+    } catch (e) { log.push({ step: "Skeleton", ok: false, error: e.message }); }
+  }
+
+  // ═══ Step 6m: OG Dynamic Per-Page (P247) ═══
+  if (opts.og) {
+    console.log(`\n━━━ Step 6m: Open Graph Dynamic (P247) ━━━`);
+    try {
+      const r = applyOgDynamic(outputDir, opts.baseUrl || "");
+      log.push({ step: "OG Dynamic", ok: true, files: r.files?.length });
+      console.log(`  ✅ Per-page OG/Twitter Card`);
+    } catch (e) { log.push({ step: "OG Dynamic", ok: false, error: e.message }); }
+  }
+
+  // ═══ Step 6n: Sitemap Auto + lastmod (P218) ═══
+  if (opts.sitemap) {
+    console.log(`\n━━━ Step 6n: Sitemap Auto (P218) ━━━`);
+    try {
+      const r = buildSitemap(outputDir, { baseUrl: opts.baseUrl || "https://example.com" });
+      log.push({ step: "Sitemap", ok: true, routes: r.routes });
+      console.log(`  ✅ ${r.routes} routes → sitemap.xml + robots.txt`);
+    } catch (e) { log.push({ step: "Sitemap", ok: false, error: e.message }); }
+  }
+
+  // ═══ Step 6o: Client-Side Search (P219) ═══
+  if (opts.search) {
+    console.log(`\n━━━ Step 6o: Client-Side Search Index (P219) ━━━`);
+    try {
+      const r = buildSearchIndex(outputDir);
+      log.push({ step: "Search", ok: true, docs: r.docs });
+      console.log(`  ✅ ${r.docs} pages indexed, ${r.tokens} tokens → window.sigmaSearch()`);
+    } catch (e) { log.push({ step: "Search", ok: false, error: e.message }); }
+  }
+
   // ═══ Step 7 (optional): Brand-Kit Swap (P189) ═══
   if (opts.brandKit) {
     console.log(`\n━━━ Step 5/5: Brand-Kit Swap (P189) ━━━`);
@@ -317,6 +394,14 @@ if (isMain) {
     sw: process.argv.includes("--sw") || all,
     lazy: process.argv.includes("--lazy") || all,
     cookieBanner: process.argv.includes("--cookie-banner") || all,
+    critical: process.argv.includes("--critical") || all,
+    fontSubset: process.argv.includes("--font-subset") || all,
+    wsMock: process.argv.includes("--ws-mock") || all,
+    skeleton: process.argv.includes("--skeleton") || all,
+    og: process.argv.includes("--og") || all,
+    sitemap: process.argv.includes("--sitemap") || all,
+    search: process.argv.includes("--search") || all,
+    baseUrl: flagVal("--base-url"),
   }).then(r => {
     if (r.error) { console.error(`\n[sigma-go] ${r.error}`); process.exit(1); }
     console.log(`\n🎯 [sigma-go] DONE in ${r.duration}s`);
