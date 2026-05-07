@@ -1,13 +1,43 @@
 {
   "name": "nava-sigma-engine",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.2.0",
   "type": "module",
-  "description": "NAVA Sigma — clean-room copyright-safe website regeneration engine",
+  "description": "NAVA Sigma — clean-room copyright-safe website regeneration engine. 191 tools, unified CLI.",
+  "bin": {
+    "nava": "./nava-cli.mjs"
+  },
+  "scripts": {
+    "nava": "node nava-cli.mjs",
+    "help": "node nava-cli.mjs help"
+  },
+  "files": [
+    "nava-cli.mjs",
+    "nava-omega.mjs",
+    "nava-sigma.mjs",
+    "sigma-*.mjs",
+    "README-AGENT.md",
+    "AGENT_INSTRUCTIONS.md",
+    "decision-tree.md",
+    "ENGINE-INDEX.md"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
   "dependencies": {
     "puppeteer": "^23.10.0",
     "puppeteer-core": "^23.10.0",
     "pixelmatch": "^6.0.0",
     "pngjs": "^7.0.0"
-  }
+  },
+  "keywords": [
+    "site-mirror",
+    "react-rebuild",
+    "cleanroom",
+    "frozen-dom",
+    "site-clone",
+    "next.js",
+    "puppeteer"
+  ],
+  "license": "UNLICENSED",
+  "author": "ProCodeJH"
 }

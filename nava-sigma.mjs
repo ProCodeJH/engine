@@ -110,6 +110,8 @@ NAVA Sigma v0.1 — Clean-Room Regeneration
 
 // ─── Σ.0 RECON ─────────────────────────────────────────────────────
 console.log(`[Σ.0] RECON ${el()}`);
+// 2026-05-06: launch-level UA disguise for ALL pages.
+const FAKE_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36";
 const browser = await puppeteer.launch({
   headless: "new",
   protocolTimeout: 300000,
@@ -120,10 +122,19 @@ const browser = await puppeteer.launch({
     "--disable-features=site-per-process,TranslateUI",
     "--disable-background-timer-throttling",
     "--disable-renderer-backgrounding",
+    `--user-agent=${FAKE_UA}`,
   ],
 });
 const page = await browser.newPage();
 await page.setViewport({ width: 1920, height: 1080 });
+// 2026-05-06: Anti-CloudFront ban — disguise as real Chrome (HeadlessChrome UA → Mozilla Chrome 130).
+await page.setUserAgent(
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
+);
+await page.setExtraHTTPHeaders({
+  "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
+  "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+});
 // Canvas text intercept — injected BEFORE any page script so we catch
 // every fillText/strokeText call. Framer/Webflow canvas typography
 // normally can't be read back from DOM; this hook stores text + pos

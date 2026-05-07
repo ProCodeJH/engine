@@ -109,12 +109,27 @@ function urlToFilename(u) {
 
 // ─── Ω.0 RECON ──────────────────────────────────────────────────────
 console.log(`[Ω.0] RECON ${el()}`);
+// 2026-05-06: launch-level UA disguise for ALL pages (including sub-routes).
+const FAKE_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36";
 const browser = await puppeteer.launch({
   headless: "new",
-  args: ["--no-sandbox", "--disable-dev-shm-usage", "--disable-features=site-per-process"],
+  args: [
+    "--no-sandbox",
+    "--disable-dev-shm-usage",
+    "--disable-features=site-per-process",
+    `--user-agent=${FAKE_UA}`,
+  ],
 });
 const page = await browser.newPage();
 await page.setViewport(VIEWPORT);
+// 2026-05-06: Anti-CloudFront ban — disguise HeadlessChrome → real Chrome.
+await page.setUserAgent(
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
+);
+await page.setExtraHTTPHeaders({
+  "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
+  "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+});
 const cdp = await page.target().createCDPSession();
 
 const capturedRequests = [];
